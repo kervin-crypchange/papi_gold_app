@@ -1,7 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:papi_gold/app/common/enums/box_enum.dart';
+import 'package:papi_gold/injection_container.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Hive.initFlutter();
+  await Hive.openBox(BoxEnum.config.name);
+  await initializeDependencies();
+  
   runApp(const MainApp());
+}
+
+class BlocProviders extends StatelessWidget {
+  const BlocProviders({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [
+        // BlocProvider(create: (_) => sl<AuthenticatedCubit>()..appStarted()),
+
+      ],
+      child: const MainApp(),
+    );
+  }
 }
 
 class MainApp extends StatelessWidget {
