@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:papi_gold/app/common/enums/box_enum.dart';
+import 'package:papi_gold/app/core/extensions/text_theme.dart';
 import 'package:papi_gold/injection_container.dart';
 
 Future<void> main() async {
@@ -39,7 +40,13 @@ class MainApp extends StatelessWidget {
       splitScreenMode: true,
       builder: (_, child) {
         return MaterialApp(
-          home: Scaffold(body: Center(child: Text('Hello World, PapiGold!'))),
+          home: Scaffold(body: Center(child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('PapiGold!', style: context.bodyMedium,),
+              Image.asset('assets/icons/icon512_rounded.png', )
+            ],
+          ))),
         );
       },
     );
