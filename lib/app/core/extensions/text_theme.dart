@@ -4,25 +4,25 @@ import 'package:papi_gold/app/core/theme/index.dart';
 
 extension TextThemeExtension on BuildContext {
   // * (default) TextTheme
-  TextStyle get displayLarge => _baseStyle(57.sp, AppColors.primary.base);
-  TextStyle get displayMedium => _baseStyle(45.sp, AppColors.primary.base);
-  TextStyle get displaySmall => _baseStyle(36.sp, AppColors.primary.base);
+  TextStyle get displayLarge => _baseStyle(57.sp, AppColors.secondary);
+  TextStyle get displayMedium => _baseStyle(45.sp, AppColors.secondary);
+  TextStyle get displaySmall => _baseStyle(36.sp, AppColors.secondary);
 
-  TextStyle get headlineLarge => _baseStyle(32.sp, AppColors.primary.base);
-  TextStyle get headlineMedium => _baseStyle(28.sp, AppColors.primary.base);
-  TextStyle get headlineSmall => _baseStyle(24.sp, AppColors.primary.base);
+  TextStyle get headlineLarge => _baseStyle(32.sp, AppColors.secondary);
+  TextStyle get headlineMedium => _baseStyle(28.sp, AppColors.secondary);
+  TextStyle get headlineSmall => _baseStyle(24.sp, AppColors.secondary);
 
-  TextStyle get titleLarge => _baseStyle(22.sp, AppColors.primary.base);
-  TextStyle get titleMedium => _baseStyle(20.sp, AppColors.primary.base);
-  TextStyle get titleSmall => _baseStyle(18.sp, AppColors.primary.base);
+  TextStyle get titleLarge => _baseStyle(22.sp, AppColors.secondary);
+  TextStyle get titleMedium => _baseStyle(20.sp, AppColors.secondary);
+  TextStyle get titleSmall => _baseStyle(18.sp, AppColors.secondary);
 
-  TextStyle get labelLarge => _baseStyle(16.sp, AppColors.grey.base);
-  TextStyle get labelMedium => _baseStyle(14.sp, AppColors.grey.base);
-  TextStyle get labelSmall => _baseStyle(12.sp, AppColors.grey.base);
+  TextStyle get labelLarge => _baseStyle(16.sp, AppColors.white);
+  TextStyle get labelMedium => _baseStyle(14.sp, AppColors.white);
+  TextStyle get labelSmall => _baseStyle(12.sp, AppColors.white);
 
-  TextStyle get bodyLarge => _baseStyle(16.sp, AppColors.black);
-  TextStyle get bodyMedium => _baseStyle(14.sp, AppColors.black);
-  TextStyle get bodySmall => _baseStyle(12.sp, AppColors.black);
+  TextStyle get bodyLarge => _baseStyle(16.sp, AppColors.white);
+  TextStyle get bodyMedium => _baseStyle(14.sp, AppColors.white);
+  TextStyle get bodySmall => _baseStyle(12.sp, AppColors.white);
 
   static TextStyle _baseStyle(double fontSize, Color color) {
     return TextStyle(
