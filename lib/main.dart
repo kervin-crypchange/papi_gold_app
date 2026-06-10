@@ -46,6 +46,7 @@ class MainApp extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text('PapiGold!', style: context.bodyMedium,),
+              FilledButton(onPressed:()=> print('press'), child: const Text('Press me!')),
               // Image.asset('assets/icons/icon512_rounded.png', )
             ],
           ))),
