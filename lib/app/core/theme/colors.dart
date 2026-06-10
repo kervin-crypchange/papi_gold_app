@@ -10,7 +10,7 @@ abstract class AppColors {
   static const warning = Colors.yellow;
 
   static const black = Colors.black87;
-  static const white = Colors.white70;
+  static const white = Colors.white;
   static const grey = Colors.grey;
   static const bg = Colors.black87;
 }
