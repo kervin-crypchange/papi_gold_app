@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:papi_gold/app/common/enums/box_enum.dart';
 import 'package:papi_gold/injection_container.dart';
@@ -10,7 +11,7 @@ Future<void> main() async {
   await Hive.initFlutter();
   await Hive.openBox(BoxEnum.config.name);
   await initializeDependencies();
-  
+
   runApp(const MainApp());
 }
 
@@ -22,7 +23,6 @@ class BlocProviders extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         // BlocProvider(create: (_) => sl<AuthenticatedCubit>()..appStarted()),
-
       ],
       child: const MainApp(),
     );
@@ -34,12 +34,14 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
+    return ScreenUtilInit(
+      designSize: const Size(360, 690),
+      splitScreenMode: true,
+      builder: (_, child) {
+        return MaterialApp(
+          home: Scaffold(body: Center(child: Text('Hello World, PapiGold!'))),
+        );
+      },
     );
   }
 }
