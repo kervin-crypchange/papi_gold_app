@@ -71,23 +71,23 @@ class _MainAppState extends State<MainApp> {
         ScreenUtil.init(context);
         return MaterialApp.router(
           debugShowCheckedModeBanner: true,
-          locale: _locale,
-          localizationsDelegates: [
-            AppLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: [Locale('en', 'US'), Locale('es', 'MX')],
-          localeResolutionCallback: (deviceLocale, supportedLocales) {
-            for (var locale in supportedLocales) {
-              if (deviceLocale != null &&
-                  deviceLocale.languageCode == locale.languageCode) {
-                return deviceLocale;
-              }
-            }
-            return supportedLocales.first;
-          },
+          // locale: _locale,
+          // localizationsDelegates: [
+          //   AppLocalizations.delegate,
+          //   GlobalWidgetsLocalizations.delegate,
+          //   GlobalMaterialLocalizations.delegate,
+          //   GlobalCupertinoLocalizations.delegate,
+          // ],
+          // supportedLocales: [Locale('en', 'US'), Locale('es', 'MX')],
+          // localeResolutionCallback: (deviceLocale, supportedLocales) {
+          //   for (var locale in supportedLocales) {
+          //     if (deviceLocale != null &&
+          //         deviceLocale.languageCode == locale.languageCode) {
+          //       return deviceLocale;
+          //     }
+          //   }
+          //   return supportedLocales.first;
+          // },
           theme: appTheme(),
           routerConfig: router,
           scaffoldMessengerKey: globals.scaffoldMessengerKey,

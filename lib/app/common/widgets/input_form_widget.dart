@@ -67,14 +67,14 @@ class InputFormWidget extends StatelessWidget {
       validator: validator,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       decoration: InputDecoration(
-        enabledBorder: UnderlineInputBorder(
+        border: OutlineInputBorder(
           borderSide: BorderSide(
             color: color ?? AppColors.grey,
-          ), // Set your desired color
+          ), 
         ),
         hintText: hintText,
         labelStyle: context.bodySmall.copyWith(
-          color: color ?? AppColors.grey,
+          color: color ?? AppColors.white,
         ),
         labelText: labelText,
         helperText: helperText,
