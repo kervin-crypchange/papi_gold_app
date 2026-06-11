@@ -61,7 +61,7 @@ class FeatureProductCard extends StatelessWidget {
                             style: context.labelSmall.copyWith(
                               color: AppColors.black,
                             ),
-                          ),
+                          ).medium,
                           Text(
                             '\$4,319.10',
                             style: context.labelMedium.copyWith(
