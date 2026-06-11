@@ -1,10 +1,83 @@
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:papi_gold/app/common/mixins/index.dart';
+import 'package:papi_gold/app/common/widgets/filled_button_widget.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
+import 'package:papi_gold/app/core/extensions/index.dart';
+import 'package:papi_gold/app/core/theme/colors.dart';
 
-class RegisterPage extends StatelessWidget {
+class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Container();
+  State<RegisterPage> createState() => _RegisterPageState();
+}
+
+class _RegisterPageState extends State<RegisterPage> with LoggerMixin {
+  String? email, password;
+  bool obscureText = true;
+
+  @override
+   Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Center(
+          child: Form(
+            child: Container(
+              height: .4.sh,
+              width: .9.sw,
+              decoration: BoxDecoration(
+                borderRadius:BorderRadius.circular(6.r) ,
+                border: BoxBorder.all(
+                  color: AppColors.white,
+                  width: 0.5,
+                )
+              ),
+              child: Column(
+                spacing: 16.h,
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Registro', style: context.headlineSmall,),
+                  InputFormWidget(
+                    prefixIcon: Icon(Icons.mail_outline),
+                    labelText: 'Correo electrónico',
+                    keyboardType: TextInputType.emailAddress,
+                    onSaved: (value) => setState(() => email = value),
+                    validator: (value) =>
+                        value?.requiredError ?? value?.emailError,
+                  ),
+                  InputFormWidget(
+                    obscureText: obscureText,
+                    prefixIcon: Icon(Icons.lock_outline),
+                    suffix: InkWell(
+                      onTap: () {
+                        setState(() {
+                          obscureText = !obscureText;
+                        });
+                      },
+                      child: obscureText
+                          ? Icon(Icons.visibility)
+                          : Icon(Icons.visibility_off),
+                    ),
+                    labelText:'Contraseña',
+                    // helperText:
+                    //     'Minimum 6 characters, uppercase, lowercase letter and a number',
+                    validator: (value) => value?.requiredError,
+                    onSaved: (value) => setState(() => password = value),
+                  ),
+                  SizedBox(
+                    width: 1.sw,
+                    child: FilledButtonWidget(
+                      onPressed: () => log('press me'),
+                      title: 'Registrar',
+                    ),
+                  ),
+                ],
+              ).paddingSymmetric(horizontal: 24.w),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
