@@ -41,4 +41,4 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
-    - lib/app/core/l10n/
+    - lib/l10n/
