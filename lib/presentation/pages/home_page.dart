@@ -6,6 +6,6 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Center(child: Text('PapiGold Home P', style: context.titleMedium,),));
+    return Scaffold(body: Center(child: Text('PapiGold Home Page', style: context.titleMedium,),));
   }
 }
