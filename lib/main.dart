@@ -43,7 +43,7 @@ class MainApp extends StatelessWidget {
       builder: (_, child) {
         return MaterialApp(
           theme: appTheme(),
-          home: Scaffold(body: Center(child: FeatureProductCard())),
+          home: Scaffold(body: Center(child: Text('Papi Gold!'))),
         );
       },
     );
