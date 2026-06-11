@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:papi_gold/app/common/enums/box_enum.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
-import 'package:papi_gold/app/core/extensions/text_theme.dart';
+import 'package:papi_gold/app/core/app_localizations.dart';
+import 'package:papi_gold/app/core/router/router.dart';
 import 'package:papi_gold/app/core/theme/app_theme.dart';
 import 'package:papi_gold/injection_container.dart';
+import 'package:papi_gold/app/core/extensions/index.dart' as globals;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,18 +35,49 @@ class BlocProviders extends StatelessWidget {
   }
 }
 
-class MainApp extends StatelessWidget {
+class MainApp extends StatefulWidget {
   const MainApp({super.key});
 
+  @override
+  State<MainApp> createState() => _MainAppState();
+}
+
+class _MainAppState extends State<MainApp> {
+  Locale? _locale;
+  
+  void setLocale(Locale value) {
+    setState(() {
+      _locale = value;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(360, 690),
       splitScreenMode: true,
       builder: (_, child) {
-        return MaterialApp(
+        return MaterialApp.router(
+           debugShowCheckedModeBanner: true,
+           locale: _locale,
+              localizationsDelegates: [
+                AppLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              supportedLocales: [Locale('en', 'US'), Locale('es', 'MX')],
+              localeResolutionCallback: (deviceLocale, supportedLocales) {
+                for (var locale in supportedLocales) {
+                  if (deviceLocale != null &&
+                      deviceLocale.languageCode == locale.languageCode) {
+                    return deviceLocale;
+                  }
+                }
+                return supportedLocales.first;
+              },
           theme: appTheme(),
-          home: Scaffold(body: Center(child: Text('Papi Gold!'))),
+          routerConfig: router,
+           scaffoldMessengerKey: globals.scaffoldMessengerKey,
         );
       },
     );
