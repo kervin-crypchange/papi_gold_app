@@ -1,9 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:papi_gold/app/common/enums/index.dart';
-import 'package:papi_gold/app/core/constants/index.dart';
-import 'package:papi_gold/app/core/router/router.dart';
-import 'package:papi_gold/injection_container.dart';
 import 'package:logger/logger.dart';
 
 /// This interceptor is used to show request and response logs
@@ -27,6 +24,7 @@ Logger logger = Logger(
       // sl<AuthLocalData>().deleteToken();
       // sl<AuthLocalData>().deleteUserLogged();
       // router.goNamed(Routes.login);
+      logger.i('${options.method} request ==> $requestPath'); //Info log
       try {} on DioException catch (e) {
         // If refresh fails or retry fails, navigate to login or handle as needed
         // appRouter.goNamed(Routes.login);
