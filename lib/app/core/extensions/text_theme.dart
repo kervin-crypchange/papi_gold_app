@@ -19,10 +19,12 @@ extension TextThemeExtension on BuildContext {
   TextStyle get labelLarge => _baseStyle(16.sp, AppColors.white);
   TextStyle get labelMedium => _baseStyle(14.sp, AppColors.white);
   TextStyle get labelSmall => _baseStyle(12.sp, AppColors.white);
+  TextStyle get labelXSmall => _baseStyle(10.sp, AppColors.white);
 
   TextStyle get bodyLarge => _baseStyle(16.sp, AppColors.white);
   TextStyle get bodyMedium => _baseStyle(14.sp, AppColors.white);
   TextStyle get bodySmall => _baseStyle(12.sp, AppColors.white);
+  TextStyle get bodyXSmall => _baseStyle(10.sp, AppColors.white);
 
   static TextStyle _baseStyle(double fontSize, Color color) {
     return TextStyle(
