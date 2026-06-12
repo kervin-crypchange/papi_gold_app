@@ -1,5 +1,10 @@
-abstract class ApiUrl {
+abstract class Apis {
   static const baseUrl = 'https://papigold.io/api/';
+
+  // AUTH
+  static const login = 'session';
+  static const register = '';
+  static const recovery = '';
 
   static const product = 'product';
   static const price = 'price';
