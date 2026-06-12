@@ -7,6 +7,21 @@ final GoRouter router = GoRouter(
   initialLocation: '/',
   navigatorKey: rootNavigatorKey,
   routes: [
-    GoRoute(path: '/', name: 'home', builder: (context, state) => RegisterPage()),
+    GoRoute(path: '/', name: 'home', builder: (context, state) => HomePage()),
+    GoRoute(
+      path: '/login',
+      name: 'login',
+      builder: (context, state) => LoginPage(),
+    ),
+    GoRoute(
+      path: '/register',
+      name: 'register',
+      builder: (context, state) => RegisterPage(),
+    ),
+    GoRoute(
+      path: '/recovery',
+      name: 'recovery-password',
+      builder: (context, state) => RecoveryPasswordPage(),
+    ),
   ],
 );
