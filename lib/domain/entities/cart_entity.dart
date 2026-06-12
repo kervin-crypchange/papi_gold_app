@@ -7,5 +7,5 @@ class CartEntity extends Equatable {
   const CartEntity({required this.items});
   
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [items];
 }
