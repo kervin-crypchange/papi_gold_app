@@ -1,5 +1,5 @@
 import 'package:papi_gold/data/models/client_model.dart';
-import 'package:papi_gold/domain/entities/auth/login_response_entity.dart';
+import 'package:papi_gold/domain/entities/responses/response_login_entity.dart';
 
 class LoginResponseModel extends LoginResponseEntity {
   const LoginResponseModel({
