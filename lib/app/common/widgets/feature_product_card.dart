@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:papi_gold/app/common/mixins/index.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
 import 'package:papi_gold/app/core/theme/colors.dart';
 
-class FeatureProductCard extends StatelessWidget {
-  const FeatureProductCard({super.key});
+class FeatureProductCard extends StatelessWidget with LoggerMixin {
+  FeatureProductCard({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -78,13 +79,13 @@ class FeatureProductCard extends StatelessWidget {
                               color: AppColors.bg,
                             ),
                             onPressed: () {
-                              print('Volume increased');
+                              log('Volume increased');
                             },
                           ),
                           IconButton(
                             icon: const Icon(Icons.shopping_cart_outlined),
                             onPressed: () {
-                              print('Volume increased');
+                              log('Volume increased');
                             },
                           ),
                         ],

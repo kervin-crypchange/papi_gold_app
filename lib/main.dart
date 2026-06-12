@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+// import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:papi_gold/app/common/enums/box_enum.dart';
 import 'package:papi_gold/app/common/services/index.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
-import 'package:papi_gold/app/core/app_localizations.dart';
+// import 'package:papi_gold/app/core/app_localizations.dart';
 import 'package:papi_gold/app/core/router/router.dart';
 import 'package:papi_gold/app/core/theme/app_theme.dart';
 import 'package:papi_gold/injection_container.dart';
@@ -71,23 +71,23 @@ class _MainAppState extends State<MainApp> {
         ScreenUtil.init(context);
         return MaterialApp.router(
           debugShowCheckedModeBanner: true,
-          locale: _locale,
-          localizationsDelegates: [
-            AppLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: [Locale('en', 'US'), Locale('es', 'MX')],
-          localeResolutionCallback: (deviceLocale, supportedLocales) {
-            for (var locale in supportedLocales) {
-              if (deviceLocale != null &&
-                  deviceLocale.languageCode == locale.languageCode) {
-                return deviceLocale;
-              }
-            }
-            return supportedLocales.first;
-          },
+          // locale: _locale,
+          // localizationsDelegates: [
+          //   AppLocalizations.delegate,
+          //   GlobalWidgetsLocalizations.delegate,
+          //   GlobalMaterialLocalizations.delegate,
+          //   GlobalCupertinoLocalizations.delegate,
+          // ],
+          // supportedLocales: [Locale('en', 'US'), Locale('es', 'MX')],
+          // localeResolutionCallback: (deviceLocale, supportedLocales) {
+          //   for (var locale in supportedLocales) {
+          //     if (deviceLocale != null &&
+          //         deviceLocale.languageCode == locale.languageCode) {
+          //       return deviceLocale;
+          //     }
+          //   }
+          //   return supportedLocales.first;
+          // },
           theme: appTheme(),
           routerConfig: router,
           scaffoldMessengerKey: globals.scaffoldMessengerKey,
