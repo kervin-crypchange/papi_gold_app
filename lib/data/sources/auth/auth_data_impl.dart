@@ -8,10 +8,10 @@ import 'package:papi_gold/injection_container.dart';
 
 class AuthDataImpl extends AuthData {
   @override
-  Future<Either<Failure, LoginResponseModel>> login(LoginModel model) async {
+  Future<Either<Failure, ResponseLoginModel>> login(LoginModel model) async {
    try {
      final res = await sl<DioClient>().post(Apis.login, data: model.toJson());
-     return Right(LoginResponseModel.fromJson(res.data));
+     return Right(ResponseLoginModel.fromJson(res.data));
    } catch (e) {
      return Left(ServerException(e));
    }
