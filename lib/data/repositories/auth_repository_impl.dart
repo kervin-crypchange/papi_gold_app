@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:papi_gold/app/common/mixins/index.dart';
 import 'package:papi_gold/app/core/error/failure.dart';
-import 'package:papi_gold/data/models/auth/index.dart';
-import 'package:papi_gold/data/sources/auth/auth_data.dart';
+import 'package:papi_gold/data/models/index.dart';
+import 'package:papi_gold/data/sources/remote/auth/auth_data.dart';
 import 'package:papi_gold/domain/entities/auth/login_entity.dart';
 import 'package:papi_gold/domain/entities/auth/recovery_entity.dart';
 import 'package:papi_gold/domain/entities/responses/response_login_entity.dart';
