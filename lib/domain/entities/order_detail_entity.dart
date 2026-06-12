@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:papi_gold/domain/entities/index.dart';
-import 'package:papi_gold/domain/entities/shipping_entity.dart';
 
 class OrderDetailEntity extends Equatable {
   final int id;
