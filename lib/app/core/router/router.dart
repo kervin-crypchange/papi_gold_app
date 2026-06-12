@@ -20,7 +20,7 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/recovery',
-      name: 'recovery-password',
+      name: 'recovery',
       builder: (context, state) => RecoveryPasswordPage(),
     ),
   ],

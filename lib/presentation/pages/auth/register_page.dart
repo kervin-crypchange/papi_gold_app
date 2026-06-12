@@ -1,4 +1,5 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:papi_gold/app/common/mixins/index.dart';
 import 'package:papi_gold/app/common/widgets/filled_button_widget.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
@@ -23,7 +24,7 @@ class _RegisterPageState extends State<RegisterPage> with LoggerMixin {
         child: Center(
           child: Form(
             child: Container(
-              height: .4.sh,
+              height: .45.sh,
               width: .9.sw,
               decoration: BoxDecoration(
                 borderRadius:BorderRadius.circular(6.r) ,
@@ -71,6 +72,10 @@ class _RegisterPageState extends State<RegisterPage> with LoggerMixin {
                       onPressed: () => log('press me'),
                       title: 'Registrar',
                     ),
+                  ),
+                   InkWell(
+                    onTap: () => context.goNamed('login'),
+                    child: Text('Iniciar sesión'),
                   ),
                 ],
               ).paddingSymmetric(horizontal: 24.w),

@@ -72,12 +72,13 @@ class _LoginPageState extends State<LoginPage> with LoggerMixin {
                       title: 'Iniciar sesión',
                     ),
                   ),
-                  TextButton(
-                    onPressed: () => context.goNamed('recovery'),
+                  InkWell(
+                    onTap: () => context.goNamed('recovery'),
                     child: Text('¿Olvido su contraseña?'),
+
                   ),
-                  TextButton(
-                    onPressed: () => context.goNamed('register'),
+                  InkWell(
+                    onTap: () => context.goNamed('register'),
                     child: Text('¿No tienes cuenta?, registrate'),
                   ),
                 ],
