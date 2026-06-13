@@ -9,7 +9,7 @@ class MetalEntity extends Equatable {
   final bool isStable;
   final DateTime lastUpdated;
   final List<CaratEntity> carats;
-  final List<MetalCategory> categories;
+  final List<MetalCategoryEntity> categories;
 
   const MetalEntity({
     required this.symbol,
@@ -54,13 +54,13 @@ class CaratEntity extends Equatable {
   List<Object?> get props => [id, name, purity, law];
 }
 
-class MetalCategory extends Equatable {
+class MetalCategoryEntity extends Equatable {
   final int id;
   final String name;
   final int stock;
   final double price;
 
-  const MetalCategory({
+  const MetalCategoryEntity({
     required this.id,
     required this.name,
     required this.stock,
