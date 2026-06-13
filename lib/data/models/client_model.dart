@@ -1,4 +1,11 @@
+import 'dart:convert';
+
 import 'package:papi_gold/domain/entities/client_entity.dart';
+
+ClientModel clientModelFromJson(String str) =>
+    ClientModel.fromJson(json.decode(str));
+
+String asesorModelToJson(ClientModel data) => json.encode(data.toJson());
 
 class ClientModel extends ClientEntity {
   const ClientModel({
@@ -39,9 +46,9 @@ class ClientModel extends ClientEntity {
       lastName: json['lastname'] as String,
       email: json['email'] as String,
       phone: json['phone'] as String,
-      country: json['country'] as int,
-      state: json['state'] as int ,
-      city: json['city'] as int,
+      country: (json['country']as num).toInt(),
+      state: (json['state']as num).toInt(),
+      city: (json['city'] as num).toInt(),
       address1: json['address1'] as String,
       address2: json['address2'] as String,
       codeZip: json['code_zip'] as String,
@@ -49,18 +56,20 @@ class ClientModel extends ClientEntity {
     );
   }
 
-  /// Converts a [ClientModel] to a [ClientEntity].
-  factory ClientModel.fromEntity(ClientEntity entity) => ClientModel(
-    name: entity.name,
-    lastName: entity.lastName,
-    email: entity.email,
-    phone: entity.phone,
-    country: entity.country,
-    state: entity.state,
-    city: entity.city,
-    address1: entity.address1,
-    address2: entity.address2,
-    codeZip: entity.codeZip,
-    receiveAdvertise: entity.receiveAdvertise,
-  );
+  /// Converts a [ClientEntity] to a [ClientModel].
+  factory ClientModel.fromEntity(ClientEntity entity) {
+    return ClientModel(
+      name: entity.name,
+      lastName: entity.lastName,
+      email: entity.email,
+      phone: entity.phone,
+      country: entity.country,
+      state: entity.state,
+      city: entity.city,
+      address1: entity.address1,
+      address2: entity.address2,
+      codeZip: entity.codeZip,
+      receiveAdvertise: entity.receiveAdvertise,
+    );
+  }
 }

@@ -10,6 +10,7 @@ import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/router/router.dart';
 import 'package:papi_gold/app/core/theme/app_theme.dart';
 import 'package:papi_gold/injection_container.dart';
+import 'package:papi_gold/presentation/cubits/auth/auth_cubit.dart';
 import 'package:papi_gold/app/core/extensions/index.dart' as globals;
 
 Future<void> main() async {
@@ -18,7 +19,7 @@ Future<void> main() async {
   await Hive.openBox(BoxEnum.config.name);
   await initializeDependencies();
 
-  runApp(const MainApp());
+  runApp(const BlocProviders());
 }
 
 class BlocProviders extends StatelessWidget {
@@ -28,7 +29,7 @@ class BlocProviders extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        // BlocProvider(create: (_) => sl<AuthenticatedCubit>()..appStarted()),
+        BlocProvider(create: (_) => sl<AuthCubit>()),
       ],
       child: const MainApp(),
     );
@@ -43,18 +44,10 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
-  Locale? _locale;
-
-  void setLocale(Locale value) {
-    setState(() {
-      _locale = value;
-    });
-  }
-
   @override
   void initState() {
     super.initState();
-    LocaleService.localeStream.listen((locale) => setLocale(Locale(locale)));
+    LocaleService.localeStream.listen((locale) {});
   }
 
   @override
