@@ -22,8 +22,8 @@ class OrderDetailModel extends OrderDetailEntity {
       order: json['order'] as String,
       invoice: json['invoice'] as String,
       description: json['description'] as String,
-      total: json['total_v'] as double,
-      totalPago: json['total_pago_v'] as double,
+      total: (json['total_v'] as num).toDouble() ,
+      totalPago: (json['total_pago_v'] as num).toDouble(),
       status: json['status'],
       items: List<ItemModel>.from(
         json['items'].map((x) => ItemModel.fromJson(x as Map<String, dynamic>)),

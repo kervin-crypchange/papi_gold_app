@@ -17,9 +17,9 @@ class ProductModel extends ProductEntity {
       id: json['id'] as int,
       name: json['name'] as String,
       description: json['description'] as String,
-      stock: json['image'] as int,
+      stock: json['stoek'] as int,
       image: json['image'] as String,
-      price: json['price'] as double,
+      price: (json['price'] as num).toDouble(),
       category: ProducCategoryModel.fromJson(json['category']),
     );
   }
@@ -81,6 +81,6 @@ class ProducCategoryModel extends ProductCategoryEntity {
 
   /// Converts a [ProducCategoryModel] to a JSON map.
   Map<String, dynamic> toJson() {
-    return {'id': id, 'name': name, 'descripcion': description, 'color': color};
+    return {'id': id, 'name': name, 'description': description, 'color': color};
   }
 }

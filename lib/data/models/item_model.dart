@@ -13,7 +13,7 @@ class ItemModel extends ItemEntity {
     return ItemModel(
       id: json['id'] as int,
       quantity: json['quantity'] as int,
-      price: json['price'] as double,
+      price: (json['price'] as num).toDouble(),
       format: json['format'] as int,
     );
   }

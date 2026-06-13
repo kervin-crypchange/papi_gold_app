@@ -12,7 +12,7 @@ class PaymentModel extends PaymentEntity {
   factory PaymentModel.fromJson(Map<String, dynamic> json) {
     return PaymentModel(
       id: json['id'] as int,
-      amount: json['amount'] as double,
+      amount: (json['amount'] as num).toDouble(),
       reference: json['reference'] as String,
       type: json['type'] as String,
     );

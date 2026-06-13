@@ -12,7 +12,7 @@ class SaleModel extends SaleEntity {
     return SaleModel(
       order: json['order'] as String,
       invoice: json['invoice_number'] as String,
-      total: json['total_v'] as double,
+      total: (json['total_v'] as num).toDouble(),
     );
   }
 

@@ -11,7 +11,7 @@ class OrderModel extends OrderEntity {
   /// Converts a JSON map to a [OrderModel].
   factory OrderModel.fromJson(Map<String, dynamic> json) {
     return OrderModel(
-      client: ClientModel.fromJson(json['client'] as Map<String, dynamic>),
+      client: ClientModel.fromJson(json['clientData'] as Map<String, dynamic>),
       confirmExistingClient: json['confirm_existing_client'],
       cart: CartModel.fromJson(json['cartItems'] as Map<String, dynamic>),
     );
