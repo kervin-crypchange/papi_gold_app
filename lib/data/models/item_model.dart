@@ -11,10 +11,10 @@ class ItemModel extends ItemEntity {
   /// Converts a JSON map to a [ItemModel].
   factory ItemModel.fromJson(Map<String, dynamic> json) {
     return ItemModel(
-      id: json['id'] as int,
-      quantity: json['quantity'] as int,
+      id: (json['id'] as num).toInt(),
+      quantity: (json['quantity'] as num).toInt(),
       price: (json['price'] as num).toDouble(),
-      format: json['format'] as int,
+      format: (json['format'] as num).toInt(),
     );
   }
 

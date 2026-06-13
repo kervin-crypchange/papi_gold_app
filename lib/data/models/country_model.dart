@@ -12,7 +12,7 @@ class CountryModel extends CountryEntity {
     /// Converts a JSON map to a [Model].
   factory CountryModel.fromJson(Map<String, dynamic> json) {
     return CountryModel(
-      id: json['id'] as int,
+      id: (json['id'] as num).toInt(),
       name: json['name'] as String,
       iso2: json['iso2'] as String,
       phoneCode: json['phone_code'] as String,

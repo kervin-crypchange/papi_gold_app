@@ -11,7 +11,7 @@ class PaymentModel extends PaymentEntity {
     /// Converts a JSON map to a [PaymentModel].
   factory PaymentModel.fromJson(Map<String, dynamic> json) {
     return PaymentModel(
-      id: json['id'] as int,
+      id: (json['id'] as num).toInt(),
       amount: (json['amount'] as num).toDouble(),
       reference: json['reference'] as String,
       type: json['type'] as String,

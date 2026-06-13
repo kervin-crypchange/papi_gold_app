@@ -11,7 +11,7 @@ class ShippingModel extends ShippingEntity {
   /// Converts a JSON map to a [ShippingModel].
   factory ShippingModel.fromJson(Map<String, dynamic> json) {
     return ShippingModel(
-      id: json['id'] as int,
+      id: (json['id'] as num).toInt(),
       courier: CourierModel.fromJson(json['courier']),
       status: StatusModel.fromJson(json['status']),
       tracking: json['tracking_number'] as String,
@@ -44,7 +44,10 @@ class CourierModel extends CourierEntity {
 
   /// Converts a JSON map to a [CourierModel].
   factory CourierModel.fromJson(Map<String, dynamic> json) {
-    return CourierModel(id: json['id'] as int, name: json['name'] as String);
+    return CourierModel(
+      id: (json['id'] as num).toInt(),
+      name: json['name'] as String,
+    );
   }
 
   /// Converts a [CourierModel] to a [CourierEntity].
@@ -63,7 +66,10 @@ class StatusModel extends StatusEntity {
 
   /// Converts a JSON map to a [StatusModel].
   factory StatusModel.fromJson(Map<String, dynamic> json) {
-    return StatusModel(id: json['id'] as int, name: json['name'] as String);
+    return StatusModel(
+      id: (json['id'] as num).toInt(),
+      name: json['name'] as String,
+    );
   }
 
   /// Converts a [StatusEntity] to a [StatusModel].

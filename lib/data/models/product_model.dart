@@ -14,10 +14,10 @@ class ProductModel extends ProductEntity {
   /// Converts a JSON map to a [ProductModel].
   factory ProductModel.fromJson(Map<String, dynamic> json) {
     return ProductModel(
-      id: json['id'] as int,
+      id: (json['id'] as num).toInt(),
       name: json['name'] as String,
       description: json['description'] as String,
-      stock: json['stoek'] as int,
+      stock: (json['stock'] as num).toInt(),
       image: json['image'] as String,
       price: (json['price'] as num).toDouble(),
       category: ProducCategoryModel.fromJson(json['category']),
@@ -62,7 +62,7 @@ class ProducCategoryModel extends ProductCategoryEntity {
   /// Converts a JSON map to a [ProducCategoryModel].
   factory ProducCategoryModel.fromJson(Map<String, dynamic> json) {
     return ProducCategoryModel(
-      id: json['id'] as int,
+      id: (json['id'] as num).toInt(),
       name: json['name'] as String,
       description: json['description'] as String,
       color: json['color'] as String,
