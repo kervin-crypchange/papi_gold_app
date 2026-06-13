@@ -50,11 +50,6 @@ DateTime safeDateTime(dynamic v, [DateTime? fallback]) {
   return fallback ?? DateTime.fromMillisecondsSinceEpoch(0);
 }
 
-
-int timeAvailable(double priceMin, double balance) {
-  return ((balance / priceMin) * 60).toInt();
-}
-
 String getFormatMoney(double amount) {
   return NumberFormat.currency(
     locale: 'en_US',
