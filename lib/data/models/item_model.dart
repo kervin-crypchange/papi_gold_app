@@ -1,4 +1,5 @@
 import 'package:papi_gold/domain/entities/item_entity.dart';
+import 'package:papi_gold/app/common/utils/utils.dart';
 
 class ItemModel extends ItemEntity {
   const ItemModel({
@@ -11,10 +12,10 @@ class ItemModel extends ItemEntity {
   /// Converts a JSON map to a [ItemModel].
   factory ItemModel.fromJson(Map<String, dynamic> json) {
     return ItemModel(
-      id: (json['id'] as num).toInt(),
-      quantity: (json['quantity'] as num).toInt(),
-      price: (json['price'] as num).toDouble(),
-      format: (json['format'] as num).toInt(),
+      id: safeInt(json['id']),
+      quantity: safeInt(json['quantity']),
+      price: safeDouble(json['price']),
+      format: safeInt(json['format']),
     );
   }
 

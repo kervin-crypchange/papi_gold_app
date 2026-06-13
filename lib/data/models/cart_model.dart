@@ -1,5 +1,6 @@
 import 'package:papi_gold/data/models/index.dart';
 import 'package:papi_gold/domain/entities/index.dart';
+import 'package:papi_gold/app/common/utils/utils.dart';
 
 class CartModel extends CartEntity {
   const CartModel({required super.items});
@@ -7,9 +8,7 @@ class CartModel extends CartEntity {
   /// Converts a JSON map to a [CartModel].
   factory CartModel.fromJson(Map<String, dynamic> json) {
     return CartModel(
-      items: List<ItemModel>.from(
-        json['items'].map((x) => ItemModel.fromJson(x as Map<String, dynamic>)),
-      ),
+      items: safeList<ItemModel>(json['items'], (x) => ItemModel.fromJson(x as Map<String, dynamic>)),
     );
   }
 

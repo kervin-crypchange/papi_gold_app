@@ -1,4 +1,5 @@
 import 'package:papi_gold/domain/entities/metal_entity.dart';
+import 'package:papi_gold/app/common/utils/utils.dart';
 
 class MetalModel extends MetalEntity {
   const MetalModel({
@@ -16,19 +17,15 @@ class MetalModel extends MetalEntity {
   /// Converts a JSON map to a [MetalModel].
   factory MetalModel.fromJson(Map<String, dynamic> json) {
     return MetalModel(
-      symbol: json['symbol'],
-      name: json['name'],
-      price: json['price'],
-      carats: List<CaratModel>.from(
-        json['carats'].map((x) => CaratModel.fromJson(x)),
-      ),
-      categories: List<MetalCategoryModel>.from(
-        json['categories'].map((x) => MetalCategoryModel.fromJson(x as Map<String, dynamic>)),
-      ),
+      symbol: safeString(json['symbol']),
+      name: safeString(json['name']),
+      price: safeDouble(json['price']),
+      carats: safeList<CaratModel>(json['carats'], (x) => CaratModel.fromJson(x)),
+      categories: safeList<MetalCategoryModel>(json['categories'], (x) => MetalCategoryModel.fromJson(x as Map<String, dynamic>)),
       conversion: json['conversion'],
       priceHistory: json['priceHistory'],
-      isStable: json['isStable'],
-      lastUpdated: json['lastUpdated'],
+      isStable: json['isStable'] ?? false,
+      lastUpdated: safeDateTime(json['lastUpdated']),
     );
   }
 

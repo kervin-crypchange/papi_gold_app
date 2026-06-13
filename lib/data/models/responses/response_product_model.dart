@@ -1,5 +1,6 @@
 import 'package:papi_gold/data/models/index.dart';
 import 'package:papi_gold/domain/entities/index.dart';
+import 'package:papi_gold/app/common/utils/utils.dart';
 
 class ResponseProductModel extends ProductResponseEntity {
   const ResponseProductModel({required super.data, required super.meta});
@@ -17,9 +18,7 @@ class DataModel extends DataEntity {
     return DataModel(
       id: json['id'],
       name: json['name'],
-      products: List<ProductModel>.from(
-        json['products'].map((x) => ProductModel.fromJson(x as Map<String, dynamic>)),
-      ),
+      products: safeList<ProductModel>(json['products'], (x) => ProductModel.fromJson(x as Map<String, dynamic>)),
     );
   }
 

@@ -11,6 +11,45 @@ String getConnectedStatus(String connectStatus) {
   return statusColors[connectStatus] ?? 'Desconocido';
 }
 
+// Safe parsing helpers
+int safeInt(dynamic v, [int fallback = 0]) {
+  if (v == null) return fallback;
+  if (v is int) return v;
+  if (v is num) return v.toInt();
+  if (v is String) return int.tryParse(v) ?? fallback;
+  return fallback;
+}
+
+double safeDouble(dynamic v, [double fallback = 0.0]) {
+  if (v == null) return fallback;
+  if (v is double) return v;
+  if (v is num) return v.toDouble();
+  if (v is String) return double.tryParse(v) ?? fallback;
+  return fallback;
+}
+
+String safeString(dynamic v, [String fallback = '']) {
+  if (v == null) return fallback;
+  return v.toString();
+}
+
+List<T> safeList<T>(dynamic v, T Function(dynamic) mapper) {
+  if (v == null) return <T>[];
+  if (v is Iterable) return v.map(mapper).toList().cast<T>();
+  return <T>[];
+}
+
+DateTime safeDateTime(dynamic v, [DateTime? fallback]) {
+  if (v == null) return fallback ?? DateTime.fromMillisecondsSinceEpoch(0);
+  if (v is DateTime) return v;
+  if (v is int) return DateTime.fromMillisecondsSinceEpoch(v);
+  if (v is String) {
+    final parsed = DateTime.tryParse(v);
+    return parsed ?? (fallback ?? DateTime.fromMillisecondsSinceEpoch(0));
+  }
+  return fallback ?? DateTime.fromMillisecondsSinceEpoch(0);
+}
+
 
 int timeAvailable(double priceMin, double balance) {
   return ((balance / priceMin) * 60).toInt();
