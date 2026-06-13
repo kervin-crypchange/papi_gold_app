@@ -20,7 +20,7 @@ class ContactModel extends ContactEntity {
     );
   }
 
-  /// Converts a [ContactModel] to a [ContactEntity].
+  /// Converts a [ContactEntity] to a [ContactModel].
   factory ContactModel.fromEntity(ContactEntity e) {
     return ContactModel(
       name: e.name,

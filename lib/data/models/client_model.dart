@@ -7,7 +7,6 @@ ClientModel clientModelFromJson(String str) =>
 
 String asesorModelToJson(ClientModel data) => json.encode(data.toJson());
 
-
 class ClientModel extends ClientEntity {
   const ClientModel({
     required super.name,
@@ -48,7 +47,7 @@ class ClientModel extends ClientEntity {
       email: json['email'] as String,
       phone: json['phone'] as String,
       country: json['country'] as int,
-      state: json['state'] as int ,
+      state: json['state'] as int,
       city: json['city'] as int,
       address1: json['address1'] as String,
       address2: json['address2'] as String,
@@ -57,18 +56,20 @@ class ClientModel extends ClientEntity {
     );
   }
 
-  /// Converts a [ClientModel] to a [ClientEntity].
-  factory ClientModel.fromEntity(ClientEntity entity) => ClientModel(
-    name: entity.name,
-    lastName: entity.lastName,
-    email: entity.email,
-    phone: entity.phone,
-    country: entity.country,
-    state: entity.state,
-    city: entity.city,
-    address1: entity.address1,
-    address2: entity.address2,
-    codeZip: entity.codeZip,
-    receiveAdvertise: entity.receiveAdvertise,
-  );
+  /// Converts a [ClientEntity] to a [ClientModel].
+  factory ClientModel.fromEntity(ClientEntity entity) {
+    return ClientModel(
+      name: entity.name,
+      lastName: entity.lastName,
+      email: entity.email,
+      phone: entity.phone,
+      country: entity.country,
+      state: entity.state,
+      city: entity.city,
+      address1: entity.address1,
+      address2: entity.address2,
+      codeZip: entity.codeZip,
+      receiveAdvertise: entity.receiveAdvertise,
+    );
+  }
 }

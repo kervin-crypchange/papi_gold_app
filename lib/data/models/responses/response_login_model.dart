@@ -1,7 +1,7 @@
 import 'package:papi_gold/data/models/client_model.dart';
 import 'package:papi_gold/domain/entities/responses/response_login_entity.dart';
 
-class ResponseLoginModel extends LoginResponseEntity {
+class ResponseLoginModel extends ResponseLoginEntity {
   const ResponseLoginModel({
     required super.token,
     required super.client,
@@ -17,11 +17,11 @@ class ResponseLoginModel extends LoginResponseEntity {
     );
   }
 
-  /// Converts a [ResponseLoginModel] to a [LoginResponseEntity].
-  factory ResponseLoginModel.fromEntity(LoginResponseEntity entity) {
+  /// Converts a [ResponseLoginEntity] to a [ResponseLoginModel].
+  factory ResponseLoginModel.fromEntity(ResponseLoginEntity entity) {
     return ResponseLoginModel(
       token: entity.token,
-      client: ClientModel.fromEntity(entity.client),
+      client: entity.client,
       message: entity.message,
     );
   }
@@ -30,7 +30,7 @@ class ResponseLoginModel extends LoginResponseEntity {
   Map<String, dynamic> toJson() {
     return{
       'token':token,
-      'client': ClientModel.fromJson(client as Map<String, dynamic>),
+      'client': ClientModel.fromEntity(client).toJson(),
       'message': message
     };
   }

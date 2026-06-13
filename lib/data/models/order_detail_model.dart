@@ -26,18 +26,22 @@ class OrderDetailModel extends OrderDetailEntity {
       totalPago: json['total_pago_v'] as double,
       status: json['status'],
       items: List<ItemModel>.from(
-        json['items'].map((x) => ItemModel.fromJson(x)),
+        json['items'].map((x) => ItemModel.fromJson(x as Map<String, dynamic>)),
       ),
       payments: List<PaymentModel>.from(
-        json['payments'].map((x) => PaymentModel.fromJson(x)),
+        json['payments'].map(
+          (x) => PaymentModel.fromJson(x as Map<String, dynamic>),
+        ),
       ),
       shippings: List<ShippingModel>.from(
-        json['shippings'].map((x) => ShippingModel.fromJson(x)),
+        json['shippings'].map(
+          (x) => ShippingModel.fromJson(x as Map<String, dynamic>),
+        ),
       ),
     );
   }
 
-  /// Converts a [OrderDetailModel] to a [OrderDetailEntity].
+  /// Converts a [OrderDetailEntity] to a [OrderDetailModel].
   factory OrderDetailModel.fromEntity(OrderDetailEntity e) {
     return OrderDetailModel(
       id: e.id,
@@ -63,9 +67,15 @@ class OrderDetailModel extends OrderDetailEntity {
       'total_v': total,
       'total_pago_v': totalPago,
       'status': status,
-      'items': items,
-      'payments': payments,
-      'shippings': shippings,
+      'items': List<ItemModel>.from(
+        items.map((e) => ItemModel.fromEntity(e).toJson()).toList(),
+      ),
+      'payments': List<PaymentModel>.from(
+        payments.map((e) => PaymentModel.fromEntity(e).toJson()).toList(),
+      ),
+      'shippings': List<ShippingModel>.from(
+        shippings.map((e) => ShippingModel.fromEntity(e).toJson()).toList(),
+      ),
     };
   }
 }

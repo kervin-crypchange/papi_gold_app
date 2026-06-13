@@ -8,7 +8,7 @@ class LoginModel extends LoginEntity {
     return LoginModel(email: json['email'], password: json['password']);
   }
 
-  /// Converts a [LoginModel] to a [LoginEntity].
+  /// Converts a [LoginEntity] to a [LoginModel].
   factory LoginModel.fromEntity(LoginEntity e){
     return LoginModel(email: e.email, password: e.password);
   }

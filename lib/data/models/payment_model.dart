@@ -8,7 +8,7 @@ class PaymentModel extends PaymentEntity {
     required super.type,
   });
 
-    /// Converts a JSON map to a [Model].
+    /// Converts a JSON map to a [PaymentModel].
   factory PaymentModel.fromJson(Map<String, dynamic> json) {
     return PaymentModel(
       id: json['id'] as int,
@@ -18,7 +18,7 @@ class PaymentModel extends PaymentEntity {
     );
   }
 
-  /// Converts a [PaymentModel] to a [PaymentEntity].
+  /// Converts a [PaymentEntity] to a [PaymentModel].
   factory PaymentModel.fromEntity( PaymentEntity e) {
     return PaymentModel(
       id: e.id,

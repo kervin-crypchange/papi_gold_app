@@ -18,7 +18,7 @@ class MetaModel extends MetaEntity {
     );
   }
 
-  /// Converts a [MetaModel] to a [MetaEntity].
+  /// Converts a [MetaEntity] to a [MetaModel].
   factory MetaModel.fromEntity(MetaEntity e) {
     return MetaModel(
       currentPage: e.currentPage,

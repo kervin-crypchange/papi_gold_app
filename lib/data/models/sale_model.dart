@@ -16,7 +16,7 @@ class SaleModel extends SaleEntity {
     );
   }
 
-  /// Converts a [SaleModel] to a [SaleEntity].
+  /// Converts a [SaleEntity] to a [SaleModel].
   factory SaleModel.fromEntity( SaleEntity e) {
     return SaleModel(
       order: e.order,

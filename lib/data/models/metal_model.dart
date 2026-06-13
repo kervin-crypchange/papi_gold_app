@@ -20,10 +20,10 @@ class MetalModel extends MetalEntity {
       name: json['name'],
       price: json['price'],
       carats: List<CaratModel>.from(
-        json['carats'].map((x) => CaratModel.fromJson(json['carats'])),
+        json['carats'].map((x) => CaratModel.fromJson(x)),
       ),
       categories: List<MetalCategoryModel>.from(
-        json['categories'].map((x) => json['categories']),
+        json['categories'].map((x) => MetalCategoryModel.fromJson(x as Map<String, dynamic>)),
       ),
       conversion: json['conversion'],
       priceHistory: json['priceHistory'],
@@ -32,7 +32,7 @@ class MetalModel extends MetalEntity {
     );
   }
 
-  /// Converts a [MetalModel] to a [MetalEntity].
+  /// Converts a [MetalEntity] to a [MetalModel].
   factory MetalModel.fromEntity(MetalEntity e) {
     return MetalModel(
       symbol: e.symbol,
@@ -53,8 +53,14 @@ class MetalModel extends MetalEntity {
       'symbol': symbol,
       'name': name,
       'price': price,
-      'carats': carats,
-      'categories': categories,
+      'carats': List<CaratModel>.from(
+        carats.map((e) => CaratModel.fromEntity(e).toJson()).toList(),
+      ),
+      'categories': List<MetalCategoryModel>.from(
+        categories
+            .map((e) => MetalCategoryModel.fromEntity(e).toJson())
+            .toList(),
+      ),
       'conversion': conversion,
       'priceHistory': priceHistory,
       'isStable': isStable,
@@ -81,7 +87,7 @@ class CaratModel extends CaratEntity {
     );
   }
 
-  /// Converts a [CaratModel] to a [CaratEntity].
+  /// Converts a [CaratEntity] to a [CaratModel].
   factory CaratModel.fromEntity(CaratEntity e) {
     return CaratModel(id: e.id, name: e.name, purity: e.purity, law: e.law);
   }
@@ -110,7 +116,7 @@ class MetalCategoryModel extends MetalCategoryEntity {
     );
   }
 
-  /// Converts a [MetalCategoryModel] to a [MetalCategoryEntity].
+  /// Converts a [MetalCategoryEntity] to a [MetalCategoryModel].
   factory MetalCategoryModel.fromEntity(MetalCategoryEntity e) {
     return MetalCategoryModel(
       id: e.id,

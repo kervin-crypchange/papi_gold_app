@@ -20,7 +20,7 @@ class CountryModel extends CountryEntity {
     );
   }
 
-  /// Converts a [CountryModel] to a [CountryEntity].
+  /// Converts a [CountryEntity] to a [CountryModel].
   factory CountryModel.fromEntity( CountryEntity e) {
     return CountryModel(
       id: e.id,

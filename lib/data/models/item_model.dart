@@ -18,7 +18,7 @@ class ItemModel extends ItemEntity {
     );
   }
 
-  /// Converts a [ItemModel] to a [ItemEntity].
+  /// Converts a [ItemEntity] to a [ItemModel].
   factory ItemModel.fromEntity(ItemEntity e) {
     return ItemModel(
       id: e.id,

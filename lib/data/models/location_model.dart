@@ -16,7 +16,7 @@ class LocationModel extends LocationEntity {
     );
   }
 
-  /// Converts a [LocationModel] to a [LocationEntity].
+  /// Converts a [LocationEntity] to a [LocationModel].
   factory LocationModel.fromEntity(LocationEntity e) {
     return LocationModel(
       id: e.id,

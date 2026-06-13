@@ -24,7 +24,7 @@ class ProductModel extends ProductEntity {
     );
   }
 
-  /// Converts a [ProductModel] to a [ProductEntity].
+  /// Converts a [ProductEntity] to a [ProductModel].
   factory ProductModel.fromEntity(ProductEntity e) {
     return ProductModel(
       id: e.id,
@@ -46,7 +46,7 @@ class ProductModel extends ProductEntity {
       'stock': stock,
       'image': image,
       'price': price,
-      'category': category,
+      'category': ProducCategoryModel.fromEntity(category).toJson(),
     };
   }
 }
@@ -59,7 +59,7 @@ class ProducCategoryModel extends ProductCategoryEntity {
     required super.color,
   });
 
-    /// Converts a JSON map to a [ProducCategoryModel].
+  /// Converts a JSON map to a [ProducCategoryModel].
   factory ProducCategoryModel.fromJson(Map<String, dynamic> json) {
     return ProducCategoryModel(
       id: json['id'] as int,
@@ -69,8 +69,8 @@ class ProducCategoryModel extends ProductCategoryEntity {
     );
   }
 
-  /// Converts a [ProducCategoryModel] to a [ProducCategoryEntity].
-  factory ProducCategoryModel.fromEntity( ProductCategoryEntity e) {
+  /// Converts a [ProducCategoryEntity] to a [ProducCategoryModel].
+  factory ProducCategoryModel.fromEntity(ProductCategoryEntity e) {
     return ProducCategoryModel(
       id: e.id,
       name: e.name,
@@ -81,11 +81,6 @@ class ProducCategoryModel extends ProductCategoryEntity {
 
   /// Converts a [ProducCategoryModel] to a JSON map.
   Map<String, dynamic> toJson() {
-    return{
-      'id': id,
-      'name': name,
-      'descripcion': description,
-      'color': color,
-    };
+    return {'id': id, 'name': name, 'descripcion': description, 'color': color};
   }
 }
