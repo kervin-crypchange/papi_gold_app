@@ -1,30 +1,31 @@
-import 'package:bloc/bloc.dart';
+import 'package:dartz/dartz.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:papi_gold/data/models/client_model.dart';
 import 'package:papi_gold/domain/entities/auth/login_entity.dart';
-import 'package:papi_gold/domain/uses_cases/login_usecase.dart';
-import 'package:papi_gold/app/core/error/failure.dart';
-import 'package:papi_gold/data/sources/local/auth_local_data.dart';
+import 'package:papi_gold/domain/uses_cases/auth.dart';
+import 'package:papi_gold/data/sources/local/auth/auth_local_data.dart';
 import 'package:papi_gold/domain/entities/responses/response_login_entity.dart';
+import 'package:papi_gold/injection_container.dart';
 
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  final LoginUseCase loginUseCase;
-  final AuthLocalData localData;
+  AuthCubit() : super(AuthInitial());
 
-  AuthCubit({required this.loginUseCase, required this.localData}) : super(AuthInitial());
-
-  Future<void> login(LoginEntity params) async {
+  void login(LoginEntity model) async {
     emit(AuthLoading());
-    final res = await loginUseCase.call(params);
-    res.fold((Failure l) {
-      emit(AuthError(message: l.toString()));
-    }, (ResponseLoginEntity r) {
-      try {
-        localData.saveToken(r.token);
-        localData.saveUserLogged(ClientModel.fromEntity(r.client));
-      } catch (_) {}
-      emit(AuthSuccess(response: r));
-    });
+    Either res = await sl<LoginUseCase>().call(param: model);
+    res.fold(
+      (l) {
+        emit(AuthError(message: l.toString()));
+      },
+      (r) {
+        try {
+          sl<AuthLocalData>().saveToken(r.token);
+          sl<AuthLocalData>().saveUserLogged(ClientModel.fromEntity(r.client));
+        } catch (_) {}
+        emit(AuthSuccess(response: r));
+      },
+    );
   }
 }

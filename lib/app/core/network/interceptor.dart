@@ -3,7 +3,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:papi_gold/app/common/enums/index.dart';
 import 'package:logger/logger.dart';
 import 'package:papi_gold/app/core/router/router.dart';
-import 'package:papi_gold/data/sources/local/auth_local_data.dart';
+import 'package:papi_gold/data/sources/local/auth/auth_local_data.dart';
 import 'package:papi_gold/injection_container.dart';
 
  class LoggerInterceptor extends Interceptor {

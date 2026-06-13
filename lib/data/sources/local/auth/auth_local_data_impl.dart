@@ -3,7 +3,7 @@ import 'package:papi_gold/app/common/enums/index.dart';
 import 'package:papi_gold/app/common/mixins/index.dart';
 import 'package:papi_gold/app/core/error/failure.dart';
 import 'package:papi_gold/data/models/index.dart';
-import 'package:papi_gold/data/sources/local/auth_local_data.dart';
+import 'package:papi_gold/data/sources/local/auth/auth_local_data.dart';
 
 class AuthLocalDataImpl extends AuthLocalData with LoggerMixin{
 
