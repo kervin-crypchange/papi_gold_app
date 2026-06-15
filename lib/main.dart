@@ -70,7 +70,7 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
-  Locale? _locale;
+  // Locale? _locale;
   late final StreamSubscription<String> _localeSubscription;
 
   @override
