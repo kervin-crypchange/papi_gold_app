@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:papi_gold/app/common/mixins/index.dart';
@@ -20,8 +18,6 @@ class ServerException extends Equatable with LoggerMixin implements Failure  {
 
   factory ServerException(dynamic error) {
     late ServerException serverException;
-    // log('---- ServerError Code ${error.response?.statusCode}');
-    // log("---- ServerError Response ${error.response?.data['message']}");
     try {
       if (error is DioException) {
         switch (error.type) {

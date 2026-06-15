@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:papi_gold/presentation/cubits/index.dart';
+import 'package:papi_gold/presentation/pages/index.dart';
 
-class Wrapper extends StatelessWidget {
-  const Wrapper({super.key});
-
+class WrapperPage extends StatelessWidget {
+  const WrapperPage({super.key});
   @override
   Widget build(BuildContext context) {
-    return Container();
+    final isLogged = context.read<AuthCubit>().isLogged();
+    return isLogged ? HomePage() : LoginPage();
   }
 }

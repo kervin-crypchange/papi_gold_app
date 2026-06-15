@@ -7,7 +7,11 @@ final GoRouter router = GoRouter(
   initialLocation: '/',
   navigatorKey: rootNavigatorKey,
   routes: [
-    GoRoute(path: '/', name: 'home', builder: (context, state) => HomePage()),
+    GoRoute(
+      path: '/', 
+      name: 'wrapper', 
+      builder: (context, state) => WrapperPage(),
+    ),
     GoRoute(
       path: '/login',
       name: 'login',

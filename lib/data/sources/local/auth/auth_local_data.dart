@@ -7,4 +7,6 @@ abstract class AuthLocalData {
   bool saveToken(String token);
   bool saveUserLogged(ClientModel m);
   ClientModel getUserLogged();
+  bool getIsLogged();
+  void setIsLogged(bool isLogged);
 }

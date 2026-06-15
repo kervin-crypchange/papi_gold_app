@@ -21,8 +21,13 @@ class AuthCubit extends Cubit<AuthState> with LoggerMixin {
       try {
         sl<AuthLocalData>().saveToken(r.token);
         sl<AuthLocalData>().saveUserLogged(ClientModel.fromEntity(r.client));
+        sl<AuthLocalData>().setIsLogged(true);
       } catch (_) {}
       emit(AuthSuccess(response: r));
     });
+  }
+
+  bool isLogged(){
+    return sl<AuthLocalData>().getIsLogged();
   }
 }
