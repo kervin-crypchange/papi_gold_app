@@ -17,7 +17,7 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> with LoggerMixin {
+class _LoginPageState extends State<LoginPage> with LoggerMixin, MessengerMixin {
   String? email, password;
   bool obscureText = true;
   final _formKey = GlobalKey<FormState>();
@@ -30,9 +30,9 @@ class _LoginPageState extends State<LoginPage> with LoggerMixin {
           child: BlocListener<AuthCubit, AuthState>(
             listener: (context, state) {
               if (state is AuthError) {
-                log(state.message);
+                messenger.showSnackBar(message: state.message, color: AppColors.error);
               } else if (state is AuthSuccess) {
-                log('login success');
+                messenger.showSnackBar(message: state.response.message, color: AppColors.success);
               }
             },
             child: Form(
