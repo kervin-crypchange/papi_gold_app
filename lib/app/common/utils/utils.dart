@@ -12,6 +12,12 @@ String getConnectedStatus(String connectStatus) {
 }
 
 // Safe parsing helpers
+bool safeBool(dynamic v, [bool fallback = false]) {
+  if (v == null) return fallback;
+  return v;
+}
+
+// Safe parsing helpers
 int safeInt(dynamic v, [int fallback = 0]) {
   if (v == null) return fallback;
   if (v is int) return v;

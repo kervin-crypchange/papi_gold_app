@@ -1,3 +1,4 @@
+import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 
 class ShippingModel extends ShippingEntity {
@@ -11,10 +12,10 @@ class ShippingModel extends ShippingEntity {
   /// Converts a JSON map to a [ShippingModel].
   factory ShippingModel.fromJson(Map<String, dynamic> json) {
     return ShippingModel(
-      id: (json['id'] as num).toInt(),
+      id: safeInt(json['id']),
       courier: CourierModel.fromJson(json['courier']),
       status: StatusModel.fromJson(json['status']),
-      tracking: json['tracking_number'] as String,
+      tracking: safeString(json['tracking_number']),
     );
   }
 

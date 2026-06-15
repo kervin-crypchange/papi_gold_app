@@ -47,6 +47,7 @@ class _LoginPageState extends State<LoginPage> with LoggerMixin {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
+                  spacing: 12.h,
                   children: [
                     Text('Iniciar Sesión', style: context.headlineSmall),
                     InputFormWidget(

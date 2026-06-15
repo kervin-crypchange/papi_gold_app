@@ -7,7 +7,7 @@ class InputFormWidget extends StatelessWidget {
   final String? labelText;
   final String? helperText;
   final IconData? icon;
-  final IconData? suffixIcon;
+  final Widget? suffixIcon;
   final Widget? prefixIcon;
   final TextInputType? keyboardType;
   final Widget? suffix;
@@ -81,7 +81,7 @@ class InputFormWidget extends StatelessWidget {
         helperStyle: TextStyle(color: color ?? AppColors.grey),
         prefixIcon: prefixIcon,
         suffix: suffix,
-        suffixIcon: suffixIcon == null ? null : Icon(suffixIcon),
+        suffixIcon: suffixIcon,
         icon: icon == null ? null : Icon(icon),
       ),
     );

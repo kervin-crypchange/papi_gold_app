@@ -1,3 +1,4 @@
+import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 
 class LocationModel extends LocationEntity {
@@ -10,9 +11,9 @@ class LocationModel extends LocationEntity {
     /// Converts a JSON map to a [LocationModel].
   factory LocationModel.fromJson(Map<String, dynamic> json) {
     return LocationModel(
-      id: json['id'],
-      name: json['name'],
-      countryId: json['country_id'],
+      id: safeInt(json['id']),
+      name: safeString(json['name']),
+      countryId: safeString(json['country_id']),
     );
   }
 

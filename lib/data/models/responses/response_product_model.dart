@@ -16,8 +16,8 @@ class DataModel extends DataEntity {
   /// Converts a JSON map to a [DataModel].
   factory DataModel.fromJson(Map<String, dynamic> json) {
     return DataModel(
-      id: json['id'],
-      name: json['name'],
+      id: safeInt(json['id']),
+      name: safeString(json['name']),
       products: safeList<ProductModel>(json['products'], (x) => ProductModel.fromJson(x as Map<String, dynamic>)),
     );
   }

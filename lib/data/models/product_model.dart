@@ -1,3 +1,4 @@
+import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 
 class ProductModel extends ProductEntity {
@@ -14,12 +15,12 @@ class ProductModel extends ProductEntity {
   /// Converts a JSON map to a [ProductModel].
   factory ProductModel.fromJson(Map<String, dynamic> json) {
     return ProductModel(
-      id: (json['id'] as num).toInt(),
-      name: json['name'] as String,
-      description: json['description'] as String,
-      stock: (json['stock'] as num).toInt(),
-      image: json['image'] as String,
-      price: (json['price'] as num).toDouble(),
+      id: safeInt(json['id']),
+      name: safeString(json['name']) ,
+      description: safeString(json['description']),
+      stock: safeInt(json['stock'] ),
+      image: safeString(json['image']),
+      price: safeDouble(json['price']),
       category: ProducCategoryModel.fromJson(json['category']),
     );
   }

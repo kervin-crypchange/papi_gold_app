@@ -19,10 +19,10 @@ class OrderDetailModel extends OrderDetailEntity {
   /// Converts a JSON map to a [OrderDetailModel].
   factory OrderDetailModel.fromJson(Map<String, dynamic> json) {
     return OrderDetailModel(
-      id: (json['id'] as num).toInt(),
-      order: json['order'] as String,
-      invoice: json['invoice'] as String,
-      description: json['description'] as String,
+      id: safeInt(json['id']),
+      order: safeString(json['order']),
+      invoice: safeString(json['invoice'] ),
+      description: safeString(json['description']),
         total: safeDouble(json['total_v']),
         totalPago: safeDouble(json['total_pago_v']),
         status: StatusModel.fromJson(json['status'] as Map<String, dynamic>),

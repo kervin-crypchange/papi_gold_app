@@ -1,3 +1,4 @@
+import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 
 class ContactModel extends ContactEntity {
@@ -12,11 +13,11 @@ class ContactModel extends ContactEntity {
   /// Converts a JSON map to a [ContactModel].
   factory ContactModel.fromJson(Map<String, dynamic> json) {
     return ContactModel(
-      name: json['name'],
-      email: json['email'],
-      phone: json['phone'],
-      type: json['type'],
-      details: json['details'],
+      name: safeString(json['name']),
+      email: safeString(json['email']),
+      phone: safeString(json['phone']),
+      type: safeString(json['type']),
+      details: safeString(json['details']),
     );
   }
 
@@ -33,7 +34,7 @@ class ContactModel extends ContactEntity {
 
   /// Converts a [ContactModel] to a JSON map.
   Map<String, dynamic> toJson() {
-    return{
+    return {
       'name': name,
       'email': email,
       'phone': phone,

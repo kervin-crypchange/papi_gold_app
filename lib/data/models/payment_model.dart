@@ -1,3 +1,4 @@
+import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 
 class PaymentModel extends PaymentEntity {
@@ -11,10 +12,10 @@ class PaymentModel extends PaymentEntity {
     /// Converts a JSON map to a [PaymentModel].
   factory PaymentModel.fromJson(Map<String, dynamic> json) {
     return PaymentModel(
-      id: (json['id'] as num).toInt(),
-      amount: (json['amount'] as num).toDouble(),
-      reference: json['reference'] as String,
-      type: json['type'] as String,
+      id: safeInt(json['id']),
+      amount: safeDouble(json['amount']),
+      reference: safeString(json['reference']),
+      type: safeString(json['type']),
     );
   }
 

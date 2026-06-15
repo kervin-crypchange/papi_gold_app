@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class ClientEntity extends Equatable {
+  final int id;
   final String name;
   final String lastName;
   final String email;
@@ -14,6 +15,7 @@ class ClientEntity extends Equatable {
   final bool receiveAdvertise;
 
   const ClientEntity({
+    required this.id,
     required this.name,
     required this.lastName,
     required this.email,
@@ -29,6 +31,7 @@ class ClientEntity extends Equatable {
 
   @override
   List<Object?> get props => [
+    id,
     name,
     lastName,
     email,
