@@ -10,14 +10,12 @@ import 'package:papi_gold/injection_container.dart';
 class AuthDataImpl extends AuthData with LoggerMixin {
   @override
   Future<Either<Failure, ResponseLoginModel>> login(LoginModel model) async {
-   try {
-     final res = await sl<DioClient>().post(Apis.login, data: model.toJson());
-    log("---- Login DataRemote Response ${res.data['client']}");
-     return Right(ResponseLoginModel.fromJson(res.data));
-   } catch (e) {
-    logError(e);
-     return Left(ServerException(e));
-   }
+    try {
+      final res = await sl<DioClient>().post(Apis.login, data: model.toJson());
+      return Right(ResponseLoginModel.fromJson(res.data));
+    } catch (e) {
+      return Left(ServerException(e));
+    }
   }
 
   @override

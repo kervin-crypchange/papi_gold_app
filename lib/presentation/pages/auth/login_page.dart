@@ -30,6 +30,7 @@ class _LoginPageState extends State<LoginPage> with LoggerMixin, MessengerMixin 
           child: BlocListener<AuthCubit, AuthState>(
             listener: (context, state) {
               if (state is AuthError) {
+                log(state.message);
                 messenger.showSnackBar(message: state.message, color: AppColors.error);
               } else if (state is AuthSuccess) {
                 messenger.showSnackBar(message: state.response.message, color: AppColors.success);

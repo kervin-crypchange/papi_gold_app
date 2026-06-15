@@ -17,17 +17,12 @@ class AuthCubit extends Cubit<AuthState> with LoggerMixin {
   void login(LoginEntity entity) async {
     emit(AuthLoading());
     Either res = await sl<LoginUseCase>().call(param: entity);
-    res.fold(
-      (l) {
-        emit(AuthError(message: l.toString()));
-      },
-      (r) {
-        try {
-          sl<AuthLocalData>().saveToken(r.token);
-          sl<AuthLocalData>().saveUserLogged(ClientModel.fromEntity(r.client));
-        } catch (_) {}
-        emit(AuthSuccess(response: r));
-      },
-    );
+    res.fold((l) => emit(AuthError(message: l.message)), (r) {
+      try {
+        sl<AuthLocalData>().saveToken(r.token);
+        sl<AuthLocalData>().saveUserLogged(ClientModel.fromEntity(r.client));
+      } catch (_) {}
+      emit(AuthSuccess(response: r));
+    });
   }
 }
