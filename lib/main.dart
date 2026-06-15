@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-// import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:papi_gold/app/common/enums/box_enum.dart';
@@ -17,11 +16,41 @@ import 'package:papi_gold/app/core/extensions/index.dart' as globals;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Hive.initFlutter();
-  await Hive.openBox(BoxEnum.config.name);
-  await initializeDependencies();
+  try {
+    await Hive.initFlutter();
+    await Hive.openBox(BoxEnum.config.name);
+    await initializeDependencies();
+    runApp(const BlocProviders());
+  } catch (e, st) {
+    // Log and show a minimal error app so the user sees a friendly message
+    debugPrint('App initialization failed: $e');
+    debugPrint(st.toString());
+    runApp(ErrorApp(error: e.toString()));
+  }
+}
 
-  runApp(const BlocProviders());
+class ErrorApp extends StatelessWidget {
+  final String error;
+  const ErrorApp({super.key, required this.error});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        appBar: AppBar(title: const Text('Inicialización fallida')),
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              'La aplicación no pudo inicializarse:\n\n$error',
+              style: const TextStyle(fontSize: 16),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class BlocProviders extends StatelessWidget {
