@@ -4,6 +4,7 @@ import 'package:papi_gold/app/core/error/failure.dart';
 import 'package:papi_gold/app/core/error/server_exception.dart';
 import 'package:papi_gold/app/core/network/dio_client.dart';
 import 'package:papi_gold/data/models/index.dart';
+import 'package:papi_gold/data/models/responses/response_checkout_model.dart';
 import 'package:papi_gold/data/sources/remote/index.dart';
 import 'package:papi_gold/injection_container.dart';
 
@@ -86,6 +87,16 @@ class CommonRemoteDataImpl extends CommonRemoteData {
         queryParameters: params.toJson(),
       );
       return Right(ProductModel.fromJson(res.data));
+    } catch (e) {
+      return Left(ServerException(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, ResponseCheckoutModel>> checkout(CheckOutModel model) async {
+    try {
+      final res = await sl<DioClient>().post(Apis.checkout);
+      return Right(ResponseCheckoutModel.fromJson(res.data));
     } catch (e) {
       return Left(ServerException(e));
     }

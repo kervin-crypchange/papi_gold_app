@@ -9,7 +9,6 @@ import 'package:papi_gold/domain/repositories/auth_repository.dart';
 import 'package:papi_gold/injection_container.dart';
 
 class AuthRepositoryImpl with LoggerMixin implements AuthRepository {
-
   @override
   Future<Either<Failure, ResponseLoginEntity>> login(LoginEntity e) async {
     Either<Failure, ResponseLoginModel> res = await sl<AuthData>().login(
@@ -28,5 +27,11 @@ class AuthRepositoryImpl with LoggerMixin implements AuthRepository {
   Future<Either<Failure, ResponseLoginEntity>> register(LoginEntity e) {
     // TODO: implement register
     throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, LogoutEntity>> logout() async {
+    Either<Failure, LogoutEntity> res = await sl<AuthData>().logout();
+    return res.fold((l) => Left(l), (r) => Right(r));
   }
 }
