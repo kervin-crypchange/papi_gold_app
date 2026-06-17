@@ -23,12 +23,21 @@ class OrderDetailModel extends OrderDetailEntity {
       order: json['order'] as String,
       invoice: json['invoice'] as String,
       description: json['description'] as String,
-        total: safeDouble(json['total_v']),
-        totalPago: safeDouble(json['total_pago_v']),
-        status: StatusModel.fromJson(json['status'] as Map<String, dynamic>),
-        items: safeList<ItemModel>(json['items'], (x) => ItemModel.fromJson(x as Map<String, dynamic>)),
-        payments: safeList<PaymentModel>(json['payments'], (x) => PaymentModel.fromJson(x as Map<String, dynamic>)),
-        shippings: safeList<ShippingModel>(json['shippings'], (x) => ShippingModel.fromJson(x as Map<String, dynamic>)),
+      total: safeDouble(json['total_v']),
+      totalPago: safeDouble(json['total_pago_v']),
+      status: StatusModel.fromJson(json['status'] as Map<String, dynamic>),
+      items: safeList<ItemModel>(
+        json['items'],
+        (x) => ItemModel.fromJson(x as Map<String, dynamic>),
+      ),
+      payments: safeList<PaymentModel>(
+        json['payments'],
+        (x) => PaymentModel.fromJson(x as Map<String, dynamic>),
+      ),
+      shippings: safeList<ShippingModel>(
+        json['shippings'],
+        (x) => ShippingModel.fromJson(x as Map<String, dynamic>),
+      ),
     );
   }
 
