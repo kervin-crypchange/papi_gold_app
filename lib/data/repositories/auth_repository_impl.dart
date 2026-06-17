@@ -6,15 +6,13 @@ import 'package:papi_gold/data/sources/remote/auth/auth_data.dart';
 import 'package:papi_gold/domain/entities/auth/recovery_entity.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 import 'package:papi_gold/domain/repositories/auth_repository.dart';
+import 'package:papi_gold/injection_container.dart';
 
 class AuthRepositoryImpl with LoggerMixin implements AuthRepository {
-  AuthData data;
-
-  AuthRepositoryImpl({required this.data});
 
   @override
   Future<Either<Failure, ResponseLoginEntity>> login(LoginEntity e) async {
-    Either<Failure, ResponseLoginModel> res = await data.login(
+    Either<Failure, ResponseLoginModel> res = await sl<AuthData>().login(
       LoginModel.fromEntity(e),
     );
     return res.fold((l) => Left(l), (r) => Right(r));

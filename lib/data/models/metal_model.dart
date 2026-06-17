@@ -22,9 +22,9 @@ class MetalModel extends MetalEntity {
       price: safeDouble(json['price']),
       carats: safeList<CaratModel>(json['carats'], (x) => CaratModel.fromJson(x)),
       categories: safeList<MetalCategoryModel>(json['categories'], (x) => MetalCategoryModel.fromJson(x as Map<String, dynamic>)),
-      conversion: json['conversion'],
-      priceHistory: json['priceHistory'],
-      isStable: json['isStable'] ?? false,
+      conversion: safeDouble(json['conversion']),
+      priceHistory: safeDouble(json['priceHistory']),
+      isStable: safeBool(json['isStable']),
       lastUpdated: safeDateTime(json['lastUpdated']),
     );
   }

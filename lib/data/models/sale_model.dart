@@ -1,3 +1,4 @@
+import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/domain/entities/sale_entity.dart';
 
 class SaleModel extends SaleEntity {
@@ -10,9 +11,9 @@ class SaleModel extends SaleEntity {
     /// Converts a JSON map to a [SaleModel].
   factory SaleModel.fromJson(Map<String, dynamic> json) {
     return SaleModel(
-      order: json['order'] as String,
-      invoice: json['invoice_number'] as String,
-      total: (json['total_v'] as num).toDouble(),
+      order: safeString(json['order']),
+      invoice: safeString(json['invoice_number']),
+      total: safeDouble(json['total_v']),
     );
   }
 

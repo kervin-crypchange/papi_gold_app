@@ -19,25 +19,16 @@ class OrderDetailModel extends OrderDetailEntity {
   /// Converts a JSON map to a [OrderDetailModel].
   factory OrderDetailModel.fromJson(Map<String, dynamic> json) {
     return OrderDetailModel(
-      id: (json['id'] as num).toInt(),
-      order: json['order'] as String,
-      invoice: json['invoice'] as String,
-      description: json['description'] as String,
-      total: safeDouble(json['total_v']),
-      totalPago: safeDouble(json['total_pago_v']),
-      status: StatusModel.fromJson(json['status'] as Map<String, dynamic>),
-      items: safeList<ItemModel>(
-        json['items'],
-        (x) => ItemModel.fromJson(x as Map<String, dynamic>),
-      ),
-      payments: safeList<PaymentModel>(
-        json['payments'],
-        (x) => PaymentModel.fromJson(x as Map<String, dynamic>),
-      ),
-      shippings: safeList<ShippingModel>(
-        json['shippings'],
-        (x) => ShippingModel.fromJson(x as Map<String, dynamic>),
-      ),
+      id: safeInt(json['id']),
+      order: safeString(json['order']),
+      invoice: safeString(json['invoice'] ),
+      description: safeString(json['description']),
+        total: safeDouble(json['total_v']),
+        totalPago: safeDouble(json['total_pago_v']),
+        status: StatusModel.fromJson(json['status'] as Map<String, dynamic>),
+        items: safeList<ItemModel>(json['items'], (x) => ItemModel.fromJson(x as Map<String, dynamic>)),
+        payments: safeList<PaymentModel>(json['payments'], (x) => PaymentModel.fromJson(x as Map<String, dynamic>)),
+        shippings: safeList<ShippingModel>(json['shippings'], (x) => ShippingModel.fromJson(x as Map<String, dynamic>)),
     );
   }
 

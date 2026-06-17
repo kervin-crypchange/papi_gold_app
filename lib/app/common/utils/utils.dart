@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -9,6 +8,17 @@ String getConnectedStatus(String connectStatus) {
     'Busy': 'En llamada',
   };
   return statusColors[connectStatus] ?? 'Desconocido';
+}
+
+// Safe parsing helpers
+bool safeBool(dynamic v, [bool fallback = false]) {
+  if (v == null) return fallback;
+  if (v is String) {
+    if (v.toLowerCase() == 'true') return true;
+    if (v.toLowerCase() == 'false') return false;
+  }
+  if (v is bool) return v;
+  return fallback;
 }
 
 // Safe parsing helpers
@@ -109,5 +119,3 @@ String getMonthName(int monthNumber, BuildContext context) {
   final DateTime date = DateTime(2000, monthNumber);
   return DateFormat.MMM(language).format(date);
 }
-
-

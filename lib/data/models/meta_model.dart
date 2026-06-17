@@ -1,3 +1,4 @@
+import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 
 class MetaModel extends MetaEntity {
@@ -8,13 +9,13 @@ class MetaModel extends MetaEntity {
     required super.total,
   });
 
-    /// Converts a JSON map to a [MetaModel].
+  /// Converts a JSON map to a [MetaModel].
   factory MetaModel.fromJson(Map<String, dynamic> json) {
     return MetaModel(
-      currentPage: json['current_page'],
-      lastPage: json['last_page'],
-      perPage: json['per_page'],
-      total: json['total'],
+      currentPage: safeInt(json['current_page']),
+      lastPage: safeInt(json['last_page']),
+      perPage: safeInt(json['per_page']),
+      total: safeInt(json['total']),
     );
   }
 
@@ -30,7 +31,7 @@ class MetaModel extends MetaEntity {
 
   /// Converts a [MetaModel] to a JSON map.
   Map<String, dynamic> toJson() {
-    return{
+    return {
       'current_page': currentPage,
       'last_page': lastPage,
       'per_page': perPage,

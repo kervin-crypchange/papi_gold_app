@@ -1,9 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
+import 'package:papi_gold/app/common/mixins/index.dart';
 import 'package:papi_gold/app/core/error/failure.dart';
 import 'package:papi_gold/app/common/enums/index.dart';
 
-class ServerException extends Equatable implements Failure {
+class ServerException extends Equatable with LoggerMixin implements Failure  {
   final String name, message;
   final int? statusCode;
   final ServerExceptionType exceptionType;

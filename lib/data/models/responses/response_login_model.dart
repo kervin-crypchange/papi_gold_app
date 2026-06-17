@@ -1,3 +1,4 @@
+import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/data/models/client_model.dart';
 import 'package:papi_gold/domain/entities/responses/response_login_entity.dart';
 
@@ -11,9 +12,9 @@ class ResponseLoginModel extends ResponseLoginEntity {
   /// Converts a JSON map to a [ResponseLoginModel].
   factory ResponseLoginModel.fromJson(Map<String, dynamic> json) {
     return ResponseLoginModel(
-      token: json['token'],
+      token: safeString(json['token']),
       client: ClientModel.fromJson(json['client']),
-      message: json['message'],
+      message: safeString(json['message']),
     );
   }
 
@@ -28,11 +29,10 @@ class ResponseLoginModel extends ResponseLoginEntity {
 
   /// Converts a [ResponseLoginModel] to a JSON map.
   Map<String, dynamic> toJson() {
-    return{
-      'token':token,
+    return {
+      'token': token,
       'client': ClientModel.fromEntity(client).toJson(),
-      'message': message
+      'message': message,
     };
   }
-
 }

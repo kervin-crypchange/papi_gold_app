@@ -67,4 +67,15 @@ class AuthLocalDataImpl extends AuthLocalData with LoggerMixin{
       throw LocalFailure();
     }
   }
+  
+  @override
+  bool getIsLogged() {
+    return box.get(BoxEnum.config.isLogged) ?? false;
+  }
+  
+  @override
+  void setIsLogged(bool isLogged) {
+    box.put(BoxEnum.config.isLogged, isLogged);
+  }
+  
 }

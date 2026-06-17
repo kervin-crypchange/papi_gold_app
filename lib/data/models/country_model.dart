@@ -1,3 +1,4 @@
+import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 
 class CountryModel extends CountryEntity {
@@ -12,11 +13,11 @@ class CountryModel extends CountryEntity {
     /// Converts a JSON map to a [Model].
   factory CountryModel.fromJson(Map<String, dynamic> json) {
     return CountryModel(
-      id: (json['id'] as num).toInt(),
-      name: json['name'] as String,
-      iso2: json['iso2'] as String,
-      phoneCode: json['phone_code'] as String,
-      emoji: json['emoji'] as String,
+      id: safeInt(json['id']),
+      name: safeString(json['name']),
+      iso2: safeString(json['iso2']),
+      phoneCode: safeString(json['phone_code']),
+      emoji: safeString(json['emoji']),
     );
   }
 

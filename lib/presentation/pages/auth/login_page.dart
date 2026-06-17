@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:papi_gold/app/common/mixins/index.dart';
 import 'package:papi_gold/app/common/widgets/filled_button_widget.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
+import 'package:papi_gold/app/core/constants/index.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
 import 'package:papi_gold/app/core/theme/colors.dart';
 import 'package:papi_gold/presentation/cubits/auth/auth_cubit.dart';
@@ -17,7 +17,7 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> with LoggerMixin {
+class _LoginPageState extends State<LoginPage> with LoggerMixin, MessengerMixin {
   String? email, password;
   bool obscureText = true;
   final _formKey = GlobalKey<FormState>();
@@ -30,9 +30,10 @@ class _LoginPageState extends State<LoginPage> with LoggerMixin {
           child: BlocListener<AuthCubit, AuthState>(
             listener: (context, state) {
               if (state is AuthError) {
-                log(state.message);
+                messenger.showSnackBar(message: state.message, color: AppColors.error);
               } else if (state is AuthSuccess) {
-                log('login success');
+                messenger.showSnackBar(message: state.response.message, color: AppColors.success);
+                context.goNamed(Routes.home);
               }
             },
             child: Form(
@@ -47,6 +48,7 @@ class _LoginPageState extends State<LoginPage> with LoggerMixin {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
+                  spacing: 12.h,
                   children: [
                     Text('Iniciar Sesión', style: context.headlineSmall),
                     InputFormWidget(
@@ -88,7 +90,7 @@ class _LoginPageState extends State<LoginPage> with LoggerMixin {
                       child: Text('¿Olvido su contraseña?'),
                     ),
                     InkWell(
-                      onTap: () => context.goNamed('register'),
+                      onTap: () => context.goNamed(Routes.register),
                       child: Text('¿No tienes cuenta?, registrate'),
                     ),
                   ],

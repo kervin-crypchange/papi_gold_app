@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/domain/entities/client_entity.dart';
 
 ClientModel clientModelFromJson(String str) =>
@@ -9,6 +10,7 @@ String asesorModelToJson(ClientModel data) => json.encode(data.toJson());
 
 class ClientModel extends ClientEntity {
   const ClientModel({
+    required super.id,
     required super.name,
     required super.lastName,
     required super.email,
@@ -25,6 +27,7 @@ class ClientModel extends ClientEntity {
   /// Converts a [ClientModel] to a JSON map.
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'name': name,
       'lastname': lastName,
       'email': email,
@@ -42,23 +45,25 @@ class ClientModel extends ClientEntity {
   /// Converts a JSON map to a [ClientModel].
   factory ClientModel.fromJson(Map<String, dynamic> json) {
     return ClientModel(
-      name: json['name'] as String,
-      lastName: json['lastname'] as String,
-      email: json['email'] as String,
-      phone: json['phone'] as String,
-      country: (json['country']as num).toInt(),
-      state: (json['state']as num).toInt(),
-      city: (json['city'] as num).toInt(),
-      address1: json['address1'] as String,
-      address2: json['address2'] as String,
-      codeZip: json['code_zip'] as String,
-      receiveAdvertise: json['receive_advertise'] as bool,
+      id: safeInt(json['id']),
+      name: safeString(json['name']),
+      lastName: safeString(json['lastname']),
+      email: safeString(json['email']),
+      phone: safeString(json['phone']),
+      country: safeInt(json['country']),
+      state: safeInt(json['state']),
+      city: safeInt(json['city']),
+      address1: safeString(json['address1'] ),
+      address2: safeString(json['address2']),
+      codeZip: safeString(json['code_zip']),
+      receiveAdvertise: safeBool(json['receive_advertise']),
     );
   }
 
   /// Converts a [ClientEntity] to a [ClientModel].
   factory ClientModel.fromEntity(ClientEntity entity) {
     return ClientModel(
+      id: entity.id,
       name: entity.name,
       lastName: entity.lastName,
       email: entity.email,
