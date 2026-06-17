@@ -1,3 +1,4 @@
+import 'package:papi_gold/data/models/index.dart';
 import 'package:papi_gold/domain/entities/metal_entity.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
 
@@ -12,6 +13,7 @@ class MetalModel extends MetalEntity {
     required super.priceHistory,
     required super.isStable,
     required super.lastUpdated,
+    required super.translations,
   });
 
   /// Converts a JSON map to a [MetalModel].
@@ -20,12 +22,21 @@ class MetalModel extends MetalEntity {
       symbol: safeString(json['symbol']),
       name: safeString(json['name']),
       price: safeDouble(json['price']),
-      carats: safeList<CaratModel>(json['carats'], (x) => CaratModel.fromJson(x)),
-      categories: safeList<MetalCategoryModel>(json['categories'], (x) => MetalCategoryModel.fromJson(x as Map<String, dynamic>)),
+      carats: safeList<CaratModel>(
+        json['carats'],
+        (x) => CaratModel.fromJson(x),
+      ),
+      categories: safeList<MetalCategoryModel>(
+        json['categories'],
+        (x) => MetalCategoryModel.fromJson(x as Map<String, dynamic>),
+      ),
       conversion: safeDouble(json['conversion']),
       priceHistory: safeDouble(json['priceHistory']),
       isStable: safeBool(json['isStable']),
       lastUpdated: safeDateTime(json['lastUpdated']),
+      translations: TranslationModel.fromJson(
+        json['translations'] as Map<String, dynamic>,
+      ),
     );
   }
 
@@ -41,29 +52,10 @@ class MetalModel extends MetalEntity {
       priceHistory: e.priceHistory,
       isStable: e.isStable,
       lastUpdated: e.lastUpdated,
+      translations: e.translations,
     );
   }
 
-  /// Converts a [MetalModel] to a JSON map.
-  Map<String, dynamic> toJson() {
-    return {
-      'symbol': symbol,
-      'name': name,
-      'price': price,
-      'carats': List<CaratModel>.from(
-        carats.map((e) => CaratModel.fromEntity(e).toJson()).toList(),
-      ),
-      'categories': List<MetalCategoryModel>.from(
-        categories
-            .map((e) => MetalCategoryModel.fromEntity(e).toJson())
-            .toList(),
-      ),
-      'conversion': conversion,
-      'priceHistory': priceHistory,
-      'isStable': isStable,
-      'lastUpdated': lastUpdated,
-    };
-  }
 }
 
 class CaratModel extends CaratEntity {
@@ -72,6 +64,7 @@ class CaratModel extends CaratEntity {
     required super.name,
     required super.purity,
     required super.law,
+    required super.translations,
   });
 
   /// Converts a JSON map to a [CaratModel].
@@ -81,17 +74,15 @@ class CaratModel extends CaratEntity {
       name: json['name'],
       purity: json['purity'],
       law: json['law'],
+      translations: TranslationModel.fromJson(
+        json['translations'] as Map<String, dynamic>,
+      ),
     );
   }
 
   /// Converts a [CaratEntity] to a [CaratModel].
   factory CaratModel.fromEntity(CaratEntity e) {
-    return CaratModel(id: e.id, name: e.name, purity: e.purity, law: e.law);
-  }
-
-  /// Converts a [CaratModel] to a JSON map.
-  Map<String, dynamic> toJson() {
-    return {'id': id, 'name': name, 'purity': purity, 'law': law};
+    return CaratModel(id: e.id, name: e.name, purity: e.purity, law: e.law, translations: e.translations);
   }
 }
 
@@ -101,6 +92,7 @@ class MetalCategoryModel extends MetalCategoryEntity {
     required super.name,
     required super.stock,
     required super.price,
+    required super.translations,
   });
 
   /// Converts a JSON map to a [Model].
@@ -110,6 +102,9 @@ class MetalCategoryModel extends MetalCategoryEntity {
       name: json['name'],
       stock: json['stock'],
       price: json['price'],
+      translations: TranslationModel.fromJson(
+        json['translations'] as Map<String, dynamic>,
+      ),
     );
   }
 
@@ -120,11 +115,7 @@ class MetalCategoryModel extends MetalCategoryEntity {
       name: e.name,
       stock: e.stock,
       price: e.price,
+      translations: e.translations,
     );
-  }
-
-  /// Converts a [MetalCategoryModel] to a JSON map.
-  Map<String, dynamic> toJson() {
-    return {'id': id, 'name': name, 'stock': stock, 'price': price};
   }
 }

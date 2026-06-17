@@ -1,4 +1,5 @@
 import 'package:papi_gold/app/common/utils/utils.dart';
+import 'package:papi_gold/data/models/index.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 
 class ProductModel extends ProductEntity {
@@ -10,6 +11,7 @@ class ProductModel extends ProductEntity {
     required super.image,
     required super.price,
     required super.category,
+    required super.translations
   });
 
   /// Converts a JSON map to a [ProductModel].
@@ -22,6 +24,7 @@ class ProductModel extends ProductEntity {
       image: safeString(json['image']),
       price: safeDouble(json['price']),
       category: ProducCategoryModel.fromJson(json['category']),
+       translations: TranslationModel.fromJson(json['translations'] as Map<String, dynamic>)
     );
   }
 
@@ -35,21 +38,10 @@ class ProductModel extends ProductEntity {
       image: e.image,
       price: e.price,
       category: e.category,
+      translations: e.translations
     );
   }
 
-  /// Converts a [ProductModel] to a JSON map.
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-      'description': description,
-      'stock': stock,
-      'image': image,
-      'price': price,
-      'category': ProducCategoryModel.fromEntity(category).toJson(),
-    };
-  }
 }
 
 class ProducCategoryModel extends ProductCategoryEntity {
@@ -58,6 +50,7 @@ class ProducCategoryModel extends ProductCategoryEntity {
     required super.name,
     required super.description,
     required super.color,
+    required super.translations
   });
 
   /// Converts a JSON map to a [ProducCategoryModel].
@@ -67,6 +60,7 @@ class ProducCategoryModel extends ProductCategoryEntity {
       name: json['name'] as String,
       description: json['description'] as String,
       color: json['color'] as String,
+       translations: TranslationModel.fromJson(json['translations'] as Map<String, dynamic>)
     );
   }
 
@@ -77,11 +71,8 @@ class ProducCategoryModel extends ProductCategoryEntity {
       name: e.name,
       description: e.description,
       color: e.color,
+      translations: e.translations
     );
   }
 
-  /// Converts a [ProducCategoryModel] to a JSON map.
-  Map<String, dynamic> toJson() {
-    return {'id': id, 'name': name, 'description': description, 'color': color};
-  }
 }
