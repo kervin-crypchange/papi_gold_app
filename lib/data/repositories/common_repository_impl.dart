@@ -15,16 +15,24 @@ class CommonRepositoryImpl extends CommonRepository {
   }
 
   @override
-  Future<Either<Failure, List<LocationEntity>>> getLocation() {
-    // TODO: implement getStates
-    throw UnimplementedError();
+  Future<Either<Failure, List<LocationEntity>>> getLocation() async {
+    Either<Failure, List<LocationEntity>> locations =
+        await sl<CommonRemoteData>().getLocation();
+
+    return locations.fold((l) => Left(l), (r) => Right(r));
   }
 
   @override
   Future<Either<Failure, List<MetalEntity>>> getMetalList() async {
-     Either<Failure, List<MetalEntity>> metals =
-        await sl<CommonRemoteData>().getMetalList();
+    Either<Failure, List<MetalEntity>> metals = await sl<CommonRemoteData>()
+        .getMetalList();
 
     return metals.fold((l) => Left(l), (r) => Right(r));
+  }
+  
+  @override
+  Future<Either<Failure, List<ProductEntity>>> getProdutList() {
+    // TODO: implement getProdutList
+    throw UnimplementedError();
   }
 }

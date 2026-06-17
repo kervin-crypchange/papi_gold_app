@@ -4,18 +4,17 @@ import 'package:papi_gold/app/core/error/failure.dart';
 import 'package:papi_gold/app/core/error/server_exception.dart';
 import 'package:papi_gold/app/core/network/dio_client.dart';
 import 'package:papi_gold/data/models/index.dart';
-import 'package:papi_gold/data/models/responses/response_location_model.dart';
 import 'package:papi_gold/data/sources/remote/index.dart';
-import 'package:papi_gold/domain/entities/responses/response_metal_model.dart';
 import 'package:papi_gold/injection_container.dart';
 
 class CommonRemoteDataImpl extends CommonRemoteData {
   @override
-  Future<Either<Failure, List<CountryModel>>> getCountries() async{
-     try {
+  Future<Either<Failure, List<CountryModel>>> getCountries() async {
+    try {
       final res = await sl<DioClient>().get(Apis.countries);
-      final ResponseLocationModel response = ResponseLocationModel.fromJson(
-        res.data,
+      final ApiResponseModel response = ApiResponseModel<CountryModel>.fromJson(
+        res.data['data'],
+        CountryModel.fromJson,
       );
       final List<CountryModel> countries = response.data
           .map((x) => CountryModel.fromEntity(x))
@@ -26,18 +25,31 @@ class CommonRemoteDataImpl extends CommonRemoteData {
     }
   }
 
-   @override
-  Future<Either<Failure, List<LocationModel>>> getStates() {
-    // TODO: implement getStates
-    throw UnimplementedError();
-  }
-  
   @override
-  Future<Either<Failure, List<MetalModel>>> getMetalList() async{
-   try {
+  Future<Either<Failure, List<LocationModel>>> getLocation() async {
+    try {
+      final res = await sl<DioClient>().get(Apis.countries);
+      final ApiResponseModel response =
+          ApiResponseModel<LocationModel>.fromJson(
+            res.data['data'],
+            LocationModel.fromJson,
+          );
+      final List<LocationModel> locations = response.data
+          .map((x) => LocationModel.fromEntity(x))
+          .toList();
+      return Right(locations);
+    } catch (e) {
+      return Left(ServerException(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<MetalModel>>> getMetalList() async {
+    try {
       final res = await sl<DioClient>().get(Apis.price);
-      final ResponseMetalModel response = ResponseMetalModel.fromJson(
-        res.data,
+      final ApiResponseModel response = ApiResponseModel<MetalModel>.fromJson(
+        res.data['data'],
+        MetalModel.fromJson,
       );
       final List<MetalModel> metals = response.data
           .map((x) => MetalModel.fromEntity(x))
@@ -47,5 +59,20 @@ class CommonRemoteDataImpl extends CommonRemoteData {
       return Left(ServerException(e));
     }
   }
-  
+
+  @override
+  Future<Either<Failure, ApiResponseModel<ProductModel>>>
+  getProdutList() async {
+    try {
+      final res = await sl<DioClient>().get(Apis.price);
+      final ApiResponseModel<ProductModel> response =
+          ApiResponseModel<ProductModel>.fromJson(
+            res.data['data'],
+            ProductModel.fromJson,
+          );
+      return Right(response);
+    } catch (e) {
+      return Left(ServerException(e));
+    }
+  }
 }
