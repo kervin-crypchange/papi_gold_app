@@ -1,3 +1,5 @@
+export 'package:papi_gold/data/models/product_info_model.dart';
+export 'package:papi_gold/data/models/location_param_model.dart';
 export 'package:papi_gold/data/models/responses/api_response_model.dart';
 export 'package:papi_gold/data/models/translate_model.dart';
 export 'package:papi_gold/data/models/metal_model.dart';

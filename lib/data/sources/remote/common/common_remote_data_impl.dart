@@ -44,7 +44,7 @@ class CommonRemoteDataImpl extends CommonRemoteData {
   }
 
   @override
-  Future<Either<Failure, List<MetalModel>>> getMetalList() async {
+  Future<Either<Failure, List<MetalModel>>> getMetalList(String? symbol) async {
     try {
       final res = await sl<DioClient>().get(Apis.price);
       final ApiResponseModel response = ApiResponseModel<MetalModel>.fromJson(
@@ -61,16 +61,31 @@ class CommonRemoteDataImpl extends CommonRemoteData {
   }
 
   @override
-  Future<Either<Failure, ApiResponseModel<ProductModel>>>
+  Future<Either<Failure, ApiResponseModel<ProductInfoModel>>>
   getProdutList() async {
     try {
       final res = await sl<DioClient>().get(Apis.price);
-      final ApiResponseModel<ProductModel> response =
-          ApiResponseModel<ProductModel>.fromJson(
+      final ApiResponseModel<ProductInfoModel> response =
+          ApiResponseModel<ProductInfoModel>.fromJson(
             res.data['data'],
-            ProductModel.fromJson,
+            ProductInfoModel.fromJson,
           );
       return Right(response);
+    } catch (e) {
+      return Left(ServerException(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, ProductModel>> getProductDetail(
+    LocationParamModel params,
+  ) async {
+    try {
+      final res = await sl<DioClient>().get(
+        Apis.price,
+        queryParameters: params.toJson(),
+      );
+      return Right(ProductModel.fromJson(res.data));
     } catch (e) {
       return Left(ServerException(e));
     }
