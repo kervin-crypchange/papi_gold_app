@@ -1,40 +1,30 @@
+import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/data/models/index.dart';
 import 'package:papi_gold/domain/entities/index.dart';
-import 'package:papi_gold/app/common/utils/utils.dart';
 
-class ResponseProductModel extends ProductResponseEntity {
-  const ResponseProductModel({required super.data, required super.meta});
+class ResponseProductModel extends ApiResponseEntity<ProductInfoModel> {
+  final MetaModel meta;
+  const ResponseProductModel({required super.data, required this.meta});
 }
 
-class DataModel extends DataEntity {
-  const DataModel({
-    required super.id,
-    required super.name,
-    required super.products,
+class ProductInfoModel {
+  final int id;
+  final String name;
+  final List<ProductModel> products;
+
+  const ProductInfoModel({
+    required this.id,
+    required this.name,
+    required this.products,
   });
 
-  /// Converts a JSON map to a [DataModel].
-  factory DataModel.fromJson(Map<String, dynamic> json) {
-    return DataModel(
-      id: safeInt(json['id']),
-      name: safeString(json['name']),
-      products: safeList<ProductModel>(json['products'], (x) => ProductModel.fromJson(x as Map<String, dynamic>)),
+  factory ProductInfoModel.fromJson(Map<String, dynamic> json) {
+    return ProductInfoModel(
+      id: safeInt(['id']),
+      name: safeString(['name']),
+      products: safeList<ProductModel>([
+        'producs',
+      ], (x) => ProductModel.fromJson(x as Map<String, dynamic>)),
     );
-  }
-
-  /// Converts a [DataEntity] to a [DataModel].
-  factory DataModel.fromEntity(DataEntity e) {
-    return DataModel(id: e.id, name: e.name, products: e.products);
-  }
-
-  /// Converts a [DataModel] to a JSON map.
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-      'products': List<ProductModel>.from(
-        products.map((x) => ProductModel.fromEntity(x).toJson()).toList(),
-      ),
-    };
   }
 }

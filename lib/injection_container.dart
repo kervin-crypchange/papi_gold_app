@@ -20,9 +20,8 @@ Future<void> initializeDependencies() async {
   sl.registerLazySingleton<AuthLocalData>(() => AuthLocalDataImpl());
 
   // Repositories
-  sl.registerLazySingleton<AuthRepository>(
-    () => AuthRepositoryImpl(data: sl()),
-  );
+  sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl());
+  sl.registerLazySingleton<CommonRepository>(() => CommonRepositoryImpl());
 
   // Use cases
   sl.registerLazySingleton(() => LoginUseCase());
