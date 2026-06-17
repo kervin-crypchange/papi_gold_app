@@ -1,3 +1,4 @@
+export 'package:papi_gold/data/models/translate_model.dart';
 export 'package:papi_gold/data/models/metal_model.dart';
 export 'package:papi_gold/data/models/order_detail_model.dart';
 export 'package:papi_gold/data/models/payment_model.dart';
