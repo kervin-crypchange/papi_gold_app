@@ -17,6 +17,8 @@ abstract class CommonRepository {
 
   Future<Either<Failure, ResponseChatEntity>> chat(ChatPayloadEntity e);
   Future<Either<Failure, ResponseMessageLogEntity>> chatHistory(String identifier);
+  
+  Future<Either<Failure, String>> consultation(ConsultationPayloadEntity e);
 
 
 }

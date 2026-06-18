@@ -1,3 +1,4 @@
+export 'package:papi_gold/data/models/consultation_payload_model.dart';
 export 'package:papi_gold/data/models/responses/response_chat_model.dart';
 export  'package:papi_gold/data/models/chat_payload_model.dart';
 export 'package:papi_gold/data/models/auth/logout_model.dart';

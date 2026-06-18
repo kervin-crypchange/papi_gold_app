@@ -91,4 +91,15 @@ class CommonRepositoryImpl extends CommonRepository {
 
     return res.fold((l) => Left(l), (r) => Right(r));
   }
+
+  @override
+  Future<Either<Failure, String>> consultation(
+    ConsultationPayloadEntity e,
+  ) async {
+    Either<Failure, String> res = await sl<CommonRemoteData>().consultation(
+      ConsultationPayloadModel.fromEntity(e),
+    );
+
+    return res.fold((l) => Left(l), (r) => Right(r));
+  }
 }

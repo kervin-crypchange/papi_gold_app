@@ -132,4 +132,14 @@ class CommonRemoteDataImpl extends CommonRemoteData {
       return Left(ServerException(e));
     }
   }
+  
+  @override
+  Future<Either<Failure, String>> consultation(ConsultationPayloadModel m) async {
+    try {
+      final res = await sl<DioClient>().get(Apis.consultation);
+      return Right(res.data['message']);
+    } catch (e) {
+      return Left(ServerException(e));
+    }
+  }
 }

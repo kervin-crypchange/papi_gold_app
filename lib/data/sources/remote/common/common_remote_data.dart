@@ -15,5 +15,7 @@ abstract class CommonRemoteData {
 
   Future<Either<Failure, ResponseMessageLogModel>> chatHistory(String identifier);
 
+  Future<Either<Failure, String>> consultation(ConsultationPayloadModel m);
+
   
 }
