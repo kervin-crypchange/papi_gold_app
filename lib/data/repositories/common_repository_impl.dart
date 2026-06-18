@@ -4,6 +4,7 @@ import 'package:papi_gold/data/models/index.dart';
 import 'package:papi_gold/data/sources/remote/index.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 import 'package:papi_gold/domain/entities/checkout_entity.dart';
+import 'package:papi_gold/domain/entities/order_detail_entity.dart';
 import 'package:papi_gold/domain/repositories/index.dart';
 import 'package:papi_gold/injection_container.dart';
 
@@ -35,10 +36,9 @@ class CommonRepositoryImpl extends CommonRepository {
   }
 
   @override
-  Future<Either<Failure, List<ProductInfoEntity>>>
-  getProductList() async {
-    Either<Failure, List<ProductInfoEntity>> res =
-        await sl<CommonRemoteData>().getProductList();
+  Future<Either<Failure, List<ProductInfoEntity>>> getProductList() async {
+    Either<Failure, List<ProductInfoEntity>> res = await sl<CommonRemoteData>()
+        .getProductList();
 
     return res.fold((l) => Left(l), (r) => Right(r));
   }
@@ -59,6 +59,16 @@ class CommonRepositoryImpl extends CommonRepository {
   ) async {
     Either<Failure, ResponseCheckoutEntity> res = await sl<CommonRemoteData>()
         .checkout(CheckOutModel.fromEntity(e));
+
+    return res.fold((l) => Left(l), (r) => Right(r));
+  }
+
+  @override
+  Future<Either<Failure, OrderDetailEntity>> orderDetail(
+    String orderCode,
+  ) async {
+    Either<Failure, OrderDetailEntity> res = await sl<CommonRemoteData>()
+        .orderDetail(orderCode);
 
     return res.fold((l) => Left(l), (r) => Right(r));
   }

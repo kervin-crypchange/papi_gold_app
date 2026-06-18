@@ -102,4 +102,14 @@ class CommonRemoteDataImpl extends CommonRemoteData {
       return Left(ServerException(e));
     }
   }
+  
+  @override
+  Future<Either<Failure, OrderDetailModel>> orderDetail(String orderCode) async {
+     try {
+      final res = await sl<DioClient>().get('${Apis.checkout}/$orderCode');
+      return Right(OrderDetailModel.fromJson(res.data));
+    } catch (e) {
+      return Left(ServerException(e));
+    }
+  }
 }
