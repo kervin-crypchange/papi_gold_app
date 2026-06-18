@@ -122,4 +122,14 @@ class CommonRemoteDataImpl extends CommonRemoteData {
       return Left(ServerException(e));
     }
   }
+  
+  @override
+  Future<Either<Failure, ResponseMessageLogModel>> chatHistory(String identifier) async {
+    try {
+      final res = await sl<DioClient>().get('${Apis.chat}/$identifier');
+      return Right(ResponseMessageLogModel.fromJson(res.data['data']));
+    } catch (e) {
+      return Left(ServerException(e));
+    }
+  }
 }

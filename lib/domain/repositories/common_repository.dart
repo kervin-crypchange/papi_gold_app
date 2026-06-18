@@ -16,6 +16,7 @@ abstract class CommonRepository {
   Future<Either<Failure, OrderDetailEntity>> orderDetail(String orderCode);
 
   Future<Either<Failure, ResponseChatEntity>> chat(ChatPayloadEntity e);
+  Future<Either<Failure, ResponseMessageLogEntity>> chatHistory(String identifier);
 
 
 }
