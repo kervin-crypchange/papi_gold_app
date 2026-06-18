@@ -3,14 +3,14 @@ import 'dart:convert';
 import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/domain/entities/client_entity.dart';
 
-ClientModel clientModelFromJson(String str) =>
+ClientModel clientModelFromString(String str) =>
     ClientModel.fromJson(json.decode(str));
 
 String asesorModelToJson(ClientModel data) => json.encode(data.toJson());
 
 class ClientModel extends ClientEntity {
   const ClientModel({
-    required super.id,
+    super.id,
     required super.name,
     required super.lastName,
     required super.email,

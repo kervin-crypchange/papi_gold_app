@@ -26,12 +26,4 @@ class CheckOutModel extends CheckoutEntity {
     );
   }
 
-  /// Converts a [ClientModel] to a JSON map.
-  Map<String, dynamic> toJson() {
-    return {
-      'clientData': ClientModel.fromEntity(client).toJson(),
-      'cartItems': CartModel.fromEntity(cart).toJson(),
-      'confirm_existing_client': confirmExistingClient,
-    };
-  }
 }

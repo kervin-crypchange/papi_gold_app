@@ -7,7 +7,7 @@ abstract class CommonRemoteData {
   Future<Either<Failure, List<CountryModel>>> getCountries();
   Future<Either<Failure, List<LocationModel>>> getLocation();
   Future<Either<Failure, List<MetalModel>>> getMetalList(String? symbol);
-  Future<Either<Failure, ApiResponseModel<ProductInfoModel>>> getProdutList();
+  Future<Either<Failure, List<ProductInfoModel>>> getProductList();
   Future<Either<Failure, ProductModel>> getProductDetail(LocationParamModel p);
   Future<Either<Failure, ResponseCheckoutModel>> checkout(CheckOutModel m);
 }

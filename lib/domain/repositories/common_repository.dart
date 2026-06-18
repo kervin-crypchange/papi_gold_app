@@ -7,7 +7,7 @@ abstract class CommonRepository {
   Future<Either<Failure, List<CountryEntity>>> getCountries();
   Future<Either<Failure, List<LocationEntity>>> getLocation();
   Future<Either<Failure, List<MetalEntity>>> getMetalList(String? symbol);
-  Future<Either<Failure, ApiResponseEntity<ProductInfoEntity>>> getProdutList();
+  Future<Either<Failure, List<ProductInfoEntity>>> getProductList();
   Future<Either<Failure, ProductEntity>> getProductDetail(
     LocationParamEntity p,
   );

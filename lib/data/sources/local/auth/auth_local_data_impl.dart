@@ -45,7 +45,7 @@ class AuthLocalDataImpl extends AuthLocalData with LoggerMixin{
   @override
   ClientModel getUserLogged() {
     String client = box.get(BoxEnum.config.userLogged);
-    return clientModelFromJson(client);
+    return clientModelFromString(client);
   }
 
   @override

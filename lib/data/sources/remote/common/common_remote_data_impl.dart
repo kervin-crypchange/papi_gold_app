@@ -62,15 +62,14 @@ class CommonRemoteDataImpl extends CommonRemoteData {
   }
 
   @override
-  Future<Either<Failure, ApiResponseModel<ProductInfoModel>>>
-  getProdutList() async {
+  Future<Either<Failure, List<ProductInfoModel>>> getProductList() async {
     try {
       final res = await sl<DioClient>().get(Apis.price);
-      final ApiResponseModel<ProductInfoModel> response =
+      final List<ProductInfoModel> response =
           ApiResponseModel<ProductInfoModel>.fromJson(
             res.data['data'],
             ProductInfoModel.fromJson,
-          );
+          ).data;
       return Right(response);
     } catch (e) {
       return Left(ServerException(e));
@@ -93,7 +92,9 @@ class CommonRemoteDataImpl extends CommonRemoteData {
   }
 
   @override
-  Future<Either<Failure, ResponseCheckoutModel>> checkout(CheckOutModel model) async {
+  Future<Either<Failure, ResponseCheckoutModel>> checkout(
+    CheckOutModel model,
+  ) async {
     try {
       final res = await sl<DioClient>().post(Apis.checkout);
       return Right(ResponseCheckoutModel.fromJson(res.data));

@@ -14,6 +14,7 @@ class OrderDetailModel extends OrderDetailEntity {
     required super.items,
     required super.payments,
     required super.shippings,
+    required super.translatons,
   });
 
   /// Converts a JSON map to a [OrderDetailModel].
@@ -29,6 +30,7 @@ class OrderDetailModel extends OrderDetailEntity {
         items: safeList<ItemModel>(json['items'], (x) => ItemModel.fromJson(x as Map<String, dynamic>)),
         payments: safeList<PaymentModel>(json['payments'], (x) => PaymentModel.fromJson(x as Map<String, dynamic>)),
         shippings: safeList<ShippingModel>(json['shippings'], (x) => ShippingModel.fromJson(x as Map<String, dynamic>)),
+        translatons: TranslationModel.fromJson(json['translations'] as Map<String, dynamic>)
     );
   }
 
@@ -45,28 +47,8 @@ class OrderDetailModel extends OrderDetailEntity {
       items: e.items,
       payments: e.payments,
       shippings: e.shippings,
+      translatons: e.translatons
     );
   }
 
-  /// Converts a [OrderDetailModel] to a JSON map.
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'order': order,
-      'invoice': invoice,
-      'description': description,
-      'total_v': total,
-      'total_pago_v': totalPago,
-      'status': status,
-      'items': List<ItemModel>.from(
-        items.map((e) => ItemModel.fromEntity(e).toJson()).toList(),
-      ),
-      'payments': List<PaymentModel>.from(
-        payments.map((e) => PaymentModel.fromEntity(e).toJson()).toList(),
-      ),
-      'shippings': List<ShippingModel>.from(
-        shippings.map((e) => ShippingModel.fromEntity(e).toJson()).toList(),
-      ),
-    };
-  }
 }

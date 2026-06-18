@@ -11,7 +11,10 @@ class AuthDataImpl extends AuthData with LoggerMixin {
   @override
   Future<Either<Failure, ResponseLoginModel>> login(LoginModel model) async {
     try {
-      final res = await sl<DioClient>().post(Apis.session, data: model.toJson());
+      final res = await sl<DioClient>().post(
+        Apis.session,
+        data: model.toJson(),
+      );
       return Right(ResponseLoginModel.fromJson(res.data));
     } catch (e) {
       return Left(ServerException(e));
@@ -29,12 +32,29 @@ class AuthDataImpl extends AuthData with LoggerMixin {
     // TODO: implement register
     throw UnimplementedError();
   }
-  
+
   @override
   Future<Either<Failure, LogoutModel>> logout() async {
-     try {
+    try {
       final res = await sl<DioClient>().delete(Apis.session);
       return Right(LogoutModel.fromJson(res));
+    } catch (e) {
+      return Left(ServerException(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> updatePassword(
+    String password,
+    String confirmPassword,
+  ) async {
+    try {
+      final Map<String, dynamic> data = {
+        'password': password,
+        'confirm_password': confirmPassword,
+      };
+      final res = await sl<DioClient>().put(Apis.client, data: data);
+      return Right(res.data['message']);
     } catch (e) {
       return Left(ServerException(e));
     }

@@ -34,4 +34,16 @@ class AuthRepositoryImpl with LoggerMixin implements AuthRepository {
     Either<Failure, LogoutEntity> res = await sl<AuthData>().logout();
     return res.fold((l) => Left(l), (r) => Right(r));
   }
+
+  @override
+  Future<Either<Failure, String>> updatePassword(
+    String password,
+    String confirmPassword,
+  ) async {
+    Either<Failure, String> res = await sl<AuthData>().updatePassword(
+      password,
+      confirmPassword,
+    );
+    return res.fold((l) => Left(l), (r) => Right(r));
+  }
 }

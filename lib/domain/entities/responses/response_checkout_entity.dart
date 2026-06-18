@@ -4,10 +4,10 @@ import 'package:papi_gold/domain/entities/sale_entity.dart';
 
 class ResponseCheckoutEntity extends Equatable {
   final String message;
+  final SaleEntity sale;
+  final List<ItemEntity> items;
   final String clientSecret;
   final String paymentId;
-  final List<ItemEntity> items;
-  final SaleEntity sale;
 
   const ResponseCheckoutEntity({
     required this.message,
