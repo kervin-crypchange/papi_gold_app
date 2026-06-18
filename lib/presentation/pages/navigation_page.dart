@@ -14,7 +14,10 @@ class _NavigationPageState extends State<NavigationPage> {
 
   final List<Widget> _destinations = [
     NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
-    NavigationDestination(icon: Icon(Icons.person_pin_rounded), label: 'Perfil'),
+    NavigationDestination(
+      icon: Icon(Icons.person_pin_rounded),
+      label: 'Perfil',
+    ),
   ];
 
   final List<Widget> _pages = [HomePage(), ProfilePage()];
@@ -29,6 +32,11 @@ class _NavigationPageState extends State<NavigationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _pages[currentPageIndex],
+      floatingActionButton: FloatingActionButton(
+        onPressed: null,
+        child: Icon(Icons.add),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: NavigationBar(
         destinations: _destinations,
         selectedIndex: currentPageIndex,
