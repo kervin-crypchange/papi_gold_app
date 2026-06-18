@@ -12,7 +12,7 @@ abstract class Apis {
   static  const countries = 'location';
   static const location = 'location/show';
 
-  static const checkout = 'order';
+  static const order = 'order';
   static const paymentIntent = 'payment';
   static const chat = 'chat';
   static const client = 'client/me';

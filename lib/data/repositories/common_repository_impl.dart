@@ -36,9 +36,10 @@ class CommonRepositoryImpl extends CommonRepository {
   }
 
   @override
-  Future<Either<Failure, List<ProductInfoEntity>>> getProductList() async {
-    Either<Failure, List<ProductInfoEntity>> res = await sl<CommonRemoteData>()
-        .getProductList();
+  Future<Either<Failure, ApiResponseEntity<ProductInfoEntity>>>
+  getProductList() async {
+    Either<Failure, ApiResponseEntity<ProductInfoEntity>> res =
+        await sl<CommonRemoteData>().getProductList();
 
     return res.fold((l) => Left(l), (r) => Right(r));
   }
@@ -59,6 +60,15 @@ class CommonRepositoryImpl extends CommonRepository {
   ) async {
     Either<Failure, ResponseCheckoutEntity> res = await sl<CommonRemoteData>()
         .checkout(CheckOutModel.fromEntity(e));
+
+    return res.fold((l) => Left(l), (r) => Right(r));
+  }
+
+  @override
+  Future<Either<Failure, ApiResponseEntity<OrderDetailEntity>>>
+  orderList() async {
+    Either<Failure, ApiResponseEntity<OrderDetailEntity>> res =
+        await sl<CommonRemoteData>().orderList();
 
     return res.fold((l) => Left(l), (r) => Right(r));
   }

@@ -62,14 +62,14 @@ class CommonRemoteDataImpl extends CommonRemoteData {
   }
 
   @override
-  Future<Either<Failure, List<ProductInfoModel>>> getProductList() async {
+  Future<Either<Failure, ApiResponseModel<ProductInfoModel>>> getProductList() async {
     try {
       final res = await sl<DioClient>().get(Apis.price);
-      final List<ProductInfoModel> response =
+      final ApiResponseModel<ProductInfoModel> response =
           ApiResponseModel<ProductInfoModel>.fromJson(
             res.data['data'],
             ProductInfoModel.fromJson,
-          ).data;
+          );
       return Right(response);
     } catch (e) {
       return Left(ServerException(e));
@@ -96,8 +96,23 @@ class CommonRemoteDataImpl extends CommonRemoteData {
     CheckOutModel model,
   ) async {
     try {
-      final res = await sl<DioClient>().post(Apis.checkout);
+      final res = await sl<DioClient>().post(Apis.order);
       return Right(ResponseCheckoutModel.fromJson(res.data));
+    } catch (e) {
+      return Left(ServerException(e));
+    }
+  }
+
+    @override
+  Future<Either<Failure, ApiResponseModel<OrderDetailModel>>> orderList() async  {
+    try {
+     final res = await sl<DioClient>().get(Apis.order);
+      final ApiResponseModel<OrderDetailModel> response =
+          ApiResponseModel<OrderDetailModel>.fromJson(
+            res.data['data'],
+            OrderDetailModel.fromJson,
+          );
+      return Right(response);
     } catch (e) {
       return Left(ServerException(e));
     }
@@ -106,7 +121,7 @@ class CommonRemoteDataImpl extends CommonRemoteData {
   @override
   Future<Either<Failure, OrderDetailModel>> orderDetail(String orderCode) async {
      try {
-      final res = await sl<DioClient>().get('${Apis.checkout}/$orderCode');
+      final res = await sl<DioClient>().get('${Apis.order}/$orderCode');
       return Right(OrderDetailModel.fromJson(res.data));
     } catch (e) {
       return Left(ServerException(e));
@@ -142,4 +157,5 @@ class CommonRemoteDataImpl extends CommonRemoteData {
       return Left(ServerException(e));
     }
   }
+
 }
