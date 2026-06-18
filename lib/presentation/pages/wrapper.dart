@@ -8,6 +8,6 @@ class WrapperPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isLogged = context.read<AuthCubit>().isLogged();
-    return isLogged ? HomePage() : LoginPage();
+    return isLogged ? NavigationPage() : LoginPage();
   }
 }
