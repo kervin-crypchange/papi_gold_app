@@ -11,14 +11,26 @@ class ChatPayloadModel extends ChatPayloadEntity {
     super.orderId,
   });
 
-  Map<String, dynamic> toJson(){
+  factory ChatPayloadModel.fromEntity(ChatPayloadEntity e) {
+    return ChatPayloadModel(
+      identifier: e.identifier,
+      message: e.message,
+      file: e.file,
+      name: e.name,
+      email: e.email,
+      phone: e.phone,
+      orderId: e.orderId,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
     return {
       'identifier': identifier,
       'message': message,
       'file': file,
       'name': name,
       'phone': phone,
-      'order_id': orderId
+      'order_id': orderId,
     };
   }
 }

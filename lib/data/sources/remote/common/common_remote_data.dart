@@ -11,5 +11,6 @@ abstract class CommonRemoteData {
   Future<Either<Failure, ProductModel>> getProductDetail(LocationParamModel p);
   Future<Either<Failure, ResponseCheckoutModel>> checkout(CheckOutModel m);
   Future<Either<Failure, OrderDetailModel>> orderDetail(String orderCode);
+  Future<Either<Failure, ResponseChatModel>> chat(ChatPayloadModel model);
   
 }

@@ -72,4 +72,13 @@ class CommonRepositoryImpl extends CommonRepository {
 
     return res.fold((l) => Left(l), (r) => Right(r));
   }
+
+  @override
+  Future<Either<Failure, ResponseChatEntity>> chat(ChatPayloadEntity e) async {
+    Either<Failure, ResponseChatEntity> res = await sl<CommonRemoteData>().chat(
+      ChatPayloadModel.fromEntity(e),
+    );
+
+    return res.fold((l) => Left(l), (r) => Right(r));
+  }
 }
