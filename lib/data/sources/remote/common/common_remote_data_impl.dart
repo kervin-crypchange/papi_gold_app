@@ -103,7 +103,7 @@ class CommonRemoteDataImpl extends CommonRemoteData {
     }
   }
 
-    @override
+  @override
   Future<Either<Failure, ApiResponseModel<OrderDetailModel>>> orderList() async  {
     try {
      final res = await sl<DioClient>().get(Apis.order);

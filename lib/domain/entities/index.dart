@@ -1,4 +1,5 @@
 
+export 'package:papi_gold/domain/entities/stats_entity.dart';
 export 'package:papi_gold/domain/entities/consultation_payload_entity.dart';
 export 'package:papi_gold/domain/entities/responses/response_chat_entity.dart';
 export 'package:papi_gold/domain/entities/chat_payload_entity.dart';
