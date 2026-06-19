@@ -13,19 +13,13 @@ class OrderListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: ListView.separated(
-          separatorBuilder: (context, index) => Gap(12.h),
-          itemCount: orders.length,
-          itemBuilder: (context, index) {
-            final OrderDetailEntity order = orders[index];
-            return OrderCardWidget(order: order);
-          },
-        ),
-      ),
+    return ListView.separated(
+      separatorBuilder: (context, index) => Gap(12.h),
+      itemCount: orders.length,
+      itemBuilder: (context, index) {
+        final OrderDetailEntity order = orders[index];
+        return OrderCardWidget(order: order);
+      },
     );
   }
 }
-
-

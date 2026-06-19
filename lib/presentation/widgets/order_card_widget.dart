@@ -44,6 +44,6 @@ class OrderCardWidget extends StatelessWidget {
         style: context.bodyLarge.copyWith(color: AppColors.secondary),
       ),
       onTap: () => print('tapped'),
-    ).paddingSymmetric(horizontal: 12.w);
+    );
   }
 }

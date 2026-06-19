@@ -1,4 +1,6 @@
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
+import 'package:papi_gold/app/core/extensions/widget.dart';
 import 'package:papi_gold/presentation/pages/index.dart';
 
 class NavigationPage extends StatefulWidget {
@@ -29,7 +31,7 @@ class _NavigationPageState extends State<NavigationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: [HomePage(), OrdersPage(), ProfilePage()][currentPageIndex],
+      body: [HomePage(), OrdersPage(), ProfilePage()][currentPageIndex].paddingAll(12.r),
       bottomNavigationBar: NavigationBar(
         destinations: _destinations,
         selectedIndex: currentPageIndex,
