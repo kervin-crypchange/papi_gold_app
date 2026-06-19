@@ -10,6 +10,7 @@ import 'package:papi_gold/app/core/theme/app_theme.dart';
 import 'package:papi_gold/injection_container.dart';
 import 'package:papi_gold/presentation/cubits/auth/auth_cubit.dart';
 import 'package:papi_gold/app/core/extensions/index.dart' as globals;
+import 'package:papi_gold/presentation/cubits/ordes/orders_cubit.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -56,7 +57,10 @@ class BlocProviders extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [BlocProvider(create: (_) => sl<AuthCubit>())],
+      providers: [
+        BlocProvider(create: (_) => sl<AuthCubit>()),
+        BlocProvider(create: (_) => sl<OrdersCubit>())
+      ],
       child: const MainApp(),
     );
   }
@@ -76,7 +80,7 @@ class _MainAppState extends State<MainApp> {
   @override
   void initState() {
     super.initState();
-    
+    context.read<OrdersCubit>().orderList();
   }
 
   @override

@@ -1,4 +1,6 @@
 
+export 'package:papi_gold/domain/entities/responses/response_products_entity.dart';
+export 'package:papi_gold/domain/entities/responses/response_orders_entity.dart';
 export 'package:papi_gold/domain/entities/stats_entity.dart';
 export 'package:papi_gold/domain/entities/consultation_payload_entity.dart';
 export 'package:papi_gold/domain/entities/responses/response_chat_entity.dart';
@@ -6,7 +8,6 @@ export 'package:papi_gold/domain/entities/chat_payload_entity.dart';
 export 'package:papi_gold/domain/entities/auth/logout_entity.dart';
 export 'package:papi_gold/domain/entities/product_info_entity.dart';
 export 'package:papi_gold/domain/entities/location_param_entity.dart';
-export 'package:papi_gold/domain/entities/responses/api_response_entity.dart';
 export 'package:papi_gold/domain/entities/contact_entity.dart';
 export 'package:papi_gold/domain/entities/responses/response_checkout_entity.dart';
 export 'package:papi_gold/domain/entities/responses/response_login_entity.dart';

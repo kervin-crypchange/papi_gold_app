@@ -14,7 +14,7 @@ class OrderDetailModel extends OrderDetailEntity {
     required super.items,
     required super.payments,
     required super.shippings,
-    required super.translatons,
+    // required super.translatons,
   });
 
   /// Converts a JSON map to a [OrderDetailModel].
@@ -22,15 +22,24 @@ class OrderDetailModel extends OrderDetailEntity {
     return OrderDetailModel(
       id: safeInt(json['id']),
       order: safeString(json['order']),
-      invoice: safeString(json['invoice'] ),
+      invoice: safeString(json['invoice']),
       description: safeString(json['description']),
-        total: safeDouble(json['total_v']),
-        totalPago: safeDouble(json['total_pago_v']),
-        status: StatusModel.fromJson(json['status'] as Map<String, dynamic>),
-        items: safeList<ItemModel>(json['items'], (x) => ItemModel.fromJson(x as Map<String, dynamic>)),
-        payments: safeList<PaymentModel>(json['payments'], (x) => PaymentModel.fromJson(x as Map<String, dynamic>)),
-        shippings: safeList<ShippingModel>(json['shippings'], (x) => ShippingModel.fromJson(x as Map<String, dynamic>)),
-        translatons: TranslationModel.fromJson(json['translations'] as Map<String, dynamic>)
+      total: safeDouble(json['total_v']),
+      totalPago: safeDouble(json['total_pago_v']),
+      status: StatusModel.fromJson(json['status'] as Map<String, dynamic>),
+      items: safeList<ItemModel>(
+        json['items'],
+        (x) => ItemModel.fromJson(x as Map<String, dynamic>),
+      ),
+      payments: safeList<PaymentModel>(
+        json['payments'],
+        (x) => PaymentModel.fromJson(x as Map<String, dynamic>),
+      ),
+      shippings: safeList<ShippingModel>(
+        json['shippings'],
+        (x) => ShippingModel.fromJson(x as Map<String, dynamic>),
+      ),
+      // translatons: json['translations']
     );
   }
 
@@ -47,8 +56,7 @@ class OrderDetailModel extends OrderDetailEntity {
       items: e.items,
       payments: e.payments,
       shippings: e.shippings,
-      translatons: e.translatons
+      // translatons: e.translatons,
     );
   }
-
 }

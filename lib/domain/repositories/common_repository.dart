@@ -7,13 +7,15 @@ import 'package:papi_gold/domain/entities/order_detail_entity.dart';
 abstract class CommonRepository {
   Future<Either<Failure, List<CountryEntity>>> getCountries();
   Future<Either<Failure, List<LocationEntity>>> getLocation();
-  Future<Either<Failure, List<MetalEntity>>> getMetalList(String? symbol);
-  Future<Either<Failure, ApiResponseEntity<ProductInfoEntity>>> getProductList();
-  Future<Either<Failure, ProductEntity>> getProductDetail(
+
+  Future<Either<Failure, List<MetalEntity>>> metalList(String? symbol);
+  
+  Future<Either<Failure, ResponseProductsEntity>> productList();
+  Future<Either<Failure, ProductEntity>> productDetail(
     LocationParamEntity p,
   );
   Future<Either<Failure, ResponseCheckoutEntity>> checkout(CheckoutEntity e);
-  Future<Either<Failure, ApiResponseEntity<OrderDetailEntity>>> orderList();
+  Future<Either<Failure, ResponseOrdersEntity>> orderList();
   Future<Either<Failure, OrderDetailEntity>> orderDetail(String orderCode);
 
   Future<Either<Failure, ResponseChatEntity>> chat(ChatPayloadEntity e);

@@ -1,24 +1,24 @@
 import 'package:dartz/dartz.dart';
+import 'package:logger/web.dart';
 import 'package:papi_gold/app/core/constants/index.dart';
 import 'package:papi_gold/app/core/error/failure.dart';
 import 'package:papi_gold/app/core/error/server_exception.dart';
 import 'package:papi_gold/app/core/network/dio_client.dart';
 import 'package:papi_gold/data/models/index.dart';
 import 'package:papi_gold/data/models/responses/response_checkout_model.dart';
+import 'package:papi_gold/data/models/responses/response_products_model.dart';
 import 'package:papi_gold/data/sources/remote/index.dart';
 import 'package:papi_gold/injection_container.dart';
 
 class CommonRemoteDataImpl extends CommonRemoteData {
+  final Logger logger = Logger();
   @override
   Future<Either<Failure, List<CountryModel>>> getCountries() async {
     try {
       final res = await sl<DioClient>().get(Apis.countries);
-      final ApiResponseModel response = ApiResponseModel<CountryModel>.fromJson(
-        res.data['data'],
-        CountryModel.fromJson,
-      );
-      final List<CountryModel> countries = response.data
-          .map((x) => CountryModel.fromEntity(x))
+
+      final List<CountryModel> countries = res.data
+          .map((x) => CountryModel.fromJson(x))
           .toList();
       return Right(countries);
     } catch (e) {
@@ -30,13 +30,8 @@ class CommonRemoteDataImpl extends CommonRemoteData {
   Future<Either<Failure, List<LocationModel>>> getLocation() async {
     try {
       final res = await sl<DioClient>().get(Apis.countries);
-      final ApiResponseModel response =
-          ApiResponseModel<LocationModel>.fromJson(
-            res.data['data'],
-            LocationModel.fromJson,
-          );
-      final List<LocationModel> locations = response.data
-          .map((x) => LocationModel.fromEntity(x))
+      final List<LocationModel> locations = res.data
+          .map((x) => LocationModel.fromJson(x))
           .toList();
       return Right(locations);
     } catch (e) {
@@ -45,16 +40,12 @@ class CommonRemoteDataImpl extends CommonRemoteData {
   }
 
   @override
-  Future<Either<Failure, List<MetalModel>>> getMetalList(String? symbol) async {
+  Future<Either<Failure, List<MetalModel>>> metalList(String? symbol) async {
     try {
       final res = await sl<DioClient>().get(Apis.price);
-      final ApiResponseModel response = ApiResponseModel<MetalModel>.fromJson(
-        res.data['data'],
-        MetalModel.fromJson,
+      final List<MetalModel> metals = res.data.map(
+        (x) => MetalModel.fromJson(x),
       );
-      final List<MetalModel> metals = response.data
-          .map((x) => MetalModel.fromEntity(x))
-          .toList();
       return Right(metals);
     } catch (e) {
       return Left(ServerException(e));
@@ -62,22 +53,17 @@ class CommonRemoteDataImpl extends CommonRemoteData {
   }
 
   @override
-  Future<Either<Failure, ApiResponseModel<ProductInfoModel>>> getProductList() async {
+  Future<Either<Failure, ResponseProductsModel>> productList() async {
     try {
       final res = await sl<DioClient>().get(Apis.price);
-      final ApiResponseModel<ProductInfoModel> response =
-          ApiResponseModel<ProductInfoModel>.fromJson(
-            res.data['data'],
-            ProductInfoModel.fromJson,
-          );
-      return Right(response);
+      return Right(ResponseProductsModel.fromJson(res.data));
     } catch (e) {
       return Left(ServerException(e));
     }
   }
 
   @override
-  Future<Either<Failure, ProductModel>> getProductDetail(
+  Future<Either<Failure, ProductModel>> productDetail(
     LocationParamModel params,
   ) async {
     try {
@@ -104,32 +90,32 @@ class CommonRemoteDataImpl extends CommonRemoteData {
   }
 
   @override
-  Future<Either<Failure, ApiResponseModel<OrderDetailModel>>> orderList() async  {
+  Future<Either<Failure, ResponseOrdersModel>> orderList() async {
     try {
-     final res = await sl<DioClient>().get(Apis.order);
-      final ApiResponseModel<OrderDetailModel> response =
-          ApiResponseModel<OrderDetailModel>.fromJson(
-            res.data['data'],
-            OrderDetailModel.fromJson,
-          );
-      return Right(response);
+      final res = await sl<DioClient>().get(Apis.order);
+      return Right(ResponseOrdersModel.fromJson(res.data));
     } catch (e) {
+      logger.e(e);
       return Left(ServerException(e));
     }
   }
-  
+
   @override
-  Future<Either<Failure, OrderDetailModel>> orderDetail(String orderCode) async {
-     try {
+  Future<Either<Failure, OrderDetailModel>> orderDetail(
+    String orderCode,
+  ) async {
+    try {
       final res = await sl<DioClient>().get('${Apis.order}/$orderCode');
       return Right(OrderDetailModel.fromJson(res.data));
     } catch (e) {
       return Left(ServerException(e));
     }
   }
-  
+
   @override
-  Future<Either<Failure, ResponseChatModel>> chat(ChatPayloadModel model) async {
+  Future<Either<Failure, ResponseChatModel>> chat(
+    ChatPayloadModel model,
+  ) async {
     try {
       final res = await sl<DioClient>().get(Apis.chat);
       return Right(ResponseChatModel.fromJson(res.data['data']));
@@ -137,9 +123,11 @@ class CommonRemoteDataImpl extends CommonRemoteData {
       return Left(ServerException(e));
     }
   }
-  
+
   @override
-  Future<Either<Failure, ResponseMessageLogModel>> chatHistory(String identifier) async {
+  Future<Either<Failure, ResponseMessageLogModel>> chatHistory(
+    String identifier,
+  ) async {
     try {
       final res = await sl<DioClient>().get('${Apis.chat}/$identifier');
       return Right(ResponseMessageLogModel.fromJson(res.data['data']));
@@ -147,9 +135,11 @@ class CommonRemoteDataImpl extends CommonRemoteData {
       return Left(ServerException(e));
     }
   }
-  
+
   @override
-  Future<Either<Failure, String>> consultation(ConsultationPayloadModel m) async {
+  Future<Either<Failure, String>> consultation(
+    ConsultationPayloadModel m,
+  ) async {
     try {
       final res = await sl<DioClient>().get(Apis.consultation);
       return Right(res.data['message']);
@@ -157,5 +147,4 @@ class CommonRemoteDataImpl extends CommonRemoteData {
       return Left(ServerException(e));
     }
   }
-
 }

@@ -68,8 +68,8 @@ class StatusModel extends StatusEntity {
   /// Converts a JSON map to a [StatusModel].
   factory StatusModel.fromJson(Map<String, dynamic> json) {
     return StatusModel(
-      id: (json['id'] as num).toInt(),
-      name: json['name'] as String,
+      id: safeInt(json['id']),
+      name: safeString(json['name']),
     );
   }
 

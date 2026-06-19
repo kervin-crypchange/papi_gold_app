@@ -1,6 +1,5 @@
 import 'package:papi_gold/app/common/widgets/index.dart';
-import 'package:papi_gold/presentation/pages/home_page.dart';
-import 'package:papi_gold/presentation/pages/profile_page.dart';
+import 'package:papi_gold/presentation/pages/index.dart';
 
 class NavigationPage extends StatefulWidget {
   const NavigationPage({super.key});
@@ -14,13 +13,12 @@ class _NavigationPageState extends State<NavigationPage> {
 
   final List<Widget> _destinations = [
     NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
+    NavigationDestination(icon: Icon(Icons.shopping_cart), label: 'Ordenes'),
     NavigationDestination(
       icon: Icon(Icons.person_pin_rounded),
       label: 'Perfil',
     ),
   ];
-
-  final List<Widget> _pages = [HomePage(), ProfilePage()];
 
   void _onSelectedPage(int index) {
     setState(() {
@@ -31,12 +29,7 @@ class _NavigationPageState extends State<NavigationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[currentPageIndex],
-      floatingActionButton: FloatingActionButton(
-        onPressed: null,
-        child: Icon(Icons.add),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      body: [HomePage(), OrdersPage(), ProfilePage()][currentPageIndex],
       bottomNavigationBar: NavigationBar(
         destinations: _destinations,
         selectedIndex: currentPageIndex,
