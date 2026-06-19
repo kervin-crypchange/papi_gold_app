@@ -16,10 +16,7 @@ class OrdersCubit extends Cubit<OrdersState> {
     Either response = await sl<CommonRepository>().orderList();
 
     response.fold(
-      (l) {
-        print('Error $l');
-        emit(OrdersFailure(message: 'error'));
-      },
+      (l) => emit(OrdersFailure(message: l.toString())),
       (r) => emit(OrdersSuccess(response: r)),
     );
   }

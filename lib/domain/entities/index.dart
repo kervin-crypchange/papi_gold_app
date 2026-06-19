@@ -1,4 +1,6 @@
 
+export 'package:papi_gold/domain/entities/responses/response_metals_entity.dart';
+export 'package:papi_gold/domain/entities/responses/api_response_entity.dart';
 export 'package:papi_gold/domain/entities/responses/response_products_entity.dart';
 export 'package:papi_gold/domain/entities/responses/response_orders_entity.dart';
 export 'package:papi_gold/domain/entities/stats_entity.dart';

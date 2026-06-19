@@ -1,3 +1,5 @@
+export 'package:papi_gold/data/models/responses/response_metals_model.dart';
+export 'package:papi_gold/data/models/responses/api_response_model.dart';
 export 'package:papi_gold/data/models/responses/response_orders_model.dart';
 export 'package:papi_gold/data/models/stats_model.dart';
 export 'package:papi_gold/data/models/consultation_payload_model.dart';

@@ -13,7 +13,6 @@ class OrdersPage extends StatefulWidget {
 }
 
 class _OrdersPageState extends State<OrdersPage> with LoggerMixin {
-
   late MetaEntity meta;
   late List<OrderDetailEntity> orders;
 
@@ -33,12 +32,12 @@ class _OrdersPageState extends State<OrdersPage> with LoggerMixin {
             if (state is OrdersLoadding) {
               return Center(child: CircularProgressIndicator.adaptive());
             }
-            if(state is OrdersSuccess){
+            if (state is OrdersSuccess) {
               log('Response state $state');
               log('Response state ${state.response}');
-              // meta = state.response.meta!;
-              // orders = state.response.data;
-
+              meta = state.response.meta;
+              orders = state.response.data;
+              return Center(child: Text('${orders.length}'),);
             }
             return Center(child: Text('Error en l carga de datos'));
           },

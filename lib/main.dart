@@ -80,7 +80,6 @@ class _MainAppState extends State<MainApp> {
   @override
   void initState() {
     super.initState();
-    context.read<OrdersCubit>().orderList();
   }
 
   @override
