@@ -13,6 +13,8 @@ class OrderCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      dense: true,
+      contentPadding: EdgeInsets.only(left: 12, right: 12),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       tileColor: Colors.white12,
       leading: Container(
@@ -41,6 +43,7 @@ class OrderCardWidget extends StatelessWidget {
         getFormatMoney(order.total),
         style: context.bodyLarge.copyWith(color: AppColors.secondary),
       ),
+      onTap: () => print('tapped'),
     ).paddingSymmetric(horizontal: 12.w);
   }
 }
