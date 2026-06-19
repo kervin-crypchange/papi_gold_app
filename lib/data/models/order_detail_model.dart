@@ -22,7 +22,7 @@ class OrderDetailModel extends OrderDetailEntity {
     return OrderDetailModel(
       id: safeInt(json['id']),
       order: safeString(json['order']),
-      invoice: safeString(json['invoice']),
+      invoice: safeString(json['invoice_number']),
       description: safeString(json['description']),
       total: safeDouble(json['total_v']),
       totalPago: safeDouble(json['total_pago_v']),

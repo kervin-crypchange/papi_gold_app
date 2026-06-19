@@ -4,6 +4,7 @@ import 'package:papi_gold/app/common/mixins/logger_mixin.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 import 'package:papi_gold/domain/entities/order_detail_entity.dart';
 import 'package:papi_gold/presentation/cubits/ordes/orders_cubit.dart';
+import 'package:papi_gold/presentation/widgets/index.dart';
 
 class OrdersPage extends StatefulWidget {
   const OrdersPage({super.key});
@@ -35,9 +36,10 @@ class _OrdersPageState extends State<OrdersPage> with LoggerMixin {
             if (state is OrdersSuccess) {
               log('Response state $state');
               log('Response state ${state.response}');
-              meta = state.response.meta;
-              orders = state.response.data;
-              return Center(child: Text('${orders.length}'),);
+              return OrderListWidget(
+                meta: state.response.meta,
+                orders: state.response.data,
+              );
             }
             return Center(child: Text('Error en l carga de datos'));
           },
