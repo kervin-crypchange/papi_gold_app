@@ -13,9 +13,9 @@ ThemeData appTheme() {
       shape: CircleBorder(),
     ),
     navigationBarTheme: NavigationBarThemeData(
-      overlayColor: WidgetStateProperty.resolveWith<Color?>((states) {
-        return Colors.transparent;
-      }),
+      // overlayColor: WidgetStateProperty.resolveWith<Color?>((states) {
+      //   return Colors.transparent;
+      // }),
       indicatorColor: Colors.transparent,
       iconTheme: WidgetStateProperty.resolveWith<IconThemeData?>((states) {
         if (states.contains(WidgetState.selected)) {
