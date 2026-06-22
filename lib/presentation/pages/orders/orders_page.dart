@@ -34,8 +34,6 @@ class _OrdersPageState extends State<OrdersPage> with LoggerMixin {
               return Center(child: CircularProgressIndicator.adaptive());
             }
             if (state is OrdersSuccess) {
-              log('Response state $state');
-              log('Response state ${state.response}');
               return OrderListWidget(
                 meta: state.response.meta,
                 orders: state.response.data,

@@ -1,6 +1,8 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
+import 'package:papi_gold/app/core/constants/index.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
 import 'package:papi_gold/app/core/theme/colors.dart';
 import 'package:papi_gold/domain/entities/order_detail_entity.dart';
@@ -37,13 +39,13 @@ class OrderCardWidget extends StatelessWidget {
             order.status.name,
             style: context.bodyXSmall,
           ).paddingSymmetric(horizontal: 6.w, vertical: 1.h),
-        ),
+        ).paddingOnly(top: 3.h),
       ),
       trailing: Text(
         getFormatMoney(order.total),
         style: context.bodyLarge.copyWith(color: AppColors.secondary),
       ),
-      onTap: () => print('tapped'),
+      onTap: () => context.goNamed(Routes.order),
     );
   }
 }
