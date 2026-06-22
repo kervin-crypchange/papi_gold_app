@@ -1,5 +1,4 @@
 import 'package:papi_gold/app/common/utils/utils.dart';
-import 'package:papi_gold/data/models/index.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 
 class OrderItemModel extends OrderItemEntity {
@@ -14,7 +13,7 @@ class OrderItemModel extends OrderItemEntity {
     required super.order,
     required super.type,
     required super.metalDetail,
-    required super.translations,
+    // required super.translations,
   });
 
   factory OrderItemModel.fromJson(Map<String, dynamic> json) {
@@ -29,7 +28,7 @@ class OrderItemModel extends OrderItemEntity {
       order: safeInt(json['order']),
       type: safeString(json['type']),
       metalDetail: OrderMetalDetailModel.fromJson(json['metalDetail']),
-      translations: TranslationModel.fromJson(json['translations']),
+      // translations: TranslationModel.fromJson(json['translations']),
     );
   }
 }

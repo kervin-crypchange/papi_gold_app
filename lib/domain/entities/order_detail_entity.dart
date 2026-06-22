@@ -10,10 +10,10 @@ class OrderDetailEntity extends Equatable {
   final double totalPago;
   final StatusEntity status;
   final DateTime createdAt;
-  final List<CartItemEntity> items;
+  final List<OrderItemEntity> items;
   final List<PaymentEntity> payments;
   final List<ShippingEntity> shippings;
-  // final TranslationEntity translatons;
+  // final TranslationEntity translations;
 
   const OrderDetailEntity({
     required this.id,
@@ -27,7 +27,7 @@ class OrderDetailEntity extends Equatable {
     required this.payments,
     required this.shippings,
     required this.createdAt,
-    // required this.translatons,
+    // required this.translations,
   });
 
   @override
@@ -43,6 +43,6 @@ class OrderDetailEntity extends Equatable {
     payments,
     shippings,
     createdAt
-    // translatons
+    // translations
   ];
 }

@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:papi_gold/domain/entities/index.dart';
 
 class OrderItemEntity extends Equatable {
   final int id;
@@ -12,7 +11,7 @@ class OrderItemEntity extends Equatable {
   final int order;
   final String type;
   final OrderMetalDetailEntity metalDetail;
-  final TranslationEntity translations;
+  // final TranslationEntity translations;
 
   const OrderItemEntity({
     required this.id,
@@ -25,7 +24,7 @@ class OrderItemEntity extends Equatable {
     required this.order,
     required this.type,
     required this.metalDetail,
-    required this.translations,
+    // required this.translations,
   });
 
   @override
@@ -40,7 +39,7 @@ class OrderItemEntity extends Equatable {
     order,
     type,
     metalDetail,
-    translations,
+    // translations,
   ];
 }
 

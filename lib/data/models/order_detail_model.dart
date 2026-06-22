@@ -1,4 +1,5 @@
 import 'package:papi_gold/data/models/index.dart';
+import 'package:papi_gold/data/models/order_item_model.dart';
 import 'package:papi_gold/domain/entities/order_detail_entity.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
 
@@ -15,7 +16,7 @@ class OrderDetailModel extends OrderDetailEntity {
     required super.payments,
     required super.shippings,
     required super.createdAt,
-    // required super.translatons,
+    // required super.translations,
   });
 
   /// Converts a JSON map to a [OrderDetailModel].
@@ -28,20 +29,20 @@ class OrderDetailModel extends OrderDetailEntity {
       total: safeDouble(json['total_v']),
       totalPago: safeDouble(json['total_pago_v']),
       createdAt: safeDateTime(json['created_at']),
-      status: StatusModel.fromJson(json['status'] as Map<String, dynamic>),
-      items: safeList<CartItemModel>(
+      status: StatusModel.fromJson(json['status']),
+      items: safeList<OrderItemModel>(
         json['items'],
-        (x) => CartItemModel.fromJson(x as Map<String, dynamic>),
+        (x) => OrderItemModel.fromJson(x),
       ),
       payments: safeList<PaymentModel>(
         json['payments'],
-        (x) => PaymentModel.fromJson(x as Map<String, dynamic>),
+        (x) => PaymentModel.fromJson(x),
       ),
       shippings: safeList<ShippingModel>(
         json['shippings'],
         (x) => ShippingModel.fromJson(x as Map<String, dynamic>),
       ),
-      // translatons: json['translations']
+      // translations: json['translations']
     );
   }
 
@@ -59,7 +60,7 @@ class OrderDetailModel extends OrderDetailEntity {
       payments: e.payments,
       shippings: e.shippings,
       createdAt: e.createdAt,
-      // translatons: e.translatons,
+      // translations: e.translations,
     );
   }
 }

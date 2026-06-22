@@ -61,11 +61,13 @@ class _OrderPageState extends State<OrderPage> {
           ListView.builder(
             itemCount: e.items.length,
             itemBuilder: (context, index) {
-              final CartItemEntity item = e.items[index];
+              final OrderItemEntity item = e.items[index];
               return ListTile(
                 leading: Icon(Icons.abc),
-                title: Text(item.),
-              )
+                title: Text(item.product),
+                subtitle: Text(getFormatMoney(item.price)),
+                trailing: Text(getFormatMoney(item.total)),
+              );
             },
           ),
           Gap(10.h),

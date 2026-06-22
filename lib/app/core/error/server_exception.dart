@@ -20,6 +20,9 @@ class ServerException extends Equatable with LoggerMixin implements Failure  {
     late ServerException serverException;
     try {
       if (error is DioException) {
+        print('--- Error Type ${error.type}');
+        print('--- Error Error ${error.error}');
+        print('--- Error $error');
         switch (error.type) {
           case DioExceptionType.cancel:
             serverException = ServerException._(
