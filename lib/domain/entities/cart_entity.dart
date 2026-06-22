@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 
 class CartEntity extends Equatable {
-  final List<ItemEntity> items;
+  final List<CartItemEntity> items;
 
   const CartEntity({required this.items});
   

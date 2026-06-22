@@ -21,7 +21,7 @@ export 'package:papi_gold/data/models/location_model.dart';
 export 'package:papi_gold/data/models/contact_model.dart';
 export 'package:papi_gold/data/models/responses/response_login_model.dart';
 export 'package:papi_gold/data/models/order_model.dart';
-export 'package:papi_gold/data/models/item_model.dart';
+export 'package:papi_gold/data/models/cart_item_model.dart';
 export 'package:papi_gold/data/models/client_model.dart';
 export 'package:papi_gold/data/models/cart_model.dart';
 export 'package:papi_gold/data/models/auth/login_model.dart';

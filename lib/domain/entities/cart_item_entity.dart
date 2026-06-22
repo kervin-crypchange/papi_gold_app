@@ -1,12 +1,12 @@
 import 'package:equatable/equatable.dart';
 
-class ItemEntity extends Equatable {
+class CartItemEntity extends Equatable {
   final int id;
   final int quantity;
   final double price;
   final int format;
 
-  const ItemEntity({
+  const CartItemEntity({
     required this.id,
     required this.quantity,
     required this.price,

@@ -10,7 +10,7 @@ class OrderDetailEntity extends Equatable {
   final double totalPago;
   final StatusEntity status;
   final DateTime createdAt;
-  final List<ItemEntity> items;
+  final List<CartItemEntity> items;
   final List<PaymentEntity> payments;
   final List<ShippingEntity> shippings;
   // final TranslationEntity translatons;

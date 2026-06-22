@@ -29,9 +29,9 @@ class OrderDetailModel extends OrderDetailEntity {
       totalPago: safeDouble(json['total_pago_v']),
       createdAt: safeDateTime(json['created_at']),
       status: StatusModel.fromJson(json['status'] as Map<String, dynamic>),
-      items: safeList<ItemModel>(
+      items: safeList<CartItemModel>(
         json['items'],
-        (x) => ItemModel.fromJson(x as Map<String, dynamic>),
+        (x) => CartItemModel.fromJson(x as Map<String, dynamic>),
       ),
       payments: safeList<PaymentModel>(
         json['payments'],

@@ -7,7 +7,7 @@ class ResponseCheckoutModel extends ResponseCheckoutEntity {
     required super.message,
     required super.clientSecret,
     required super.paymentId,
-    required super.items,
+    required super.cartItems,
     required super.sale,
   });
 
@@ -16,7 +16,7 @@ class ResponseCheckoutModel extends ResponseCheckoutEntity {
       message: safeString(json['message']),
       clientSecret: safeString(json['clientSecret']),
       paymentId: safeString(json['paymentId']),
-      items: safeList<ItemModel>(json['sale'], (x) => ItemModel.fromJson(x)),
+      cartItems: safeList<CartItemModel>(json['sale'], (x) => CartItemModel.fromJson(x)),
       sale: SaleModel.fromJson(json['sale'] as Map<String, dynamic>),
     );
   }

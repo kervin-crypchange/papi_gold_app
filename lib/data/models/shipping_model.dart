@@ -7,6 +7,7 @@ class ShippingModel extends ShippingEntity {
     required super.courier,
     required super.status,
     required super.tracking,
+    required super.address,
   });
 
   /// Converts a JSON map to a [ShippingModel].
@@ -16,6 +17,7 @@ class ShippingModel extends ShippingEntity {
       courier: CourierModel.fromJson(json['courier']),
       status: StatusModel.fromJson(json['status']),
       tracking: safeString(json['tracking_number']),
+      address: safeString(json['address']),
     );
   }
 
@@ -24,6 +26,7 @@ class ShippingModel extends ShippingEntity {
     return ShippingModel(
       id: e.id,
       courier: e.courier,
+      address: e.address,
       status: e.status,
       tracking: e.tracking,
     );
@@ -36,6 +39,7 @@ class ShippingModel extends ShippingEntity {
       'courier': CourierModel.fromEntity(courier).toJson(),
       'status': StatusModel.fromEntity(status).toJson(),
       'tracking_number': tracking,
+      'address': address,
     };
   }
 }
