@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:papi_gold/app/common/enums/index.dart';
 import 'package:logger/logger.dart';
+import 'package:papi_gold/app/core/constants/index.dart';
 import 'package:papi_gold/app/core/router/router.dart';
 import 'package:papi_gold/data/sources/local/auth/auth_local_data.dart';
 import 'package:papi_gold/injection_container.dart';
@@ -24,7 +25,7 @@ import 'package:papi_gold/injection_container.dart';
       //! Se reenvia al login pero debe cambiarse por un refresh token
       sl<AuthLocalData>().deleteToken();
       sl<AuthLocalData>().deleteUserLogged();
-      router.goNamed('login');
+      router.goNamed(Routes.login);
       logger.i('${options.method} request ==> $requestPath'); //Info log
       try {} on DioException catch (e) {
         // If refresh fails or retry fails, navigate to login or handle as needed

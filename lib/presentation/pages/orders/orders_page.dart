@@ -20,7 +20,7 @@ class _OrdersPageState extends State<OrdersPage> with LoggerMixin {
   @override
   void initState() {
     super.initState();
-    // context.read<OrdersCubit>().orderList();
+    context.read<OrdersCubit>().orderList();
   }
 
   @override
