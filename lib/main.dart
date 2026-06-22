@@ -10,7 +10,7 @@ import 'package:papi_gold/app/core/theme/app_theme.dart';
 import 'package:papi_gold/injection_container.dart';
 import 'package:papi_gold/presentation/cubits/auth/auth_cubit.dart';
 import 'package:papi_gold/app/core/extensions/index.dart' as globals;
-import 'package:papi_gold/presentation/cubits/ordes/orders_cubit.dart';
+import 'package:papi_gold/presentation/cubits/order/orders_cubit.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

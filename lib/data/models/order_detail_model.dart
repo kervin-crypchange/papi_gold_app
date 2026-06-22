@@ -14,6 +14,7 @@ class OrderDetailModel extends OrderDetailEntity {
     required super.items,
     required super.payments,
     required super.shippings,
+    required super.createdAt,
     // required super.translatons,
   });
 
@@ -26,6 +27,7 @@ class OrderDetailModel extends OrderDetailEntity {
       description: safeString(json['description']),
       total: safeDouble(json['total_v']),
       totalPago: safeDouble(json['total_pago_v']),
+      createdAt: safeDateTime(json['created_at']),
       status: StatusModel.fromJson(json['status'] as Map<String, dynamic>),
       items: safeList<ItemModel>(
         json['items'],
@@ -56,6 +58,7 @@ class OrderDetailModel extends OrderDetailEntity {
       items: e.items,
       payments: e.payments,
       shippings: e.shippings,
+      createdAt: e.createdAt,
       // translatons: e.translatons,
     );
   }

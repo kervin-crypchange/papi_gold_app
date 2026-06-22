@@ -106,7 +106,7 @@ class CommonRemoteDataImpl extends CommonRemoteData {
   ) async {
     try {
       final res = await sl<DioClient>().get('${Apis.order}/$orderCode');
-      return Right(OrderDetailModel.fromJson(res.data));
+      return Right(OrderDetailModel.fromJson(res.data['data']));
     } catch (e) {
       return Left(ServerException(e));
     }

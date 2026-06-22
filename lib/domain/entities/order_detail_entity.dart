@@ -9,6 +9,7 @@ class OrderDetailEntity extends Equatable {
   final double total;
   final double totalPago;
   final StatusEntity status;
+  final DateTime createdAt;
   final List<ItemEntity> items;
   final List<PaymentEntity> payments;
   final List<ShippingEntity> shippings;
@@ -25,6 +26,7 @@ class OrderDetailEntity extends Equatable {
     required this.items,
     required this.payments,
     required this.shippings,
+    required this.createdAt,
     // required this.translatons,
   });
 
@@ -40,6 +42,7 @@ class OrderDetailEntity extends Equatable {
     items,
     payments,
     shippings,
+    createdAt
     // translatons
   ];
 }

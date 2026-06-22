@@ -16,6 +16,11 @@ final class OrdersSuccess extends OrdersState {
   const OrdersSuccess({required this.response});
 }
 
+final class OrderSuccess extends OrdersState {
+  final OrderDetailEntity order;
+  const OrderSuccess({required this.order});
+}
+
 final class OrdersFailure extends OrdersState {
   final String message;
   const OrdersFailure({required this.message});

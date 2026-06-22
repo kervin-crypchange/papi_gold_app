@@ -45,7 +45,10 @@ class OrderCardWidget extends StatelessWidget {
         getFormatMoney(order.total),
         style: context.bodyLarge.copyWith(color: AppColors.secondary),
       ),
-      onTap: () => context.goNamed(Routes.order),
+      onTap: () => context.goNamed(
+        Routes.order,
+        pathParameters: {'id': order.order.toString()},
+      ),
     );
   }
 }

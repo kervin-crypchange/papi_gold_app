@@ -41,8 +41,8 @@ final GoRouter router = GoRouter(
       routes: [
          GoRoute(
           name: Routes.order,
-          path: '/${Routes.order}',
-          builder: (context, state) => OrderPage(),
+          path: '/${Routes.order}/:id',
+          builder: (context, state) => OrderPage(orderId: state.pathParameters['id']!,),
         ),
       ]
     ),

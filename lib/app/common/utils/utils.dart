@@ -68,6 +68,10 @@ String getFormatMoney(double amount) {
   ).format(amount);
 }
 
+String getFormatDate(DateTime date) {
+  return DateFormat('MMMM dd, yyyy').format(date);
+}
+
 String getMonthByNumber(int m) {
   String month;
   switch (m) {
