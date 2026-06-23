@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/common/widgets/filled_button_widget.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
@@ -292,12 +293,20 @@ class _OrderPageState extends State<OrderPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Pagos'),
+                ],
+              ),
+              Gap(12.h),
               ...payments.map(
                 (p) => ListTile(
+                  tileColor: Colors.white12,
                   dense: true,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12.r),
-                    side: BorderSide(color: AppColors.grey, width: 0.5)
+                    side: BorderSide(color: Colors.grey, width: 0.5)
                   ),
                   titleTextStyle: TextStyle(
                     color: AppColors.grey,
@@ -318,7 +327,7 @@ class _OrderPageState extends State<OrderPage> {
                     ],
                   ),
                   trailing: Text(p.status.name, style: context.bodySmall),
-                ),
+                ).paddingOnly(bottom: 12.h),
               ),
             ],
           ),
