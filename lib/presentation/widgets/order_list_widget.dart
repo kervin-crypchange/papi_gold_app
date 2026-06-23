@@ -1,6 +1,7 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
+import 'package:papi_gold/app/core/extensions/widget.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 import 'package:papi_gold/domain/entities/order_detail_entity.dart';
 import 'package:papi_gold/presentation/widgets/index.dart';
@@ -18,7 +19,7 @@ class OrderListWidget extends StatelessWidget {
       itemCount: orders.length,
       itemBuilder: (context, index) {
         final OrderDetailEntity order = orders[index];
-        return OrderCardWidget(order: order);
+        return OrderCardWidget(order: order).paddingSymmetric(horizontal: 12);
       },
     );
   }

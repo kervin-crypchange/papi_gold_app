@@ -24,7 +24,7 @@ class _OrdersPageState extends State<OrdersPage> with LoggerMixin {
     loadData(1);
   }
 
-  void loadData(int page){
+  void loadData(int page) {
     context.read<OrdersCubit>().orderList(page);
   }
 
@@ -47,13 +47,19 @@ class _OrdersPageState extends State<OrdersPage> with LoggerMixin {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Row(
-                    spacing: 12.w,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       statCard('Invested', stats.invested),
+                      Container(
+                        height: 60,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.white60, width: 0.5)
+                        ),
+                      ),
                       statCard('Sold', stats.sold),
                     ],
-                  ),
+                  ).paddingAll(12.r),
                   Row(
                     spacing: 10.w,
                     children: [
@@ -65,12 +71,23 @@ class _OrdersPageState extends State<OrdersPage> with LoggerMixin {
                         ),
                       ),
                     ],
-                  ),
+                  ).paddingSymmetric(horizontal: 12.w),
                   Expanded(
-                    child: OrderListWidget(meta: meta, orders: orders),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(24.0),
+                        ),
+                        border: Border(top: BorderSide(color: Colors.white38)),
+                      ),
+                      child: OrderListWidget(
+                        meta: meta,
+                        orders: orders,
+                      ).paddingOnly(top: 16.h),
+                    ),
                   ),
                 ],
-              ).paddingAll(12.r);
+              ).paddingSymmetric(vertical: 12.h);
             }
             return Center(child: Text('Error en l carga de datos'));
           },
@@ -82,23 +99,18 @@ class _OrdersPageState extends State<OrdersPage> with LoggerMixin {
   Widget statCard(String label, StatsDataEntity stat) {
     return Expanded(
       child: Container(
-        decoration: BoxDecoration(
-          color: Colors.black12,
-          border: Border.all(color: AppColors.secondary, width: 1),
-          borderRadius: BorderRadius.circular(12.r),
-        ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
               label,
-              style: context.bodyMedium.copyWith(color: AppColors.grey),
+              style: context.bodySmall.copyWith(color: AppColors.secondary),
             ),
             Text(
               getFormatMoney(stat.amount),
-              style: context.titleMedium,
-            ).medium,
-            Text('${stat.count} orders', style: context.bodySmall),
+              style: context.headlineSmall,
+            ).light,
+            Text('${stat.count} orders', style: context.bodySmall).light,
           ],
         ).paddingAll(8.r),
       ),
