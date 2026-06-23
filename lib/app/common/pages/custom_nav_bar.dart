@@ -39,26 +39,38 @@ class CustomNavBar extends StatelessWidget {
                 duration: Duration(milliseconds: 300),
                 curve: Curves.easeInOut,
                 decoration: BoxDecoration(
-                  color: isSelected ? AppColors.secondary.withValues(alpha: 0.15) : Colors.transparent,
-                  borderRadius: BorderRadius.circular(20),
+                  color: isSelected
+                      ? AppColors.secondary.withValues(alpha: 0.15)
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(100),
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(
                       navItems[index]['icon'],
-                      color: isSelected ? AppColors.secondary : Colors.grey.shade600,
+                      color: isSelected
+                          ? AppColors.secondary
+                          : Colors.grey.shade600,
                       size: 20,
                     ),
-                    if (isSelected) ...[
-                      Text(
-                        navItems[index]['label'],
-                        style: context.labelXSmall.copyWith(color: AppColors.secondary),
+                    Text(
+                      navItems[index]['label'],
+                      style: context.labelXSmall.copyWith(
+                        color: isSelected
+                            ? AppColors.secondary
+                            : Colors.grey.shade600,
                       ),
-                    ],
+                    ),
+                    // if (isSelected) ...[
+                    //   Text(
+                    //     navItems[index]['label'],
+                    //     style: context.labelXSmall.copyWith(color: AppColors.secondary),
+                    //   ),
+                    // ],
                   ],
                 ),
-              ).paddingSymmetric(vertical: 6.h),
+              ).paddingSymmetric(vertical: 4.h),
             ),
           );
         }),

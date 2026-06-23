@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:gap/gap.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
+import 'package:papi_gold/app/common/widgets/filled_button_widget.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
 import 'package:papi_gold/app/core/theme/index.dart';
 import 'package:papi_gold/domain/entities/index.dart';
@@ -27,6 +27,21 @@ class _OrderPageState extends State<OrderPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Resumen de Orden', style: context.titleMedium).medium,
+        actions: [
+          IconButton(
+            icon: const Icon(
+              Icons.payments_outlined,
+              color: AppColors.secondary,
+            ),
+            tooltip: 'Proceder con el pago',
+            onPressed: () {
+              // Handle search action
+            },
+          ),
+        ],
+      ),
       body: SafeArea(
         child: BlocConsumer<OrdersCubit, OrdersState>(
           listener: (context, state) {},
@@ -50,14 +65,16 @@ class _OrderPageState extends State<OrderPage> {
         spacing: 20.h,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Text('Resumen de Orden', style: context.titleMedium).medium,
-            ],
-          ),
           _orderDetail(e),
           _itemList(e.items),
           _shippinfInfo(e.shippings),
+          SizedBox(
+            width: 1.sw,
+            child: FilledButtonWidget(
+              title: 'Proceder con el pago',
+              onPressed: () => print('press me'),
+            ),
+          ).paddingOnly(bottom: 12.h),
         ],
       ),
     );
@@ -139,7 +156,7 @@ class _OrderPageState extends State<OrderPage> {
             Icon(icon, color: AppColors.secondary),
             Text(
               label,
-              style: context.bodyLarge.copyWith(color: AppColors.secondary),
+              style: context.bodyMedium.copyWith(color: AppColors.secondary),
             ).medium,
           ],
         ),
@@ -153,7 +170,7 @@ class _OrderPageState extends State<OrderPage> {
             spacing: 12.h,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [...data.map((d) => d)],
-          ).paddingAll(16.r),
+          ).paddingAll(12.r),
         ),
       ],
     );
