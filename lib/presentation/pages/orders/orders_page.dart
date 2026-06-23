@@ -63,12 +63,10 @@ class _OrdersPageState extends State<OrdersPage> with LoggerMixin {
                   Row(
                     spacing: 10.w,
                     children: [
-                      Icon(Icons.schedule_rounded, color: AppColors.secondary),
+                      Icon(Icons.history, color: AppColors.secondary),
                       Text(
                         'Ordenes recientes',
-                        style: context.bodyMedium.copyWith(
-                          color: AppColors.secondary,
-                        ),
+                        style: context.bodyLarge
                       ),
                     ],
                   ).paddingSymmetric(horizontal: 12.w),

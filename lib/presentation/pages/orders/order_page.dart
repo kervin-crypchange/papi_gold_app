@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/common/widgets/filled_button_widget.dart';
 import 'package:papi_gold/app/core/constants/index.dart';
@@ -30,6 +31,9 @@ class _OrderPageState extends State<OrderPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: BackButton(
+          onPressed: ()=>Navigator.of(context).pop({'refresh': true}),
+        ),
         title: Text(
           'Resumen de Orden',
           style: context.titleMedium.copyWith(color: AppColors.white),
@@ -118,7 +122,7 @@ class _OrderPageState extends State<OrderPage> {
           (i) => ListTile(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
-              side: const BorderSide(color: Colors.white24, width: 0.5),
+              side: const BorderSide(color: Colors.white38, width: 0.5),
             ),
             leading: Image.network(
               i.image,

@@ -15,7 +15,12 @@ class OrderListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-      separatorBuilder: (context, index) => Gap(12.h),
+      separatorBuilder: (context, index) => Container(
+        width: 1.sw,
+        decoration: BoxDecoration(
+          border: BoxBorder.all(color: Colors.white38, width: 0.5),
+        ),
+      ).paddingSymmetric(horizontal: 12.w, vertical: 4.h),
       itemCount: orders.length,
       itemBuilder: (context, index) {
         final OrderDetailEntity order = orders[index];

@@ -18,14 +18,14 @@ class OrderCardWidget extends StatelessWidget {
       dense: true,
       contentPadding: EdgeInsets.only(left: 12, right: 12),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      tileColor: Colors.white12,
+      // tileColor: Colors.white12,
       leading: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
           color: AppColors.secondary.withValues(alpha: 0.1),
-          borderRadius: BorderRadius.circular(12), // Controls the roundness
+          borderRadius: BorderRadius.circular(100), // Controls the roundness
         ),
-        child: const Icon(Icons.share, color: AppColors.secondary),
+        child: const Icon(Icons.inventory_2_outlined, color: AppColors.secondary),
       ),
       title: Text(order.invoice, style: context.bodySmall).medium,
       subtitle: Align(
