@@ -36,8 +36,8 @@ class _OrderPageState extends State<OrderPage> {
         ).medium,
         actions: [
           IconButton(
-            icon: const Icon(Icons.payments_outlined, color: AppColors.white),
-            tooltip: 'Proceder con el pago',
+            icon: const Icon(Icons.help_outline, color: AppColors.white),
+            tooltip: 'Soporte',
             onPressed: () {
               // Handle search action
             },

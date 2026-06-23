@@ -62,9 +62,9 @@ class CommonRepositoryImpl extends CommonRepository {
   }
 
   @override
-  Future<Either<Failure, ResponseOrdersEntity>> orderList() async {
+  Future<Either<Failure, ResponseOrdersEntity>> orderList(int page) async {
     Either<Failure, ResponseOrdersEntity> res = await sl<CommonRemoteData>()
-        .orderList();
+        .orderList(page);
     return res.fold((l) => Left(l), (r) => Right(r));
   }
 

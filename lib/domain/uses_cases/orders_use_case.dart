@@ -7,10 +7,10 @@ import 'package:papi_gold/domain/repositories/index.dart';
 import 'package:papi_gold/injection_container.dart';
 
 class OrdersUseCase
-    implements UseCase<Either<Failure, ResponseOrdersEntity>, void> {
+    implements UseCase<Either<Failure, ResponseOrdersEntity>, int> {
   @override
-  Future<Either<Failure, ResponseOrdersEntity>> call({void param}) {
-    return sl<CommonRepository>().orderList();
+  Future<Either<Failure, ResponseOrdersEntity>> call({int? param}) {
+    return sl<CommonRepository>().orderList(param!);
   }
 }
 

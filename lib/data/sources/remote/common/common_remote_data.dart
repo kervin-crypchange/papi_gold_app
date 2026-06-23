@@ -13,7 +13,7 @@ abstract class CommonRemoteData {
   Future<Either<Failure, ProductModel>> productDetail(LocationParamModel p);
 
   Future<Either<Failure, ResponseCheckoutModel>> checkout(CheckOutModel m);
-  Future<Either<Failure, ResponseOrdersModel>> orderList();
+  Future<Either<Failure, ResponseOrdersModel>> orderList(int page);
   Future<Either<Failure, OrderDetailModel>> orderDetail(String orderCode);
 
   Future<Either<Failure, ResponseChatModel>> chat(ChatPayloadModel model);

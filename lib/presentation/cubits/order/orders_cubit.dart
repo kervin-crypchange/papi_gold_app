@@ -11,10 +11,10 @@ part 'orders_state.dart';
 class OrdersCubit extends Cubit<OrdersState> {
   OrdersCubit() : super(OrdersInitial());
 
-  void orderList() async {
+  void orderList(int page) async {
     emit(OrdersLoadding());
 
-    Either response = await sl<OrdersUseCase>().call();
+    Either response = await sl<OrdersUseCase>().call(param: page);
 
     response.fold(
       (l) => emit(OrdersFailure(message: l.toString())),

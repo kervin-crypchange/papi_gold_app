@@ -15,7 +15,7 @@ abstract class CommonRepository {
     LocationParamEntity p,
   );
   Future<Either<Failure, ResponseCheckoutEntity>> checkout(CheckoutEntity e);
-  Future<Either<Failure, ResponseOrdersEntity>> orderList();
+  Future<Either<Failure, ResponseOrdersEntity>> orderList(int page);
   Future<Either<Failure, OrderDetailEntity>> orderDetail(String orderCode);
 
   Future<Either<Failure, ResponseChatEntity>> chat(ChatPayloadEntity e);

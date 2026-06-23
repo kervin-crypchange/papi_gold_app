@@ -21,7 +21,11 @@ class _OrdersPageState extends State<OrdersPage> with LoggerMixin {
   @override
   void initState() {
     super.initState();
-    context.read<OrdersCubit>().orderList();
+    loadData(1);
+  }
+
+  void loadData(int page){
+    context.read<OrdersCubit>().orderList(page);
   }
 
   @override
@@ -53,8 +57,13 @@ class _OrdersPageState extends State<OrdersPage> with LoggerMixin {
                   Row(
                     spacing: 10.w,
                     children: [
-                      Icon(Icons.schedule_rounded, color: AppColors.secondary,),
-                      Text('Ordenes recientes', style: context.bodyMedium.copyWith(color: AppColors.secondary),)
+                      Icon(Icons.schedule_rounded, color: AppColors.secondary),
+                      Text(
+                        'Ordenes recientes',
+                        style: context.bodyMedium.copyWith(
+                          color: AppColors.secondary,
+                        ),
+                      ),
                     ],
                   ),
                   Expanded(
@@ -81,8 +90,14 @@ class _OrdersPageState extends State<OrdersPage> with LoggerMixin {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(label, style: context.bodyMedium.copyWith(color: AppColors.grey),),
-            Text(getFormatMoney(stat.amount), style: context.titleMedium).medium,
+            Text(
+              label,
+              style: context.bodyMedium.copyWith(color: AppColors.grey),
+            ),
+            Text(
+              getFormatMoney(stat.amount),
+              style: context.titleMedium,
+            ).medium,
             Text('${stat.count} orders', style: context.bodySmall),
           ],
         ).paddingAll(8.r),

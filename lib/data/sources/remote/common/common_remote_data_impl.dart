@@ -90,9 +90,12 @@ class CommonRemoteDataImpl extends CommonRemoteData {
   }
 
   @override
-  Future<Either<Failure, ResponseOrdersModel>> orderList() async {
+  Future<Either<Failure, ResponseOrdersModel>> orderList(int page) async {
     try {
-      final res = await sl<DioClient>().get(Apis.order);
+      final res = await sl<DioClient>().get(
+        Apis.order,
+        queryParameters: {'page': page},
+      );
       return Right(ResponseOrdersModel.fromJson(res.data));
     } catch (e) {
       logger.e(e);
