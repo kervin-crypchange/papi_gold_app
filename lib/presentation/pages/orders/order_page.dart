@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
-import 'package:papi_gold/app/core/extensions/text_theme.dart';
 import 'package:papi_gold/app/core/theme/index.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 import 'package:papi_gold/domain/entities/order_detail_entity.dart';
@@ -58,22 +57,39 @@ class _OrderPageState extends State<OrderPage> {
           Gap(10.h),
           _orderDetail(e),
           Gap(10.h),
-          ListView.builder(
-            itemCount: e.items.length,
-            itemBuilder: (context, index) {
-              final OrderItemEntity item = e.items[index];
-              return ListTile(
-                leading: Icon(Icons.abc),
-                title: Text(item.product),
-                subtitle: Text(getFormatMoney(item.price)),
-                trailing: Text(getFormatMoney(item.total)),
-              );
-            },
-          ),
+          _itemList(e.items),
           Gap(10.h),
           _shippinfInfo(e.shippings),
         ],
       ),
+    );
+  }
+
+  Widget _itemList(List<OrderItemEntity> i) {
+    return Container(
+      width: 1.sw,
+      decoration: BoxDecoration(
+        border: Border.all(color: AppColors.secondary),
+        borderRadius: BorderRadius.circular(12.r),
+      ),
+      child: ListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: i.length,
+        itemBuilder: (context, index) {
+          final OrderItemEntity item = i[index];
+          return ListTile(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+              side: const BorderSide(color: Colors.white24, width: 1),
+            ),
+            leading: Icon(Icons.abc),
+            title: Text(item.product),
+            subtitle: Text(getFormatMoney(item.price)),
+            trailing: Text(getFormatMoney(item.total)),
+          );
+        },
+      ).paddingAll(8.r),
     );
   }
 

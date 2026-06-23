@@ -6,8 +6,10 @@ class OrderDetailEntity extends Equatable {
   final String order;
   final String invoice;
   final String description;
-  final double total;
-  final double totalPago;
+  final double totalVenta;
+  final double totalPagoVenta;
+  final double totalCompra;
+  final double totalPagoCompra;
   final StatusEntity status;
   final DateTime createdAt;
   final List<OrderItemEntity> items;
@@ -20,8 +22,10 @@ class OrderDetailEntity extends Equatable {
     required this.order,
     required this.invoice,
     required this.description,
-    required this.total,
-    required this.totalPago,
+    required this.totalVenta,
+    required this.totalPagoVenta,
+    required this.totalCompra,
+    required this.totalPagoCompra,
     required this.status,
     required this.items,
     required this.payments,
@@ -36,8 +40,10 @@ class OrderDetailEntity extends Equatable {
     order,
     invoice,
     description,
-    total,
-    totalPago,
+    totalVenta,
+    totalPagoVenta,
+    totalCompra,
+    totalPagoCompra,
     status,
     items,
     payments,

@@ -42,7 +42,7 @@ class OrderCardWidget extends StatelessWidget {
         ).paddingOnly(top: 3.h),
       ),
       trailing: Text(
-        getFormatMoney(order.total),
+        getFormatMoney(order.totalVenta),
         style: context.bodyLarge.copyWith(color: AppColors.secondary),
       ),
       onTap: () => context.goNamed(
