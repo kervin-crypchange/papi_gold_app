@@ -67,10 +67,6 @@ class _OrderPageState extends State<OrderPage> {
         spacing: 20.h,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _orderDetail(e),
-          _itemList(e.items),
-          _shippinfInfo(e.shippings),
-          _billingInfo(e),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -87,6 +83,10 @@ class _OrderPageState extends State<OrderPage> {
               ),
             ],
           ),
+          _orderDetail(e),
+          _itemList(e.items),
+          _shippinfInfo(e.shippings),
+          _billingInfo(e),
           if (e.totalVenta > e.totalPagoVenta)
             SizedBox(
               width: 1.sw,
