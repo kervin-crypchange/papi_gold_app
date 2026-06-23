@@ -47,6 +47,7 @@ class _OrderPageState extends State<OrderPage> {
   Widget _buildUI(OrderDetailEntity e) {
     return SingleChildScrollView(
       child: Column(
+        spacing: 20.h,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
@@ -54,124 +55,64 @@ class _OrderPageState extends State<OrderPage> {
               Text('Resumen de Orden', style: context.titleMedium).medium,
             ],
           ),
-          Gap(10.h),
           _orderDetail(e),
-          Gap(10.h),
           _itemList(e.items),
-          Gap(10.h),
           _shippinfInfo(e.shippings),
         ],
       ),
     );
   }
 
-  Widget _itemList(List<OrderItemEntity> i) {
-    return Container(
-      width: 1.sw,
-      decoration: BoxDecoration(
-        border: Border.all(color: AppColors.secondary),
-        borderRadius: BorderRadius.circular(12.r),
-      ),
-      child: ListView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: i.length,
-        itemBuilder: (context, index) {
-          final OrderItemEntity item = i[index];
-          return ListTile(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-              side: const BorderSide(color: Colors.white24, width: 1),
-            ),
-            leading: Icon(Icons.abc),
-            title: Text(item.product),
-            subtitle: Text(getFormatMoney(item.price)),
-            trailing: Text(getFormatMoney(item.total)),
-          );
-        },
-      ).paddingAll(8.r),
-    );
+  Widget _orderDetail(OrderDetailEntity e) {
+    final List<dynamic> data = [
+      _dataFormat('Fecha', getFormatDate(e.createdAt)),
+      _dataFormat('Descripción', e.description),
+      _dataFormat('Invoice', e.invoice),
+      _dataFormat('Status', e.status.name),
+      _dataFormat('Número de orden', e.order),
+    ];
+    return _section('Detalle de la orden', Icons.inventory_outlined, data);
   }
 
-  Widget _orderDetail(OrderDetailEntity e) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      spacing: 10.h,
-      children: [
-        Row(
-          spacing: 4.w,
-          children: [
-            Icon(Icons.inventory, color: AppColors.secondary),
-            Text('Detalle de la orden', style: context.titleSmall).medium,
-          ],
-        ),
-        Container(
-          width: 1.sw,
-          decoration: BoxDecoration(
-            border: Border.all(color: AppColors.secondary),
-            borderRadius: BorderRadius.circular(12.r),
+  Widget _itemList(List<OrderItemEntity> items) {
+    final double size = 50;
+    final data = items
+        .map(
+          (i) => ListTile(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+              side: const BorderSide(color: Colors.white24, width: 0.5),
+            ),
+            leading: Image.network(
+              i.image,
+              fit: BoxFit.contain,
+              width: size,
+              height: size,
+            ),
+            title: Text(
+              i.product,
+              style: TextStyle(color: AppColors.white),
+            ).medium,
+            subtitle: Text(getFormatMoney(i.price)),
+            trailing: Text(getFormatMoney(i.total), style: context.bodyMedium),
           ),
-          child: Column(
-            spacing: 10.h,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _dataFormat('Fecha', getFormatDate(e.createdAt)),
-              _dataFormat('Descripción', e.description),
-              _dataFormat('Invoice', e.invoice),
-              _dataFormat('Status', e.status.name),
-              _dataFormat('Número de orden', e.order),
-            ],
-          ).paddingAll(10.r),
-        ),
-      ],
-    );
+        )
+        .toList();
+    return _section('Items de la orden', Icons.check_box_outlined, data);
   }
 
   Widget _shippinfInfo(List<ShippingEntity> shippings) {
     final ShippingEntity? s = shippings.isNotEmpty ? shippings[0] : null;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      spacing: 10.h,
-      children: [
-        Row(
-          spacing: 4.w,
-          children: [
-            Icon(Icons.local_shipping_outlined, color: AppColors.secondary),
-            Text('Detalle del envío', style: context.titleSmall).medium,
-          ],
-        ),
-        Container(
-          width: 1.sw,
-          decoration: BoxDecoration(
-            border: Border.all(color: AppColors.secondary),
-            borderRadius: BorderRadius.circular(12.r),
-          ),
-          child: Column(
-            spacing: 10.h,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _dataFormat(
-                'Shipping status',
-                (s != null) ? s.status.name : 'Pending',
-              ),
-              _dataFormat(
-                'Shipping courrier',
-                (s != null) ? s.courier.name : '-',
-              ),
-              _dataFormat(
-                'Tracking number',
-                (s != null) ? s.tracking : 'No asignado',
-              ),
-              _dataFormat(
-                'Shipping address',
-                (s != null) ? s.address : 'Sin dirección registrada',
-              ),
-            ],
-          ).paddingAll(10.r),
-        ),
-      ],
-    );
+    final List<dynamic> data = [
+      _dataFormat('Shipping status', (s != null) ? s.status.name : 'Pending'),
+      _dataFormat('Shipping courrier', (s != null) ? s.courier.name : '-'),
+      _dataFormat('Tracking number', (s != null) ? s.tracking : 'No asignado'),
+      _dataFormat(
+        'Shipping address',
+        (s != null) ? s.address : 'Sin dirección registrada',
+      ),
+    ];
+    return _section('Detalle del envío', Icons.local_shipping_outlined, data);
   }
 
   Widget _dataFormat(String label, String content) {
@@ -182,6 +123,37 @@ class _OrderPageState extends State<OrderPage> {
         Text(
           content,
           style: context.bodyMedium.copyWith(color: AppColors.white),
+        ),
+      ],
+    );
+  }
+
+  Widget _section(String label, IconData icon, List<dynamic> data) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: 10.h,
+      children: [
+        Row(
+          spacing: 8.w,
+          children: [
+            Icon(icon, color: AppColors.secondary),
+            Text(
+              label,
+              style: context.bodyLarge.copyWith(color: AppColors.secondary),
+            ).medium,
+          ],
+        ),
+        Container(
+          width: 1.sw,
+          decoration: BoxDecoration(
+            border: Border.all(color: AppColors.secondary, width: 0.5),
+            borderRadius: BorderRadius.circular(12.r),
+          ),
+          child: Column(
+            spacing: 12.h,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [...data.map((d) => d)],
+          ).paddingAll(16.r),
         ),
       ],
     );
