@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/common/widgets/filled_button_widget.dart';
+import 'package:papi_gold/app/core/constants/index.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
 import 'package:papi_gold/app/core/theme/index.dart';
 import 'package:papi_gold/domain/entities/index.dart';
@@ -86,13 +87,14 @@ class _OrderPageState extends State<OrderPage> {
               ),
             ],
           ),
-          SizedBox(
-            width: 1.sw,
-            child: FilledButtonWidget(
-              title: 'Proceder con el pago',
-              onPressed: () => print('press me'),
-            ),
-          ).paddingOnly(bottom: 12.h),
+          if (e.totalVenta > e.totalPagoVenta)
+            SizedBox(
+              width: 1.sw,
+              child: FilledButtonWidget(
+                title: 'Proceder con el pago',
+                onPressed: () => print('press me'),
+              ),
+            ).paddingOnly(bottom: 12.h),
         ],
       ),
     );
@@ -290,46 +292,51 @@ class _OrderPageState extends State<OrderPage> {
         return Container(
           height: 0.75.sh,
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Pagos'),
-                ],
-              ),
-              Gap(12.h),
-              ...payments.map(
-                (p) => ListTile(
-                  tileColor: Colors.white12,
-                  dense: true,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12.r),
-                    side: BorderSide(color: Colors.grey, width: 0.5)
-                  ),
-                  titleTextStyle: TextStyle(
-                    color: AppColors.grey,
-                    fontSize: 12.sp,
-                  ),
-                  title: Text(p.type),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        getFormatMoney(p.amount),
-                        style: context.bodyLarge,
-                      ).medium,
-                      Text(
-                        getFormatDate(p.createdAt, true),
-                        style: context.bodyXSmall,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [Text('Pagos')],
+                ),
+                Gap(12.h),
+                ...payments.map(
+                  (p) => ListTile(
+                    tileColor: Colors.white12,
+                    dense: true,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.r),
+                      side: BorderSide(color: Colors.grey, width: 0.5),
+                    ),
+                    titleTextStyle: TextStyle(
+                      color: AppColors.grey,
+                      fontSize: 12.sp,
+                    ),
+                    title: Text(p.type),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          getFormatMoney(p.amount),
+                          style: context.bodyLarge,
+                        ).medium,
+                        Text(
+                          getFormatDate(p.createdAt, true),
+                          style: context.bodyXSmall,
+                        ),
+                      ],
+                    ),
+                    trailing: Text(
+                      p.status.name,
+                      style: context.bodySmall.copyWith(
+                        color: StatusColor.color[p.status.color],
                       ),
-                    ],
-                  ),
-                  trailing: Text(p.status.name, style: context.bodySmall),
-                ).paddingOnly(bottom: 12.h),
-              ),
-            ],
+                    ),
+                  ).paddingOnly(bottom: 12.h),
+                ),
+              ],
+            ),
           ),
         );
       },
