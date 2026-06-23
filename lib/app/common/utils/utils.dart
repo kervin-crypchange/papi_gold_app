@@ -68,6 +68,11 @@ String getFormatMoney(double amount) {
   ).format(amount);
 }
 
+String getFormatDate(DateTime date, [bool isTimer = false]) {
+  String format = isTimer ? 'MMMM dd, yyyy hh:mm a':'MMMM dd, yyyy' ;
+  return DateFormat(format).format(date);
+}
+
 String getMonthByNumber(int m) {
   String month;
   switch (m) {

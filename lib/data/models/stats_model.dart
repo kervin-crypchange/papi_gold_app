@@ -7,9 +7,9 @@ class StatsModel extends StatsEntity {
   factory StatsModel.fromJson(Map<String, dynamic> json) {
     return StatsModel(
       invested: StatsDataModel.fromJson(
-        json['invested'] as Map<String, dynamic>,
+        json['invested']
       ),
-      sold: StatsDataModel.fromJson(json['sold'] as Map<String, dynamic>),
+      sold: StatsDataModel.fromJson(json['sold']),
     );
   }
 }

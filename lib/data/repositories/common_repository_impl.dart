@@ -26,30 +26,27 @@ class CommonRepositoryImpl extends CommonRepository {
   }
 
   @override
-  Future<Either<Failure, List<MetalEntity>>> getMetalList(
-    String? symbol,
-  ) async {
+  Future<Either<Failure, List<MetalEntity>>> metalList(String? symbol) async {
     Either<Failure, List<MetalEntity>> metals = await sl<CommonRemoteData>()
-        .getMetalList(symbol);
+        .metalList(symbol);
 
     return metals.fold((l) => Left(l), (r) => Right(r));
   }
 
   @override
-  Future<Either<Failure, ApiResponseEntity<ProductInfoEntity>>>
-  getProductList() async {
-    Either<Failure, ApiResponseEntity<ProductInfoEntity>> res =
-        await sl<CommonRemoteData>().getProductList();
+  Future<Either<Failure, ResponseProductsEntity>> productList() async {
+    Either<Failure, ResponseProductsEntity> res = await sl<CommonRemoteData>()
+        .productList();
 
     return res.fold((l) => Left(l), (r) => Right(r));
   }
 
   @override
-  Future<Either<Failure, ProductEntity>> getProductDetail(
+  Future<Either<Failure, ProductEntity>> productDetail(
     LocationParamEntity params,
   ) async {
     Either<Failure, ProductEntity> res = await sl<CommonRemoteData>()
-        .getProductDetail(LocationParamModel.fromEntity(params));
+        .productDetail(LocationParamModel.fromEntity(params));
 
     return res.fold((l) => Left(l), (r) => Right(r));
   }
@@ -65,11 +62,9 @@ class CommonRepositoryImpl extends CommonRepository {
   }
 
   @override
-  Future<Either<Failure, ApiResponseEntity<OrderDetailEntity>>>
-  orderList() async {
-    Either<Failure, ApiResponseEntity<OrderDetailEntity>> res =
-        await sl<CommonRemoteData>().orderList();
-
+  Future<Either<Failure, ResponseOrdersEntity>> orderList(int page) async {
+    Either<Failure, ResponseOrdersEntity> res = await sl<CommonRemoteData>()
+        .orderList(page);
     return res.fold((l) => Left(l), (r) => Right(r));
   }
 

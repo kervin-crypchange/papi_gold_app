@@ -426,14 +426,15 @@ Obtiene la información detallada de una orden específica.
       {
         "id": 50, "amount": 1250.50, "reference": "pi_...", "type": "Compra",
         "status": { "id": 1, "name": "Aprobado", "translations": { ... } },
-        "method": { "id": 10, "name": "Stripe", "description": "card" }
+        "method": { "id": 10, "name": "Stripe", "description": "card" },
       }
     ],
     "shipping": [
       {
         "id": 10, "tracking_number": "1Z999...", 
         "courier": { "id": 5, "name": "UPS" },
-        "status": { "id": 3, "name": "Entregado" }
+        "status": { "id": 3, "name": "Entregado" },
+        "address": ""
       }
     ],
     "translations": { ... }

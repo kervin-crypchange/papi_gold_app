@@ -1,4 +1,3 @@
-import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/data/models/index.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 
@@ -7,17 +6,18 @@ class ApiResponseModel<T> extends ApiResponseEntity<T> {
 
   factory ApiResponseModel.fromJson(
     Map<String, dynamic> json,
-    T Function(Map<String, dynamic>) buildT,
+    T Function(Map<String, dynamic>) fromJsonT,
   ) {
+    final rawData = json['data'] as List? ?? [];
     return ApiResponseModel<T>(
-      data: safeList<T>([
-        'data',
-      ], (x) => buildT(json['data'] as Map<String, dynamic>)),
+      data: rawData
+          .map((item) => fromJsonT(item))
+          .toList(),
       meta: json['meta'] != null
-          ? MetaModel.fromJson(json['meta'] as Map<String, dynamic>)
+          ? MetaModel.fromJson(json['meta'])
           : null,
       stats: json['meta'] != null
-          ? StatsModel.fromJson(json['meta'] as Map<String, dynamic>)
+          ? StatsModel.fromJson(json['meta'])
           : null,
     );
   }

@@ -6,26 +6,32 @@ class OrderDetailEntity extends Equatable {
   final String order;
   final String invoice;
   final String description;
-  final double total;
-  final double totalPago;
+  final double totalVenta;
+  final double totalPagoVenta;
+  final double totalCompra;
+  final double totalPagoCompra;
   final StatusEntity status;
-  final List<ItemEntity> items;
+  final DateTime createdAt;
+  final List<OrderItemEntity> items;
   final List<PaymentEntity> payments;
   final List<ShippingEntity> shippings;
-  final TranslationEntity translatons;
+  // final TranslationEntity translations;
 
   const OrderDetailEntity({
     required this.id,
     required this.order,
     required this.invoice,
     required this.description,
-    required this.total,
-    required this.totalPago,
+    required this.totalVenta,
+    required this.totalPagoVenta,
+    required this.totalCompra,
+    required this.totalPagoCompra,
     required this.status,
     required this.items,
     required this.payments,
     required this.shippings,
-    required this.translatons,
+    required this.createdAt,
+    // required this.translations,
   });
 
   @override
@@ -34,12 +40,15 @@ class OrderDetailEntity extends Equatable {
     order,
     invoice,
     description,
-    total,
-    totalPago,
+    totalVenta,
+    totalPagoVenta,
+    totalCompra,
+    totalPagoCompra,
     status,
     items,
     payments,
     shippings,
-    translatons
+    createdAt
+    // translations
   ];
 }

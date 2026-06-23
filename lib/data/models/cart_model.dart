@@ -8,7 +8,7 @@ class CartModel extends CartEntity {
   /// Converts a JSON map to a [CartModel].
   factory CartModel.fromJson(Map<String, dynamic> json) {
     return CartModel(
-      items: safeList<ItemModel>(json['items'], (x) => ItemModel.fromJson(x as Map<String, dynamic>)),
+      items: safeList<CartItemModel>(json['items'], (x) => CartItemModel.fromJson(x as Map<String, dynamic>)),
     );
   }
 
@@ -20,8 +20,8 @@ class CartModel extends CartEntity {
   /// Converts a [CartModel] to a JSON map.
   Map<String, dynamic> toJson() {
     return {
-      "items": List<ItemModel>.from(
-        items.map((e) => ItemModel.fromEntity(e).toJson()).toList(),
+      "items": List<CartItemModel>.from(
+        items.map((e) => CartItemModel.fromEntity(e).toJson()).toList(),
       ),
       };
   }

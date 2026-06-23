@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:papi_gold/domain/entities/index.dart';
 import 'package:papi_gold/domain/entities/sale_entity.dart';
 
 class ResponseCheckoutEntity extends Equatable {
@@ -19,4 +18,18 @@ class ResponseCheckoutEntity extends Equatable {
 
   @override
   List<Object?> get props => [message, clientSecret, paymentId, items, sale];
+}
+
+class ItemEntity extends Equatable{
+  final int id;
+  final String product;
+  final int quantity;
+  final double price;
+  final String type;
+
+  const ItemEntity({required this.id, required this.product, required this.quantity, required this.price, required this.type});
+  
+  @override
+  List<Object?> get props => [];
+
 }

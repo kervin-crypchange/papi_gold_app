@@ -4,9 +4,9 @@ import 'package:papi_gold/app/core/theme/index.dart';
 
 extension TextThemeExtension on BuildContext {
   // * (default) TextTheme
-  TextStyle get displayLarge => _baseStyle(57.sp, AppColors.secondary);
-  TextStyle get displayMedium => _baseStyle(45.sp, AppColors.secondary);
-  TextStyle get displaySmall => _baseStyle(36.sp, AppColors.secondary);
+  TextStyle get displayLarge => _baseStyle(38.sp, AppColors.secondary);
+  TextStyle get displayMedium => _baseStyle(36.sp, AppColors.secondary);
+  TextStyle get displaySmall => _baseStyle(34.sp, AppColors.secondary);
 
   TextStyle get headlineLarge => _baseStyle(32.sp, AppColors.secondary);
   TextStyle get headlineMedium => _baseStyle(28.sp, AppColors.secondary);

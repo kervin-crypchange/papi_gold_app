@@ -4,6 +4,9 @@ import 'package:papi_gold/app/core/theme/colors.dart';
 ThemeData appTheme() {
   return ThemeData(
     useMaterial3: true,
+    appBarTheme: AppBarTheme(
+      backgroundColor: Colors.grey.shade900,
+    ),
     scaffoldBackgroundColor: Colors.grey.shade900,
     colorScheme: ColorScheme.fromSeed(
       seedColor: Color(0xFFD4AF37),

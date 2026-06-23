@@ -1,4 +1,5 @@
 import 'package:papi_gold/app/common/utils/utils.dart';
+import 'package:papi_gold/data/models/index.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 
 class ShippingModel extends ShippingEntity {
@@ -7,6 +8,7 @@ class ShippingModel extends ShippingEntity {
     required super.courier,
     required super.status,
     required super.tracking,
+    required super.address,
   });
 
   /// Converts a JSON map to a [ShippingModel].
@@ -16,27 +18,8 @@ class ShippingModel extends ShippingEntity {
       courier: CourierModel.fromJson(json['courier']),
       status: StatusModel.fromJson(json['status']),
       tracking: safeString(json['tracking_number']),
+      address: safeString(json['address']),
     );
-  }
-
-  /// Converts a [ShippingModel] to a [ShippingEntity].
-  factory ShippingModel.fromEntity(ShippingEntity e) {
-    return ShippingModel(
-      id: e.id,
-      courier: e.courier,
-      status: e.status,
-      tracking: e.tracking,
-    );
-  }
-
-  /// Converts a [ShippingModel] to a JSON map.
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'courier': CourierModel.fromEntity(courier).toJson(),
-      'status': StatusModel.fromEntity(status).toJson(),
-      'tracking_number': tracking,
-    };
   }
 }
 
@@ -46,8 +29,8 @@ class CourierModel extends CourierEntity {
   /// Converts a JSON map to a [CourierModel].
   factory CourierModel.fromJson(Map<String, dynamic> json) {
     return CourierModel(
-      id: (json['id'] as num).toInt(),
-      name: json['name'] as String,
+      id: safeInt(json['id']),
+      name: safeString(json['name']),
     );
   }
 
@@ -62,24 +45,4 @@ class CourierModel extends CourierEntity {
   }
 }
 
-class StatusModel extends StatusEntity {
-  const StatusModel({required super.id, required super.name});
 
-  /// Converts a JSON map to a [StatusModel].
-  factory StatusModel.fromJson(Map<String, dynamic> json) {
-    return StatusModel(
-      id: (json['id'] as num).toInt(),
-      name: json['name'] as String,
-    );
-  }
-
-  /// Converts a [StatusEntity] to a [StatusModel].
-  factory StatusModel.fromEntity(StatusEntity e) {
-    return StatusModel(id: e.id, name: e.name);
-  }
-
-  /// Converts a [StatusModel] to a JSON map.
-  Map<String, dynamic> toJson() {
-    return {'key': id, 'name': name};
-  }
-}

@@ -18,6 +18,7 @@ Future<void> initializeDependencies() async {
   // Data sources
   sl.registerLazySingleton<AuthData>(() => AuthDataImpl());
   sl.registerLazySingleton<AuthLocalData>(() => AuthLocalDataImpl());
+  sl.registerLazySingleton<CommonRemoteData>(() => CommonRemoteDataImpl());
 
   // Repositories
   sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl());
@@ -25,7 +26,10 @@ Future<void> initializeDependencies() async {
 
   // Use cases
   sl.registerLazySingleton(() => LoginUseCase());
+  sl.registerLazySingleton(() => OrdersUseCase());
+  sl.registerLazySingleton(() => OrderUseCase());
 
   // Cubits
   sl.registerFactory(() => AuthCubit());
+  sl.registerFactory(() => OrdersCubit());
 }
