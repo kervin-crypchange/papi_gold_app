@@ -16,20 +16,19 @@ class OrderDetailModel extends OrderDetailEntity {
     required super.payments,
     required super.shippings,
     required super.createdAt,
-    // required super.translations,
   });
 
   /// Converts a JSON map to a [OrderDetailModel].
   factory OrderDetailModel.fromJson(Map<String, dynamic> json) {
     return OrderDetailModel(
       id: safeInt(json['id']),
-      order: safeString(json['order']),
-      invoice: safeString(json['invoice_number']),
+      status: StatusModel.fromJson(json['status']),
       description: safeString(json['description']),
+      order: safeString(json['order']),
       total: safeDouble(json['total_v']),
       totalPago: safeDouble(json['total_pago_v']),
+      invoice: safeString(json['invoice_number']),
       createdAt: safeDateTime(json['created_at']),
-      status: StatusModel.fromJson(json['status']),
       items: safeList<OrderItemModel>(
         json['items'],
         (x) => OrderItemModel.fromJson(x),
@@ -39,28 +38,9 @@ class OrderDetailModel extends OrderDetailEntity {
         (x) => PaymentModel.fromJson(x),
       ),
       shippings: safeList<ShippingModel>(
-        json['shippings'],
-        (x) => ShippingModel.fromJson(x as Map<String, dynamic>),
+        json['shipping'],
+        (x) => ShippingModel.fromJson(x),
       ),
-      // translations: json['translations']
-    );
-  }
-
-  /// Converts a [OrderDetailEntity] to a [OrderDetailModel].
-  factory OrderDetailModel.fromEntity(OrderDetailEntity e) {
-    return OrderDetailModel(
-      id: e.id,
-      order: e.order,
-      invoice: e.invoice,
-      description: e.description,
-      total: e.total,
-      totalPago: e.totalPago,
-      status: e.status,
-      items: e.items,
-      payments: e.payments,
-      shippings: e.shippings,
-      createdAt: e.createdAt,
-      // translations: e.translations,
     );
   }
 }

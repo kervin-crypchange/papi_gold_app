@@ -20,14 +20,14 @@ class OrderItemModel extends OrderItemEntity {
     return OrderItemModel(
       id: safeInt(json['id']),
       product: safeString(json['product']),
-      productId: safeInt(json['productId']),
+      productId: safeInt(json['product_id']),
       image: safeString(json['image']),
       quantity: safeInt(json['quantity']),
       price: safeDouble(json['price']),
       total: safeDouble(json['total']),
       order: safeInt(json['order']),
       type: safeString(json['type']),
-      metalDetail: OrderMetalDetailModel.fromJson(json['metalDetail']),
+      metalDetail: OrderMetalDetailModel.fromJson(json['metal_details']),
       // translations: TranslationModel.fromJson(json['translations']),
     );
   }

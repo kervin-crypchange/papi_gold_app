@@ -20,28 +20,6 @@ class ShippingModel extends ShippingEntity {
       address: safeString(json['address']),
     );
   }
-
-  /// Converts a [ShippingModel] to a [ShippingEntity].
-  factory ShippingModel.fromEntity(ShippingEntity e) {
-    return ShippingModel(
-      id: e.id,
-      courier: e.courier,
-      address: e.address,
-      status: e.status,
-      tracking: e.tracking,
-    );
-  }
-
-  /// Converts a [ShippingModel] to a JSON map.
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'courier': CourierModel.fromEntity(courier).toJson(),
-      'status': StatusModel.fromEntity(status).toJson(),
-      'tracking_number': tracking,
-      'address': address,
-    };
-  }
 }
 
 class CourierModel extends CourierEntity {
@@ -50,8 +28,8 @@ class CourierModel extends CourierEntity {
   /// Converts a JSON map to a [CourierModel].
   factory CourierModel.fromJson(Map<String, dynamic> json) {
     return CourierModel(
-      id: (json['id'] as num).toInt(),
-      name: json['name'] as String,
+      id: safeInt(json['id']),
+      name: safeString(json['name']),
     );
   }
 
@@ -67,23 +45,10 @@ class CourierModel extends CourierEntity {
 }
 
 class StatusModel extends StatusEntity {
-  const StatusModel({required super.id, required super.name});
+  const StatusModel({required super.name});
 
   /// Converts a JSON map to a [StatusModel].
   factory StatusModel.fromJson(Map<String, dynamic> json) {
-    return StatusModel(
-      id: safeInt(json['id']),
-      name: safeString(json['name']),
-    );
-  }
-
-  /// Converts a [StatusEntity] to a [StatusModel].
-  factory StatusModel.fromEntity(StatusEntity e) {
-    return StatusModel(id: e.id, name: e.name);
-  }
-
-  /// Converts a [StatusModel] to a JSON map.
-  Map<String, dynamic> toJson() {
-    return {'key': id, 'name': name};
+    return StatusModel(name: safeString(json['name']));
   }
 }

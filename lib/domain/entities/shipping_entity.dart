@@ -30,11 +30,10 @@ class CourierEntity extends Equatable {
 }
 
 class StatusEntity extends Equatable {
-  final int id;
   final String name;
 
-  const StatusEntity({required this.id, required this.name});
+  const StatusEntity({required this.name});
 
   @override
-  List<Object?> get props => [id, name];
+  List<Object?> get props => [name];
 }
