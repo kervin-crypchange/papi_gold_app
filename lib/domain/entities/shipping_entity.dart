@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:papi_gold/domain/entities/index.dart';
 
 class ShippingEntity extends Equatable {
   final int id;
@@ -29,11 +30,3 @@ class CourierEntity extends Equatable {
   List<Object?> get props => [id, name];
 }
 
-class StatusEntity extends Equatable {
-  final String name;
-
-  const StatusEntity({required this.name});
-
-  @override
-  List<Object?> get props => [name];
-}

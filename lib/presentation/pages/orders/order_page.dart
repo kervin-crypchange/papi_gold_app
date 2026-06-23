@@ -28,13 +28,13 @@ class _OrderPageState extends State<OrderPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Resumen de Orden', style: context.titleMedium).medium,
+        title: Text(
+          'Resumen de Orden',
+          style: context.titleMedium.copyWith(color: AppColors.white),
+        ).medium,
         actions: [
           IconButton(
-            icon: const Icon(
-              Icons.payments_outlined,
-              color: AppColors.secondary,
-            ),
+            icon: const Icon(Icons.payments_outlined, color: AppColors.white),
             tooltip: 'Proceder con el pago',
             onPressed: () {
               // Handle search action
@@ -68,6 +68,23 @@ class _OrderPageState extends State<OrderPage> {
           _orderDetail(e),
           _itemList(e.items),
           _shippinfInfo(e.shippings),
+          _billingInfo(e),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Wrap(
+                spacing: 8.w,
+                children: [
+                  Icon(Icons.credit_card_outlined, color: AppColors.secondary),
+                  Text('Histórico de pagos', style: context.bodyMedium).medium,
+                ],
+              ),
+              TextButton(
+                onPressed: () => _showModalBottomSheet(context, e.payments),
+                child: const Text('Ver pagos'),
+              ),
+            ],
+          ),
           SizedBox(
             width: 1.sw,
             child: FilledButtonWidget(
@@ -132,6 +149,92 @@ class _OrderPageState extends State<OrderPage> {
     return _section('Detalle del envío', Icons.local_shipping_outlined, data);
   }
 
+  Widget _billingInfo(OrderDetailEntity e) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: 10.h,
+      children: [
+        Row(
+          spacing: 8.w,
+          children: [
+            Icon(Icons.description_outlined, color: AppColors.secondary),
+            Text('Facturación', style: context.bodyMedium).medium,
+          ],
+        ),
+        Container(
+          width: 1.sw,
+          decoration: BoxDecoration(
+            border: Border.all(color: AppColors.secondary, width: 0.5),
+            borderRadius: BorderRadius.circular(12.r),
+          ),
+          child: Column(
+            spacing: 12.h,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                spacing: 12.w,
+                children: [
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.white12, width: 0.5),
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Total Value').color(AppColors.grey),
+                          Text(
+                            getFormatMoney(e.totalVenta),
+                          ).medium.color(AppColors.white),
+                        ],
+                      ).paddingAll(8.r),
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: AppColors.success,
+                          width: 0.5,
+                        ),
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Total Paid').color(AppColors.success),
+                          Text(
+                            getFormatMoney(e.totalCompra),
+                          ).medium.color(AppColors.success),
+                        ],
+                      ).paddingAll(8.r),
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: AppColors.secondary, width: 0.5),
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Balance Due').medium.color(AppColors.secondary),
+                    Text(
+                      getFormatMoney(e.totalVenta),
+                    ).medium.color(AppColors.secondary),
+                  ],
+                ).paddingAll(8.r),
+              ),
+            ],
+          ).paddingAll(12.r),
+        ),
+      ],
+    );
+  }
+
   Widget _dataFormat(String label, String content) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -154,10 +257,7 @@ class _OrderPageState extends State<OrderPage> {
           spacing: 8.w,
           children: [
             Icon(icon, color: AppColors.secondary),
-            Text(
-              label,
-              style: context.bodyMedium.copyWith(color: AppColors.secondary),
-            ).medium,
+            Text(label, style: context.bodyMedium).medium,
           ],
         ),
         Container(
@@ -173,6 +273,57 @@ class _OrderPageState extends State<OrderPage> {
           ).paddingAll(12.r),
         ),
       ],
+    );
+  }
+
+  void _showModalBottomSheet(
+    BuildContext context,
+    List<PaymentEntity> payments,
+  ) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(12.0)),
+      ),
+      builder: (BuildContext context) {
+        return Container(
+          height: 0.75.sh,
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ...payments.map(
+                (p) => ListTile(
+                  dense: true,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.r),
+                    side: BorderSide(color: AppColors.grey, width: 0.5)
+                  ),
+                  titleTextStyle: TextStyle(
+                    color: AppColors.grey,
+                    fontSize: 12.sp,
+                  ),
+                  title: Text(p.type),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        getFormatMoney(p.amount),
+                        style: context.bodyLarge,
+                      ).medium,
+                      Text(
+                        getFormatDate(p.createdAt, true),
+                        style: context.bodyXSmall,
+                      ),
+                    ],
+                  ),
+                  trailing: Text(p.status.name, style: context.bodySmall),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

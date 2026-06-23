@@ -1,4 +1,5 @@
 import 'package:papi_gold/app/common/utils/utils.dart';
+import 'package:papi_gold/data/models/index.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 
 class ShippingModel extends ShippingEntity {
@@ -44,11 +45,4 @@ class CourierModel extends CourierEntity {
   }
 }
 
-class StatusModel extends StatusEntity {
-  const StatusModel({required super.name});
 
-  /// Converts a JSON map to a [StatusModel].
-  factory StatusModel.fromJson(Map<String, dynamic> json) {
-    return StatusModel(name: safeString(json['name']));
-  }
-}
