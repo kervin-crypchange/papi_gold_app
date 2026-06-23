@@ -16,15 +16,36 @@ class CustomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Map<String, dynamic>> navItems = [
-      {'icon': Icons.home_rounded, 'label': 'Home'},
-      {'icon': Icons.shopping_cart_checkout_rounded, 'label': 'Ordenes'},
-      {'icon': Icons.person_pin_rounded, 'label': 'Perfil'},
+      {
+        'icon': Icons.home_outlined,
+        'iconSelected': Icons.home_rounded,
+        'label': 'Home',
+      },
+      {
+        'icon': Icons.shopping_cart_checkout_outlined,
+        'iconSelected': Icons.shopping_cart_checkout_rounded,
+        'label': 'Ordenes',
+      },
+      {
+        'icon': Icons.person_pin_outlined,
+        'iconSelected': Icons.person_pin_rounded,
+        'label': 'Perfil',
+      },
     ];
     return Container(
       height: 45.h,
+      width: .85.sw,
       decoration: BoxDecoration(
         color: Colors.black,
         borderRadius: BorderRadius.circular(100.r),
+        // border: BoxBorder.all(color: Colors.white38),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.shade800,
+            spreadRadius: 1,
+            blurRadius: 1,
+          ),
+        ],
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -48,7 +69,9 @@ class CustomNavBar extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(
-                      navItems[index]['icon'],
+                      isSelected
+                          ? navItems[index]['iconSelected']
+                          : navItems[index]['icon'],
                       color: isSelected
                           ? AppColors.secondary
                           : Colors.grey.shade600,
@@ -75,6 +98,6 @@ class CustomNavBar extends StatelessWidget {
           );
         }),
       ).paddingSymmetric(horizontal: 6.w),
-    ).paddingSymmetric(vertical: 24.h, horizontal: 12.w);
+    ).paddingOnly(bottom: 32);
   }
 }

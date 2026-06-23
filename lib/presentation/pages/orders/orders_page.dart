@@ -73,6 +73,7 @@ class _OrdersPageState extends State<OrdersPage> with LoggerMixin {
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
+                        color: AppColors.black,
                         borderRadius: BorderRadius.vertical(
                           top: Radius.circular(24.0),
                         ),
