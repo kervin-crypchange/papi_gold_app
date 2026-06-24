@@ -48,15 +48,19 @@ class _ProductsPageState extends State<ProductsPage> with MessengerMixin {
                 itemBuilder: (context, index) {
                   final data = state.response.data[index];
                   return Column(
+                    spacing: 12.h,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(data.name, style: context.bodyLarge),
+                      Text(
+                        data.name,
+                        style: context.bodyLarge,
+                      ).paddingSymmetric(horizontal: 12.w, vertical: 3.h),
                       SizedBox(
                         height: 0.31.sh,
                         child: ProductCarouselWidget(products: data.products),
                       ),
                     ],
-                  ).paddingAll(6.r);
+                  );
                 },
               );
             }

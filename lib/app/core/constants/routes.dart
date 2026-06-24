@@ -8,4 +8,5 @@ abstract class Routes {
   static const navigation = 'navigation';
   static const home = 'home';
   static const order = 'order';
+  static const product = 'product';
 }

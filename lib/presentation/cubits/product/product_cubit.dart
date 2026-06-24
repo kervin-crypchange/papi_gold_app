@@ -20,6 +20,7 @@ class ProductCubit extends Cubit<ProductState> {
       (r) => emit(ProductsSuccess(response: r)),
     );
   }
+
   void detail(int id) async {
     emit(ProductLoadding());
 
@@ -29,4 +30,5 @@ class ProductCubit extends Cubit<ProductState> {
       (r) => emit(Productuccess(e: r)),
     );
   }
+  
 }

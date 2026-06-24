@@ -69,7 +69,7 @@ class CommonRemoteDataImpl extends CommonRemoteData {
   Future<Either<Failure, ProductModel>> productDetail(int id) async {
     try {
       final res = await sl<DioClient>().get('${Apis.product}/$id');
-      return Right(ProductModel.fromJson(res.data));
+      return Right(ProductModel.fromJson(res.data['data']));
     } catch (e) {
       return Left(ServerException(e));
     }

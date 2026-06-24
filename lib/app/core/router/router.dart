@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:papi_gold/app/common/pages/index.dart';
 import 'package:papi_gold/app/common/pages/navigation_page.dart';
 import 'package:papi_gold/app/core/constants/index.dart';
+import 'package:papi_gold/domain/entities/index.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
 final GoRouter router = GoRouter(
@@ -39,12 +40,19 @@ final GoRouter router = GoRouter(
       path: '/${Routes.navigation}',
       builder: (context, state) => NavigationPage(),
       routes: [
-         GoRoute(
+        GoRoute(
           name: Routes.order,
           path: '/${Routes.order}/:id',
-          builder: (context, state) => OrderPage(orderId: state.pathParameters['id']!,),
+          builder: (context, state) =>
+              OrderPage(orderId: state.pathParameters['id']!),
         ),
-      ]
+        GoRoute(
+          name: Routes.product,
+          path: '/${Routes.product}/:id',
+          builder: (context, state) =>
+              ProductPage(id: state.pathParameters['id']!),
+        ),
+      ],
     ),
   ],
 );
