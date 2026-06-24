@@ -59,7 +59,7 @@ class _OrdersPageState extends State<OrdersPage> with LoggerMixin {
                       ),
                       statCard('Sold', stats.sold),
                     ],
-                  ).paddingAll(12.r),
+                  ).paddingAll(6.r),
                   Row(
                     spacing: 10.w,
                     children: [

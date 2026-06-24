@@ -55,7 +55,7 @@ class _OrderPageState extends State<OrderPage> {
               return Center(child: CircularProgressIndicator.adaptive());
             }
             if (state is OrderSuccess) {
-              return _buildUI(state.order).paddingAll(12.r);
+              return _buildUI(state.order).paddingAll(6.r);
             }
             return Center(child: Text('Error en l carga de datos'));
           },
@@ -171,7 +171,7 @@ class _OrderPageState extends State<OrderPage> {
           width: 1.sw,
           decoration: BoxDecoration(
             border: Border.all(color: AppColors.secondary, width: 0.5),
-            borderRadius: BorderRadius.circular(12.r),
+            borderRadius: BorderRadius.circular(6.r),
           ),
           child: Column(
             spacing: 12.h,
@@ -184,7 +184,7 @@ class _OrderPageState extends State<OrderPage> {
                     child: Container(
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.white12, width: 0.5),
-                        borderRadius: BorderRadius.circular(12.r),
+                        borderRadius: BorderRadius.circular(6.r),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -204,7 +204,7 @@ class _OrderPageState extends State<OrderPage> {
                           color: AppColors.success,
                           width: 0.5,
                         ),
-                        borderRadius: BorderRadius.circular(12.r),
+                        borderRadius: BorderRadius.circular(6.r),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -222,7 +222,7 @@ class _OrderPageState extends State<OrderPage> {
               Container(
                 decoration: BoxDecoration(
                   border: Border.all(color: AppColors.secondary, width: 0.5),
-                  borderRadius: BorderRadius.circular(12.r),
+                  borderRadius: BorderRadius.circular(6.r),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -235,7 +235,7 @@ class _OrderPageState extends State<OrderPage> {
                 ).paddingAll(8.r),
               ),
             ],
-          ).paddingAll(12.r),
+          ).paddingAll(6.r),
         ),
       ],
     );
@@ -270,13 +270,13 @@ class _OrderPageState extends State<OrderPage> {
           width: 1.sw,
           decoration: BoxDecoration(
             border: Border.all(color: AppColors.secondary, width: 0.5),
-            borderRadius: BorderRadius.circular(12.r),
+            borderRadius: BorderRadius.circular(6.r),
           ),
           child: Column(
             spacing: 12.h,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [...data.map((d) => d)],
-          ).paddingAll(12.r),
+          ).paddingAll(6.r),
         ),
       ],
     );

@@ -33,9 +33,9 @@ class _ProductCarouselWidgetState extends State<ProductCarouselWidget> {
   Widget build(BuildContext context) {
     return InfiniteCarousel.builder(
       itemCount: widget.products.length,
-      itemExtent: 0.3.sw,
+      itemExtent: 0.7.sw,
       center: false,
-      anchor: 1.0,
+      anchor: 0.0,
       velocityFactor: 0.2,
       onIndexChanged: (index) {},
       controller: controller,

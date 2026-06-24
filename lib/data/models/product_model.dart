@@ -1,5 +1,4 @@
 import 'package:papi_gold/app/common/utils/utils.dart';
-import 'package:papi_gold/data/models/index.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 
 class ProductModel extends ProductEntity {
@@ -8,7 +7,7 @@ class ProductModel extends ProductEntity {
     required super.name,
     required super.description,
     required super.stock,
-    required super.image,
+    required super.imagen,
     required super.price,
     required super.category,
     // required super.translations,
@@ -21,7 +20,7 @@ class ProductModel extends ProductEntity {
       name: safeString(json['name']),
       description: safeString(json['description']),
       stock: safeInt(json['stock']),
-      image: safeString(json['image']),
+      imagen: safeString(json['imagen']),
       price: safeDouble(json['price']),
       category: ProducCategoryModel.fromJson(json['category']),
       // translations: TranslationModel.fromJson(

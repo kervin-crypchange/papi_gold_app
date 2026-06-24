@@ -5,7 +5,7 @@ class ProductEntity extends Equatable {
   final String name;
   final String description;
   final int stock;
-  final String image;
+  final String imagen;
   final double price;
   final ProductCategoryEntity category;
   // final TranslationEntity translations;
@@ -15,7 +15,7 @@ class ProductEntity extends Equatable {
     required this.name,
     required this.description,
     required this.stock,
-    required this.image,
+    required this.imagen,
     required this.price,
     required this.category,
     // required this.translations,
@@ -27,7 +27,7 @@ class ProductEntity extends Equatable {
     name,
     description,
     stock,
-    image,
+    imagen,
     price,
     category,
     // translations

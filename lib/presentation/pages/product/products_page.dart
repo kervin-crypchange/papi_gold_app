@@ -52,11 +52,11 @@ class _ProductsPageState extends State<ProductsPage> with MessengerMixin {
                     children: [
                       Text(data.name, style: context.bodyLarge),
                       SizedBox(
-                        height: 200,
+                        height: 0.31.sh,
                         child: ProductCarouselWidget(products: data.products),
                       ),
                     ],
-                  ).paddingAll(12.r);
+                  ).paddingAll(6.r);
                 },
               );
             }
