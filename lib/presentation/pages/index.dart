@@ -1,4 +1,8 @@
+// Products
+export 'package:papi_gold/presentation/pages/product/product_page.dart';
+export 'package:papi_gold/presentation/pages/product/products_page.dart';
 
+// Orders
 export 'package:papi_gold/presentation/pages/orders/order_page.dart';
 export 'package:papi_gold/presentation/pages/orders/orders_page.dart';
 

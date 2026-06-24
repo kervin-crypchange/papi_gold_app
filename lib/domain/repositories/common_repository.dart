@@ -9,19 +9,17 @@ abstract class CommonRepository {
   Future<Either<Failure, List<LocationEntity>>> getLocation();
 
   Future<Either<Failure, List<MetalEntity>>> metalList(String? symbol);
-  
-  Future<Either<Failure, ResponseProductsEntity>> productList();
-  Future<Either<Failure, ProductEntity>> productDetail(
-    LocationParamEntity p,
-  );
+
+  Future<Either<Failure, ResponseProductsEntity>> productList(int page);
+  Future<Either<Failure, ProductEntity>> productDetail(int id);
   Future<Either<Failure, ResponseCheckoutEntity>> checkout(CheckoutEntity e);
   Future<Either<Failure, ResponseOrdersEntity>> orderList(int page);
   Future<Either<Failure, OrderDetailEntity>> orderDetail(String orderCode);
 
   Future<Either<Failure, ResponseChatEntity>> chat(ChatPayloadEntity e);
-  Future<Either<Failure, ResponseMessageLogEntity>> chatHistory(String identifier);
-  
+  Future<Either<Failure, ResponseMessageLogEntity>> chatHistory(
+    String identifier,
+  );
+
   Future<Either<Failure, String>> consultation(ConsultationPayloadEntity e);
-
-
 }

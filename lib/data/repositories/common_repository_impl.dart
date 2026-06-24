@@ -34,19 +34,19 @@ class CommonRepositoryImpl extends CommonRepository {
   }
 
   @override
-  Future<Either<Failure, ResponseProductsEntity>> productList() async {
+  Future<Either<Failure, ResponseProductsEntity>> productList(int page) async {
     Either<Failure, ResponseProductsEntity> res = await sl<CommonRemoteData>()
-        .productList();
+        .productList(page);
 
     return res.fold((l) => Left(l), (r) => Right(r));
   }
 
   @override
   Future<Either<Failure, ProductEntity>> productDetail(
-    LocationParamEntity params,
+    int id,
   ) async {
     Either<Failure, ProductEntity> res = await sl<CommonRemoteData>()
-        .productDetail(LocationParamModel.fromEntity(params));
+        .productDetail(id);
 
     return res.fold((l) => Left(l), (r) => Right(r));
   }

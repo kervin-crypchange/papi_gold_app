@@ -53,9 +53,12 @@ class CommonRemoteDataImpl extends CommonRemoteData {
   }
 
   @override
-  Future<Either<Failure, ResponseProductsModel>> productList() async {
+  Future<Either<Failure, ResponseProductsModel>> productList(int page) async {
     try {
-      final res = await sl<DioClient>().get(Apis.price);
+      final res = await sl<DioClient>().get(
+        Apis.product,
+        queryParameters: {'page': page, 'per_page': 15},
+      );
       return Right(ResponseProductsModel.fromJson(res.data));
     } catch (e) {
       return Left(ServerException(e));
@@ -63,14 +66,9 @@ class CommonRemoteDataImpl extends CommonRemoteData {
   }
 
   @override
-  Future<Either<Failure, ProductModel>> productDetail(
-    LocationParamModel params,
-  ) async {
+  Future<Either<Failure, ProductModel>> productDetail(int id) async {
     try {
-      final res = await sl<DioClient>().get(
-        Apis.price,
-        queryParameters: params.toJson(),
-      );
+      final res = await sl<DioClient>().get('${Apis.product}/$id');
       return Right(ProductModel.fromJson(res.data));
     } catch (e) {
       return Left(ServerException(e));

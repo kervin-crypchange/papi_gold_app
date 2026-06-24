@@ -5,7 +5,7 @@ import 'package:papi_gold/data/models/index.dart';
 import 'package:papi_gold/data/sources/remote/auth/auth_data.dart';
 import 'package:papi_gold/domain/entities/auth/recovery_entity.dart';
 import 'package:papi_gold/domain/entities/index.dart';
-import 'package:papi_gold/auth_repository.dart';
+import 'package:papi_gold/domain/repositories/auth_repository.dart';
 import 'package:papi_gold/injection_container.dart';
 
 class AuthRepositoryImpl with LoggerMixin implements AuthRepository {

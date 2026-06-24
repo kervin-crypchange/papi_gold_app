@@ -28,8 +28,11 @@ Future<void> initializeDependencies() async {
   sl.registerLazySingleton(() => LoginUseCase());
   sl.registerLazySingleton(() => OrdersUseCase());
   sl.registerLazySingleton(() => OrderUseCase());
+  sl.registerLazySingleton(() => ProductsUseCase());
+  sl.registerLazySingleton(() => ProductUseCase());
 
   // Cubits
   sl.registerFactory(() => AuthCubit());
   sl.registerFactory(() => OrdersCubit());
+  sl.registerFactory(() => ProductCubit());
 }

@@ -22,6 +22,11 @@ class CustomNavBar extends StatelessWidget {
         'label': 'Home',
       },
       {
+        'icon': Icons.inventory_2_outlined,
+        'iconSelected': Icons.inventory_2_rounded,
+        'label': 'Productos',
+      },
+      {
         'icon': Icons.shopping_cart_checkout_outlined,
         'iconSelected': Icons.shopping_cart_checkout_rounded,
         'label': 'Ordenes',

@@ -94,7 +94,7 @@ class _LoginPageState extends State<LoginPage> with LoggerMixin, MessengerMixin 
                       child: Text('¿No tienes cuenta?, registrate'),
                     ),
                   ],
-                ).paddingSymmetric(horizontal: 24.w),
+                ).paddingSymmetric(horizontal: 12.w),
               ),
             ),
           ),
