@@ -88,7 +88,7 @@ class _OrdersPageState extends State<OrdersPage> with LoggerMixin {
                 ],
               ).paddingSymmetric(vertical: 12.h);
             }
-            return Center(child: Text('Error en l carga de datos'));
+            return Center(child: Text('Error en la carga de datos'));
           },
         ),
       ),

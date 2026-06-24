@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
-import 'package:go_router/go_router.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/common/widgets/filled_button_widget.dart';
 import 'package:papi_gold/app/core/constants/index.dart';
@@ -32,7 +31,7 @@ class _OrderPageState extends State<OrderPage> {
     return Scaffold(
       appBar: AppBar(
         leading: BackButton(
-          onPressed: ()=>Navigator.of(context).pop({'refresh': true}),
+          onPressed: () => Navigator.of(context).pop({'refresh': true}),
         ),
         title: Text(
           'Resumen de Orden',
@@ -289,14 +288,14 @@ class _OrderPageState extends State<OrderPage> {
   ) {
     showModalBottomSheet(
       context: context,
+      backgroundColor: Colors.black,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(12.0)),
       ),
       builder: (BuildContext context) {
-        return Container(
-          height: 0.75.sh,
-          padding: const EdgeInsets.all(16.0),
-          child: SingleChildScrollView(
+        return SingleChildScrollView(
+          child: SizedBox(
+            height: 0.75.sh,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -305,42 +304,52 @@ class _OrderPageState extends State<OrderPage> {
                   children: [Text('Pagos')],
                 ),
                 Gap(12.h),
-                ...payments.map(
-                  (p) => ListTile(
-                    tileColor: Colors.white12,
-                    dense: true,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.r),
-                      side: BorderSide(color: Colors.grey, width: 0.5),
-                    ),
-                    titleTextStyle: TextStyle(
-                      color: AppColors.grey,
-                      fontSize: 12.sp,
-                    ),
-                    title: Text(p.type),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          getFormatMoney(p.amount),
-                          style: context.bodyLarge,
-                        ).medium,
-                        Text(
-                          getFormatDate(p.createdAt, true),
-                          style: context.bodyXSmall,
+                Expanded(
+                  child: ListView.separated(
+                    separatorBuilder: (context, index) => Container(
+                      width: 1.sw,
+                      decoration: BoxDecoration(
+                        border: BoxBorder.all(
+                          color: Colors.white38,
+                          width: 0.5,
                         ),
-                      ],
-                    ),
-                    trailing: Text(
-                      p.status.name,
-                      style: context.bodySmall.copyWith(
-                        color: StatusColor.color[p.status.color],
                       ),
-                    ),
-                  ).paddingOnly(bottom: 12.h),
+                    ).paddingSymmetric(horizontal: 12.w, vertical: 4.h),
+                    itemCount: payments.length,
+                    itemBuilder: (context, index) {
+                      final p = payments[index];
+                      return ListTile(
+                        dense: true,
+                        titleTextStyle: TextStyle(
+                          color: AppColors.grey,
+                          fontSize: 12.sp,
+                        ),
+                        title: Text(p.type),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              getFormatMoney(p.amount),
+                              style: context.bodyLarge,
+                            ).medium,
+                            Text(
+                              getFormatDate(p.createdAt, true),
+                              style: context.bodyXSmall,
+                            ),
+                          ],
+                        ),
+                        trailing: Text(
+                          p.status.name,
+                          style: context.bodySmall.copyWith(
+                            color: StatusColor.color[p.status.color],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ],
-            ),
+            ).paddingSymmetric( vertical: 16.h),
           ),
         );
       },

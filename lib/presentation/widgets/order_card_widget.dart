@@ -18,12 +18,11 @@ class OrderCardWidget extends StatelessWidget {
       dense: true,
       contentPadding: EdgeInsets.only(left: 12, right: 12),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      // tileColor: Colors.white12,
       leading: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
           color: AppColors.secondary.withValues(alpha: 0.1),
-          borderRadius: BorderRadius.circular(100), // Controls the roundness
+          borderRadius: BorderRadius.circular(100),
         ),
         child: const Icon(Icons.inventory_2_outlined, color: AppColors.secondary),
       ),
@@ -38,7 +37,7 @@ class OrderCardWidget extends StatelessWidget {
           child: Text(
             order.status.name,
             style: context.bodyXSmall,
-          ).paddingSymmetric(horizontal: 6.w, vertical: 1.h),
+          ).color(AppColors.secondary).paddingSymmetric(horizontal: 6.w, vertical: 1.h),
         ).paddingOnly(top: 3.h),
       ),
       trailing: Text(
