@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:papi_gold/app/common/pages/index.dart';
 import 'package:papi_gold/app/common/pages/navigation_page.dart';
 import 'package:papi_gold/app/core/constants/index.dart';
-import 'package:papi_gold/domain/entities/index.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
 final GoRouter router = GoRouter(

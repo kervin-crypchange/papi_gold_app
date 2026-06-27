@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
@@ -75,26 +76,15 @@ class ProductCardWidget extends StatelessWidget {
                             ).medium,
                           ],
                         ),
-                        Wrap(
-                          children: [
-                            IconButton(
-                              onPressed: () => print('press'),
-                              icon: Icon(
-                                Icons.info_outline_rounded,
-                                color: AppColors.black,
-                              ),
+                        IconButton.filled(
+                          onPressed: () => debugPrintDone,
+                          icon: Icon(Icons.shopping_cart_outlined),
+                          style: IconButton.styleFrom(
+                            backgroundColor: AppColors.secondary.withValues(
+                              alpha: 0.1,
                             ),
-                            IconButton.filled(
-                              onPressed: () => print('press'),
-                              icon: Icon(Icons.shopping_cart_outlined),
-                              style: IconButton.styleFrom(
-                                backgroundColor: AppColors.secondary.withValues(
-                                  alpha: 0.1,
-                                ),
-                                foregroundColor: AppColors.secondary,
-                              ),
-                            ),
-                          ],
+                            foregroundColor: AppColors.secondary,
+                          ),
                         ),
                       ],
                     ),

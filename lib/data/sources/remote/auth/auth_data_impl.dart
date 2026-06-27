@@ -22,15 +22,29 @@ class AuthDataImpl extends AuthData with LoggerMixin {
   }
 
   @override
-  Future<Either<Failure, RegisterModel>> recovery(RecoveryModel model) {
-    // TODO: implement recovery
-    throw UnimplementedError();
+  Future<Either<Failure, String>> recovery(RecoveryModel model) async {
+     try {
+      final res = await sl<DioClient>().post(
+        Apis.session,
+        data: model.toJson(),
+      );
+      return Right(res.data);
+    } catch (e) {
+      return Left(ServerException(e));
+    }
   }
 
   @override
-  Future<Either<Failure, RegisterModel>> register(RegisterModel model) {
-    // TODO: implement register
-    throw UnimplementedError();
+  Future<Either<Failure, String>> register(RegisterModel model) async  {
+   try {
+      final res = await sl<DioClient>().post(
+        Apis.session,
+        data: model.toJson(),
+      );
+      return Right(res.data);
+    } catch (e) {
+      return Left(ServerException(e));
+    }
   }
 
   @override

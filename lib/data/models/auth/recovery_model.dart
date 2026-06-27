@@ -1,3 +1,5 @@
+import 'package:papi_gold/domain/entities/auth/recovery_entity.dart';
+
 class RecoveryModel {
   final String email;
 
@@ -8,10 +10,12 @@ class RecoveryModel {
     return RecoveryModel(email: json['email']);
   }
 
-/// Converts a [RecoveryModel] to a JSON map.
-  Map<String, dynamic> toJson(){
-    return <String, dynamic> {
-      'email': email
-    };
+  factory RecoveryModel.fromEntity(RecoveryEntity e) {
+    return RecoveryModel(email: e.email);
+  }
+
+  /// Converts a [RecoveryModel] to a JSON map.
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{'email': email};
   }
 }

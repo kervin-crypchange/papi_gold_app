@@ -95,7 +95,7 @@ class _OrderPageState extends State<OrderPage> {
               width: 1.sw,
               child: FilledButtonWidget(
                 title: 'Proceder con el pago',
-                onPressed: () => print('press me'),
+                onPressed: () => debugPrint,
               ),
             ).paddingOnly(bottom: 12.h),
         ],
