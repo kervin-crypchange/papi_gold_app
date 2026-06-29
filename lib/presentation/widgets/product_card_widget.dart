@@ -1,15 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:papi_gold/app/common/mixins/index.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
 import 'package:papi_gold/app/core/theme/index.dart';
 import 'package:papi_gold/domain/entities/index.dart';
+import 'package:persistent_shopping_cart/model/cart_model.dart';
+import 'package:persistent_shopping_cart/persistent_shopping_cart.dart';
 
-class ProductCardWidget extends StatelessWidget {
+class ProductCardWidget extends StatelessWidget with MessengerMixin {
   final ProductEntity product;
-  const ProductCardWidget({super.key, required this.product});
+  ProductCardWidget({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
@@ -67,12 +69,26 @@ class ProductCardWidget extends StatelessWidget {
                           Text('Precio').color(AppColors.grey),
                           Text(
                             getFormatMoney(product.price),
-                            style: context.labelLarge
+                            style: context.labelLarge,
                           ).medium,
                         ],
                       ),
                       IconButton.filled(
-                        onPressed: () => debugPrintDone,
+                        onPressed: () async {
+                          messenger.showSnackBar(
+                            message: 'Item agregado al carrito',
+                            color: AppColors.success,
+                          );
+                          await PersistentShoppingCart().addToCart(
+                            PersistentShoppingCartItem(
+                              productId: safeString(product.id),
+                              productName: product.name,
+                              unitPrice: product.price,
+                              quantity: 1,
+                              productImages: [product.imagen],
+                            ),
+                          );
+                        },
                         icon: Icon(Icons.shopping_cart_outlined),
                         style: IconButton.styleFrom(
                           backgroundColor: AppColors.secondary.withValues(

@@ -66,12 +66,12 @@ class _ProductsPageState extends State<ProductsPage> with MessengerMixin {
                     ],
                   );
                 },
-              ).paddingSymmetric(horizontal: 12.w);
+              );
             }
             return Center(child: Text('Ha ocurrido un error'));
           },
         ),
-      ),
+      ).paddingSymmetric(horizontal: 12.w),
     );
   }
 }
