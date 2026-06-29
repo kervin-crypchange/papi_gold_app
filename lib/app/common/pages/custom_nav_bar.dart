@@ -27,9 +27,14 @@ class CustomNavBar extends StatelessWidget {
         'label': 'Productos',
       },
       {
-        'icon': Icons.shopping_cart_checkout_outlined,
-        'iconSelected': Icons.shopping_cart_checkout_rounded,
+        'icon': Icons.shopping_bag_outlined,
+        'iconSelected': Icons.shopping_bag_rounded,
         'label': 'Ordenes',
+      },
+      {
+        'icon': Icons.shopping_cart_outlined,
+        'iconSelected': Icons.shopping_cart_rounded,
+        'label': 'Carrito',
       },
       {
         'icon': Icons.person_pin_outlined,
@@ -43,7 +48,6 @@ class CustomNavBar extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.black,
         borderRadius: BorderRadius.circular(100.r),
-        // border: BoxBorder.all(color: Colors.white38),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.shade800,

@@ -11,7 +11,7 @@ class NavigationPage extends StatefulWidget {
 class _NavigationPageState extends State<NavigationPage> {
   int _currentIndex = 0;
 
-  final List<Widget> pages = [HomePage(), ProductsPage(), OrdersPage(), ProfilePage()];
+  final List<Widget> pages = [HomePage(), ProductsPage(), OrdersPage(), CartPage(), ProfilePage()];
 
   void _onSelectedPage(int index) {
     setState(() {
