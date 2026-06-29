@@ -5,43 +5,19 @@ import 'package:papi_gold/app/core/theme/index.dart';
 
 class CustomNavBar extends StatelessWidget {
   final int currentIndex;
+  final List<Map<String, dynamic>> navItems;
   final Function(int) onTap;
 
   const CustomNavBar({
     super.key,
     required this.currentIndex,
+    required this.navItems,
     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, dynamic>> navItems = [
-      {
-        'icon': Icons.home_outlined,
-        'iconSelected': Icons.home_rounded,
-        'label': 'Home',
-      },
-      {
-        'icon': Icons.inventory_2_outlined,
-        'iconSelected': Icons.inventory_2_rounded,
-        'label': 'Productos',
-      },
-      {
-        'icon': Icons.shopping_bag_outlined,
-        'iconSelected': Icons.shopping_bag_rounded,
-        'label': 'Ordenes',
-      },
-      {
-        'icon': Icons.shopping_cart_outlined,
-        'iconSelected': Icons.shopping_cart_rounded,
-        'label': 'Carrito',
-      },
-      {
-        'icon': Icons.person_pin_outlined,
-        'iconSelected': Icons.person_pin_rounded,
-        'label': 'Perfil',
-      },
-    ];
+   
     return Container(
       height: 45.h,
       width: .85.sw,
