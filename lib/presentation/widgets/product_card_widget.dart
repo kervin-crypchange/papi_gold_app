@@ -67,9 +67,7 @@ class ProductCardWidget extends StatelessWidget {
                           Text('Precio').color(AppColors.grey),
                           Text(
                             getFormatMoney(product.price),
-                            style: context.bodyMedium.copyWith(
-                              color: AppColors.secondary,
-                            ),
+                            style: context.labelLarge
                           ).medium,
                         ],
                       ),
