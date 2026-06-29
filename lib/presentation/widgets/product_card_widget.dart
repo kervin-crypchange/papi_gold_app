@@ -33,14 +33,12 @@ class ProductCardWidget extends StatelessWidget {
                 child: Image.network(
                   product.imagen,
                   fit: BoxFit.cover,
-                  width: 0.8.sw,
-                  height: 150,
+                  height: 250,
                   loadingBuilder: (context, child, progress) =>
                       progress == null
                       ? child
                       : SizedBox(
-                          width: 0.8.sw,
-                          height: 150,
+                          height: 250,
                           child: Center(child: CircularProgressIndicator()),
                         ),
                   errorBuilder: (context, error, stackTrace) =>

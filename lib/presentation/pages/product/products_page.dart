@@ -1,3 +1,4 @@
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:papi_gold/app/common/mixins/messenger_mixin.dart';
@@ -5,7 +6,7 @@ import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
 import 'package:papi_gold/app/core/theme/index.dart';
 import 'package:papi_gold/presentation/cubits/index.dart';
-import 'package:papi_gold/presentation/widgets/product_carousel_widget.dart';
+import 'package:papi_gold/presentation/widgets/index.dart';
 
 class ProductsPage extends StatefulWidget {
   const ProductsPage({super.key});
@@ -44,6 +45,8 @@ class _ProductsPageState extends State<ProductsPage> with MessengerMixin {
             }
             if (state is ProductsSuccess) {
               return ListView.builder(
+                padding: EdgeInsets.only(bottom: 70.h),
+                scrollCacheExtent: ScrollCacheExtent.viewport(1.0),
                 itemCount: state.response.data.length,
                 itemBuilder: (context, index) {
                   final data = state.response.data[index];
@@ -53,16 +56,21 @@ class _ProductsPageState extends State<ProductsPage> with MessengerMixin {
                     children: [
                       Text(
                         data.name,
-                        style: context.bodyLarge,
-                      ).paddingSymmetric(horizontal: 12.w, vertical: 3.h),
-                      SizedBox(
-                        height: 0.31.sh,
-                        child: ProductCarouselWidget(products: data.products),
+                        style: context.bodyLarge.copyWith(
+                          color: AppColors.secondary,
+                        ),
                       ),
+                      ...data.products.map(
+                        (p) => ProductCardWidget(product: p),
+                      ),
+                      // SizedBox(
+                      //   height: 0.31.sh,
+                      //   child: ProductCarouselWidget(products: data.products),
+                      // ),
                     ],
                   );
                 },
-              );
+              ).paddingSymmetric(horizontal: 12.w);
             }
             return Center(child: Text('Ha ocurrido un error'));
           },
