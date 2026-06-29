@@ -1,5 +1,7 @@
 
+import 'package:go_router/go_router.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
+import 'package:papi_gold/app/core/constants/index.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
 
 class HomePage extends StatelessWidget {
@@ -11,7 +13,7 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         actions: [
           IconButton(
-            onPressed: () => debugPrint('press'),
+            onPressed: () => context.goNamed(Routes.profile),
             icon: Icon(Icons.person_2_outlined),
           ),
           IconButton(

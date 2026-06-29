@@ -51,6 +51,11 @@ final GoRouter router = GoRouter(
           builder: (context, state) =>
               ProductPage(id: state.pathParameters['id']!),
         ),
+        GoRoute(
+          name: Routes.profile,
+          path: '/${Routes.profile}',
+          builder: (context, state) => ProfilePage(),
+        ),
       ],
     ),
   ],
