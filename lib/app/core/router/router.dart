@@ -35,6 +35,11 @@ final GoRouter router = GoRouter(
       builder: (context, state) => RecoveryPasswordPage(),
     ),
     GoRoute(
+      name: Routes.cart,
+      path: '/${Routes.cart}',
+      builder: (context, state) => CartPage(),
+    ),
+    GoRoute(
       name: Routes.navigation,
       path: '/${Routes.navigation}',
       builder: (context, state) => NavigationPage(),

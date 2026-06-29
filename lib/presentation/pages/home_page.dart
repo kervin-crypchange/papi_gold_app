@@ -1,8 +1,8 @@
-
 import 'package:go_router/go_router.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/constants/index.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
+import 'package:persistent_shopping_cart/persistent_shopping_cart.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -12,9 +12,16 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          IconButton(
-            onPressed: () => context.goNamed(Routes.profile),
-            icon: Icon(Icons.person_2_outlined),
+          PersistentShoppingCart().showCartItemCountWidget(
+            cartItemCountWidgetBuilder: (int itemCount) {
+              return IconButton(
+                icon: Badge.count(
+                  count: itemCount,
+                  child: Icon(Icons.shopping_cart_outlined),
+                ),
+               onPressed: () => context.goNamed(Routes.cart),
+              );
+            },
           ),
           IconButton(
             onPressed: () => debugPrint('press'),

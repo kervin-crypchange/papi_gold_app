@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
+import 'package:papi_gold/app/core/constants/routes.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
 import 'package:persistent_shopping_cart/model/cart_model.dart';
 import 'package:persistent_shopping_cart/persistent_shopping_cart.dart';
@@ -18,17 +20,11 @@ class _CartPageState extends State<CartPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back), 
+          onPressed: () => context.goNamed(Routes.navigation),
+        ),
         title: Text('Mi carrito'),
-        actions: [
-          PersistentShoppingCart().showTotalAmountWidget(
-            cartTotalAmountWidgetBuilder: (double totalAmount) {
-              return Text(
-                'Total: ${getFormatMoney(totalAmount)}',
-                style: context.bodyLarge,
-              ).paddingOnly(right: 12.w);
-            },
-          ),
-        ],
       ),
       body: SafeArea(
         child: PersistentShoppingCart().showCartItems(
@@ -45,6 +41,7 @@ class _CartPageState extends State<CartPage> {
                   itemBuilder: (context, index) {
                     final item = cartItems[index];
                     return Container(
+                      height: 90.h,
                       decoration: BoxDecoration(
                         color: Colors.black38,
                         borderRadius: BorderRadius.circular(12),
@@ -70,7 +67,7 @@ class _CartPageState extends State<CartPage> {
                             child: Column(
                               mainAxisSize: MainAxisSize.max,
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(item.productName),
                                 Text(
@@ -81,7 +78,7 @@ class _CartPageState extends State<CartPage> {
                             ),
                           ),
                           Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               IconButton(
                                 onPressed: () => debugPrint('print'),
@@ -102,6 +99,16 @@ class _CartPageState extends State<CartPage> {
               },
         ),
       ).paddingSymmetric(horizontal: 12.w),
+      persistentFooterButtons: [
+        PersistentShoppingCart().showTotalAmountWidget(
+          cartTotalAmountWidgetBuilder: (double totalAmount) {
+            return Text(
+              'Total: ${getFormatMoney(totalAmount)}',
+              style: context.bodyLarge,
+            ).paddingOnly(right: 12.w);
+          },
+        ),
+      ],
     );
   }
 }

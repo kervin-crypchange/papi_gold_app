@@ -10,4 +10,5 @@ abstract class Routes {
   static const home = 'home';
   static const order = 'order';
   static const product = 'product';
+  static const cart = 'cart';
 }

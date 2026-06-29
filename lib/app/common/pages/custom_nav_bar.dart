@@ -70,12 +70,6 @@ class CustomNavBar extends StatelessWidget {
                             : Colors.grey.shade600,
                       ),
                     ),
-                    // if (isSelected) ...[
-                    //   Text(
-                    //     navItems[index]['label'],
-                    //     style: context.labelXSmall.copyWith(color: AppColors.secondary),
-                    //   ),
-                    // ],
                   ],
                 ),
               ).paddingSymmetric(vertical: 4.h),

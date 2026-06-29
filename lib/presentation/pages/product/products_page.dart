@@ -59,7 +59,7 @@ class _ProductsPageState extends State<ProductsPage> with MessengerMixin {
                         style: context.bodyLarge.copyWith(
                           color: AppColors.secondary,
                         ),
-                      ),
+                      ).paddingOnly(top: 6.h),
                       ...data.products.map(
                         (p) => ProductCardWidget(product: p),
                       ),
