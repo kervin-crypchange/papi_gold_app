@@ -1,3 +1,5 @@
+import 'package:papi_gold/domain/entities/auth/register_entity.dart';
+
 class RegisterModel {
   final String name;
   final String lastname;
@@ -18,6 +20,15 @@ class RegisterModel {
       password: json['password'],
       name: json['name'],
       lastname: json['lastname'],
+    );
+  }
+
+  factory RegisterModel.fromEntity(RegisterEntity e) {
+    return RegisterModel(
+      name: e.name,
+      lastname: e.lastName,
+      email: e.email,
+      password: e.password,
     );
   }
 

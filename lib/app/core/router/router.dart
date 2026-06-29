@@ -39,12 +39,19 @@ final GoRouter router = GoRouter(
       path: '/${Routes.navigation}',
       builder: (context, state) => NavigationPage(),
       routes: [
-         GoRoute(
+        GoRoute(
           name: Routes.order,
           path: '/${Routes.order}/:id',
-          builder: (context, state) => OrderPage(orderId: state.pathParameters['id']!,),
+          builder: (context, state) =>
+              OrderPage(orderId: state.pathParameters['id']!),
         ),
-      ]
+        GoRoute(
+          name: Routes.product,
+          path: '/${Routes.product}/:id',
+          builder: (context, state) =>
+              ProductPage(id: state.pathParameters['id']!),
+        ),
+      ],
     ),
   ],
 );

@@ -108,7 +108,7 @@ class _RegisterPageState extends State<RegisterPage> with LoggerMixin {
                   child: Text('Iniciar sesión'),
                 ),
               ],
-            ).paddingSymmetric(horizontal: 24.w, vertical: 12.h),
+            ).paddingSymmetric(horizontal: 12.w, vertical: 12.h),
           ),
         ),
       ),

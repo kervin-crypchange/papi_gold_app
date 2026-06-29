@@ -99,7 +99,7 @@ class FeatureProductCard extends StatelessWidget with LoggerMixin {
         ),
         Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12.r),
+            borderRadius: BorderRadius.circular(6.r),
             color: Colors.black87,
           ),
           child: Text(

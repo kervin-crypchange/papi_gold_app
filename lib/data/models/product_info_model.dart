@@ -11,11 +11,12 @@ class ProductInfoModel extends ProductInfoEntity {
 
   factory ProductInfoModel.fromJson(Map<String, dynamic> json) {
     return ProductInfoModel(
-      id: safeInt(['id']),
-      name: safeString(['name']),
-      products: safeList<ProductModel>([
-        'producs',
-      ], (x) => ProductModel.fromJson(x as Map<String, dynamic>)),
+      id: safeInt(json['id']),
+      name: safeString(json['name']),
+      products: safeList<ProductModel>(
+        json['products'],
+        (x) => ProductModel.fromJson(x),
+      ),
     );
   }
 }

@@ -65,7 +65,7 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage>
                     child: Text('¿No tienes cuenta?, registrate'),
                   ),
                 ],
-              ).paddingSymmetric(horizontal: 24.w),
+              ).paddingSymmetric(horizontal: 12.w),
             ),
           ),
         ),

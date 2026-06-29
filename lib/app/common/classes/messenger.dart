@@ -34,7 +34,7 @@ class MessengerImpl implements Messenger {
         backgroundColor: color,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.r),
+          borderRadius: BorderRadius.circular(6.r),
         ),
       ),
     );

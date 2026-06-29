@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-abstract class UseCase<Type, Param> {
-  Future<Type> call({Param param});
+abstract class UseCase<T, Param> {
+  Future<T> call({Param param});
 }
 
 /// Special class for use cases that do not require any parameters.

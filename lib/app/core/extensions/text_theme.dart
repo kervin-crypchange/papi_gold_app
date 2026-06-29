@@ -16,10 +16,10 @@ extension TextThemeExtension on BuildContext {
   TextStyle get titleMedium => _baseStyle(20.sp, AppColors.secondary);
   TextStyle get titleSmall => _baseStyle(18.sp, AppColors.secondary);
 
-  TextStyle get labelLarge => _baseStyle(16.sp, AppColors.white);
-  TextStyle get labelMedium => _baseStyle(14.sp, AppColors.white);
-  TextStyle get labelSmall => _baseStyle(12.sp, AppColors.white);
-  TextStyle get labelXSmall => _baseStyle(10.sp, AppColors.white);
+  TextStyle get labelLarge => _baseStyle(16.sp, AppColors.secondary);
+  TextStyle get labelMedium => _baseStyle(14.sp, AppColors.secondary);
+  TextStyle get labelSmall => _baseStyle(12.sp, AppColors.secondary);
+  TextStyle get labelXSmall => _baseStyle(10.sp, AppColors.secondary);
 
   TextStyle get bodyLarge => _baseStyle(16.sp, AppColors.white);
   TextStyle get bodyMedium => _baseStyle(14.sp, AppColors.white);
@@ -30,8 +30,6 @@ extension TextThemeExtension on BuildContext {
     return TextStyle(
       fontSize: fontSize,
       color: color,
-      // fontFamily: _fontFamily,
-      // fontWeight: _defaultWeight,
     );
   }
 }

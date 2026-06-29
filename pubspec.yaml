@@ -7,6 +7,8 @@ environment:
   sdk: ^3.12.1
 
 dependencies:
+  infinite_carousel: ^1.1.1
+  cached_network_image: ^3.4.1
   dartz: ^0.10.1
   dio: ^5.9.2
   equatable: ^2.0.8
