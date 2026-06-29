@@ -1,8 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
-import 'package:papi_gold/app/core/theme/colors.dart';
 import 'package:persistent_shopping_cart/model/cart_model.dart';
 import 'package:persistent_shopping_cart/persistent_shopping_cart.dart';
 
@@ -17,7 +17,19 @@ class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Mi carrito')),
+      appBar: AppBar(
+        title: Text('Mi carrito'),
+        actions: [
+          PersistentShoppingCart().showTotalAmountWidget(
+            cartTotalAmountWidgetBuilder: (double totalAmount) {
+              return Text(
+                'Total: ${getFormatMoney(totalAmount)}',
+                style: context.bodyLarge,
+              ).paddingOnly(right: 12.w);
+            },
+          ),
+        ],
+      ),
       body: SafeArea(
         child: PersistentShoppingCart().showCartItems(
           cartItemsBuilder:
@@ -32,17 +44,58 @@ class _CartPageState extends State<CartPage> {
                   itemCount: cartItems.length,
                   itemBuilder: (context, index) {
                     final item = cartItems[index];
-                    return ListTile(
-                      shape: RoundedRectangleBorder(
+                    return Container(
+                      decoration: BoxDecoration(
+                        color: Colors.black38,
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      tileColor: Colors.black38,
-                      leading: Image.network(item.productImages![0]),
-                      title: Text(item.productName),
-                      subtitle: Text(
-                        getFormatMoney(item.totalPrice),
-                        style: context.labelLarge,
-                      ),
+                      child: Row(
+                        spacing: 10.w,
+                        children: [
+                          // Image.network(item.productImages![0], width: 72.w),
+                          CachedNetworkImage(
+                            width: 72.w,
+                            imageUrl: item.productImages![0],
+                            progressIndicatorBuilder:
+                                (context, url, downloadProgress) => SizedBox(
+                                  height: 250,
+                                  child: Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                ),
+                            errorWidget: (context, url, error) =>
+                                Icon(Icons.error),
+                          ),
+                          Expanded(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(item.productName),
+                                Text(
+                                  getFormatMoney(item.totalPrice),
+                                  style: context.labelLarge,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              IconButton(
+                                onPressed: () => debugPrint('print'),
+                                icon: Icon(Icons.add, size: 18),
+                              ),
+                              Text('${item.quantity}'),
+                              IconButton(
+                                onPressed: () => debugPrint('print'),
+                                icon: Icon(Icons.remove, size: 18),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ).paddingSymmetric(horizontal: 12.w),
                     ).paddingOnly(bottom: 6.h);
                   },
                 );
