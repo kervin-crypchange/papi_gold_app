@@ -63,10 +63,6 @@ class _ProductsPageState extends State<ProductsPage> with MessengerMixin {
                       ...data.products.map(
                         (p) => ProductCardWidget(product: p),
                       ),
-                      // SizedBox(
-                      //   height: 0.31.sh,
-                      //   child: ProductCarouselWidget(products: data.products),
-                      // ),
                     ],
                   );
                 },

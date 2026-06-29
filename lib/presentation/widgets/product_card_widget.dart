@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
@@ -30,19 +31,14 @@ class ProductCardWidget extends StatelessWidget {
                   topLeft: Radius.circular(6.r),
                   topRight: Radius.circular(6.r),
                 ),
-                child: Image.network(
-                  product.imagen,
-                  fit: BoxFit.cover,
-                  height: 250,
-                  loadingBuilder: (context, child, progress) =>
-                      progress == null
-                      ? child
-                      : SizedBox(
-                          height: 250,
-                          child: Center(child: CircularProgressIndicator()),
-                        ),
-                  errorBuilder: (context, error, stackTrace) =>
-                      Icon(Icons.error),
+                child: CachedNetworkImage(
+                  imageUrl: product.imagen,
+                  progressIndicatorBuilder: (context, url, downloadProgress) =>
+                      SizedBox(
+                        height: 250,
+                        child: Center(child: CircularProgressIndicator()),
+                      ),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
                 ),
               ),
               Column(
@@ -109,6 +105,6 @@ class ProductCardWidget extends StatelessWidget {
           ),
         ],
       ),
-    ).paddingSymmetric(horizontal: 6.w);
+    );
   }
 }
