@@ -14,6 +14,7 @@ class OrderListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
+      padding: EdgeInsets.only(bottom: 70.h),
       separatorBuilder: (context, index) => Container(
         width: 1.sw,
         decoration: BoxDecoration(
