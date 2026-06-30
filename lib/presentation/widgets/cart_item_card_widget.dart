@@ -34,10 +34,10 @@ class _CartItemCardWidgetState extends State<CartItemCardWidget> {
         color: Colors.black38,
       ),
       child: Row(
-        spacing: 12.w,
+        spacing: 8.w,
         children: [
           CachedNetworkImage(
-            width: 0.35.sw,
+            width: 0.33.sw,
             imageUrl: item.productImages![0],
             progressIndicatorBuilder: (context, url, downloadProgress) =>
                 SizedBox(
