@@ -10,12 +10,14 @@ import 'package:papi_gold/app/core/theme/app_theme.dart';
 import 'package:papi_gold/injection_container.dart';
 import 'package:papi_gold/app/core/extensions/index.dart' as globals;
 import 'package:papi_gold/presentation/cubits/index.dart';
+import 'package:persistent_shopping_cart/persistent_shopping_cart.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
     await Hive.initFlutter();
     await Hive.openBox(BoxEnum.config.name);
+    await PersistentShoppingCart().init();
     await initializeDependencies();
     runApp(const BlocProviders());
   } catch (e, st) {

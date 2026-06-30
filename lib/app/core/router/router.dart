@@ -35,6 +35,11 @@ final GoRouter router = GoRouter(
       builder: (context, state) => RecoveryPasswordPage(),
     ),
     GoRoute(
+      name: Routes.cart,
+      path: '/${Routes.cart}',
+      builder: (context, state) => CartPage(),
+    ),
+    GoRoute(
       name: Routes.navigation,
       path: '/${Routes.navigation}',
       builder: (context, state) => NavigationPage(),
@@ -50,6 +55,11 @@ final GoRouter router = GoRouter(
           path: '/${Routes.product}/:id',
           builder: (context, state) =>
               ProductPage(id: state.pathParameters['id']!),
+        ),
+        GoRoute(
+          name: Routes.profile,
+          path: '/${Routes.profile}',
+          builder: (context, state) => ProfilePage(),
         ),
       ],
     ),

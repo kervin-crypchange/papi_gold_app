@@ -1,5 +1,8 @@
+import 'package:go_router/go_router.dart';
 import 'package:papi_gold/app/common/pages/index.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
+import 'package:papi_gold/app/core/constants/index.dart';
+import 'package:persistent_shopping_cart/persistent_shopping_cart.dart';
 
 class NavigationPage extends StatefulWidget {
   const NavigationPage({super.key});
@@ -11,8 +14,36 @@ class NavigationPage extends StatefulWidget {
 class _NavigationPageState extends State<NavigationPage> {
   int _currentIndex = 0;
 
-  final List<Widget> pages = [HomePage(), ProductsPage(), OrdersPage(), ProfilePage()];
+  final List<Widget> pages = [
+    HomePage(),
+    ProductsPage(),
+    OrdersPage(),
+    ProfilePage(),
+  ];
 
+  final List<Map<String, dynamic>> navItems = [
+    {
+      'icon': Icons.home_outlined,
+      'iconSelected': Icons.home_rounded,
+      'label': 'Home',
+    },
+    {
+      'icon': Icons.inventory_2_outlined,
+      'iconSelected': Icons.inventory_2_rounded,
+      'label': 'Productos',
+    },
+    {
+      'icon': Icons.shopping_bag_outlined,
+      'iconSelected': Icons.shopping_bag_rounded,
+      'label': 'Ordenes',
+    },
+    {
+      'icon': Icons.person_2_rounded,
+      'iconSelected': Icons.person_2_outlined,
+      'label': 'Perfil',
+    },
+  ];
+ 
   void _onSelectedPage(int index) {
     setState(() {
       _currentIndex = index;
@@ -22,11 +53,36 @@ class _NavigationPageState extends State<NavigationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        actions: [
+          PersistentShoppingCart().showCartItemCountWidget(
+            cartItemCountWidgetBuilder: (int itemCount) {
+              return IconButton(
+                icon: (itemCount > 0)
+                    ? Badge.count(
+                        count: itemCount,
+                        child: Icon(Icons.shopping_cart_outlined),
+                      )
+                    : Icon(Icons.shopping_cart_outlined),
+                onPressed: () => context.goNamed(Routes.cart),
+              );
+            },
+          ),
+          IconButton(
+            onPressed: () => debugPrint('press'),
+            icon: Icon(Icons.notifications_none_outlined),
+          ),
+        ],
+      ),
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
           SafeArea(child: pages[_currentIndex]),
-          CustomNavBar(currentIndex: _currentIndex, onTap: _onSelectedPage),
+          CustomNavBar(
+            currentIndex: _currentIndex,
+            navItems: navItems,
+            onTap: _onSelectedPage,
+          ),
         ],
       ),
     );
