@@ -5,6 +5,7 @@ import 'package:papi_gold/app/common/widgets/filled_button_widget.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/constants/routes.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
+import 'package:papi_gold/app/core/theme/colors.dart';
 import 'package:papi_gold/presentation/widgets/index.dart';
 import 'package:persistent_shopping_cart/model/cart_model.dart';
 import 'package:persistent_shopping_cart/persistent_shopping_cart.dart';
@@ -44,9 +45,20 @@ class _CartPageState extends State<CartPage> {
               ) {
                 if (cartItems.isEmpty) {
                   return Center(
-                    child: Text(
-                      'Tu carrito está vacío.',
-                      style: context.titleMedium,
+                    child: Column(
+                      spacing: 12.h,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Tu carrito está vacío.',
+                          style: context.titleMedium,
+                        ),
+                        Icon(
+                          Icons.add_shopping_cart_outlined,
+                          size: 52.r,
+                          color: AppColors.secondary,
+                        ),
+                      ],
                     ),
                   );
                 }

@@ -10,25 +10,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          PersistentShoppingCart().showCartItemCountWidget(
-            cartItemCountWidgetBuilder: (int itemCount) {
-              return IconButton(
-                icon: Badge.count(
-                  count: itemCount,
-                  child: Icon(Icons.shopping_cart_outlined),
-                ),
-               onPressed: () => context.goNamed(Routes.cart),
-              );
-            },
-          ),
-          IconButton(
-            onPressed: () => debugPrint('press'),
-            icon: Icon(Icons.notifications_none_outlined),
-          ),
-        ],
-      ),
+      
       body: SafeArea(
         child: Center(
           child: Text('PapiGold Home Page', style: context.titleMedium),
