@@ -8,6 +8,7 @@ abstract class Messenger {
   void showSnackBar({
     IconData? icon,
     required String message,
+    int seconds = 3,
     Color? color = AppColors.black,
   });
 }
@@ -17,6 +18,7 @@ class MessengerImpl implements Messenger {
   void showSnackBar({
     IconData? icon,
     required String message,
+    int seconds = 3,
     Color? color = AppColors.black,
   }) {
     globals.scaffoldMessengerKey.currentState?.showSnackBar(
@@ -30,12 +32,10 @@ class MessengerImpl implements Messenger {
                 ],
               )
             : Text(message),
-        duration: const Duration(seconds: 3),
+        duration: Duration(seconds: seconds),
         backgroundColor: color,
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(6.r),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6.r)),
       ),
     );
   }
