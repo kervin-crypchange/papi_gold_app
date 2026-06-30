@@ -27,6 +27,13 @@ class _CartPageState extends State<CartPage> {
           onPressed: () => context.goNamed(Routes.navigation),
         ),
         title: Text('Mi carrito'),
+        actions: [
+          IconButton(
+            onPressed: () => PersistentShoppingCart().clearCart(),
+            icon: Icon(Icons.delete_forever_outlined),
+            tooltip: 'Vaciar carrito',
+          ),
+        ],
       ),
       body: SafeArea(
         child: PersistentShoppingCart().showCartItems(

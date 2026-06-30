@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
+import 'package:papi_gold/app/core/theme/colors.dart';
 import 'package:persistent_shopping_cart/model/cart_model.dart';
 import 'package:persistent_shopping_cart/persistent_shopping_cart.dart';
 
@@ -25,62 +26,103 @@ class _CartItemCardWidgetState extends State<CartItemCardWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 90.h,
+      padding: EdgeInsets.all(8.r),
+      width: 1.sw,
+      height: 130,
       decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12.r),
         color: Colors.black38,
-        borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
-        spacing: 10.w,
+        spacing: 12.w,
         children: [
           CachedNetworkImage(
-            width: 72.w,
+            width: 0.35.sw,
             imageUrl: item.productImages![0],
             progressIndicatorBuilder: (context, url, downloadProgress) =>
                 SizedBox(
-                  height: 250,
+                  height: 250.h,
                   child: Center(child: CircularProgressIndicator()),
                 ),
             errorWidget: (context, url, error) => Icon(Icons.error),
           ),
           Expanded(
             child: Column(
-              mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(item.productName, style: context.bodyMedium),
+                Text(item.productName),
+                Text(item.productDescription!),
                 Text(
-                  getFormatMoney(item.totalPrice),
-                  style: context.labelLarge,
-                ),
+                  getFormatMoney(item.unitPrice),
+                  style: context.labelMedium,
+                ).medium,
+                Counter(item: item),
               ],
             ),
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              IconButton(
-                onPressed: () async => await PersistentShoppingCart()
-                    .incrementCartItemQuantity(item.productId),
-                icon: Icon(Icons.add, size: 18),
-              ),
-              Text('${item.quantity}'),
-              IconButton(
-                onPressed: () async {
-                  (item.quantity == 1)
-                      ? await PersistentShoppingCart().removeFromCart(
-                          item.productId,
-                        )
-                      : await PersistentShoppingCart()
-                            .decrementCartItemQuantity(item.productId);
-                },
-                icon: Icon(Icons.remove, size: 18),
-              ),
-            ],
-          ),
         ],
-      ).paddingSymmetric(horizontal: 12.w),
+      ),
     ).paddingOnly(bottom: 6.h);
+  }
+}
+
+class Counter extends StatelessWidget {
+  const Counter({
+    super.key,
+    required this.item,
+  });
+
+  final PersistentShoppingCartItem item;
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: AlignmentGeometry.centerRight,
+      child: Container(
+        width: 0.25.sw,
+        decoration: BoxDecoration(
+          border: BoxBorder.all(
+            color: AppColors.secondary,
+            width: 0.5.w,
+          ),
+          borderRadius: BorderRadius.circular(100.r),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(),
+              style: IconButton.styleFrom(
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              ),
+              onPressed: () async {
+                (item.quantity == 1)
+                    ? await PersistentShoppingCart().removeFromCart(
+                        item.productId,
+                      )
+                    : await PersistentShoppingCart()
+                          .decrementCartItemQuantity(
+                            item.productId,
+                          );
+              },
+              icon: Icon(Icons.remove, size: 18),
+            ),
+            Text('${item.quantity}'),
+            IconButton(
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(),
+              style: IconButton.styleFrom(
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              ),
+              onPressed: () async => await PersistentShoppingCart()
+                  .incrementCartItemQuantity(item.productId),
+              icon: Icon(Icons.add, size: 18),
+            ),
+          ],
+        ).paddingSymmetric(vertical: 1.h),
+      ),
+    );
   }
 }

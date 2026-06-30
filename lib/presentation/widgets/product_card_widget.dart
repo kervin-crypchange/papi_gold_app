@@ -78,12 +78,14 @@ class ProductCardWidget extends StatelessWidget with MessengerMixin {
                           messenger.showSnackBar(
                             message: 'Item agregado al carrito',
                             color: AppColors.success,
-                            seconds: 1
+                            seconds: 1,
                           );
                           await PersistentShoppingCart().addToCart(
                             PersistentShoppingCartItem(
                               productId: safeString(product.id),
                               productName: product.name,
+                              productDescription: product.description,
+                              // productDetails: {'category': product.category},
                               unitPrice: product.price,
                               quantity: 1,
                               productImages: [product.imagen],
