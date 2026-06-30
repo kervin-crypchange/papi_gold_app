@@ -1,0 +1,1 @@
+enum CheckoutFormatEnum { inversion, compra }
