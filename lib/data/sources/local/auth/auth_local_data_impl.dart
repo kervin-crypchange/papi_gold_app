@@ -2,7 +2,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:papi_gold/app/common/enums/index.dart';
 import 'package:papi_gold/app/common/mixins/index.dart';
 import 'package:papi_gold/app/core/error/failure.dart';
-import 'package:papi_gold/data/models/index.dart';
 import 'package:papi_gold/data/sources/local/auth/auth_local_data.dart';
 
 class AuthLocalDataImpl extends AuthLocalData with LoggerMixin {
@@ -22,24 +21,9 @@ class AuthLocalDataImpl extends AuthLocalData with LoggerMixin {
   }
 
   @override
-  ClientModel getUserLogged() {
-    String client = box.get(BoxEnum.config.userLogged);
-    return clientModelFromString(client);
-  }
-
-  @override
   void saveToken(String token) {
     try {
       box.put(BoxEnum.config.token, token);
-    } catch (e) {
-      throw LocalFailure();
-    }
-  }
-
-  @override
-  void saveUserLogged(ClientModel m) {
-    try {
-      box.put(BoxEnum.config.userLogged, m.toJson());
     } catch (e) {
       throw LocalFailure();
     }
