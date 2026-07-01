@@ -67,7 +67,7 @@ class PersistentClientDataModel {
     return PersistentClientDataModel(
       id: safeInt(json['id']),
       name: safeString(json['name']),
-      lastName: safeString(json['lastName']),
+      lastName: safeString(json['lastname']),
       email: safeString(json['email']),
       phone: safeString(json['phone']),
       country: json['country'] ?? {},
@@ -75,8 +75,8 @@ class PersistentClientDataModel {
       city: json['city'] ?? {},
       address1: safeString(json['address1']),
       address2: safeString(json['address2']),
-      codeZip: safeString(json['codeZip']),
-      receiveAdvertise: safeBool(json['receiveAdvertise']),
+      codeZip: safeString(json['code_zip']),
+      receiveAdvertise: safeBool(json['receive_advertise']),
       category: safeString(json['category']),
     );
   }
@@ -85,7 +85,7 @@ class PersistentClientDataModel {
     return {
       'id': id,
       'name': name,
-      'lastName': lastName,
+      'lastname': lastName,
       'email': email,
       'phone': phone,
       'country': country,
@@ -93,11 +93,13 @@ class PersistentClientDataModel {
       'city': city,
       'address1': address1,
       'address2': address2,
-      'codeZip': codeZip,
-      'receiveAdvertise': receiveAdvertise,
+      'code_zip': codeZip,
+      'receive_advertise': receiveAdvertise,
       'category': category,
     };
   }
+
+  String get fullName => '$name $lastName';
 
   int get countryId => safeInt(country['id']);
   int get stateId => safeInt(state['id']);

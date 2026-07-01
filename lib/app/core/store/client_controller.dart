@@ -1,15 +1,15 @@
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:papi_gold/app/core/hive/client_data_model.dart';
+import 'package:papi_gold/app/core/store/client_data_model.dart';
 
 class ClientController {
   final Box<PersistentClientDataModel> _clientBox =
       Hive.box<PersistentClientDataModel>('clientBox');
 
   void saveClientData(PersistentClientDataModel clientData) {
-    PersistentClientDataModel? existingData = _clientBox.get(clientData.id);
+    PersistentClientDataModel? existingData = _clientBox.get('clientData');
     if (existingData != null) {
       _clientBox.put(
-        existingData.key,
+        'clientData',
         PersistentClientDataModel(
           id: existingData.id,
           name: clientData.name,
@@ -27,9 +27,8 @@ class ClientController {
         ),
       );
     } else {
-      // Add new data
       _clientBox.put(
-        clientData.key,
+        'clientData',
         PersistentClientDataModel(
           id: clientData.id,
           name: clientData.name,
@@ -51,7 +50,7 @@ class ClientController {
 
   PersistentClientDataModel getClientData() {
     PersistentClientDataModel clientData =
-        _clientBox.get(_clientBox.keys.first) ??
+        _clientBox.get('clientData') ??
         PersistentClientDataModel(
           id: 0,
           name: '',
@@ -68,6 +67,11 @@ class ClientController {
           category: '',
         );
     return clientData;
+  }
+
+  String getFullName() {
+    PersistentClientDataModel clientData = getClientData();
+    return '${clientData.name} ${clientData.lastName}';
   }
 
   void clearClientData() {

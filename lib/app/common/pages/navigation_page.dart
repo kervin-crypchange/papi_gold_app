@@ -43,11 +43,16 @@ class _NavigationPageState extends State<NavigationPage> {
       'label': 'Perfil',
     },
   ];
- 
+
   void _onSelectedPage(int index) {
     setState(() {
       _currentIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override

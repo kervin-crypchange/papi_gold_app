@@ -36,7 +36,37 @@ class PersistentClientDataModelAdapter
 
   @override
   void write(BinaryWriter writer, PersistentClientDataModel obj) {
-    writer.writeByte(0);
+    // writer. ;
+    writer
+      ..writeByte(14)
+      ..writeByte(0)
+      ..write(obj.id)
+      ..writeByte(1)
+      ..write(obj.name)
+      ..writeByte(2)
+      ..write(obj.lastName)
+      ..writeByte(3)
+      ..write(obj.email)
+      ..writeByte(4)
+      ..write(obj.phone)
+      ..writeByte(5)
+      ..write(obj.country)
+      ..writeByte(6)
+      ..write(obj.state)
+      ..writeByte(7)
+      ..write(obj.city)
+      ..writeByte(8)
+      ..write(obj.address1)
+      ..writeByte(9)
+      ..write(obj.address2)
+      ..writeByte(10)
+      ..write(obj.codeZip)
+      ..writeByte(11)
+      ..write(obj.receiveAdvertise)
+      ..writeByte(12)
+      ..write(obj.category)
+      ..writeByte(13)
+      ..write(obj.key);
   }
 
   @override
