@@ -22,9 +22,7 @@ import 'package:papi_gold/injection_container.dart';
     final options = err.requestOptions;
     final requestPath = '${options.baseUrl}${options.path}';
     if (err.response?.statusCode == 401) {
-      //! Se reenvia al login pero debe cambiarse por un refresh token
-      sl<AuthLocalData>().deleteToken();
-      sl<AuthLocalData>().deleteUserLogged();
+      sl<AuthLocalData>().clear();
       router.goNamed(Routes.login);
       logger.i('${options.method} request ==> $requestPath'); //Info log
       try {} on DioException catch (e) {

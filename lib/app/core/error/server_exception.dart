@@ -168,6 +168,8 @@ class ServerException extends Equatable with LoggerMixin implements Failure  {
                 );
             }
             break;
+          case DioExceptionType.transformTimeout:
+            throw UnimplementedError();
         }
       } else {
         serverException = ServerException._(

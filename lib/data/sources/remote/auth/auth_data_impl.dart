@@ -2,6 +2,8 @@ import 'package:dartz/dartz.dart';
 import 'package:papi_gold/app/common/mixins/index.dart';
 import 'package:papi_gold/app/core/constants/index.dart';
 import 'package:papi_gold/app/core/error/index.dart';
+import 'package:papi_gold/app/core/hive/client_data_model.dart';
+import 'package:papi_gold/app/core/hive/persistent_client_data.dart';
 import 'package:papi_gold/app/core/network/dio_client.dart';
 import 'package:papi_gold/data/models/index.dart';
 import 'package:papi_gold/data/sources/remote/auth/auth_data.dart';
@@ -15,6 +17,9 @@ class AuthDataImpl extends AuthData with LoggerMixin {
         Apis.session,
         data: model.toJson(),
       );
+      Future.delayed(const Duration(seconds: 2), () async {
+        await getClientData();
+      });
       return Right(ResponseLoginModel.fromJson(res.data));
     } catch (e) {
       return Left(ServerException(e));
@@ -70,6 +75,19 @@ class AuthDataImpl extends AuthData with LoggerMixin {
       final res = await sl<DioClient>().put(Apis.client, data: data);
       return Right(res.data['message']);
     } catch (e) {
+      return Left(ServerException(e));
+    }
+  }
+
+  Future<Either<Failure, void>> getClientData() async {
+    print('Fetching client data from API...');
+    try {
+      final res = await sl<DioClient>().get(Apis.client);
+      final clientData = PersistentClientDataModel.fromJson(res.data['data']);
+      await PersistentClientData().saveClientData(clientData);
+      return Right(null);
+    } catch (e) {
+      print('Error fetching client data: $e');
       return Left(ServerException(e));
     }
   }

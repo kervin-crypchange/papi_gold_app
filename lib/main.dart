@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:papi_gold/app/common/enums/box_enum.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
+import 'package:papi_gold/app/core/hive/persistent_client_data.dart';
 import 'package:papi_gold/app/core/router/router.dart';
 import 'package:papi_gold/app/core/theme/app_theme.dart';
 import 'package:papi_gold/injection_container.dart';
@@ -18,6 +19,7 @@ Future<void> main() async {
     await Hive.initFlutter();
     await Hive.openBox(BoxEnum.config.name);
     await PersistentShoppingCart().init();
+    await PersistentClientData().init();
     await initializeDependencies();
     runApp(const BlocProviders());
   } catch (e, st) {
