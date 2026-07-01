@@ -4,11 +4,11 @@ import 'package:papi_gold/app/core/store/client_data_model.dart';
 import 'package:papi_gold/app/core/store/persistent_client_data.dart';
 
 class ProfilePage extends StatelessWidget {
-  final PersistentClientDataModel clientData = PersistentClientData().getClientData();
-  ProfilePage({super.key});
+  const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+  final PersistentClientDataModel clientData = PersistentClientData().getClientData();
     return Scaffold(
       appBar: AppBar(),
       body: SafeArea(
