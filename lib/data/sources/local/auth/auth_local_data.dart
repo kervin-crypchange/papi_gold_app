@@ -1,12 +1,11 @@
 import 'package:papi_gold/data/models/client_model.dart';
 
 abstract class AuthLocalData {
-  Future<String> getSavedToken();
-  bool deleteToken();
-  bool deleteUserLogged();
-  bool saveToken(String token);
-  bool saveUserLogged(ClientModel m);
+  String getSavedToken();
+  void saveToken(String token);
+  void saveUserLogged(ClientModel m);
+  void setIsLogged(bool isLogged);
+  void clear();
   ClientModel getUserLogged();
   bool getIsLogged();
-  void setIsLogged(bool isLogged);
 }

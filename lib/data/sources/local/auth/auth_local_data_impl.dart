@@ -5,38 +5,17 @@ import 'package:papi_gold/app/core/error/failure.dart';
 import 'package:papi_gold/data/models/index.dart';
 import 'package:papi_gold/data/sources/local/auth/auth_local_data.dart';
 
-class AuthLocalDataImpl extends AuthLocalData with LoggerMixin{
-
+class AuthLocalDataImpl extends AuthLocalData with LoggerMixin {
   late final Box box;
 
-  AuthLocalDataImpl(){
+  AuthLocalDataImpl() {
     box = Hive.box(BoxEnum.config.name);
   }
 
   @override
-  bool deleteToken() {
-     try {
-      box.delete(BoxEnum.config.token);
-      return true;
-    } catch (e) {
-      throw LocalFailure();
-    }
-  }
-
-  @override
-  bool deleteUserLogged() {
-     try {
-      box.delete(BoxEnum.config.userLogged);
-      return true;
-    } catch (e) {
-      throw LocalFailure();
-    }
-  }
-
-  @override
-  Future<String> getSavedToken() {
-     try {
-      return Future.value(box.get(BoxEnum.config.token) ?? '');
+  String getSavedToken() {
+    try {
+      return box.get(BoxEnum.config.token, defaultValue: '');
     } catch (e) {
       throw LocalFailure();
     }
@@ -49,33 +28,35 @@ class AuthLocalDataImpl extends AuthLocalData with LoggerMixin{
   }
 
   @override
-  bool saveToken(String token) {
+  void saveToken(String token) {
     try {
       box.put(BoxEnum.config.token, token);
-      return true;
     } catch (e) {
       throw LocalFailure();
     }
   }
 
   @override
-  bool saveUserLogged(ClientModel m) {
+  void saveUserLogged(ClientModel m) {
     try {
       box.put(BoxEnum.config.userLogged, m.toJson());
-      return true;
     } catch (e) {
       throw LocalFailure();
     }
   }
-  
+
   @override
   bool getIsLogged() {
     return box.get(BoxEnum.config.isLogged) ?? false;
   }
-  
+
   @override
   void setIsLogged(bool isLogged) {
     box.put(BoxEnum.config.isLogged, isLogged);
   }
   
+  @override
+  void clear() {
+    box.clear();
+  }
 }
