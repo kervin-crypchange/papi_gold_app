@@ -1,10 +1,9 @@
-import 'package:hive/hive.dart';
-import 'package:papi_gold/app/core/store/client_data_model.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:papi_gold/app/core/hive/client_data_model.dart';
 
 class ClientController {
-  final Box<PersistentClientDataModel> _clientBox = Hive.box<PersistentClientDataModel>(
-    'clientBox',
-  );
+  final Box<PersistentClientDataModel> _clientBox =
+      Hive.box<PersistentClientDataModel>('clientBox');
 
   void saveClientData(PersistentClientDataModel clientData) {
     PersistentClientDataModel? existingData = _clientBox.get(clientData.id);
@@ -24,6 +23,7 @@ class ClientController {
           address2: clientData.address2,
           codeZip: clientData.codeZip,
           receiveAdvertise: clientData.receiveAdvertise,
+          category: clientData.category,
         ),
       );
     } else {
@@ -43,26 +43,30 @@ class ClientController {
           address2: clientData.address2,
           codeZip: clientData.codeZip,
           receiveAdvertise: clientData.receiveAdvertise,
+          category: clientData.category,
         ),
       );
     }
   }
 
   PersistentClientDataModel getClientData() {
-    PersistentClientDataModel clientData = _clientBox.get(_clientBox.keys.first) ?? PersistentClientDataModel(
-      id: 0,
-      name: '',
-      lastName: '',
-      email: '',
-      phone: '',
-      country: 0,
-      state: 0,
-      city: 0,
-      address1: '',
-      address2: '',
-      codeZip: '',
-      receiveAdvertise: false,
-    );
+    PersistentClientDataModel clientData =
+        _clientBox.get(_clientBox.keys.first) ??
+        PersistentClientDataModel(
+          id: 0,
+          name: '',
+          lastName: '',
+          email: '',
+          phone: '',
+          country: {},
+          state: {},
+          city: {},
+          address1: '',
+          address2: '',
+          codeZip: '',
+          receiveAdvertise: false,
+          category: '',
+        );
     return clientData;
   }
 

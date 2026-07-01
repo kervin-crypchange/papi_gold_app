@@ -1,7 +1,9 @@
 import 'package:hive/hive.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
 
-@HiveType(typeId: 0)
+part 'client_data_model.g.dart';             
+
+@HiveType(typeId: 1)
 class PersistentClientDataModel {
   @HiveField(0)
   final int id;
@@ -19,13 +21,13 @@ class PersistentClientDataModel {
   final String phone;
 
   @HiveField(5)
-  final int country;
+  final Map<String, dynamic> country;
 
   @HiveField(6)
-  final int state;
+  final Map<String, dynamic> state;
 
   @HiveField(7)
-  final int city;
+  final Map<String, dynamic> city;
 
   @HiveField(8)
   final String address1;
@@ -38,8 +40,11 @@ class PersistentClientDataModel {
 
   @HiveField(11)
   final bool receiveAdvertise;
-
+  
   @HiveField(12)
+  final String category;
+
+  @HiveField(13)
   int get key => id;
 
   PersistentClientDataModel({
@@ -55,6 +60,7 @@ class PersistentClientDataModel {
     required this.address2,
     required this.codeZip,
     required this.receiveAdvertise,
+    required this.category,
   });
 
   factory PersistentClientDataModel.fromJson(Map<String, dynamic> json) {
@@ -64,13 +70,14 @@ class PersistentClientDataModel {
       lastName: safeString(json['lastName']),
       email: safeString(json['email']),
       phone: safeString(json['phone']),
-      country: safeInt(json['country']),
-      state: safeInt(json['state']),
-      city: safeInt(json['city']),
+      country: json['country'] ?? {},
+      state: json['state'] ?? {},
+      city: json['city'] ?? {},
       address1: safeString(json['address1']),
       address2: safeString(json['address2']),
       codeZip: safeString(json['codeZip']),
       receiveAdvertise: safeBool(json['receiveAdvertise']),
+      category: safeString(json['category']),
     );
   }
 
@@ -88,6 +95,11 @@ class PersistentClientDataModel {
       'address2': address2,
       'codeZip': codeZip,
       'receiveAdvertise': receiveAdvertise,
+      'category': category,
     };
   }
+
+  int get countryId => safeInt(country['id']);
+  int get stateId => safeInt(state['id']);
+  int get cityId => safeInt(city['id']);
 }
