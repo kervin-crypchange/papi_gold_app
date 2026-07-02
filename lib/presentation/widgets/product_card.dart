@@ -25,6 +25,9 @@ class ProductCard extends StatefulWidget {
   /// The price of the product.
   final double price;
 
+  /// The stock of the product.
+  final int stock;
+
   /// A callback function triggered when the card is tapped.
   final VoidCallback? onTap;
 
@@ -50,6 +53,7 @@ class ProductCard extends StatefulWidget {
     required this.categoryName,
     required this.productName,
     required this.price,
+    required this.stock,
     this.onTap,
     this.onFavoritePressed,
     this.shortDescription = '',
@@ -183,12 +187,20 @@ class ProductCardState extends State<ProductCard> {
                     Gap(6.h),
                     // Product availability and price
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
                           getFormatMoney(widget.price),
                           style: context.bodyMedium.copyWith(
                             color: AppColors.primary,
+                          ),
+                        ).medium,
+                        Text(
+                          'Stock: ${widget.stock}',
+                          style: context.bodySmall.copyWith(
+                            color: (widget.stock == 0)
+                                ? AppColors.error
+                                : AppColors.success,
                           ),
                         ).medium,
                       ],

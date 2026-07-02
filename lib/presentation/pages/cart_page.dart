@@ -1,5 +1,6 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:papi_gold/app/common/mixins/index.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/common/widgets/filled_button_widget.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
@@ -17,8 +18,12 @@ class CartPage extends StatefulWidget {
   State<CartPage> createState() => _CartPageState();
 }
 
-class _CartPageState extends State<CartPage> {
-  int itemsCount = 0;
+class _CartPageState extends State<CartPage> with MessengerMixin {
+ List<PersistentShoppingCartItem> _cartItems = [];
+  void _checkout() {
+    messenger.showSnackBar(message: 'Realizando pedido ${_cartItems.length}...', color: AppColors.success);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,6 +48,7 @@ class _CartPageState extends State<CartPage> {
                 BuildContext context,
                 List<PersistentShoppingCartItem> cartItems,
               ) {
+                _cartItems = cartItems;
                 if (cartItems.isEmpty) {
                   return Center(
                     child: Column(
@@ -110,8 +116,8 @@ class _CartPageState extends State<CartPage> {
             SizedBox(
               width: double.infinity,
               child: FilledButtonWidget(
-                title: 'Realizar pedido ($itemsCount items)',
-                onPressed: () => debugPrint('payment'),
+                title: 'Realizar pedido',
+                onPressed: () => _checkout(),
               ),
             ),
           ],
