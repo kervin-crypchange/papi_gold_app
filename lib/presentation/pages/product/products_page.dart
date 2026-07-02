@@ -2,11 +2,12 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:papi_gold/app/common/mixins/messenger_mixin.dart';
+import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
 import 'package:papi_gold/app/core/theme/index.dart';
 import 'package:papi_gold/presentation/cubits/index.dart';
-import 'package:papi_gold/presentation/widgets/index.dart';
+import 'package:flutter_product_card/flutter_product_card.dart';
 
 class ProductsPage extends StatefulWidget {
   const ProductsPage({super.key});
@@ -58,7 +59,29 @@ class _ProductsPageState extends State<ProductsPage> with MessengerMixin {
                       color: AppColors.secondary,
                     ),
                   ).paddingOnly(top: 6.h),
-                  ...data.products.map((p) => ProductCardWidget(product: p)),
+                  ...data.products.map(
+                    (p) => ProductCard(
+                      imageUrl: p.imagen,
+                      categoryName: p.category.name,
+                      productName: p.name,
+                      price: p.price,
+                      currency: '\$',
+                      onTap: () {
+                        // Handle card tap event
+                      },
+                      onFavoritePressed: () {
+                        // Handle favorite button press
+                      },
+                      shortDescription: p.description,
+                      // rating: 4.2,
+                      // discountPercentage: 35.0,
+                      // isAvailable: true,
+                      // cardColor: Colors.white,
+                      // textColor: Colors.black,
+                      borderRadius: 8.0,
+                    ),
+                  ),
+                  // ...data.products.map((p) => ProductCardWidget(product: p)),
                 ],
               );
             },
