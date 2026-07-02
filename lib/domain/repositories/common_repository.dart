@@ -11,7 +11,7 @@ abstract class CommonRepository {
 
   Future<Either<Failure, ResponseProductsEntity>> productList(int page);
   Future<Either<Failure, ProductEntity>> productDetail(int id);
-  Future<Either<Failure, String>> checkout(CheckOutEntity e);
+  Future<Either<Failure, ResponseCheckOutEntity>> checkout(CheckOutEntity e);
   Future<Either<Failure, ResponseOrdersEntity>> orderList(int page);
   Future<Either<Failure, OrderDetailEntity>> orderDetail(String orderCode);
 

@@ -75,12 +75,12 @@ class CommonRemoteDataImpl extends CommonRemoteData {
   }
 
   @override
-  Future<Either<Failure, String>> checkout(
+  Future<Either<Failure, ResponseCheckOutModel>> checkout(
     CheckOutModel model,
   ) async {
     try {
       final res = await sl<DioClient>().post(Apis.order, data: model.toJson());
-      return Right(res.data['message']);
+      return Right(ResponseCheckOutModel.fromJson(res.data));
     } catch (e) {
       return Left(ServerException(e));
     }

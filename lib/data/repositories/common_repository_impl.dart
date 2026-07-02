@@ -49,8 +49,8 @@ class CommonRepositoryImpl extends CommonRepository {
   }
 
   @override
-  Future<Either<Failure, String>> checkout(CheckOutEntity e) async {
-    Either<Failure, String> res = await sl<CommonRemoteData>().checkout(
+  Future<Either<Failure, ResponseCheckOutEntity>> checkout(CheckOutEntity e) async {
+    Either<Failure, ResponseCheckOutEntity> res = await sl<CommonRemoteData>().checkout(
       CheckOutModel.fromEntity(e),
     );
 

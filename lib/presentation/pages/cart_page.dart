@@ -69,9 +69,9 @@ class _CartPageState extends State<CartPage> with MessengerMixin {
           message: failure.toString(),
           color: AppColors.error,
         ),
-        (messages) {
+        (res) {
           messenger.showSnackBar(
-            message: messages,
+            message: res.message,
             color: AppColors.success,
           );
           PersistentShoppingCart().clearCart();
