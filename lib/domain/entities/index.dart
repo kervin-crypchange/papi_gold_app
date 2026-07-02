@@ -1,4 +1,7 @@
 
+export 'package:papi_gold/domain/entities/client_entity.dart';
+
+export 'package:papi_gold/domain/entities/checkout_entity.dart';
 export 'package:papi_gold/data/models/responses/response_products_model.dart';
 export 'package:papi_gold/domain/entities/status_entity.dart';
 export 'package:papi_gold/domain/entities/order_item_entity.dart';

@@ -79,7 +79,7 @@ class CommonRemoteDataImpl extends CommonRemoteData {
     CheckOutModel model,
   ) async {
     try {
-      final res = await sl<DioClient>().post(Apis.order);
+      final res = await sl<DioClient>().post(Apis.order, data: model.toJson());
       return Right(res.data['message']);
     } catch (e) {
       return Left(ServerException(e));

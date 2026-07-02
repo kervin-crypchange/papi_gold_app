@@ -36,4 +36,5 @@ Future<void> initializeDependencies() async {
   sl.registerFactory(() => AuthCubit());
   sl.registerFactory(() => OrdersCubit());
   sl.registerFactory(() => ProductCubit());
+  sl.registerFactory(() => CheckOutCubit());
 }

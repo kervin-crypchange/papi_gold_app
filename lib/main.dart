@@ -64,6 +64,7 @@ class BlocProviders extends StatelessWidget {
         BlocProvider(create: (_) => sl<AuthCubit>()),
         BlocProvider(create: (_) => sl<OrdersCubit>()),
         BlocProvider(create: (_) => sl<ProductCubit>()),
+        BlocProvider(create: (_) => sl<CheckOutCubit>()),
       ],
       child: const MainApp(),
     );

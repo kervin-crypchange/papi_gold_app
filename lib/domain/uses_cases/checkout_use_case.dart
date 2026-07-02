@@ -6,10 +6,10 @@ import 'package:papi_gold/domain/repositories/common_repository.dart';
 import 'package:papi_gold/injection_container.dart';
 
 class CheckOutUseCase
-    implements UseCase<Either<Failure, String>, CheckoutEntity> {
+    implements UseCase<Either<Failure, String>, CheckOutEntity> {
 
   @override
-  Future<Either<Failure, String>> call({CheckoutEntity? param}) {
+  Future<Either<Failure, String>> call({CheckOutEntity? param}) {
     return sl<CommonRepository>().checkout(param!);
   }
 }
