@@ -2,7 +2,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:infinite_carousel/infinite_carousel.dart';
 import 'package:papi_gold/domain/entities/index.dart';
-import 'package:papi_gold/presentation/widgets/product_card_widget.dart';
 
 class ProductCarouselWidget extends StatefulWidget {
   final List<ProductEntity> products;
@@ -43,7 +42,7 @@ class _ProductCarouselWidgetState extends State<ProductCarouselWidget> {
       loop: true,
       itemBuilder: (context, itemIndex, realIndex) {
         final ProductEntity product = widget.products[itemIndex];
-        return ProductCardWidget(product: product,);
+        return SizedBox();
       },
     );
   }
