@@ -30,5 +30,4 @@ export 'package:papi_gold/domain/entities/cart_entity.dart';
 export 'package:papi_gold/domain/entities/country_entity.dart';
 export 'package:papi_gold/domain/entities/auth/register_entity.dart';
 export 'package:papi_gold/domain/entities/auth/login_entity.dart';
-export 'package:papi_gold/domain/entities/client_entity.dart';
 export 'package:papi_gold/domain/entities/translate_entity.dart';

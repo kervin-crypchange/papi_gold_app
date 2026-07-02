@@ -3,7 +3,6 @@ import 'package:papi_gold/app/core/error/failure.dart';
 import 'package:papi_gold/data/models/index.dart';
 import 'package:papi_gold/data/sources/remote/index.dart';
 import 'package:papi_gold/domain/entities/index.dart';
-import 'package:papi_gold/domain/entities/checkout_entity.dart';
 import 'package:papi_gold/domain/entities/order_detail_entity.dart';
 import 'package:papi_gold/domain/repositories/index.dart';
 import 'package:papi_gold/injection_container.dart';

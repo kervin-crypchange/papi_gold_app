@@ -80,14 +80,12 @@ class AuthDataImpl extends AuthData with LoggerMixin {
   }
 
   Future<Either<Failure, void>> getClientData() async {
-    print('Fetching client data from API...');
     try {
       final res = await sl<DioClient>().get(Apis.client);
       final clientData = PersistentClientDataModel.fromJson(res.data['data']);
       await PersistentClientData().saveClientData(clientData);
       return Right(null);
     } catch (e) {
-      print('Error fetching client data: $e');
       return Left(ServerException(e));
     }
   }
