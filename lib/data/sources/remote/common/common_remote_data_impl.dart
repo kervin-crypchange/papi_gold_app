@@ -11,7 +11,7 @@ import 'package:papi_gold/injection_container.dart';
 
 class CommonRemoteDataImpl extends CommonRemoteData {
   final Logger logger = Logger();
-  
+
   @override
   Future<Either<Failure, List<CountryModel>>> getCountries() async {
     try {
@@ -81,7 +81,6 @@ class CommonRemoteDataImpl extends CommonRemoteData {
   ) async {
     try {
       final res = await sl<DioClient>().post(Apis.order, data: model.toJson());
-      print('Checkout response: ${res.data}');
       return Right(ResponseCheckOutModel.fromJson(res.data));
     } catch (e) {
       return Left(ServerException(e));
@@ -149,9 +148,19 @@ class CommonRemoteDataImpl extends CommonRemoteData {
       return Left(ServerException(e));
     }
   }
-  
+
   @override
-  Future<Either<Failure, void>> paymentIntent() {
-    throw UnimplementedError();
+  Future<Either<Failure, void>> paymentIntent(int orderId) async {
+    try {
+      print('Payment Intent Response: $orderId');
+      final res =await sl<DioClient>().post(
+        Apis.paymentIntent,
+        data: {'sale_id': orderId},
+      );
+      print('Payment Intent Response: ${res.data}');
+      return Right(null);
+    } catch (e) {
+      return Left(ServerException(e));
+    }
   }
 }

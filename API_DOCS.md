@@ -324,7 +324,7 @@ Cierra la sesión actual revocando el token Bearer.
 {
   "message": "Orden creada exitosamente",
   "sale": { 
-    "order": "ORD-123", 
+    "order": "123", 
     "invoice_number": "PG-5521", 
     "total_v": 1250.50 
   },
@@ -340,7 +340,7 @@ Cierra la sesión actual revocando el token Bearer.
 ### 6.2 Refrescar Intento de Pago
 Permite generar una nueva intención de pago para una orden existente.
 - **URL:** `POST /api/payment`
-- **Cuerpo (Stripe):** `{ "sale_id": "ORD-123" }`
+- **Cuerpo (Stripe):** `{ "sale_id": "123" }`
 - **Cuerpo (Manual/Otro):** `{ "sale_id": 99, "pay_method_id": 1, "pay_amount": 1250.50 }`
 - **Respuesta Stripe (200 OK):**
 ```json

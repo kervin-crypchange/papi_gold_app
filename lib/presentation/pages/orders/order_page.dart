@@ -10,7 +10,7 @@ import 'package:papi_gold/app/core/extensions/index.dart';
 import 'package:papi_gold/app/core/theme/index.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 import 'package:papi_gold/domain/entities/order_detail_entity.dart';
-import 'package:papi_gold/presentation/cubits/order/orders_cubit.dart';
+import 'package:papi_gold/presentation/cubits/index.dart';
 
 class OrderPage extends StatefulWidget {
   final String orderId;
@@ -96,7 +96,7 @@ class _OrderPageState extends State<OrderPage> {
               width: 1.sw,
               child: FilledButtonWidget(
                 title: 'Proceder con el pago',
-                onPressed: () => debugPrint,
+                onPressed: () => context.read<PaymentCubit>().paymentIntent(e.id),
               ),
             ).paddingOnly(bottom: 12.h),
         ],
