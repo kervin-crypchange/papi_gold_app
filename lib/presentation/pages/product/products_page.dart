@@ -7,7 +7,9 @@ import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
 import 'package:papi_gold/app/core/theme/index.dart';
 import 'package:papi_gold/presentation/cubits/index.dart';
-import 'package:flutter_product_card/flutter_product_card.dart';
+import 'package:papi_gold/presentation/widgets/index.dart';
+import 'package:persistent_shopping_cart/model/cart_model.dart';
+import 'package:persistent_shopping_cart/persistent_shopping_cart.dart';
 
 class ProductsPage extends StatefulWidget {
   const ProductsPage({super.key});
@@ -59,29 +61,50 @@ class _ProductsPageState extends State<ProductsPage> with MessengerMixin {
                       color: AppColors.secondary,
                     ),
                   ).paddingOnly(top: 6.h),
-                  ...data.products.map(
-                    (p) => ProductCard(
-                      imageUrl: p.imagen,
-                      categoryName: p.category.name,
-                      productName: p.name,
-                      price: p.price,
-                      currency: '\$',
-                      onTap: () {
-                        // Handle card tap event
-                      },
-                      onFavoritePressed: () {
-                        // Handle favorite button press
-                      },
-                      shortDescription: p.description,
-                      // rating: 4.2,
-                      // discountPercentage: 35.0,
-                      // isAvailable: true,
-                      // cardColor: Colors.white,
-                      // textColor: Colors.black,
-                      borderRadius: 8.0,
+                  GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 12.h,
+                      crossAxisSpacing: 4.w,
+                      childAspectRatio: 0.45.h,
                     ),
+                    itemCount: data.products.length,
+                    itemBuilder: (context, index) {
+                      final p = data.products[index];
+                      return ProductCard(
+                        imageUrl: p.imagen,
+                        categoryName: p.category.name,
+                        productName: p.name,
+                        price: p.price,
+                        currency: '\$',
+                        onTap: () async {
+                          messenger.showSnackBar(
+                            message: 'Item agregado al carrito',
+                            color: AppColors.success,
+                            seconds: 1,
+                          );
+                          await PersistentShoppingCart().addToCart(
+                            PersistentShoppingCartItem(
+                              productId: safeString(p.id),
+                              productName: p.name,
+                              productDescription: p.description,
+                              unitPrice: p.price,
+                              quantity: 1,
+                              productImages: [p.imagen],
+                            ),
+                          );
+                        },
+                        onFavoritePressed: () {
+                          // Handle favorite button press
+                        },
+                        shortDescription: p.description,
+                        // rating: 4.2,
+                        borderRadius: 8.0,
+                      );
+                    },
                   ),
-                  // ...data.products.map((p) => ProductCardWidget(product: p)),
                 ],
               );
             },
@@ -89,6 +112,6 @@ class _ProductsPageState extends State<ProductsPage> with MessengerMixin {
         }
         return Center(child: Text('Ha ocurrido un error'));
       },
-    ).paddingSymmetric(horizontal: 12.w);
+    ).paddingSymmetric(horizontal: 4.w);
   }
 }
