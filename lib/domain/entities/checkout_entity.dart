@@ -1,12 +1,12 @@
 import 'package:equatable/equatable.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 
-class CheckoutEntity extends Equatable {
+class CheckOutEntity extends Equatable {
   final ClientEntity client;
-  final CartEntity cart;
+  final List<CartItemEntity> cart;
   final bool confirmExistingClient;
 
-  const CheckoutEntity({
+  const CheckOutEntity({
     required this.client,
     required this.cart,
     required this.confirmExistingClient,

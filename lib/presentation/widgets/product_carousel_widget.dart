@@ -41,7 +41,7 @@ class _ProductCarouselWidgetState extends State<ProductCarouselWidget> {
       axisDirection: Axis.horizontal,
       loop: true,
       itemBuilder: (context, itemIndex, realIndex) {
-        final ProductEntity product = widget.products[itemIndex];
+        // final ProductEntity product = widget.products[itemIndex];
         return SizedBox();
       },
     );

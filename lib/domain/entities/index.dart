@@ -1,4 +1,8 @@
 
+export 'package:papi_gold/domain/entities/client_entity.dart';
+
+export 'package:papi_gold/domain/entities/checkout_entity.dart';
+export 'package:papi_gold/data/models/responses/response_products_model.dart';
 export 'package:papi_gold/domain/entities/status_entity.dart';
 export 'package:papi_gold/domain/entities/order_item_entity.dart';
 export 'package:papi_gold/domain/entities/responses/response_metals_entity.dart';
@@ -26,5 +30,4 @@ export 'package:papi_gold/domain/entities/cart_entity.dart';
 export 'package:papi_gold/domain/entities/country_entity.dart';
 export 'package:papi_gold/domain/entities/auth/register_entity.dart';
 export 'package:papi_gold/domain/entities/auth/login_entity.dart';
-export 'package:papi_gold/domain/entities/client_entity.dart';
 export 'package:papi_gold/domain/entities/translate_entity.dart';

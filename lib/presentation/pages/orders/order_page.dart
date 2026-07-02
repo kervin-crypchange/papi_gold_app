@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/common/widgets/filled_button_widget.dart';
 import 'package:papi_gold/app/core/constants/index.dart';
@@ -31,7 +32,7 @@ class _OrderPageState extends State<OrderPage> {
     return Scaffold(
       appBar: AppBar(
         leading: BackButton(
-          onPressed: () => Navigator.of(context).pop({'refresh': true}),
+          onPressed: () => context.goNamed(Routes.navigation),
         ),
         title: Text(
           'Resumen de Orden',
@@ -57,9 +58,9 @@ class _OrderPageState extends State<OrderPage> {
             if (state is OrderSuccess) {
               return _buildUI(state.order).paddingAll(6.r);
             }
-            return Center(child: Text('Error en l carga de datos'));
+            return Center(child: Text('Error en la  carga de datos'));
           },
-        ),
+        ).paddingSymmetric(horizontal: 12.w ),
       ),
     );
   }

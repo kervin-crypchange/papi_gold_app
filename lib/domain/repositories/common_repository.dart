@@ -1,7 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:papi_gold/app/core/error/index.dart';
 import 'package:papi_gold/domain/entities/index.dart';
-import 'package:papi_gold/domain/entities/checkout_entity.dart';
 import 'package:papi_gold/domain/entities/order_detail_entity.dart';
 
 abstract class CommonRepository {
@@ -12,7 +11,7 @@ abstract class CommonRepository {
 
   Future<Either<Failure, ResponseProductsEntity>> productList(int page);
   Future<Either<Failure, ProductEntity>> productDetail(int id);
-  Future<Either<Failure, ResponseCheckoutEntity>> checkout(CheckoutEntity e);
+  Future<Either<Failure, String>> checkout(CheckOutEntity e);
   Future<Either<Failure, ResponseOrdersEntity>> orderList(int page);
   Future<Either<Failure, OrderDetailEntity>> orderDetail(String orderCode);
 

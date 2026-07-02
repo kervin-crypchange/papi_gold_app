@@ -2,7 +2,7 @@ import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/data/models/index.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 
-class ResponseCheckoutModel extends ResponseCheckoutEntity {
+class ResponseCheckoutModel extends ResponseCheckOutEntity {
   const ResponseCheckoutModel({
     required super.message,
     required super.sale,
