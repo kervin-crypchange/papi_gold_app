@@ -16,7 +16,6 @@ dependencies:
   flutter_bloc: ^9.1.1
   flutter_localizations:
     sdk: flutter
-  # flutter_product_card: ^0.0.8
   flutter_screenutil: ^5.9.3
   flutter_svg: ^2.3.0
   gap: ^3.0.1

@@ -78,7 +78,6 @@ class _ProductsPageState extends State<ProductsPage> with MessengerMixin {
                         categoryName: p.category.name,
                         productName: p.name,
                         price: p.price,
-                        currency: '\$',
                         onTap: () async {
                           messenger.showSnackBar(
                             message: 'Item agregado al carrito',
