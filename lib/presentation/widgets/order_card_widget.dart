@@ -24,25 +24,34 @@ class OrderCardWidget extends StatelessWidget {
           color: AppColors.secondary.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(100),
         ),
-        child: const Icon(Icons.inventory_2_outlined, color: AppColors.secondary),
+        child: const Icon(
+          Icons.inventory_2_outlined,
+          color: AppColors.secondary,
+        ),
       ),
       title: Text(order.invoice, style: context.bodySmall).medium,
-      subtitle: Align(
-        alignment: Alignment.centerLeft,
-        child: Container(
-          decoration: BoxDecoration(
-            color: AppColors.secondary.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(16.r),
-          ),
-          child: Text(
-            order.status.name,
-            style: context.bodyXSmall,
-          ).color(AppColors.secondary).paddingSymmetric(horizontal: 6.w, vertical: 1.h),
-        ).paddingOnly(top: 3.h),
+      subtitle: Text(
+        getFormatDate(order.createdAt, true),
+        style: context.bodyXSmall.copyWith(color: AppColors.secondary),
       ),
-      trailing: Text(
-        getFormatMoney(order.totalVenta),
-        style: context.bodyLarge.copyWith(color: AppColors.secondary),
+      trailing: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: AppColors.secondary.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(16.r),
+            ),
+            child: Text(order.status.name, style: context.bodyXSmall)
+                .color(AppColors.secondary)
+                .paddingSymmetric(horizontal: 8.w, vertical: 1.h),
+          ).light,
+          Text(
+            getFormatMoney(order.totalVenta),
+            style: context.bodyMedium.copyWith(color: AppColors.secondary),
+          ),
+        ],
       ),
       onTap: () => context.goNamed(
         Routes.order,

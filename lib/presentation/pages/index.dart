@@ -1,18 +1,11 @@
-// Products
+export 'package:papi_gold/presentation/pages/payment_page.dart';
 export 'package:papi_gold/presentation/pages/product/product_page.dart';
 export 'package:papi_gold/presentation/pages/product/products_page.dart';
-
-// Orders
 export 'package:papi_gold/presentation/pages/orders/order_page.dart';
 export 'package:papi_gold/presentation/pages/orders/orders_page.dart';
-
 export 'package:papi_gold/presentation/pages/home_page.dart';
 export 'package:papi_gold/presentation/pages/profile_page.dart';
-
-// AuthPages
 export 'package:papi_gold/presentation/pages/auth/login_page.dart';
 export 'package:papi_gold/presentation/pages/auth/register_page.dart';
 export 'package:papi_gold/presentation/pages/auth/recovery_password_page.dart';
-
 export 'package:papi_gold/presentation/pages/cart_page.dart';
-
