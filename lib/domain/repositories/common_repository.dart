@@ -12,7 +12,7 @@ abstract class CommonRepository {
 
   Future<Either<Failure, ResponseProductsEntity>> productList(int page);
   Future<Either<Failure, ProductEntity>> productDetail(int id);
-  Future<Either<Failure, ResponseCheckoutEntity>> checkout(CheckoutEntity e);
+  Future<Either<Failure, String>> checkout(CheckoutEntity e);
   Future<Either<Failure, ResponseOrdersEntity>> orderList(int page);
   Future<Either<Failure, OrderDetailEntity>> orderDetail(String orderCode);
 

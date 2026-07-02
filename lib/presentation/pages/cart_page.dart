@@ -115,7 +115,7 @@ class _CartPageState extends State<CartPage> {
               ),
             ),
           ],
-        ),
+        ).paddingSymmetric(horizontal: 12.w),
       ],
     );
   }

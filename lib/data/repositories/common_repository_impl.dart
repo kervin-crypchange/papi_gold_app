@@ -42,9 +42,7 @@ class CommonRepositoryImpl extends CommonRepository {
   }
 
   @override
-  Future<Either<Failure, ProductEntity>> productDetail(
-    int id,
-  ) async {
+  Future<Either<Failure, ProductEntity>> productDetail(int id) async {
     Either<Failure, ProductEntity> res = await sl<CommonRemoteData>()
         .productDetail(id);
 
@@ -52,11 +50,10 @@ class CommonRepositoryImpl extends CommonRepository {
   }
 
   @override
-  Future<Either<Failure, ResponseCheckoutEntity>> checkout(
-    CheckoutEntity e,
-  ) async {
-    Either<Failure, ResponseCheckoutEntity> res = await sl<CommonRemoteData>()
-        .checkout(CheckOutModel.fromEntity(e));
+  Future<Either<Failure, String>> checkout(CheckoutEntity e) async {
+    Either<Failure, String> res = await sl<CommonRemoteData>().checkout(
+      CheckOutModel.fromEntity(e),
+    );
 
     return res.fold((l) => Left(l), (r) => Right(r));
   }
