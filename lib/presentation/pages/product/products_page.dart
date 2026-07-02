@@ -28,50 +28,44 @@ class _ProductsPageState extends State<ProductsPage> with MessengerMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: BlocConsumer<ProductCubit, ProductState>(
-          listener: (context, state) {
-            if (state is ProductFailure) {
-              messenger.showSnackBar(
-                message: state.message,
-                color: AppColors.error,
+    return BlocConsumer<ProductCubit, ProductState>(
+      listener: (context, state) {
+        if (state is ProductFailure) {
+          messenger.showSnackBar(
+            message: state.message,
+            color: AppColors.error,
+          );
+        }
+      },
+      builder: (context, state) {
+        if (state is ProductLoadding) {
+          return Center(child: CircularProgressIndicator.adaptive());
+        }
+        if (state is ProductsSuccess) {
+          return ListView.builder(
+            padding: EdgeInsets.only(bottom: 70.h),
+            scrollCacheExtent: ScrollCacheExtent.viewport(1.0),
+            itemCount: state.response.data.length,
+            itemBuilder: (context, index) {
+              final data = state.response.data[index];
+              return Column(
+                spacing: 12.h,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    data.name,
+                    style: context.bodyLarge.copyWith(
+                      color: AppColors.secondary,
+                    ),
+                  ).paddingOnly(top: 6.h),
+                  ...data.products.map((p) => ProductCardWidget(product: p)),
+                ],
               );
-            }
-          },
-          builder: (context, state) {
-            if (state is ProductLoadding) {
-              return Center(child: CircularProgressIndicator.adaptive());
-            }
-            if (state is ProductsSuccess) {
-              return ListView.builder(
-                padding: EdgeInsets.only(bottom: 70.h),
-                scrollCacheExtent: ScrollCacheExtent.viewport(1.0),
-                itemCount: state.response.data.length,
-                itemBuilder: (context, index) {
-                  final data = state.response.data[index];
-                  return Column(
-                    spacing: 12.h,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        data.name,
-                        style: context.bodyLarge.copyWith(
-                          color: AppColors.secondary,
-                        ),
-                      ).paddingOnly(top: 6.h),
-                      ...data.products.map(
-                        (p) => ProductCardWidget(product: p),
-                      ),
-                    ],
-                  );
-                },
-              );
-            }
-            return Center(child: Text('Ha ocurrido un error'));
-          },
-        ),
-      ).paddingSymmetric(horizontal: 12.w),
-    );
+            },
+          );
+        }
+        return Center(child: Text('Ha ocurrido un error'));
+      },
+    ).paddingSymmetric(horizontal: 12.w);
   }
 }

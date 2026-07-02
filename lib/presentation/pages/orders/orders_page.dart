@@ -30,69 +30,65 @@ class _OrdersPageState extends State<OrdersPage> with LoggerMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: BlocConsumer<OrdersCubit, OrdersState>(
-          listener: (context, state) {},
-          builder: (context, state) {
-            if (state is OrdersLoadding) {
-              return Center(child: CircularProgressIndicator.adaptive());
-            }
-            if (state is OrdersSuccess) {
-              final StatsEntity stats = state.response.stats;
-              final List<OrderDetailEntity> orders = state.response.data;
-              final MetaEntity meta = state.response.meta;
-              return Column(
-                spacing: 20.h,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      statCard('Invested', stats.invested),
-                      Container(
-                        height: 60,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.white60, width: 0.5)
-                        ),
-                      ),
-                      statCard('Sold', stats.sold),
-                    ],
-                  ).paddingAll(6.r),
-                  Row(
-                    spacing: 10.w,
-                    children: [
-                      Icon(Icons.history, color: AppColors.secondary),
-                      Text(
-                        'Ordenes recientes',
-                        style: context.bodyLarge
-                      ),
-                    ],
-                  ).paddingSymmetric(horizontal: 12.w),
-                  Expanded(
-                    child: Container(
+    return BlocConsumer<OrdersCubit, OrdersState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          if (state is OrdersLoadding) {
+            return Center(child: CircularProgressIndicator.adaptive());
+          }
+          if (state is OrdersSuccess) {
+            final StatsEntity stats = state.response.stats;
+            final List<OrderDetailEntity> orders = state.response.data;
+            final MetaEntity meta = state.response.meta;
+            return Column(
+              spacing: 20.h,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    statCard('Invested', stats.invested),
+                    Container(
+                      height: 60,
                       decoration: BoxDecoration(
-                        color: AppColors.black,
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(24.0),
-                        ),
-                        border: Border(top: BorderSide(color: Colors.white38)),
+                        border: Border.all(color: Colors.white60, width: 0.5)
                       ),
-                      child: OrderListWidget(
-                        meta: meta,
-                        orders: orders,
-                      ).paddingOnly(top: 16.h),
                     ),
+                    statCard('Sold', stats.sold),
+                  ],
+                ).paddingAll(6.r),
+                Row(
+                  spacing: 10.w,
+                  children: [
+                    Icon(Icons.history, color: AppColors.secondary),
+                    Text(
+                      'Ordenes recientes',
+                      style: context.bodyLarge
+                    ),
+                  ],
+                ).paddingSymmetric(horizontal: 12.w),
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: AppColors.black,
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(24.0),
+                      ),
+                      border: Border(top: BorderSide(color: Colors.white38)),
+                    ),
+                    child: OrderListWidget(
+                      meta: meta,
+                      orders: orders,
+                    ).paddingOnly(top: 16.h),
                   ),
-                ],
-              ).paddingSymmetric(vertical: 12.h);
-            }
-            return Center(child: Text('Error en la carga de datos'));
-          },
-        ),
-      ),
-    );
+                ),
+              ],
+            ).paddingSymmetric(vertical: 12.h);
+          }
+          return Center(child: Text('Error en la carga de datos'));
+        },
+      );
   }
 
   Widget statCard(String label, StatsDataEntity stat) {

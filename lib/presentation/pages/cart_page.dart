@@ -18,7 +18,7 @@ class CartPage extends StatefulWidget {
 }
 
 class _CartPageState extends State<CartPage> {
-  int itemsCount = PersistentShoppingCart().getCartItemCount();
+  int itemsCount = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,24 +92,28 @@ class _CartPageState extends State<CartPage> {
         ),
       ).paddingSymmetric(horizontal: 12.w),
       persistentFooterButtons: [
-        Row(
-          mainAxisAlignment: itemsCount == 0
-              ? MainAxisAlignment.start
-              : MainAxisAlignment.spaceAround,
+        Column(
+          spacing: 12.h,
           children: [
-            PersistentShoppingCart().showTotalAmountWidget(
-              cartTotalAmountWidgetBuilder: (double totalAmount) {
-                return Text(
-                  'Total: ${getFormatMoney(totalAmount)}',
-                  style: context.bodyLarge,
-                ).paddingOnly(right: 12.w);
-              },
+            Row(
+              children: [
+                PersistentShoppingCart().showTotalAmountWidget(
+                  cartTotalAmountWidgetBuilder: (double totalAmount) {
+                    return Text(
+                      'Total: ${getFormatMoney(totalAmount)}',
+                      style: context.bodyMedium,
+                    ).paddingOnly(right: 12.w);
+                  },
+                ),
+              ],
             ),
-            if (itemsCount > 0)
-              FilledButtonWidget(
-                title: 'Realizar pedido',
+            SizedBox(
+              width: double.infinity,
+              child: FilledButtonWidget(
+                title: 'Realizar pedido ($itemsCount items)',
                 onPressed: () => debugPrint('payment'),
               ),
+            ),
           ],
         ),
       ],
