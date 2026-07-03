@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:intl/intl.dart';
 
 String getConnectedStatus(String connectStatus) {
@@ -69,7 +70,7 @@ String getFormatMoney(double amount) {
 }
 
 String getFormatDate(DateTime date, [bool isTimer = false]) {
-  String format = isTimer ? 'MMMM dd, yyyy hh:mm a':'MMMM dd, yyyy' ;
+  String format = isTimer ? 'MMMM dd, yyyy hh:mm a' : 'MMMM dd, yyyy';
   return DateFormat(format).format(date);
 }
 
@@ -123,4 +124,34 @@ String getMonthName(int monthNumber, BuildContext context) {
   String language = locale == 'es' ? 'es_MX' : 'en_US';
   final DateTime date = DateTime(2000, monthNumber);
   return DateFormat.MMM(language).format(date);
+}
+
+Future<void> stripePayment(BuildContext context, clientSecret) async {
+  await Stripe.instance.initPaymentSheet(
+    paymentSheetParameters: SetupPaymentSheetParameters(
+      paymentIntentClientSecret: clientSecret,
+      merchantDisplayName: "Papi Gold",
+    ),
+  );
+  try {
+    await Stripe.instance.presentPaymentSheet();
+
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text('¡Pago completado con éxito!')));
+  } on StripeException catch (e) {
+    if (e.error.code == FailureCode.Canceled) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Pago cancelado por el usuario.')));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error en el pago: ${e.error.localizedMessage}'),
+        ),
+      );
+    }
+  } catch (e) {
+    print('Error inesperado: $e');
+  }
 }

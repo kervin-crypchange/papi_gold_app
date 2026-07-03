@@ -84,13 +84,7 @@ class _CartPageState extends State<CartPage> with MessengerMixin {
   }
 
   void _makePayment(String clientSecret) async {
-    await Stripe.instance.initPaymentSheet(
-      paymentSheetParameters: SetupPaymentSheetParameters(
-        paymentIntentClientSecret: clientSecret,
-        merchantDisplayName: "Papi Gold",
-      ),
-    );
-    await Stripe.instance.presentPaymentSheet();
+    await stripePayment(context, clientSecret);
     PersistentShoppingCart().clearCart();
   }
 

@@ -12,7 +12,6 @@ import 'package:papi_gold/app/core/theme/index.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 import 'package:papi_gold/domain/entities/order_detail_entity.dart';
 import 'package:papi_gold/presentation/cubits/index.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 
 class OrderPage extends StatefulWidget {
   final String orderId;
@@ -37,13 +36,7 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
           color: AppColors.error,
         ),
         (res) async {
-          await Stripe.instance.initPaymentSheet(
-            paymentSheetParameters: SetupPaymentSheetParameters(
-              paymentIntentClientSecret: res.clientSecret,
-              merchantDisplayName: "Papi Gold",
-            ),
-          );
-          await Stripe.instance.presentPaymentSheet();
+          await stripePayment(context, res.clientSecret);
         },
       );
     });
