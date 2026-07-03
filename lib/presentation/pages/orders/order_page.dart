@@ -29,6 +29,26 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
     context.read<OrdersCubit>().orderDetail(widget.orderId);
   }
 
+  void _makePayment(String order) {
+    context.read<PaymentCubit>().paymentIntent(order).then((either) {
+      either.fold(
+        (failure) => messenger.showSnackBar(
+          message: failure.toString(),
+          color: AppColors.error,
+        ),
+        (res) async {
+          await Stripe.instance.initPaymentSheet(
+            paymentSheetParameters: SetupPaymentSheetParameters(
+              paymentIntentClientSecret: res.clientSecret,
+              merchantDisplayName: "Papi Gold",
+            ),
+          );
+          await Stripe.instance.presentPaymentSheet();
+        },
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,28 +118,7 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
               width: 1.sw,
               child: FilledButtonWidget(
                 title: 'Proceder con el pago',
-                onPressed: () {
-                  context.read<PaymentCubit>().paymentIntent(e.order).then((
-                    either,
-                  ) {
-                    either.fold(
-                      (failure) => messenger.showSnackBar(
-                        message: failure.toString(),
-                        color: AppColors.error,
-                      ),
-                      (res) async {
-                        print('--- $res');
-                        await Stripe.instance.initPaymentSheet(
-                          paymentSheetParameters: SetupPaymentSheetParameters(
-                            paymentIntentClientSecret: res.clientSecret,
-                            merchantDisplayName: "Papi Gold",
-                          ),
-                        );
-                        await Stripe.instance.presentPaymentSheet();
-                      },
-                    );
-                  });
-                },
+                onPressed: () => _makePayment(e.order),
               ),
             ).paddingOnly(bottom: 12.h),
         ],

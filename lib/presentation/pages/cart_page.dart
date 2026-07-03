@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:go_router/go_router.dart';
 import 'package:papi_gold/app/common/mixins/index.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
@@ -12,6 +13,7 @@ import 'package:papi_gold/app/core/store/persistent_client_data.dart';
 import 'package:papi_gold/app/core/theme/colors.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 import 'package:papi_gold/presentation/cubits/checkout/checkout_cubit.dart';
+import 'package:papi_gold/presentation/cubits/index.dart';
 import 'package:papi_gold/presentation/widgets/index.dart';
 import 'package:persistent_shopping_cart/model/cart_model.dart';
 import 'package:persistent_shopping_cart/persistent_shopping_cart.dart';
@@ -69,15 +71,19 @@ class _CartPageState extends State<CartPage> with MessengerMixin {
           message: failure.toString(),
           color: AppColors.error,
         ),
-        (res) {
-          messenger.showSnackBar(
-            message: res.message,
-            color: AppColors.success,
-          );
-          PersistentShoppingCart().clearCart();
-        }
+        (res) => _makePayment(res.clientSecret),
       );
     });
+  }
+
+  void _makePayment(String clientSecret) async {
+    await Stripe.instance.initPaymentSheet(
+      paymentSheetParameters: SetupPaymentSheetParameters(
+        paymentIntentClientSecret: clientSecret,
+        merchantDisplayName: "Papi Gold",
+      ),
+    );
+    await Stripe.instance.presentPaymentSheet();
   }
 
   @override
