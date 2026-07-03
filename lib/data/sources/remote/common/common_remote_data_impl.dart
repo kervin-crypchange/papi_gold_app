@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:logger/web.dart';
+import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/core/constants/index.dart';
 import 'package:papi_gold/app/core/error/failure.dart';
 import 'package:papi_gold/app/core/error/server_exception.dart';
@@ -7,6 +8,7 @@ import 'package:papi_gold/app/core/network/dio_client.dart';
 import 'package:papi_gold/data/models/index.dart';
 import 'package:papi_gold/data/models/responses/response_products_model.dart';
 import 'package:papi_gold/data/sources/remote/index.dart';
+import 'package:papi_gold/domain/entities/index.dart';
 import 'package:papi_gold/injection_container.dart';
 
 class CommonRemoteDataImpl extends CommonRemoteData {
@@ -150,15 +152,16 @@ class CommonRemoteDataImpl extends CommonRemoteData {
   }
 
   @override
-  Future<Either<Failure, void>> paymentIntent(int orderId) async {
+  Future<Either<Failure, ResponsePaymentIntentModel>> paymentIntent(
+    String order,
+  ) async {
     try {
-      print('Payment Intent Response: $orderId');
-      final res =await sl<DioClient>().post(
+      final res = await sl<DioClient>().post(
         Apis.paymentIntent,
-        data: {'sale_id': orderId},
+        data: {'sale_id': safeString(order)},
       );
       print('Payment Intent Response: ${res.data}');
-      return Right(null);
+      return Right(ResponsePaymentIntentModel.fromJson(res.data));
     } catch (e) {
       return Left(ServerException(e));
     }

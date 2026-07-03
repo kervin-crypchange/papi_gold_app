@@ -96,7 +96,7 @@ class _OrderPageState extends State<OrderPage> {
               width: 1.sw,
               child: FilledButtonWidget(
                 title: 'Proceder con el pago',
-                onPressed: () => context.read<PaymentCubit>().paymentIntent(e.id),
+                onPressed: () => context.read<PaymentCubit>().paymentIntent(e.order),
               ),
             ).paddingOnly(bottom: 12.h),
         ],

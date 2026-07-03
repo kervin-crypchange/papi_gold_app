@@ -106,9 +106,9 @@ class CommonRepositoryImpl extends CommonRepository {
   }
 
   @override
-  Future<Either<Failure, void>> paymentIntent(int orderId) async {
-    Either<Failure, void> res = await sl<CommonRemoteData>().paymentIntent(
-      orderId,
+  Future<Either<Failure, ResponsePaymentIntentEntity>> paymentIntent(String order) async {
+    Either<Failure, ResponsePaymentIntentModel> res = await sl<CommonRemoteData>().paymentIntent(
+      order,
     );
 
     return res.fold((l) => Left(l), (r) => Right(r));

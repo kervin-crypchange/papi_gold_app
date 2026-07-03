@@ -12,8 +12,8 @@ final class PaymentInitial extends PaymentState {}
 final class PaymentLoading extends PaymentState {}
 
 final class PaymentSuccess extends PaymentState {
-  final String message;
-  const PaymentSuccess({required this.message});
+  final ResponsePaymentIntentEntity response;
+  const PaymentSuccess({required this.response});
 }
 
 final class PaymentFailure extends PaymentState {

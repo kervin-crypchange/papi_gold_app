@@ -21,6 +21,6 @@ abstract class CommonRepository {
   );
 
   Future<Either<Failure, String>> consultation(ConsultationPayloadEntity e);
-  Future<Either<Failure, void>> paymentIntent(int orderId);
+  Future<Either<Failure, ResponsePaymentIntentEntity>> paymentIntent(String orderId);
 
 }
