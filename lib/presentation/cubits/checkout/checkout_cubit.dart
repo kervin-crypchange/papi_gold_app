@@ -11,7 +11,7 @@ part 'checkout_state.dart';
 class CheckOutCubit extends Cubit<CheckoutState> {
   CheckOutCubit() : super(CheckoutInitial());
 
-   Future<Either<Failure, ResponseCheckOutEntity>> checkout(
+  Future<Either<Failure, ResponseCheckOutEntity>> checkout(
     CheckOutEntity e,
   ) async {
     return await sl<CheckOutUseCase>().call(param: e);

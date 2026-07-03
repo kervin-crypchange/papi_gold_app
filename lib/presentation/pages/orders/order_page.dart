@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:papi_gold/app/common/mixins/messenger_mixin.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/common/widgets/filled_button_widget.dart';
 import 'package:papi_gold/app/core/constants/index.dart';
@@ -11,6 +12,7 @@ import 'package:papi_gold/app/core/theme/index.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 import 'package:papi_gold/domain/entities/order_detail_entity.dart';
 import 'package:papi_gold/presentation/cubits/index.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 
 class OrderPage extends StatefulWidget {
   final String orderId;
@@ -20,7 +22,7 @@ class OrderPage extends StatefulWidget {
   State<OrderPage> createState() => _OrderPageState();
 }
 
-class _OrderPageState extends State<OrderPage> {
+class _OrderPageState extends State<OrderPage> with MessengerMixin {
   @override
   void initState() {
     super.initState();
@@ -60,7 +62,7 @@ class _OrderPageState extends State<OrderPage> {
             }
             return Center(child: Text('Error en la  carga de datos'));
           },
-        ).paddingSymmetric(horizontal: 12.w ),
+        ).paddingSymmetric(horizontal: 12.w),
       ),
     );
   }
@@ -96,7 +98,28 @@ class _OrderPageState extends State<OrderPage> {
               width: 1.sw,
               child: FilledButtonWidget(
                 title: 'Proceder con el pago',
-                onPressed: () => context.read<PaymentCubit>().paymentIntent(e.order),
+                onPressed: () {
+                  context.read<PaymentCubit>().paymentIntent(e.order).then((
+                    either,
+                  ) {
+                    either.fold(
+                      (failure) => messenger.showSnackBar(
+                        message: failure.toString(),
+                        color: AppColors.error,
+                      ),
+                      (res) async {
+                        print('--- $res');
+                        await Stripe.instance.initPaymentSheet(
+                          paymentSheetParameters: SetupPaymentSheetParameters(
+                            paymentIntentClientSecret: res.clientSecret,
+                            merchantDisplayName: "Papi Gold",
+                          ),
+                        );
+                        await Stripe.instance.presentPaymentSheet();
+                      },
+                    );
+                  });
+                },
               ),
             ).paddingOnly(bottom: 12.h),
         ],
@@ -350,7 +373,7 @@ class _OrderPageState extends State<OrderPage> {
                   ),
                 ),
               ],
-            ).paddingSymmetric( vertical: 16.h),
+            ).paddingSymmetric(vertical: 16.h),
           ),
         );
       },

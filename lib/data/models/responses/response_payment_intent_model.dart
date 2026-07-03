@@ -9,7 +9,7 @@ class ResponsePaymentIntentModel extends ResponsePaymentIntentEntity {
 
   factory ResponsePaymentIntentModel.fromJson(Map<String, dynamic> json) {
     return ResponsePaymentIntentModel(
-      clientSecret: safeString(['clientSecret']),
+      clientSecret: safeString(json['clientSecret']),
       paymentId: safeInt(json['paymentId']),
     );
   }

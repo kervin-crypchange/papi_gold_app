@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:papi_gold/app/common/enums/box_enum.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
@@ -13,10 +14,14 @@ import 'package:papi_gold/app/core/extensions/index.dart' as globals;
 import 'package:papi_gold/presentation/cubits/index.dart';
 import 'package:persistent_shopping_cart/persistent_shopping_cart.dart';
 
+String publishableKey =
+    "pk_test_51T3zYL8jtYx1E1JT3qN550tkyWo3JYLrHcGGLGVAadTtGUA62FTusAQHoceMJZI8iJm0Mi0mvmpJXEk9auleG8ax008dKcvIoV";
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
     await Hive.initFlutter();
+    Stripe.publishableKey = publishableKey;
+    
     await Hive.openBox(BoxEnum.config.name);
     await PersistentShoppingCart().init();
     await PersistentClientData().init();
@@ -37,7 +42,7 @@ class ErrorApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false, 
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(title: const Text('Inicialización fallida')),
         body: Center(
@@ -100,7 +105,7 @@ class _MainAppState extends State<MainApp> {
       designSize: const Size(360, 690),
       splitScreenMode: true,
       builder: (context, child) {
-      return MaterialApp.router(
+        return MaterialApp.router(
           debugShowCheckedModeBanner: true,
           theme: appTheme(),
           routerConfig: router,
