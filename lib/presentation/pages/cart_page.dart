@@ -29,6 +29,7 @@ class _CartPageState extends State<CartPage> with MessengerMixin {
   List<PersistentShoppingCartItem> _cartItems = [];
   late PersistentClientDataModel client;
   CheckOutEntity? checkout;
+  bool isLoading = false;
 
   void _checkout() {
     if (_cartItems.isEmpty) {
@@ -65,13 +66,19 @@ class _CartPageState extends State<CartPage> with MessengerMixin {
           .toList(),
       confirmExistingClient: true,
     );
+    setState(() {
+      isLoading = true;
+    });
     context.read<CheckOutCubit>().checkout(checkout!).then((either) {
       either.fold(
         (failure) => messenger.showSnackBar(
           message: failure.toString(),
           color: AppColors.error,
         ),
-        (res) => _makePayment(res.clientSecret),
+        (res) => setState(() {
+          isLoading = false;
+          _makePayment(res.clientSecret);
+        })
       );
     });
   }
@@ -84,15 +91,13 @@ class _CartPageState extends State<CartPage> with MessengerMixin {
       ),
     );
     await Stripe.instance.presentPaymentSheet();
+    PersistentShoppingCart().clearCart();
   }
 
   @override
   void initState() {
     super.initState();
     client = PersistentClientData().getClientData();
-    // PersistentShoppingCart().addListener(() {
-    //   setState(() {});
-    // });
   }
 
   @override
@@ -113,60 +118,62 @@ class _CartPageState extends State<CartPage> with MessengerMixin {
         ],
       ),
       body: SafeArea(
-        child: PersistentShoppingCart().showCartItems(
-          cartItemsBuilder:
-              (
-                BuildContext context,
-                List<PersistentShoppingCartItem> cartItems,
-              ) {
-                _cartItems = cartItems;
-                if (cartItems.isEmpty) {
-                  return Center(
-                    child: Column(
-                      spacing: 12.h,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Tu carrito está vacío.',
-                          style: context.titleMedium,
-                        ),
-                        Icon(
-                          Icons.add_shopping_cart_outlined,
-                          size: 52.r,
-                          color: AppColors.secondary,
-                        ),
-                      ],
-                    ),
-                  );
-                }
-                return ListView.builder(
-                  itemCount: cartItems.length,
-                  itemBuilder: (context, index) {
-                    final item = cartItems[index];
-                    return Dismissible(
-                      key: ValueKey(item.productId),
-                      background: Container(),
-                      secondaryBackground: Container(
-                        color: Colors.red,
-                        alignment: Alignment.centerRight,
-                        child: const Icon(
-                          Icons.delete,
-                          color: Colors.white,
-                        ).paddingOnly(right: 20.w),
-                      ),
-                      child: CartItemCardWidget(item: item),
-                      onDismissed: (DismissDirection direction) async {
-                        if (direction == DismissDirection.endToStart) {
-                          await PersistentShoppingCart().removeFromCart(
-                            item.productId,
+        child: isLoading
+            ? Center(child: CircularProgressIndicator.adaptive())
+            : PersistentShoppingCart().showCartItems(
+                cartItemsBuilder:
+                    (
+                      BuildContext context,
+                      List<PersistentShoppingCartItem> cartItems,
+                    ) {
+                      _cartItems = cartItems;
+                      if (cartItems.isEmpty) {
+                        return Center(
+                          child: Column(
+                            spacing: 12.h,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Tu carrito está vacío.',
+                                style: context.titleMedium,
+                              ),
+                              Icon(
+                                Icons.add_shopping_cart_outlined,
+                                size: 52.r,
+                                color: AppColors.secondary,
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                      return ListView.builder(
+                        itemCount: cartItems.length,
+                        itemBuilder: (context, index) {
+                          final item = cartItems[index];
+                          return Dismissible(
+                            key: ValueKey(item.productId),
+                            background: Container(),
+                            secondaryBackground: Container(
+                              color: Colors.red,
+                              alignment: Alignment.centerRight,
+                              child: const Icon(
+                                Icons.delete,
+                                color: Colors.white,
+                              ).paddingOnly(right: 20.w),
+                            ),
+                            child: CartItemCardWidget(item: item),
+                            onDismissed: (DismissDirection direction) async {
+                              if (direction == DismissDirection.endToStart) {
+                                await PersistentShoppingCart().removeFromCart(
+                                  item.productId,
+                                );
+                              }
+                            },
                           );
-                        }
-                      },
-                    );
-                  },
-                );
-              },
-        ),
+                        },
+                      );
+                    },
+              ),
       ).paddingSymmetric(horizontal: 12.w),
       persistentFooterButtons: [
         Column(
