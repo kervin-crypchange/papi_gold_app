@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:papi_gold/app/common/mixins/messenger_mixin.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
@@ -62,9 +63,7 @@ class ProductPage extends StatelessWidget with MessengerMixin {
             }
             if (state is ProductSuccess) {
               final p = state.product;
-              return SingleChildScrollView(
-                child: Column(children: [InfoProduct(p: p)]),
-              );
+              return SingleChildScrollView(child: InfoProduct(p: p));
             }
             return Center(child: Text('Ha ocurrido un error'));
           },
@@ -81,6 +80,7 @@ class InfoProduct extends StatelessWidget with MessengerMixin {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.max,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         AspectRatio(
@@ -99,37 +99,56 @@ class InfoProduct extends StatelessWidget with MessengerMixin {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
+            mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(p.name, style: context.bodyLarge),
               const SizedBox(height: 8),
               Text(p.description, style: context.bodyMedium),
               const SizedBox(height: 16),
-              Text(getFormatMoney(p.price), style: context.labelMedium),
-              SizedBox(
-                width: 0.9.sw,
-                child: FilledButtonWidget(
-                  title: 'Agregar al carrito',
-                  onPressed: () async {
-                    await PersistentShoppingCart().addToCart(
-                      PersistentShoppingCartItem(
-                        productId: safeString(p.id),
-                        productName: p.name,
-                        quantity: 1,
-                        unitPrice: p.price,
-                        productImages: [p.imagen],
-                        productDescription: p.description,
-                      ),
-                    );
-                    messenger.showSnackBar(
-                      message: 'Item agregado al carrito',
-                      color: AppColors.success,
-                      seconds: 1,
-                    );
-                  },
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(getFormatMoney(p.price), style: context.labelMedium),
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12.r),
+                      color: AppColors.secondary.withValues(alpha: 0.1),
+                    ),
+                    child: Text(
+                      p.category.name.capitalizeFirst,
+                      style: context.labelSmall,
+                    ).paddingSymmetric(horizontal: 12.w, vertical: 1.h),
+                  ),
+                ],
               ),
             ],
+          ),
+        ),
+        Gap(24.h),
+        Center(
+          child: SizedBox(
+            width: 0.9.sw,
+            child: FilledButtonWidget(
+              title: 'Agregar al carrito',
+              onPressed: () async {
+                await PersistentShoppingCart().addToCart(
+                  PersistentShoppingCartItem(
+                    productId: safeString(p.id),
+                    productName: p.name,
+                    quantity: 1,
+                    unitPrice: p.price,
+                    productImages: [p.imagen],
+                    productDescription: p.description,
+                  ),
+                );
+                messenger.showSnackBar(
+                  message: 'Item agregado al carrito',
+                  color: AppColors.success,
+                  seconds: 1,
+                );
+              },
+            ),
           ),
         ),
       ],
