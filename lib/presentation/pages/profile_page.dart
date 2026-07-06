@@ -14,7 +14,7 @@ class ProfilePage extends StatelessWidget {
         centerTitle: false,
         elevation: 0,
         foregroundColor: Colors.white,
-        title: const Text("Profile"),
+        title: const Text("Perfil"),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings_outlined),
