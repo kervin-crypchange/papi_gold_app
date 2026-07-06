@@ -68,7 +68,7 @@ class _ProductsPageState extends State<ProductsPage> with MessengerMixin {
                       crossAxisCount: 2,
                       mainAxisSpacing: 12.h,
                       crossAxisSpacing: 4.w,
-                      childAspectRatio: 0.45.h,
+                      childAspectRatio: 0.54.h,
                     ),
                     itemCount: data.products.length,
                     itemBuilder: (context, index) {
@@ -99,7 +99,6 @@ class _ProductsPageState extends State<ProductsPage> with MessengerMixin {
                         onFavoritePressed: () {
                           // Handle favorite button press
                         },
-                        shortDescription: p.description,
                         // rating: 4.2,
                         borderRadius: 8.0,
                       );

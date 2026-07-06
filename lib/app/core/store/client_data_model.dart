@@ -104,4 +104,6 @@ class PersistentClientDataModel {
   int get countryId => safeInt(country['id']);
   int get stateId => safeInt(state['id']);
   int get cityId => safeInt(city['id']);
+
+  String get location => "${state['name']}, ${city['name']}";
 }
