@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:logger/web.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
+import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/constants/index.dart';
 import 'package:papi_gold/app/core/error/failure.dart';
 import 'package:papi_gold/app/core/error/server_exception.dart';
@@ -83,7 +84,7 @@ class CommonRemoteDataImpl extends CommonRemoteData {
   ) async {
     try {
       final res = await sl<DioClient>().post(Apis.order, data: model.toJson());
-      print('--- $res');
+      debugPrint('--- $res');
       return Right(ResponseCheckOutModel.fromJson(res.data));
     } catch (e) {
       return Left(ServerException(e));
@@ -161,7 +162,7 @@ class CommonRemoteDataImpl extends CommonRemoteData {
         Apis.paymentIntent,
         data: {'sale_id': safeString(order)},
       );
-      print('Payment Intent Response: ${res.data}');
+      debugPrint('Payment Intent Response: ${res.data}');
       return Right(ResponsePaymentIntentModel.fromJson(res.data));
     } catch (e) {
       return Left(ServerException(e));

@@ -152,6 +152,6 @@ Future<void> stripePayment(BuildContext context, clientSecret) async {
       );
     }
   } catch (e) {
-    print('Error inesperado: $e');
+    debugPrint('Error inesperado: $e');
   }
 }
