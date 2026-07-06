@@ -64,43 +64,19 @@ class _ProductsPageState extends State<ProductsPage> with MessengerMixin {
                   GridView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 12.h,
-                      crossAxisSpacing: 4.w,
-                      childAspectRatio: 0.54.h,
-                    ),
+                    gridDelegate:
+                        const SliverGridDelegateWithMaxCrossAxisExtent(
+                          maxCrossAxisExtent: 200,
+                          childAspectRatio: 0.7,
+                          mainAxisSpacing: 20,
+                          crossAxisSpacing: 16,
+                        ),
                     itemCount: data.products.length,
                     itemBuilder: (context, index) {
                       final p = data.products[index];
                       return ProductCard(
-                        imageUrl: p.imagen,
-                        categoryName: p.category.name,
-                        productName: p.name,
-                        price: p.price,
-                        stock: p.stock,
-                        onTap: () async {
-                          messenger.showSnackBar(
-                            message: 'Item agregado al carrito',
-                            color: AppColors.success,
-                            seconds: 1,
-                          );
-                          await PersistentShoppingCart().addToCart(
-                            PersistentShoppingCartItem(
-                              productId: safeString(p.id),
-                              productName: p.name,
-                              productDescription: p.description,
-                              unitPrice: p.price,
-                              quantity: 1,
-                              productImages: [p.imagen],
-                            ),
-                          );
-                        },
-                        onFavoritePressed: () {
-                          // Handle favorite button press
-                        },
-                        // rating: 4.2,
-                        borderRadius: 8.0,
+                        product: p,
+                        onPress: () {},
                       );
                     },
                   ),
