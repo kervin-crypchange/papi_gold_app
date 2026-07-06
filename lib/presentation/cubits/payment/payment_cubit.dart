@@ -11,17 +11,6 @@ part 'payment_state.dart';
 class PaymentCubit extends Cubit<PaymentState> {
   PaymentCubit() : super(PaymentInitial());
 
-  // void paymentIntent(String order) async {
-  //   emit(PaymentLoading());
-
-  //   Either response = await sl<PaymentUseCase>().call(param: order);
-
-  //   response.fold(
-  //     (l) => emit(PaymentFailure(message: l.toString())),
-  //     (r) => emit(PaymentSuccess(response: r)),
-  //   );
-  // }
-
   Future<Either<Failure, ResponsePaymentIntentEntity>> paymentIntent(
     String order,
   ) async {

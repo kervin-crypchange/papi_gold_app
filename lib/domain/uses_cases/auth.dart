@@ -13,3 +13,10 @@ class LoginUseCase
     return sl<AuthRepository>().login(param!);
   }
 }
+class LogoutUseCase
+    implements UseCase<Either<Failure, LogoutEntity>, void> {
+  @override
+  Future<Either<Failure, LogoutEntity>> call({void param}) {
+    return sl<AuthRepository>().logout();
+  }
+}

@@ -1,3 +1,4 @@
+export 'package:papi_gold/presentation/pages/settings_page.dart';
 export 'package:papi_gold/presentation/pages/payment_page.dart';
 export 'package:papi_gold/presentation/pages/product/product_page.dart';
 export 'package:papi_gold/presentation/pages/product/products_page.dart';

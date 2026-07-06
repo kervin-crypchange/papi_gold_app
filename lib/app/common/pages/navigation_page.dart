@@ -18,7 +18,7 @@ class _NavigationPageState extends State<NavigationPage> {
     HomePage(),
     ProductsPage(),
     OrdersPage(),
-    ProfilePage(),
+    SettingsPage(),
   ];
 
   final List<Map<String, dynamic>> navItems = [
@@ -38,9 +38,9 @@ class _NavigationPageState extends State<NavigationPage> {
       'label': 'Ordenes',
     },
     {
-      'icon': Icons.person_2_rounded,
-      'iconSelected': Icons.person_2_outlined,
-      'label': 'Perfil',
+      'icon': Icons.settings_outlined,
+      'iconSelected': Icons.settings_rounded,
+      'label': 'Setting',
     },
   ];
 
