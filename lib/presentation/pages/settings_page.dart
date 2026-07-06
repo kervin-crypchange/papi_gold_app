@@ -85,7 +85,7 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
                    _CustomListTile(
                     title: "Profile",
                     icon: Icons.person_outline_rounded,
-                    onTap: () => null,
+                    onTap: () => context.goNamed(Routes.profile),
                   ),
                   _CustomListTile(
                     title: "Help & Feedback",
@@ -107,9 +107,9 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
                         builder: (BuildContext context) {
                           return AlertDialog(
                             title: const Text('Cerrar sesión'),
-                            content: const Text(
-                              'Are you sure you want to proceed?',
-                            ),
+                            // content: const Text(
+                            //   'Are you sure you want to proceed?',
+                            // ),
                             actions: [
                               TextButton(
                                 onPressed: () => Navigator.pop(context),
