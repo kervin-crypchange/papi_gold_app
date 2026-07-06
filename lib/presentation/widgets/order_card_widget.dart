@@ -14,39 +14,51 @@ class OrderCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      dense: true,
-      contentPadding: EdgeInsets.only(left: 12, right: 12),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      leading: Container(
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: AppColors.secondary.withValues(alpha: 0.1),
-          borderRadius: BorderRadius.circular(100),
-        ),
-        child: const Icon(Icons.inventory_2_outlined, color: AppColors.secondary),
-      ),
-      title: Text(order.invoice, style: context.bodySmall).medium,
-      subtitle: Align(
-        alignment: Alignment.centerLeft,
-        child: Container(
+    return Material(
+      color: Colors.transparent,
+      child: ListTile(
+        dense: true,
+        contentPadding: EdgeInsets.only(left: 12, right: 12),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        leading: Container(
+          padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             color: AppColors.secondary.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(16.r),
+            borderRadius: BorderRadius.circular(100),
           ),
-          child: Text(
-            order.status.name,
-            style: context.bodyXSmall,
-          ).color(AppColors.secondary).paddingSymmetric(horizontal: 6.w, vertical: 1.h),
-        ).paddingOnly(top: 3.h),
-      ),
-      trailing: Text(
-        getFormatMoney(order.totalVenta),
-        style: context.bodyLarge.copyWith(color: AppColors.secondary),
-      ),
-      onTap: () => context.goNamed(
-        Routes.order,
-        pathParameters: {'id': order.order.toString()},
+          child: const Icon(
+            Icons.inventory_2_outlined,
+            color: AppColors.secondary,
+          ),
+        ),
+        title: Text(order.invoice, style: context.bodySmall).medium,
+        subtitle: Text(
+          getFormatDate(order.createdAt, true),
+          style: context.bodyXSmall.copyWith(color: AppColors.secondary),
+        ),
+        trailing: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: AppColors.secondary.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(16.r),
+              ),
+              child: Text(order.status.name, style: context.bodyXSmall)
+                  .color(AppColors.secondary)
+                  .paddingSymmetric(horizontal: 8.w, vertical: 1.h),
+            ).light,
+            Text(
+              getFormatMoney(order.totalVenta),
+              style: context.bodyMedium.copyWith(color: AppColors.secondary),
+            ),
+          ],
+        ),
+        onTap: () => context.goNamed(
+          Routes.order,
+          pathParameters: {'id': order.order.toString()},
+        ),
       ),
     );
   }

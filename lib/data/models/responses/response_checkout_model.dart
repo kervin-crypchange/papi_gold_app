@@ -2,8 +2,8 @@ import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/data/models/index.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 
-class ResponseCheckoutModel extends ResponseCheckOutEntity {
-  const ResponseCheckoutModel({
+class ResponseCheckOutModel extends ResponseCheckOutEntity {
+  const ResponseCheckOutModel({
     required super.message,
     required super.sale,
     required super.items,
@@ -11,8 +11,8 @@ class ResponseCheckoutModel extends ResponseCheckOutEntity {
     required super.paymentId,
   });
 
-  factory ResponseCheckoutModel.fromJson(Map<String, dynamic> json) {
-    return ResponseCheckoutModel(
+  factory ResponseCheckOutModel.fromJson(Map<String, dynamic> json) {
+    return ResponseCheckOutModel(
       message: safeString(json['message']),
       sale: SaleModel.fromJson(json['sale'] as Map<String, dynamic>),
       items: safeList<ItemModel>(

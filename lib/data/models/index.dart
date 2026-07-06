@@ -1,3 +1,5 @@
+export 'package:papi_gold/data/models/responses/response_payment_intent_model.dart';
+export 'package:papi_gold/data/models/responses/response_checkout_model.dart';
 export 'package:papi_gold/data/models/checkout_model.dart';
 export 'package:papi_gold/data/models/status_model.dart';
 export 'package:papi_gold/data/models/responses/response_metals_model.dart';
@@ -28,3 +30,4 @@ export 'package:papi_gold/data/models/cart_model.dart';
 export 'package:papi_gold/data/models/auth/login_model.dart';
 export 'package:papi_gold/data/models/auth/recovery_model.dart';
 export 'package:papi_gold/data/models/auth/register_model.dart';
+

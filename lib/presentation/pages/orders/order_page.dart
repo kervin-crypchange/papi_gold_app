@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:papi_gold/app/common/mixins/messenger_mixin.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/common/widgets/filled_button_widget.dart';
 import 'package:papi_gold/app/core/constants/index.dart';
@@ -10,7 +11,7 @@ import 'package:papi_gold/app/core/extensions/index.dart';
 import 'package:papi_gold/app/core/theme/index.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 import 'package:papi_gold/domain/entities/order_detail_entity.dart';
-import 'package:papi_gold/presentation/cubits/order/orders_cubit.dart';
+import 'package:papi_gold/presentation/cubits/index.dart';
 
 class OrderPage extends StatefulWidget {
   final String orderId;
@@ -20,11 +21,25 @@ class OrderPage extends StatefulWidget {
   State<OrderPage> createState() => _OrderPageState();
 }
 
-class _OrderPageState extends State<OrderPage> {
+class _OrderPageState extends State<OrderPage> with MessengerMixin {
   @override
   void initState() {
     super.initState();
     context.read<OrdersCubit>().orderDetail(widget.orderId);
+  }
+
+  void _makePayment(String order) {
+    context.read<PaymentCubit>().paymentIntent(order).then((either) {
+      either.fold(
+        (failure) => messenger.showSnackBar(
+          message: failure.toString(),
+          color: AppColors.error,
+        ),
+        (res) async {
+          await stripePayment(context, res.clientSecret);
+        },
+      );
+    });
   }
 
   @override
@@ -60,7 +75,7 @@ class _OrderPageState extends State<OrderPage> {
             }
             return Center(child: Text('Error en la  carga de datos'));
           },
-        ).paddingSymmetric(horizontal: 12.w ),
+        ).paddingSymmetric(horizontal: 12.w),
       ),
     );
   }
@@ -96,7 +111,7 @@ class _OrderPageState extends State<OrderPage> {
               width: 1.sw,
               child: FilledButtonWidget(
                 title: 'Proceder con el pago',
-                onPressed: () => debugPrint,
+                onPressed: () => _makePayment(e.order),
               ),
             ).paddingOnly(bottom: 12.h),
         ],
@@ -350,7 +365,7 @@ class _OrderPageState extends State<OrderPage> {
                   ),
                 ),
               ],
-            ).paddingSymmetric( vertical: 16.h),
+            ).paddingSymmetric(vertical: 16.h),
           ),
         );
       },

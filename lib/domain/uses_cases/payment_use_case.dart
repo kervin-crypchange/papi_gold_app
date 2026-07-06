@@ -5,11 +5,10 @@ import 'package:papi_gold/domain/entities/index.dart';
 import 'package:papi_gold/domain/repositories/common_repository.dart';
 import 'package:papi_gold/injection_container.dart';
 
-class CheckOutUseCase
-    implements UseCase<Either<Failure, ResponseCheckOutEntity>, CheckOutEntity> {
-
+class PaymentUseCase
+    implements UseCase<Either<Failure, ResponsePaymentIntentEntity>, String> {
   @override
-  Future<Either<Failure, ResponseCheckOutEntity>> call({CheckOutEntity? param}) {
-    return sl<CommonRepository>().checkout(param!);
+  Future<Either<Failure, ResponsePaymentIntentEntity>> call({String? param}) {
+    return sl<CommonRepository>().paymentIntent(param!);
   }
 }

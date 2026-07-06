@@ -31,10 +31,12 @@ Future<void> initializeDependencies() async {
   sl.registerLazySingleton(() => ProductsUseCase());
   sl.registerLazySingleton(() => ProductUseCase());
   sl.registerLazySingleton(() => CheckOutUseCase());
+  sl.registerLazySingleton(() => PaymentUseCase());
 
   // Cubits
   sl.registerFactory(() => AuthCubit());
   sl.registerFactory(() => OrdersCubit());
   sl.registerFactory(() => ProductCubit());
   sl.registerFactory(() => CheckOutCubit());
+  sl.registerFactory(() => PaymentCubit());
 }

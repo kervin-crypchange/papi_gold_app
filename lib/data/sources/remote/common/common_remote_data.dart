@@ -11,7 +11,7 @@ abstract class CommonRemoteData {
   Future<Either<Failure, ResponseProductsModel>> productList(int page);
   Future<Either<Failure, ProductModel>> productDetail(int id);
 
-  Future<Either<Failure, String>> checkout(CheckOutModel m);
+  Future<Either<Failure, ResponseCheckOutModel>> checkout(CheckOutModel m);
   Future<Either<Failure, ResponseOrdersModel>> orderList(int page);
   Future<Either<Failure, OrderDetailModel>> orderDetail(String orderCode);
 
@@ -21,4 +21,6 @@ abstract class CommonRemoteData {
   );
 
   Future<Either<Failure, String>> consultation(ConsultationPayloadModel m);
+
+  Future<Either<Failure, ResponsePaymentIntentModel>> paymentIntent(String order);
 }
