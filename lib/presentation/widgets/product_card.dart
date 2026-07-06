@@ -13,9 +13,6 @@ class ProductCard extends StatefulWidget {
   /// The URL of the product image.
   final String imageUrl;
 
-  /// A short description of the product.
-  final String? shortDescription;
-
   /// The category name of the product.
   final String categoryName;
 
@@ -56,7 +53,6 @@ class ProductCard extends StatefulWidget {
     required this.stock,
     this.onTap,
     this.onFavoritePressed,
-    this.shortDescription = '',
     this.id,
     this.borderRadius = 12.0,
     this.rating,
@@ -89,7 +85,6 @@ class ProductCardState extends State<ProductCard> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Product image and favorite button
               Stack(
                 children: [
                   ClipRRect(
@@ -149,24 +144,11 @@ class ProductCardState extends State<ProductCard> {
                   children: [
                     Text(
                       widget.categoryName.capitalizeFirst,
-                      style: context.bodyMedium.copyWith(color: AppColors.grey),
-                    ).medium,
+                    ).medium.color(AppColors.grey),
                     const SizedBox(height: 4),
                     Text(
                       widget.productName,
-                      style: context.bodyLarge.copyWith(color: AppColors.black),
-                    ).medium,
-                    // Short description (if provided)
-                    if (widget.shortDescription!.isNotEmpty)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 4.0),
-                        child: Text(
-                          widget.shortDescription!,
-                          style: context.bodySmall.copyWith(
-                            color: Colors.grey.shade700,
-                          ),
-                        ),
-                      ),
+                    ).medium.color(AppColors.black),
                     // Product rating (if available)
                     if (widget.rating != null)
                       Padding(
@@ -191,10 +173,7 @@ class ProductCardState extends State<ProductCard> {
                       children: [
                         Text(
                           getFormatMoney(widget.price),
-                          style: context.bodyMedium.copyWith(
-                            color: AppColors.primary,
-                          ),
-                        ).medium,
+                        ).medium.color(AppColors.primary),
                         Text(
                           'Stock: ${widget.stock}',
                           style: context.bodySmall.copyWith(

@@ -83,9 +83,14 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
                 title: "Organización",
                 children: [
                    _CustomListTile(
-                    title: "Profile",
+                    title: "Profile Information",
                     icon: Icons.person_outline_rounded,
                     onTap: () => context.goNamed(Routes.profile),
+                  ),
+                   _CustomListTile(
+                    title: "Change Password",
+                    icon: Icons.lock_outline,
+                    onTap: () => null
                   ),
                   _CustomListTile(
                     title: "Help & Feedback",
