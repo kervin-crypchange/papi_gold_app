@@ -58,6 +58,7 @@ class _NavigationPageState extends State<NavigationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       appBar: AppBar(
         actions: [
           PersistentShoppingCart().showCartItemCountWidget(

@@ -1,15 +1,15 @@
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:papi_gold/app/common/mixins/messenger_mixin.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
+import 'package:papi_gold/app/core/constants/routes.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
 import 'package:papi_gold/app/core/theme/index.dart';
 import 'package:papi_gold/presentation/cubits/index.dart';
 import 'package:papi_gold/presentation/widgets/index.dart';
-import 'package:persistent_shopping_cart/model/cart_model.dart';
-import 'package:persistent_shopping_cart/persistent_shopping_cart.dart';
 
 class ProductsPage extends StatefulWidget {
   const ProductsPage({super.key});
@@ -76,7 +76,10 @@ class _ProductsPageState extends State<ProductsPage> with MessengerMixin {
                       final p = data.products[index];
                       return ProductCard(
                         product: p,
-                        onPress: () {},
+                        onPress: () => context.goNamed(
+                          Routes.product,
+                          pathParameters: {'id': safeString(p.id)},
+                        ),
                       );
                     },
                   ),

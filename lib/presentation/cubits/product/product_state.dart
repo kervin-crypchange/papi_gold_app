@@ -16,9 +16,9 @@ final class ProductsSuccess extends ProductState {
   const ProductsSuccess({required this.response});
 }
 
-final class Productuccess extends ProductState {
-  final ProductEntity e;
-  const Productuccess({required this.e});
+final class ProductSuccess extends ProductState {
+  final ProductEntity product;
+  const ProductSuccess({required this.product});
 }
 
 final class ProductFailure extends ProductState {
