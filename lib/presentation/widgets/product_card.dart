@@ -65,11 +65,7 @@ class ProductCard extends StatelessWidget with MessengerMixin {
                 InkWell(
                   borderRadius: BorderRadius.circular(50),
                   onTap: () async {
-                    messenger.showSnackBar(
-                      message: 'Item agregado al carrito',
-                      color: AppColors.success,
-                      seconds: 1,
-                    );
+                   
                     await PersistentShoppingCart().addToCart(
                       PersistentShoppingCartItem(
                         productId: safeString(product.id),
@@ -79,6 +75,11 @@ class ProductCard extends StatelessWidget with MessengerMixin {
                         quantity: 1,
                         productImages: [product.imagen],
                       ),
+                    );
+                     messenger.showSnackBar(
+                      message: 'Item agregado al carrito',
+                      color: AppColors.success,
+                      seconds: 1,
                     );
                   },
                   child: Container(
