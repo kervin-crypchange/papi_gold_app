@@ -8,8 +8,8 @@ abstract class Messenger {
   void showSnackBar({
     IconData? icon,
     required String message,
-    int seconds = 3,
-    Color? color = AppColors.black,
+    int seconds = 2,
+    Color color = AppColors.black,
   });
 }
 
@@ -18,8 +18,8 @@ class MessengerImpl implements Messenger {
   void showSnackBar({
     IconData? icon,
     required String message,
-    int seconds = 3,
-    Color? color = AppColors.black,
+    int seconds = 2,
+    Color color = AppColors.black,
   }) {
     globals.scaffoldMessengerKey.currentState?.showSnackBar(
       SnackBar(

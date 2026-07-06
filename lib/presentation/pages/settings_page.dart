@@ -1,6 +1,4 @@
 import 'dart:async';
-
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -82,38 +80,13 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
               ),
               const Divider(),
               _SingleSection(
-                title: "Organization",
+                title: "Organización",
                 children: [
-                  _CustomListTile(
+                   _CustomListTile(
                     title: "Profile",
                     icon: Icons.person_outline_rounded,
                     onTap: () => null,
                   ),
-                  _CustomListTile(
-                    title: "Messaging",
-                    icon: Icons.message_outlined,
-                    onTap: () => null,
-                  ),
-                  _CustomListTile(
-                    title: "Calling",
-                    icon: Icons.phone_outlined,
-                    onTap: () => null,
-                  ),
-                  _CustomListTile(
-                    title: "People",
-                    icon: Icons.contacts_outlined,
-                    onTap: () => null,
-                  ),
-                  _CustomListTile(
-                    title: "Calendar",
-                    icon: Icons.calendar_today_rounded,
-                    onTap: () => null,
-                  ),
-                ],
-              ),
-              const Divider(),
-              _SingleSection(
-                children: [
                   _CustomListTile(
                     title: "Help & Feedback",
                     icon: Icons.help_outline_rounded,
