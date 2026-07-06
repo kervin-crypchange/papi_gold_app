@@ -2,11 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
-import 'package:go_router/go_router.dart';
 import 'package:papi_gold/app/common/mixins/messenger_mixin.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
-import 'package:papi_gold/app/core/constants/index.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
 import 'package:papi_gold/app/core/theme/index.dart';
 import 'package:papi_gold/domain/entities/product_entity.dart';
@@ -24,11 +22,6 @@ class ProductPage extends StatelessWidget with MessengerMixin {
     return Scaffold(
       extendBody: true,
       extendBodyBehindAppBar: true,
-      // appBar: AppBar(
-      //   leading: BackButton(
-      //     onPressed: () => context.goNamed(Routes.navigation),
-      //   ),
-      // ),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         leading: Padding(
@@ -38,7 +31,7 @@ class ProductPage extends StatelessWidget with MessengerMixin {
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(100)),
               ),
-              backgroundColor: Colors.black.withOpacity(0.5),
+              backgroundColor: Colors.black.withValues(alpha: 0.5),
               padding: EdgeInsets.zero,
             ),
             child: const Icon(Icons.close, color: Colors.white),
@@ -63,7 +56,7 @@ class ProductPage extends StatelessWidget with MessengerMixin {
             }
             if (state is ProductSuccess) {
               final p = state.product;
-              return SingleChildScrollView(child: InfoProduct(p: p));
+              return InfoProduct(p: p);
             }
             return Center(child: Text('Ha ocurrido un error'));
           },
@@ -95,37 +88,37 @@ class InfoProduct extends StatelessWidget with MessengerMixin {
             errorWidget: (context, url, error) => Icon(Icons.error),
           ),
         ),
-        const SizedBox(height: 16),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(p.name, style: context.bodyLarge),
-              const SizedBox(height: 8),
-              Text(p.description, style: context.bodyMedium),
-              const SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(getFormatMoney(p.price), style: context.labelMedium),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12.r),
-                      color: AppColors.secondary.withValues(alpha: 0.1),
+        Gap(16.h),
+        Expanded(
+          child: Container(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(p.name, style: context.bodyLarge),
+                     Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12.r),
+                        color: AppColors.secondary.withValues(alpha: 0.1),
+                      ),
+                      child: Text(
+                        p.category.name.capitalizeFirst,
+                        style: context.labelSmall,
+                      ).paddingSymmetric(horizontal: 12.w, vertical: 1.h),
                     ),
-                    child: Text(
-                      p.category.name.capitalizeFirst,
-                      style: context.labelSmall,
-                    ).paddingSymmetric(horizontal: 12.w, vertical: 1.h),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Text(p.description),
+                Gap(16.h),
+                Text(getFormatMoney(p.price), style: context.labelMedium),
+              ],
+            ).paddingSymmetric(horizontal: 16.w),
           ),
         ),
-        Gap(24.h),
         Center(
           child: SizedBox(
             width: 0.9.sw,
