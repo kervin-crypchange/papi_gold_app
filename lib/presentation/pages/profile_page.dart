@@ -15,12 +15,6 @@ class ProfilePage extends StatelessWidget {
         elevation: 0,
         foregroundColor: Colors.white,
         title: const Text("Perfil"),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings_outlined),
-            onPressed: () {},
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),

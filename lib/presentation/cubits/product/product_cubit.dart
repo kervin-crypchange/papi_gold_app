@@ -27,7 +27,7 @@ class ProductCubit extends Cubit<ProductState> {
     Either response = await sl<ProductUseCase>().call(param: id);
     response.fold(
       (l) => emit(ProductFailure(message: l.toString())),
-      (r) => emit(Productuccess(e: r)),
+      (r) => emit(ProductSuccess(product: r)),
     );
   }
   
