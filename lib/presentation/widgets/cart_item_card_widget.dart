@@ -42,7 +42,7 @@ class _CartItemCardWidgetState extends State<CartItemCardWidget> {
             progressIndicatorBuilder: (context, url, downloadProgress) =>
                 SizedBox(
                   height: 250.h,
-                  child: Center(child: CircularProgressIndicator()),
+                  child: LoadingWidget(),
                 ),
             errorWidget: (context, url, error) => Icon(Icons.error),
           ),

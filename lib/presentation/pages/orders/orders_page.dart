@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:papi_gold/app/common/mixins/logger_mixin.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
+import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
 import 'package:papi_gold/app/core/theme/colors.dart';
 import 'package:papi_gold/domain/entities/index.dart';
@@ -34,7 +35,7 @@ class _OrdersPageState extends State<OrdersPage> with LoggerMixin {
         listener: (context, state) {},
         builder: (context, state) {
           if (state is OrdersLoadding) {
-            return Center(child: CircularProgressIndicator.adaptive());
+            return LoadingWidget();
           }
           if (state is OrdersSuccess) {
             final StatsEntity stats = state.response.stats;

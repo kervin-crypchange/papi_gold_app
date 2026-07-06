@@ -42,7 +42,7 @@ class _ProductsPageState extends State<ProductsPage> with MessengerMixin {
       },
       builder: (context, state) {
         if (state is ProductLoadding) {
-          return Center(child: CircularProgressIndicator.adaptive());
+          return LoadingWidget();
         }
         if (state is ProductsSuccess) {
           return ListView.builder(

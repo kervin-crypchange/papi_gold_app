@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:papi_gold/app/common/mixins/messenger_mixin.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/common/widgets/filled_button_widget.dart';
+import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/constants/index.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
 import 'package:papi_gold/app/core/theme/index.dart';
@@ -68,7 +69,7 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
           listener: (context, state) {},
           builder: (context, state) {
             if (state is OrdersLoadding) {
-              return Center(child: CircularProgressIndicator.adaptive());
+              return LoadingWidget();
             }
             if (state is OrderSuccess) {
               return _buildUI(state.order).paddingAll(6.r);

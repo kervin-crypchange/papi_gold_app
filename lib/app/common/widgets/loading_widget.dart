@@ -10,7 +10,7 @@ class LoadingWidget extends StatelessWidget {
       height: 1.sh,
       width: 1.sw,
       decoration: BoxDecoration(color: Colors.black87),
-      child: Center(child: CircularProgressIndicator.adaptive()),
+      child:LoadingWidget(),
     );
   }
 }
