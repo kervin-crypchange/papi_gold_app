@@ -107,9 +107,6 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
                         builder: (BuildContext context) {
                           return AlertDialog(
                             title: const Text('Cerrar sesión'),
-                            // content: const Text(
-                            //   'Are you sure you want to proceed?',
-                            // ),
                             actions: [
                               TextButton(
                                 onPressed: () => Navigator.pop(context),
