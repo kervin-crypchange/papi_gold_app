@@ -8,6 +8,9 @@ class LocationParamModel extends LocationParamEntity {
   }
 
   Map<String, dynamic> toJson() {
-    return {'country': country, 'state': state};
+    return {
+      'state': state,
+      'country': country, 
+    };
   }
 }
