@@ -14,6 +14,7 @@ class RecoveryPasswordPage extends StatefulWidget {
 class _RecoveryPasswordPageState extends State<RecoveryPasswordPage>
     with LoggerMixin {
   String? email;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -31,10 +32,11 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage>
                 SizedBox(height: constraints.maxHeight * 0.1),
                 Image.asset('assets/icons/papi-gold-512x512.png', height: 92.h),
                 SizedBox(height: constraints.maxHeight * 0.1),
-                Text('Recuperar contraeeña', style: context.headlineSmall),
+                Text('Recuperar contraeña', style: context.headlineSmall),
                 SizedBox(height: constraints.maxHeight * 0.05),
 
                 Form(
+                  key: _formKey,
                   child: Column(
                     spacing: 16.h,
                     mainAxisSize: MainAxisSize.min,

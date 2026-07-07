@@ -62,6 +62,11 @@ final GoRouter router = GoRouter(
           path: '/${Routes.cart}',
           builder: (context, state) => CartPage(),
         ),
+        GoRoute(
+          name: Routes.changePassword,
+          path: '/${Routes.changePassword}',
+          builder: (context, state) => ChangePasswordPage(),
+        ),
       ],
     ),
   ],
