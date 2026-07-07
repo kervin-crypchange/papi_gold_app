@@ -17,9 +17,10 @@ class CommonRepositoryImpl extends CommonRepository {
   }
 
   @override
-  Future<Either<Failure, List<LocationEntity>>> getLocation() async {
+  Future<Either<Failure, List<LocationEntity>>> getLocation(LocationParamEntity p) async {
+    final LocationParamModel param = LocationParamModel.fromEntity(p);
     Either<Failure, List<LocationEntity>> locations =
-        await sl<CommonRemoteData>().getLocation();
+        await sl<CommonRemoteData>().getLocation(param);
 
     return locations.fold((l) => Left(l), (r) => Right(r));
   }
