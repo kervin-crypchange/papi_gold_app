@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 
 class LocationParamEntity extends Equatable{
-  final String country;
-  final String? state;
+  final int country;
+  final int? state;
 
   const LocationParamEntity({ required this.country, this.state});
   @override
