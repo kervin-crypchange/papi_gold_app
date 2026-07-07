@@ -52,7 +52,7 @@ class _LoginPageState extends State<LoginPage> with MessengerMixin {
                       height: 92.h,
                     ),
                     SizedBox(height: constraints.maxHeight * 0.1),
-                    Text('Iniciar Sesión', style: context.headlineSmall),
+                    Text('Iniciar sesión', style: context.headlineSmall),
                     SizedBox(height: constraints.maxHeight * 0.05),
                     Form(
                       key: _formKey,

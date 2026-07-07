@@ -1,10 +1,8 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:papi_gold/app/common/mixins/index.dart';
-import 'package:papi_gold/app/common/widgets/filled_button_widget.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
-import 'package:papi_gold/app/core/theme/colors.dart';
 
 class RecoveryPasswordPage extends StatefulWidget {
   const RecoveryPasswordPage({super.key});
@@ -26,46 +24,49 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage>
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Center(
-          child: Form(
-            child: Container(
-              height: .45.sh,
-              width: .9.sw,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(6.r),
-                border: BoxBorder.all(color: AppColors.white, width: 0.5),
-              ),
-              child: Column(
-                spacing: 16.h,
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Recuperar Contraseña', style: context.headlineSmall),
-                  InputFormWidget(
-                    prefixIcon: Icon(Icons.mail_outline),
-                    labelText: 'Correo electrónico',
-                    keyboardType: TextInputType.emailAddress,
-                    onSaved: (value) => setState(() => email = value),
-                    validator: (value) =>
-                        value?.requiredError ?? value?.emailError,
-                  ),
-                  SizedBox(
-                    width: 1.sw,
-                    child: FilledButtonWidget(
-                      onPressed: () => log('press me'),
-                      title: 'Enviar',
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () => context.goNamed('login'),
-                    child: Text('Iniciar sesión'),
-                  ),
-                   InkWell(
-                    onTap: () => context.goNamed('register'),
-                    child: Text('¿No tienes cuenta?, registrate'),
-                  ),
-                ],
-              ).paddingSymmetric(horizontal: 12.w),
+        child: LayoutBuilder(
+          builder: (context, constraints) => SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(height: constraints.maxHeight * 0.1),
+                Image.asset('assets/icons/papi-gold-512x512.png', height: 92.h),
+                SizedBox(height: constraints.maxHeight * 0.1),
+                Text('Recuperar contraeeña', style: context.headlineSmall),
+                SizedBox(height: constraints.maxHeight * 0.05),
+
+                Form(
+                  child: Column(
+                    spacing: 16.h,
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      InputFormWidget(
+                        prefixIcon: Icon(Icons.mail_outline),
+                        labelText: 'Correo electrónico',
+                        keyboardType: TextInputType.emailAddress,
+                        onSaved: (value) => setState(() => email = value),
+                        validator: (value) =>
+                            value?.requiredError ?? value?.emailError,
+                      ),
+                      SizedBox(
+                        width: 1.sw,
+                        child: FilledButtonWidget(
+                          onPressed: () => log('press me'),
+                          title: 'Enviar',
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () => context.goNamed('login'),
+                        child: Text('Iniciar sesión'),
+                      ),
+                      InkWell(
+                        onTap: () => context.goNamed('register'),
+                        child: Text('¿No tienes cuenta?, registrate'),
+                      ),
+                    ],
+                  ).paddingSymmetric(horizontal: 12.w),
+                ),
+              ],
             ),
           ),
         ),
