@@ -9,8 +9,8 @@ class UpdatePasswordModel extends UpdatePasswordEntity {
 
   factory UpdatePasswordModel.fromEntity(UpdatePasswordEntity e) {
     return UpdatePasswordModel(
+      currentPassword: e.currentPassword,
       confirmNewPassword: e.confirmNewPassword,
-      currentPassword: e.confirmNewPassword,
       newPassword: e.newPassword,
     );
   }
