@@ -67,15 +67,11 @@ class AuthDataImpl extends AuthData with LoggerMixin {
 
   @override
   Future<Either<Failure, String>> updatePassword(
-    String password,
-    String confirmPassword,
+    UpdatePasswordModel model,
   ) async {
     try {
-      final Map<String, dynamic> data = {
-        'password': password,
-        'confirm_password': confirmPassword,
-      };
-      final res = await sl<DioClient>().put(Apis.client, data: data);
+      print('UpdatePassword model ${model.toJson()}');
+      final res = await sl<DioClient>().put(Apis.updatePassword, data: model.toJson());
       return Right(res.data['message']);
     } catch (e) {
       return Left(ServerException(e));

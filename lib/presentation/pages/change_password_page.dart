@@ -1,6 +1,13 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:papi_gold/app/common/mixins/index.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
+import 'package:papi_gold/app/core/constants/index.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
+import 'package:papi_gold/app/core/theme/index.dart';
+import 'package:papi_gold/domain/entities/index.dart';
+import 'package:papi_gold/presentation/cubits/index.dart';
 
 class ChangePasswordPage extends StatefulWidget {
   const ChangePasswordPage({super.key});
@@ -9,14 +16,40 @@ class ChangePasswordPage extends StatefulWidget {
   State<ChangePasswordPage> createState() => _ChangePasswordPageState();
 }
 
-class _ChangePasswordPageState extends State<ChangePasswordPage> {
+class _ChangePasswordPageState extends State<ChangePasswordPage>
+    with MessengerMixin {
   bool obscureText = true;
-  String? password, confirmPassword;
+  String? currentPassword, password, confirmPassword;
+  bool isLoading = false;
   final _formKey = GlobalKey<FormState>();
+
+  void _execute() {
+    final entity = UpdatePasswordEntity(
+      currentPassword: currentPassword!,
+      newPassword: password!,
+      confirmNewPassword: confirmPassword!,
+    );
+    context.read<AuthCubit>().updatePassword(entity).then((either) {
+      either.fold(
+        (failure) => messenger.showSnackBar(
+          message: failure.toString(),
+          color: AppColors.error,
+        ),
+        (res) => setState(() {
+          isLoading = false;
+        }),
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: BackButton(
+          onPressed: () => context.goNamed(Routes.navigation),
+        ),
+      ),
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) => SingleChildScrollView(
@@ -38,14 +71,22 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                       InputFormWidget(
                         obscureText: obscureText,
                         prefixIcon: Icon(Icons.lock_outline),
-                        labelText: 'Contraseña',
+                        labelText: 'Contraseña actual',
+                        validator: (value) => value?.requiredError,
+                        onSaved: (value) =>
+                            setState(() => currentPassword = value),
+                      ),
+                      InputFormWidget(
+                        obscureText: obscureText,
+                        prefixIcon: Icon(Icons.lock_outline),
+                        labelText: 'Nueva contraseña',
                         validator: (value) => value?.requiredError,
                         onSaved: (value) => setState(() => password = value),
                       ),
                       InputFormWidget(
                         obscureText: obscureText,
                         prefixIcon: Icon(Icons.lock_outline),
-                        labelText: 'Confirmar contraseña',
+                        labelText: 'Confirmar nueva contraseña',
                         validator: (value) => value?.requiredError,
                         onSaved: (value) =>
                             setState(() => confirmPassword = value),
@@ -53,11 +94,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Text(
-                            obscureText
-                                ? 'Mostrar contraseña'
-                                : 'Ocultar contraseña',
-                          ),
+                          Text(obscureText ? 'Mostrar' : 'Ocultar'),
                           Transform.scale(
                             scale: 0.8,
                             child: Switch(
@@ -74,7 +111,27 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                       SizedBox(
                         width: 1.sw,
                         child: FilledButtonWidget(
-                          onPressed: () => debugPrint('press me'),
+                          onPressed: () {
+                            if (_formKey.currentState?.validate() ?? false) {
+                              _formKey.currentState?.save();
+                              if (password == null ||
+                                  confirmPassword == null ||
+                                  currentPassword == null) {
+                                return;
+                              }
+                              if (password != confirmPassword) {
+                                messenger.showSnackBar(
+                                  message: 'Contraseñas no coinciden',
+                                  color: AppColors.warning,
+                                );
+                                return;
+                              }
+                              setState(() {
+                                isLoading = true;
+                                _execute();
+                              });
+                            }
+                          },
                           title: 'Actualizar',
                         ),
                       ),

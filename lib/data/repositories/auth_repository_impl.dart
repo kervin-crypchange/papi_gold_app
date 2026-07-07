@@ -40,17 +40,13 @@ class AuthRepositoryImpl with LoggerMixin implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, String>> updatePassword(
-    String password,
-    String confirmPassword,
-  ) async {
+  Future<Either<Failure, String>> updatePassword(UpdatePasswordEntity e) async {
     Either<Failure, String> res = await sl<AuthData>().updatePassword(
-      password,
-      confirmPassword,
+      UpdatePasswordModel.fromEntity(e),
     );
     return res.fold((l) => Left(l), (r) => Right(r));
   }
-  
+
   @override
   Future<Either<Failure, void>> paymentIntent() {
     throw UnimplementedError();

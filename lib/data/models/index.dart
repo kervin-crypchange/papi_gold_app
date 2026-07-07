@@ -1,3 +1,4 @@
+export 'package:papi_gold/data/models/update_password_model.dart';
 export 'package:papi_gold/data/models/responses/response_payment_intent_model.dart';
 export 'package:papi_gold/data/models/responses/response_checkout_model.dart';
 export 'package:papi_gold/data/models/checkout_model.dart';

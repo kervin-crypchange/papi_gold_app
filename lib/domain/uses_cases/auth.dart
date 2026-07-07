@@ -7,7 +7,7 @@ import 'package:papi_gold/domain/repositories/auth_repository.dart';
 import 'package:papi_gold/injection_container.dart';
 
 class LoginUseCase
-    implements UseCase<Either<Failure, ResponseLoginEntity>, LoginModel> {
+    implements UseCase<Either<Failure, ResponseLoginEntity>, LoginEntity> {
   @override
   Future<Either<Failure, ResponseLoginEntity>> call({LoginEntity? param}) {
     return sl<AuthRepository>().login(param!);
@@ -18,5 +18,12 @@ class LogoutUseCase
   @override
   Future<Either<Failure, LogoutEntity>> call({void param}) {
     return sl<AuthRepository>().logout();
+  }
+}
+class UpdatePasswordUseCase
+    implements UseCase<Either<Failure, String>, UpdatePasswordEntity> {
+  @override
+  Future<Either<Failure, String>> call({UpdatePasswordEntity? param}) {
+    return sl<AuthRepository>().updatePassword(param!);
   }
 }

@@ -7,5 +7,5 @@ abstract class AuthData {
   Future<Either<Failure, LogoutModel>> logout();
   Future<Either<Failure, String>> register(RegisterModel model);
   Future<Either<Failure, String>> recovery(RecoveryModel model);
-    Future<Either<Failure, String>> updatePassword(String password, String confirmPassword); 
+    Future<Either<Failure, String>> updatePassword(UpdatePasswordModel model); 
 }

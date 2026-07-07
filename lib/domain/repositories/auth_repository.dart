@@ -8,6 +8,6 @@ abstract class AuthRepository {
   Future<Either<Failure, LogoutEntity>> logout();
   Future<Either<Failure, String>> register(RegisterEntity e);
   Future<Either<Failure, String>> recovery(RecoveryEntity e);
-  Future<Either<Failure, String>> updatePassword(String password, String confirmPassword); 
+  Future<Either<Failure, String>> updatePassword(UpdatePasswordEntity e); 
   Future<Either<Failure, void>> paymentIntent();
 }
