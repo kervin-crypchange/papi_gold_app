@@ -28,13 +28,18 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
   }
 
   void _makePayment(String order) {
+    showLoading(context);
     context.read<PaymentCubit>().paymentIntent(order).then((either) {
       either.fold(
-        (failure) => messenger.showSnackBar(
-          message: failure.toString(),
-          color: AppColors.error,
-        ),
+        (failure) {
+          showLoading(context, false);
+          messenger.showSnackBar(
+            message: failure.toString(),
+            color: AppColors.error,
+          );
+        },
         (res) async {
+          showLoading(context, false);
           await stripePayment(context, res.clientSecret);
         },
       );
