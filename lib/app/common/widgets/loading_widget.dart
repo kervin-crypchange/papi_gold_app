@@ -1,4 +1,3 @@
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 
 class LoadingWidget extends StatelessWidget {

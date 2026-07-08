@@ -50,25 +50,24 @@ class _RegisterPageState extends State<RegisterPage>
           message: failure.toString(),
           color: AppColors.error,
         ),
-        (_countries) => setState(() {
+        (c) => setState(() {
           _isLoading = false;
-          countries = _countries;
+          countries = c;
         }),
       );
     });
   }
 
   void loadStates(LocationParamEntity params) {
-    print(params);
     context.read<LocationCubit>().location(params).then((either) {
       either.fold(
         (failure) => messenger.showSnackBar(
           message: failure.toString(),
           color: AppColors.error,
         ),
-        (_states) => setState(() {
+        (s) => setState(() {
           _isLoading = false;
-          states = _states;
+          states = s;
         }),
       );
     });
@@ -81,33 +80,33 @@ class _RegisterPageState extends State<RegisterPage>
           message: failure.toString(),
           color: AppColors.error,
         ),
-        (_cities) => setState(() {
+        (c) => setState(() {
           _isLoading = false;
-          cities = _cities;
+          cities = c;
         }),
       );
     });
   }
 
-  void _selectCountry(int _country) {
+  void _selectCountry(int c) {
     setState(() {
       _isLoading = true;
-      country = _country;
-      loadStates(LocationParamEntity(country: _country));
+      country = c;
+      loadStates(LocationParamEntity(country: c));
     });
   }
 
-  void _selectState(int _state) {
+  void _selectState(int s) {
     setState(() {
        _isLoading = true;
-      state = _state;
-      loadCities(LocationParamEntity(country: country!, state: _state));
+      state = s;
+      loadCities(LocationParamEntity(country: country!, state: s));
     });
   }
 
-  void _selectCity(int _city) {
+  void _selectCity(int c) {
     setState(() {
-      city = _city;
+      city = c;
     });
   }
 
@@ -173,13 +172,6 @@ class _RegisterPageState extends State<RegisterPage>
                                   setState(() => address2 = value),
                               validator: (value) => value?.requiredError,
                             ),
-                            InputFormWidget(
-                              labelText: 'Código postal',
-                              keyboardType: TextInputType.number,
-                              onSaved: (value) =>
-                                  setState(() => codeZip = value),
-                              validator: (value) => value?.requiredError,
-                            ),
                             DropdownButtonFormField(
                               hint: Text('Seleccione país'),
                               initialValue: country,
@@ -236,6 +228,13 @@ class _RegisterPageState extends State<RegisterPage>
                                 ),
                               ],
                               onChanged: (value) => _selectCity(value!),
+                            ),
+                            InputFormWidget(
+                              labelText: 'Código postal',
+                              keyboardType: TextInputType.number,
+                              onSaved: (value) =>
+                                  setState(() => codeZip = value),
+                              validator: (value) => value?.requiredError,
                             ),
                             InputFormWidget(
                               obscureText: obscureText,

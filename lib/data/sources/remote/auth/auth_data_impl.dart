@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
 import 'package:papi_gold/app/common/mixins/index.dart';
 import 'package:papi_gold/app/core/constants/index.dart';
 import 'package:papi_gold/app/core/error/index.dart';
@@ -70,7 +71,7 @@ class AuthDataImpl extends AuthData with LoggerMixin {
     UpdatePasswordModel model,
   ) async {
     try {
-      print('UpdatePassword model ${model.toJson()}');
+      debugPrint('UpdatePassword model ${model.toJson()}');
       final res = await sl<DioClient>().put(Apis.updatePassword, data: model.toJson());
       return Right(res.data['message']);
     } catch (e) {
