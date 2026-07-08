@@ -72,33 +72,40 @@ class _LoginPageState extends State<LoginPage> with MessengerMixin {
                           InputFormWidget(
                             obscureText: obscureText,
                             prefixIcon: Icon(Icons.lock_outline),
-                            suffix: InkWell(
-                              onTap: () =>
-                                  setState(() => obscureText = !obscureText),
-                              child: obscureText
-                                  ? Icon(Icons.visibility)
-                                  : Icon(Icons.visibility_off),
-                            ),
                             labelText: 'Contraseña',
                             validator: (value) => value?.requiredError,
                             onSaved: (value) =>
                                 setState(() => password = value),
                           ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text(obscureText ? 'Mostrar' : 'Ocultar'),
+                              Transform.scale(
+                                scale: 0.8,
+                                child: Switch(
+                                  value: obscureText,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      obscureText = value;
+                                    });
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
                           SizedBox(
                             width: 1.sw,
                             child: FilledButtonWidget(
                               onPressed: () {
-                                if (_formKey.currentState?.validate() ??
-                                    false) {
+                                if (_formKey.currentState!.validate()) {
                                   _formKey.currentState?.save();
-                                  if (email != null && password != null) {
-                                    context.read<AuthCubit>().login(
-                                      LoginEntity(
-                                        email: email!,
-                                        password: password!,
-                                      ),
-                                    );
-                                  }
+                                  context.read<AuthCubit>().login(
+                                    LoginEntity(
+                                      email: email!,
+                                      password: password!,
+                                    ),
+                                  );
                                 }
                               },
                               title: 'Iniciar sesión',

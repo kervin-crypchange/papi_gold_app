@@ -5,9 +5,7 @@ class CountryModel extends CountryEntity {
   const CountryModel({
     required super.id,
     required super.name,
-    required super.iso2,
     required super.phoneCode,
-    required super.emoji,
   });
 
     /// Converts a JSON map to a [Model].
@@ -15,9 +13,7 @@ class CountryModel extends CountryEntity {
     return CountryModel(
       id: safeInt(json['id']),
       name: safeString(json['name']),
-      iso2: safeString(json['iso2']),
-      phoneCode: safeString(json['phone_code']),
-      emoji: safeString(json['emoji']),
+      phoneCode: safeString(json['phonecode']),
     );
   }
 
@@ -26,9 +22,7 @@ class CountryModel extends CountryEntity {
     return CountryModel(
       id: e.id,
       name: e.name,
-      iso2: e.iso2,
       phoneCode: e.phoneCode,
-      emoji: e.emoji,
     );
   }
 
@@ -37,9 +31,7 @@ class CountryModel extends CountryEntity {
     return{
       'id': id,
       'name': name,
-      'iso2': iso2,
-      'phone_code': phoneCode,
-      'emoji': emoji,
+      'phonecode': phoneCode,
     };
   }
 }

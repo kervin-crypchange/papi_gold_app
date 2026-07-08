@@ -11,6 +11,11 @@ class AuthSuccess extends AuthState {
   AuthSuccess({required this.response});
 }
 
+class AuthRegisterSuccess extends AuthState {
+  final String response;
+  AuthRegisterSuccess({required this.response});
+}
+
 class AuthError extends AuthState {
   final String message;
   AuthError({required this.message});

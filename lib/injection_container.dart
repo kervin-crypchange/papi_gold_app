@@ -26,6 +26,7 @@ Future<void> initializeDependencies() async {
 
   // Use cases
   sl.registerLazySingleton(() => LoginUseCase());
+  sl.registerLazySingleton(() => RegisterUseCase());
   sl.registerLazySingleton(() => LogoutUseCase());
   sl.registerLazySingleton(() => UpdatePasswordUseCase());
   sl.registerLazySingleton(() => OrdersUseCase());
@@ -34,6 +35,8 @@ Future<void> initializeDependencies() async {
   sl.registerLazySingleton(() => ProductUseCase());
   sl.registerLazySingleton(() => CheckOutUseCase());
   sl.registerLazySingleton(() => PaymentUseCase());
+  sl.registerLazySingleton(() => CountriesUseCase());
+  sl.registerLazySingleton(() => LocationUseCase());
 
   // Cubits
   sl.registerFactory(() => AuthCubit());
@@ -41,4 +44,5 @@ Future<void> initializeDependencies() async {
   sl.registerFactory(() => ProductCubit());
   sl.registerFactory(() => CheckOutCubit());
   sl.registerFactory(() => PaymentCubit());
+  sl.registerFactory(() => LocationCubit());
 }

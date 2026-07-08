@@ -16,15 +16,4 @@ class CheckOutCubit extends Cubit<CheckoutState> {
   ) async {
     return await sl<CheckOutUseCase>().call(param: e);
   }
-
-  // void checkout(CheckOutEntity e) async {
-  //   emit(CheckoutLoading());
-
-  //   Either response = await sl<CheckOutUseCase>().call(param: e);
-
-  //   response.fold(
-  //     (error) => emit(CheckoutFailure(message: error.toString())),
-  //     (success) => emit(CheckoutSuccess(message: success)),
-  //   );
-  // }
 }

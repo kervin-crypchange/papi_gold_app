@@ -1,44 +1,52 @@
 import 'package:papi_gold/domain/entities/auth/register_entity.dart';
 
-class RegisterModel {
-  final String name;
-  final String lastname;
-  final String email;
-  final String password;
-
-  RegisterModel({
-    required this.name,
-    required this.lastname,
-    required this.email,
-    required this.password,
+class RegisterModel extends RegisterEntity {
+  const RegisterModel({
+    required super.name,
+    required super.lastName,
+    required super.email,
+    required super.phone,
+    required super.country,
+    required super.state,
+    required super.city,
+    required super.address1,
+    required super.address2,
+    required super.codeZip,
+    required super.password,
+    required super.passwordConfirmation,
   });
-
-  /// Converts a JSON map to a [RegisterModel].
-  factory RegisterModel.fromJson(Map<String, dynamic> json) {
-    return RegisterModel(
-      email: json['email'],
-      password: json['password'],
-      name: json['name'],
-      lastname: json['lastname'],
-    );
-  }
 
   factory RegisterModel.fromEntity(RegisterEntity e) {
     return RegisterModel(
       name: e.name,
-      lastname: e.lastName,
+      lastName: e.lastName,
       email: e.email,
+      phone: e.phone,
+      country: e.country,
+      state: e.state,
+      city: e.city,
+      address1: e.address1,
+      address2: e.address2,
+      codeZip: e.codeZip,
       password: e.password,
+      passwordConfirmation: e.passwordConfirmation,
     );
   }
 
-  /// Converts a [RegisterModel] to a JSON map.
   Map<String, dynamic> toJson() {
-    return <String, dynamic>{
-      'name': name,
-      'lastname': lastname,
-      'email': email,
-      'password': password,
+    return {
+      "name": name,
+      "lastname": lastName,
+      "email": email,
+      "phone": phone,
+      "country": country,
+      "state": state,
+      "city": city,
+      "address1": address1,
+      "address2": address2,
+      "code_zip": codeZip,
+      "password": password,
+      "password_confirmation": passwordConfirmation,
     };
   }
 }

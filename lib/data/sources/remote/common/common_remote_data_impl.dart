@@ -19,9 +19,8 @@ class CommonRemoteDataImpl extends CommonRemoteData {
   Future<Either<Failure, List<CountryModel>>> getCountries() async {
     try {
       final res = await sl<DioClient>().get(Apis.countries);
-
-      final List<CountryModel> countries = res.data
-          .map((x) => CountryModel.fromJson(x))
+      List<CountryModel> countries = (res.data['data'] as List)
+          .map<CountryModel>((json) => CountryModel.fromJson(json))
           .toList();
       return Right(countries);
     } catch (e) {
@@ -30,11 +29,16 @@ class CommonRemoteDataImpl extends CommonRemoteData {
   }
 
   @override
-  Future<Either<Failure, List<LocationModel>>> getLocation() async {
+  Future<Either<Failure, List<LocationModel>>> getLocation(
+    LocationParamModel params,
+  ) async {
     try {
-      final res = await sl<DioClient>().get(Apis.countries);
-      final List<LocationModel> locations = res.data
-          .map((x) => LocationModel.fromJson(x))
+      final res = await sl<DioClient>().get(
+        Apis.location,
+        queryParameters: params.toJson(),
+      );
+      List<LocationModel> locations = (res.data['data'] as List)
+          .map<LocationModel>((json) => LocationModel.fromJson(json))
           .toList();
       return Right(locations);
     } catch (e) {

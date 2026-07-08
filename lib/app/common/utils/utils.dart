@@ -136,22 +136,39 @@ Future<void> stripePayment(BuildContext context, clientSecret) async {
   try {
     await Stripe.instance.presentPaymentSheet();
 
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text('¡Pago completado con éxito!')));
-  } on StripeException catch (e) {
-    if (e.error.code == FailureCode.Canceled) {
+    if (context.mounted) {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text('Pago cancelado por el usuario.')));
+      ).showSnackBar(SnackBar(content: Text('¡Pago completado con éxito!')));
+    }
+  } on StripeException catch (e) {
+    if (e.error.code == FailureCode.Canceled) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Pago cancelado por el usuario.')),
+        );
+      }
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error en el pago: ${e.error.localizedMessage}'),
-        ),
-      );
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error en el pago: ${e.error.localizedMessage}'),
+          ),
+        );
+      }
     }
   } catch (e) {
     debugPrint('Error inesperado: $e');
   }
+}
+
+void showLoading(BuildContext context, [bool isLoading = true]) {
+  isLoading
+      ? showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) =>
+              const Center(child: CircularProgressIndicator()),
+        )
+      : Navigator.of(context).pop();
 }

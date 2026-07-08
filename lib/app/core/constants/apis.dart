@@ -4,7 +4,7 @@ abstract class Apis {
 
   // AUTH
   static const session = 'session';
-  static const register = '';
+  static const register = 'register';
   static const recovery = '';
 
   static const product = 'product';

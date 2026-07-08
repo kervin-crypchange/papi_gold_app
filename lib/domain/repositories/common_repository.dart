@@ -5,7 +5,7 @@ import 'package:papi_gold/domain/entities/order_detail_entity.dart';
 
 abstract class CommonRepository {
   Future<Either<Failure, List<CountryEntity>>> getCountries();
-  Future<Either<Failure, List<LocationEntity>>> getLocation();
+  Future<Either<Failure, List<LocationEntity>>> getLocation(LocationParamEntity param);
 
   Future<Either<Failure, List<MetalEntity>>> metalList(String? symbol);
 

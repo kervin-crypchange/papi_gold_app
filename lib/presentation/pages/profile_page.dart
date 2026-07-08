@@ -77,7 +77,7 @@ class ProfilePic extends StatelessWidget {
         border: Border.all(
           color: Theme.of(
             context,
-          ).textTheme.bodyLarge!.color!.withOpacity(0.08),
+          ).textTheme.bodyLarge!.color!.withValues(alpha: 0.08),
         ),
       ),
       child: Stack(
@@ -115,7 +115,7 @@ class Info extends StatelessWidget {
             style: TextStyle(
               color: Theme.of(
                 context,
-              ).textTheme.bodyLarge!.color!.withOpacity(0.8),
+              ).textTheme.bodyLarge!.color!.withValues(alpha: 0.8),
             ),
           ),
           Text(info),

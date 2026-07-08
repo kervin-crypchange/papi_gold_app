@@ -5,7 +5,7 @@ import 'package:papi_gold/domain/entities/index.dart';
 
 abstract class CommonRemoteData {
   Future<Either<Failure, List<CountryModel>>> getCountries();
-  Future<Either<Failure, List<LocationModel>>> getLocation();
+  Future<Either<Failure, List<LocationModel>>> getLocation(LocationParamModel params);
 
   Future<Either<Failure, List<MetalModel>>> metalList(String? symbol);
   Future<Either<Failure, ResponseProductsModel>> productList(int page);

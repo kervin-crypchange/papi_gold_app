@@ -32,7 +32,7 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage>
                 SizedBox(height: constraints.maxHeight * 0.1),
                 Image.asset('assets/icons/papi-gold-512x512.png', height: 92.h),
                 SizedBox(height: constraints.maxHeight * 0.1),
-                Text('Recuperar contraeña', style: context.headlineSmall),
+                Text('Recuperar contraseña', style: context.headlineSmall),
                 SizedBox(height: constraints.maxHeight * 0.05),
 
                 Form(
@@ -63,7 +63,7 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage>
                       ),
                       InkWell(
                         onTap: () => context.goNamed('register'),
-                        child: Text('¿No tienes cuenta?, registrate'),
+                        child: Text('¿No tienes cuenta?. Registrate'),
                       ),
                     ],
                   ).paddingSymmetric(horizontal: 12.w),
