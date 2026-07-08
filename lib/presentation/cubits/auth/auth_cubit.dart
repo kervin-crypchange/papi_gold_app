@@ -4,6 +4,7 @@ import 'package:papi_gold/app/common/mixins/logger_mixin.dart';
 import 'package:papi_gold/app/core/error/failure.dart';
 import 'package:papi_gold/domain/entities/auth/login_entity.dart';
 import 'package:papi_gold/domain/entities/auth/logout_entity.dart';
+import 'package:papi_gold/domain/entities/auth/register_entity.dart';
 import 'package:papi_gold/domain/entities/update_password_entity.dart';
 import 'package:papi_gold/domain/uses_cases/auth.dart';
 import 'package:papi_gold/data/sources/local/auth/auth_local_data.dart';
@@ -25,6 +26,15 @@ class AuthCubit extends Cubit<AuthState> with LoggerMixin {
       } catch (_) {}
       emit(AuthSuccess(response: r));
     });
+  }
+
+  void register(RegisterEntity entity) async {
+    emit(AuthLoading());
+    Either res = await sl<RegisterUseCase>().call(param: entity);
+    res.fold(
+      (l) => emit(AuthError(message: l.message)),
+      (r) => emit(AuthRegisterSuccess(response: r)),
+    );
   }
 
   Future<Either<Failure, LogoutEntity>> logout() async {

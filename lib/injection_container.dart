@@ -26,6 +26,7 @@ Future<void> initializeDependencies() async {
 
   // Use cases
   sl.registerLazySingleton(() => LoginUseCase());
+  sl.registerLazySingleton(() => RegisterUseCase());
   sl.registerLazySingleton(() => LogoutUseCase());
   sl.registerLazySingleton(() => UpdatePasswordUseCase());
   sl.registerLazySingleton(() => OrdersUseCase());

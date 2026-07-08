@@ -17,6 +17,8 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage>
     with LoggerMixin, MessengerMixin {
+  final _formKey = GlobalKey<FormState>();
+
   bool _isLoading = false;
   String? name,
       lastName,
@@ -98,7 +100,7 @@ class _RegisterPageState extends State<RegisterPage>
 
   void _selectState(int s) {
     setState(() {
-       _isLoading = true;
+      _isLoading = true;
       state = s;
       loadCities(LocationParamEntity(country: country!, state: s));
     });
@@ -128,6 +130,7 @@ class _RegisterPageState extends State<RegisterPage>
                       SizedBox(height: 16.h),
                       Text('Registro', style: context.headlineSmall),
                       Form(
+                        key: _formKey,
                         child: Column(
                           spacing: 16.h,
                           mainAxisSize: MainAxisSize.min,
@@ -253,7 +256,35 @@ class _RegisterPageState extends State<RegisterPage>
                             SizedBox(
                               width: 1.sw,
                               child: FilledButtonWidget(
-                                onPressed: () => log('press me'),
+                                onPressed: () {
+                                  if (_formKey.currentState!.validate()) {
+                                    if (password! != passwordConfirmation!) {
+                                      messenger.showSnackBar(
+                                        message: 'Contraseñas no coinciden',
+                                        color: AppColors.warning,
+                                      );
+                                      return;
+                                    }
+                                    _formKey.currentState?.save();
+                                    context.read<AuthCubit>().register(
+                                      RegisterEntity(
+                                        name: name!,
+                                        lastName: lastName!,
+                                        email: email!,
+                                        phone: phone!,
+                                        country: country!,
+                                        state: state!,
+                                        city: city!,
+                                        address1: address1!,
+                                        address2: address2!,
+                                        codeZip: codeZip!,
+                                        password: password!,
+                                        passwordConfirmation:
+                                            passwordConfirmation!,
+                                      ),
+                                    );
+                                  }
+                                },
                                 title: 'Registrar',
                               ),
                             ),
