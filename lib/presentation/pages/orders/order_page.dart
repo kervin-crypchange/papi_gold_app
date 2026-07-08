@@ -79,7 +79,7 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
             }
             return Center(child: Text('Error en la  carga de datos'));
           },
-        ).paddingSymmetric(horizontal: 12.w),
+        ).paddingSymmetric(horizontal: 8.w),
       ),
     );
   }
@@ -310,7 +310,7 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
       context: context,
       backgroundColor: Colors.black,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(12.0)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24.0)),
       ),
       builder: (BuildContext context) {
         return SingleChildScrollView(

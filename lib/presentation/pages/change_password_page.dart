@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:papi_gold/app/common/mixins/index.dart';
+import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/constants/index.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
@@ -24,20 +25,27 @@ class _ChangePasswordPageState extends State<ChangePasswordPage>
   final _formKey = GlobalKey<FormState>();
 
   void _execute() {
+    showLoading(context);
+
     final entity = UpdatePasswordEntity(
       currentPassword: currentPassword!,
       newPassword: password!,
       confirmNewPassword: confirmPassword!,
     );
+
     context.read<AuthCubit>().updatePassword(entity).then((either) {
       either.fold(
-        (failure) => messenger.showSnackBar(
-          message: failure.toString(),
-          color: AppColors.error,
-        ),
-        (res) => setState(() {
-          isLoading = false;
-        }),
+        (failure) {
+          showLoading(context, false);
+          messenger.showSnackBar(
+            message: failure.toString(),
+            color: AppColors.error,
+          );
+        },
+        (res) {
+          showLoading(context, false);
+          messenger.showSnackBar(message: res, color: AppColors.success);
+        },
       );
     });
   }
@@ -57,12 +65,12 @@ class _ChangePasswordPageState extends State<ChangePasswordPage>
                 builder: (context, constraints) => SingleChildScrollView(
                   child: Column(
                     children: [
-                      SizedBox(height: constraints.maxHeight * 0.1),
+                      SizedBox(height: 16.h),
                       Image.asset(
                         'assets/icons/papi-gold-512x512.png',
                         height: 92.h,
                       ),
-                      SizedBox(height: constraints.maxHeight * 0.1),
+                      SizedBox(height: 16.h),
                       Text(
                         'Actualizar contraseña',
                         style: context.headlineSmall,
