@@ -28,13 +28,8 @@ class AuthCubit extends Cubit<AuthState> with LoggerMixin {
     });
   }
 
-  void register(RegisterEntity entity) async {
-    emit(AuthLoading());
-    Either res = await sl<RegisterUseCase>().call(param: entity);
-    res.fold(
-      (l) => emit(AuthError(message: l.message)),
-      (r) => emit(AuthRegisterSuccess(response: r)),
-    );
+  Future<Either<Failure, String>> register(RegisterEntity entity) async {
+    return await sl<RegisterUseCase>().call(param: entity);
   }
 
   Future<Either<Failure, LogoutEntity>> logout() async {

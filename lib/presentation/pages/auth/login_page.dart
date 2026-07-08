@@ -77,23 +77,23 @@ class _LoginPageState extends State<LoginPage> with MessengerMixin {
                             onSaved: (value) =>
                                 setState(() => password = value),
                           ),
-                           Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Text(obscureText ? 'Mostrar' : 'Ocultar'),
-                                Transform.scale(
-                                  scale: 0.8,
-                                  child: Switch(
-                                    value: obscureText,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        obscureText = value;
-                                      });
-                                    },
-                                  ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text(obscureText ? 'Mostrar' : 'Ocultar'),
+                              Transform.scale(
+                                scale: 0.8,
+                                child: Switch(
+                                  value: obscureText,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      obscureText = value;
+                                    });
+                                  },
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
+                          ),
                           SizedBox(
                             width: 1.sw,
                             child: FilledButtonWidget(

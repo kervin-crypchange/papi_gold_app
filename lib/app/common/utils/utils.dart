@@ -161,3 +161,14 @@ Future<void> stripePayment(BuildContext context, clientSecret) async {
     debugPrint('Error inesperado: $e');
   }
 }
+
+void showLoading(BuildContext context, [bool isLoading = true]) {
+  isLoading
+      ? showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) =>
+              const Center(child: CircularProgressIndicator()),
+        )
+      : Navigator.of(context).pop();
+}

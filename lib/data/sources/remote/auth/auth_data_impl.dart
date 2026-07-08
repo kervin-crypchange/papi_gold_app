@@ -45,10 +45,10 @@ class AuthDataImpl extends AuthData with LoggerMixin {
   Future<Either<Failure, String>> register(RegisterModel model) async {
     try {
       final res = await sl<DioClient>().post(
-        Apis.session,
+        Apis.register,
         data: model.toJson(),
       );
-      return Right(res.data);
+      return Right(res.data['message']);
     } catch (e) {
       return Left(ServerException(e));
     }
