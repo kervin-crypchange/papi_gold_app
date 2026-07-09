@@ -5,6 +5,7 @@ class UpdatePasswordModel extends UpdatePasswordEntity {
     required super.confirmNewPassword,
     required super.currentPassword,
     required super.newPassword,
+    super.verificationCode
   });
 
   factory UpdatePasswordModel.fromEntity(UpdatePasswordEntity e) {
@@ -12,6 +13,7 @@ class UpdatePasswordModel extends UpdatePasswordEntity {
       currentPassword: e.currentPassword,
       confirmNewPassword: e.confirmNewPassword,
       newPassword: e.newPassword,
+      verificationCode: e.verificationCode
     );
   }
 
@@ -20,6 +22,7 @@ class UpdatePasswordModel extends UpdatePasswordEntity {
       'current_password': currentPassword,
       'password': newPassword,
       'password_confirmation': confirmNewPassword,
+      'verification_code': verificationCode
     };
   }
 }

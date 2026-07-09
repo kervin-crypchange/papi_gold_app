@@ -72,6 +72,7 @@ class _RegisterPageState extends State<RegisterPage>
         },
         (response) {
           showLoading(context, false);
+          messenger.showSnackBar(message: response.message, color: AppColors.success);
         },
       );
     });

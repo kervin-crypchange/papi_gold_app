@@ -4,13 +4,20 @@ class UpdatePasswordEntity extends Equatable {
   final String currentPassword;
   final String newPassword;
   final String confirmNewPassword;
+  final int? verificationCode;
 
   const UpdatePasswordEntity({
     required this.currentPassword,
     required this.newPassword,
     required this.confirmNewPassword,
+    this.verificationCode,
   });
 
   @override
-  List<Object?> get props => [currentPassword, newPassword, confirmNewPassword];
+  List<Object?> get props => [
+    currentPassword,
+    newPassword,
+    confirmNewPassword,
+    verificationCode,
+  ];
 }
