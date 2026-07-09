@@ -33,7 +33,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/${Routes.verificationRegister}',
       name: Routes.verificationRegister,
-      builder: (context, state) => VerificationRegisterPage(),
+      builder: (context, state) => OptVerificationPage(),
     ),
     GoRoute(
       path: '/${Routes.recovery}',

@@ -8,6 +8,7 @@ import 'package:papi_gold/app/core/class/app_navigation.dart';
 import 'package:papi_gold/app/core/constants/index.dart';
 import 'package:papi_gold/app/core/router/router.dart';
 import 'package:papi_gold/app/core/store/persistent_client_data.dart';
+import 'package:papi_gold/app/core/theme/colors.dart';
 import 'package:papi_gold/data/sources/local/auth/auth_local_data.dart';
 import 'package:papi_gold/injection_container.dart';
 
@@ -45,7 +46,12 @@ class LoggerInterceptor extends Interceptor {
         final context = AppNavigation.navigatorKey.currentContext;
         if (context != null && context.mounted) {
           if (requiresVerification == true) {
-            context.goNamed(Routes.verificationRegister);
+            final String message = err.response?.data['message'];
+            final snackBar = SnackBar(
+              content: Text(message, style: TextStyle(color: AppColors.white),),
+              backgroundColor: AppColors.error,
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
           }
         }
         break;
