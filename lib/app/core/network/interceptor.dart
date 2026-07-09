@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:papi_gold/app/common/enums/index.dart';
 import 'package:logger/logger.dart';
+import 'package:papi_gold/app/common/mixins/index.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/class/app_navigation.dart';
 import 'package:papi_gold/app/core/constants/index.dart';
@@ -12,7 +13,7 @@ import 'package:papi_gold/app/core/theme/colors.dart';
 import 'package:papi_gold/data/sources/local/auth/auth_local_data.dart';
 import 'package:papi_gold/injection_container.dart';
 
-class LoggerInterceptor extends Interceptor {
+class LoggerInterceptor extends Interceptor with MessengerMixin {
   Logger logger = Logger(
     printer: PrettyPrinter(methodCount: 0, colors: true, printEmojis: true),
   );
@@ -47,11 +48,7 @@ class LoggerInterceptor extends Interceptor {
         if (context != null && context.mounted) {
           if (requiresVerification == true) {
             final String message = err.response?.data['message'];
-            final snackBar = SnackBar(
-              content: Text(message, style: TextStyle(color: AppColors.white),),
-              backgroundColor: AppColors.error,
-            );
-            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            messenger.showSnackBar(message: message, color: AppColors.error);
           }
         }
         break;
