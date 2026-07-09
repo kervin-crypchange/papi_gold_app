@@ -123,6 +123,7 @@ class _RegisterPageState extends State<RegisterPage>
   }
 
   void _selectCountry(int c) {
+    print('country $c');
     setState(() {
       showLoading(context);
       country = c;
@@ -131,6 +132,8 @@ class _RegisterPageState extends State<RegisterPage>
   }
 
   void _selectState(int s) {
+    print('state $s');
+
     setState(() {
       showLoading(context);
       state = s;
@@ -139,6 +142,8 @@ class _RegisterPageState extends State<RegisterPage>
   }
 
   void _selectCity(int c) {
+    print('city $c');
+
     setState(() {
       city = c;
     });

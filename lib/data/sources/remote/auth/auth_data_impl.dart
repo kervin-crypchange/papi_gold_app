@@ -7,6 +7,7 @@ import 'package:papi_gold/app/core/store/client_data_model.dart';
 import 'package:papi_gold/app/core/store/persistent_client_data.dart';
 import 'package:papi_gold/app/core/network/dio_client.dart';
 import 'package:papi_gold/data/models/index.dart';
+import 'package:papi_gold/data/models/responses/response_register_model.dart';
 import 'package:papi_gold/data/sources/local/auth/auth_local_data.dart';
 import 'package:papi_gold/data/sources/remote/auth/auth_data.dart';
 import 'package:papi_gold/injection_container.dart';
@@ -42,13 +43,13 @@ class AuthDataImpl extends AuthData with LoggerMixin {
   }
 
   @override
-  Future<Either<Failure, String>> register(RegisterModel model) async {
+  Future<Either<Failure, ResponseRegisterModel>> register(RegisterModel model) async {
     try {
       final res = await sl<DioClient>().post(
         Apis.register,
         data: model.toJson(),
       );
-      return Right(res.data['message']);
+      return Right(ResponseRegisterModel.fromJson(res.data));
     } catch (e) {
       return Left(ServerException(e));
     }

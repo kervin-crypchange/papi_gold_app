@@ -103,7 +103,7 @@ class ServerException extends Equatable with LoggerMixin implements Failure  {
               case 403:
                 serverException = ServerException._(
                   exceptionType: ServerExceptionType.unauthorisedRequest,
-                  message: 'User is not authorized to access API',
+                  message: error.response?.data['message'] ?? 'User is not authorized to access API',
                 );
                 break;
               case 404:

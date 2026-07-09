@@ -2,13 +2,9 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:papi_gold/app/common/mixins/logger_mixin.dart';
 import 'package:papi_gold/app/core/error/failure.dart';
-import 'package:papi_gold/domain/entities/auth/login_entity.dart';
-import 'package:papi_gold/domain/entities/auth/logout_entity.dart';
-import 'package:papi_gold/domain/entities/auth/register_entity.dart';
-import 'package:papi_gold/domain/entities/update_password_entity.dart';
+import 'package:papi_gold/domain/entities/index.dart';
 import 'package:papi_gold/domain/uses_cases/auth.dart';
 import 'package:papi_gold/data/sources/local/auth/auth_local_data.dart';
-import 'package:papi_gold/domain/entities/responses/response_login_entity.dart';
 import 'package:papi_gold/injection_container.dart';
 
 part 'auth_state.dart';
@@ -28,7 +24,7 @@ class AuthCubit extends Cubit<AuthState> with LoggerMixin {
     });
   }
 
-  Future<Either<Failure, String>> register(RegisterEntity entity) async {
+  Future<Either<Failure, ResponseRegisterEntity>> register(RegisterEntity entity) async {
     return await sl<RegisterUseCase>().call(param: entity);
   }
 

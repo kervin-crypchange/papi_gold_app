@@ -26,8 +26,8 @@ class AuthRepositoryImpl with LoggerMixin implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, String>> register(RegisterEntity e) async {
-    Either<Failure, String> res = await sl<AuthData>().register(
+  Future<Either<Failure, ResponseRegisterEntity>> register(RegisterEntity e) async {
+    Either<Failure, ResponseRegisterEntity> res = await sl<AuthData>().register(
       RegisterModel.fromEntity(e),
     );
     return res.fold((l) => Left(l), (r) => Right(r));

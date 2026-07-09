@@ -6,7 +6,7 @@ import 'package:papi_gold/domain/entities/index.dart';
 abstract class AuthRepository {
   Future<Either<Failure, ResponseLoginEntity>> login(LoginEntity e);
   Future<Either<Failure, LogoutEntity>> logout();
-  Future<Either<Failure, String>> register(RegisterEntity e);
+  Future<Either<Failure, ResponseRegisterEntity>> register(RegisterEntity e);
   Future<Either<Failure, String>> recovery(RecoveryEntity e);
   Future<Either<Failure, String>> updatePassword(UpdatePasswordEntity e); 
   Future<Either<Failure, void>> paymentIntent();

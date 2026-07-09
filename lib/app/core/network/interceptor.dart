@@ -1,7 +1,10 @@
 import 'package:dio/dio.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:papi_gold/app/common/enums/index.dart';
 import 'package:logger/logger.dart';
+import 'package:papi_gold/app/common/widgets/index.dart';
+import 'package:papi_gold/app/core/class/app_navigation.dart';
 import 'package:papi_gold/app/core/constants/index.dart';
 import 'package:papi_gold/app/core/router/router.dart';
 import 'package:papi_gold/app/core/store/persistent_client_data.dart';
@@ -23,19 +26,27 @@ class LoggerInterceptor extends Interceptor {
     DioException err,
     ErrorInterceptorHandler handler,
   ) async {
-    final options = err.requestOptions;
-    final requestPath = '${options.baseUrl}${options.path}';
+    // final options = err.requestOptions;
+    // final requestPath = '${options.baseUrl}${options.path}';
     switch (err.response?.statusCode) {
       case 401:
-        logger.e('Error 401');
         sl<AuthLocalData>().clear();
         await PersistentClientData().clearClientData();
-        router.goNamed(Routes.login);
-        logger.i('${options.method} request ==> $requestPath'); //Info log
+        // logger.i('${options.method} request ==> $requestPath'); //Info log
         try {} on DioException catch (e) {
           // If refresh fails or retry fails, navigate to login or handle as needed
           // appRouter.goNamed(Routes.login);
           handler.next(e); // Pass the error further if needed
+        }
+        break;
+      case 403:
+        final bool requiresVerification =
+            err.response?.data['requires_verification'] ?? false;
+        final context = AppNavigation.navigatorKey.currentContext;
+        if (context != null && context.mounted) {
+          if (requiresVerification == true) {
+            context.goNamed(Routes.verificationRegister);
+          }
         }
         break;
       case 404:
