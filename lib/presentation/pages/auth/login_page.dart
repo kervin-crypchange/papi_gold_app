@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:papi_gold/app/common/mixins/index.dart';
+import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/constants/index.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
@@ -27,12 +28,7 @@ class _LoginPageState extends State<LoginPage> with MessengerMixin {
       body: SafeArea(
         child: BlocListener<AuthCubit, AuthState>(
           listener: (context, state) {
-            if (state is AuthError) {
-              messenger.showSnackBar(
-                message: state.message,
-                color: AppColors.error,
-              );
-            } else if (state is AuthSuccess) {
+            if (state is AuthSuccess) {
               messenger.showSnackBar(
                 message: state.response.message,
                 color: AppColors.success,
@@ -100,6 +96,7 @@ class _LoginPageState extends State<LoginPage> with MessengerMixin {
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {
                                   _formKey.currentState?.save();
+                                  showLoading(context);
                                   context.read<AuthCubit>().login(
                                     LoginEntity(
                                       email: email!,

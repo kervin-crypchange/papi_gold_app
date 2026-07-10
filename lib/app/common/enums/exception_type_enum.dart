@@ -1,5 +1,4 @@
 enum ServerExceptionType {
-  
   requestCancelled,
 
   badCertificate,
@@ -35,4 +34,6 @@ enum ServerExceptionType {
   defaultError,
 
   unexpectedError,
+
+  unknown,
 }

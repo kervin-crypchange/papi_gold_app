@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:papi_gold/app/common/mixins/index.dart';
 import 'package:papi_gold/app/core/error/failure.dart';
 import 'package:papi_gold/app/common/enums/index.dart';
 
-class ServerException extends Equatable with LoggerMixin implements Failure  {
+class ServerException extends Equatable with LoggerMixin implements Failure {
   final String name, message;
   final int? statusCode;
   final ServerExceptionType exceptionType;
@@ -69,18 +69,10 @@ class ServerException extends Equatable with LoggerMixin implements Failure  {
             break;
 
           case DioExceptionType.unknown:
-            if (error.error.toString().contains(
-              ServerExceptionType.socketException.name,
-            )) {
+            if (error.response?.statusCode == null) {
               serverException = ServerException._(
-                statusCode: error.response?.statusCode,
+                statusCode: 500,
                 message: 'Verify your internet connection',
-              );
-            } else {
-              serverException = ServerException._(
-                exceptionType: ServerExceptionType.unexpectedError,
-                statusCode: error.response?.statusCode,
-                message: 'Unexpected error',
               );
             }
             break;
@@ -104,7 +96,9 @@ class ServerException extends Equatable with LoggerMixin implements Failure  {
               case 403:
                 serverException = ServerException._(
                   exceptionType: ServerExceptionType.unauthorisedRequest,
-                  message: error.response?.data['message'] ?? 'User is not authorized to access API',
+                  message:
+                      error.response?.data['message'] ??
+                      'User is not authorized to access API',
                 );
                 break;
               case 404:
@@ -164,8 +158,7 @@ class ServerException extends Equatable with LoggerMixin implements Failure  {
               default:
                 serverException = ServerException._(
                   exceptionType: ServerExceptionType.unexpectedError,
-                  message:
-                      error.response?.data['message'] ?? 'Unexpected error',
+                  message: 'Unexpected error',
                 );
             }
             break;
