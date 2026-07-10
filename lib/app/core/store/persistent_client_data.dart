@@ -30,6 +30,10 @@ class PersistentClientData {
     log.i('Retrieving full name from Hive box');
     return ClientController().getFullName();
   }
+  String getEmail() {
+    log.i('Retrieving email from Hive box');
+    return ClientController().getEmail();
+  }
 
   Future<void> clearClientData() async {
     ClientController().clearClientData();

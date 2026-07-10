@@ -74,6 +74,11 @@ class ClientController {
     return '${clientData.name} ${clientData.lastName}';
   }
 
+  String getEmail() {
+    PersistentClientDataModel clientData = getClientData();
+    return clientData.email;
+  }
+
   void clearClientData() {
     _clientBox.clear();
   }

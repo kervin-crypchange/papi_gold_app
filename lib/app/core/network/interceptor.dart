@@ -4,7 +4,6 @@ import 'package:papi_gold/app/common/enums/index.dart';
 import 'package:logger/logger.dart';
 import 'package:papi_gold/app/common/mixins/index.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
-import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/class/app_navigation.dart';
 import 'package:papi_gold/app/core/store/persistent_client_data.dart';
 import 'package:papi_gold/app/core/theme/colors.dart';
@@ -26,8 +25,6 @@ class LoggerInterceptor extends Interceptor with MessengerMixin {
     DioException err,
     ErrorInterceptorHandler handler,
   ) async {
-    // final options = err.requestOptions;
-    // final requestPath = '${options.baseUrl}${options.path}';
     final context = AppNavigation.navigatorKey.currentContext;
     if (context != null && context.mounted) showLoading(context, false);
 
@@ -35,7 +32,7 @@ class LoggerInterceptor extends Interceptor with MessengerMixin {
       case 401:
         sl<AuthLocalData>().clear();
         await PersistentClientData().clearClientData();
-        handler.next(err); // Pass the error further if needed
+        handler.next(err);
         break;
       case 403:
         final bool requiresVerification =
@@ -56,10 +53,14 @@ class LoggerInterceptor extends Interceptor with MessengerMixin {
           message: err.response?.data['message'],
           color: AppColors.error,
         );
-        handler.next(err); // Pass the error further if needed
+        handler.next(err);
         break;
       default:
-        handler.next(err); //Continue with the Error
+        messenger.showSnackBar(
+          message: err.response?.data['message'],
+          color: AppColors.error,
+        );
+        handler.next(err);
     }
   }
 

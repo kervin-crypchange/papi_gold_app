@@ -75,7 +75,7 @@ class AuthDataImpl extends AuthData with LoggerMixin {
     try {
       debugPrint('UpdatePassword model ${model.toJson()}');
       final res = await sl<DioClient>().put(Apis.updatePassword, data: model.toJson());
-      return Right(res.data['errors']['verification_code'][0]);
+      return Right(res.data['message']);
     } on DioException catch (e) {
       return Left(ServerException(e));
     }

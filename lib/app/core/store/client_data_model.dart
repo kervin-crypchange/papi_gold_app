@@ -101,6 +101,8 @@ class PersistentClientDataModel {
 
   String get fullName => '$name $lastName';
 
+  String get mail => email;
+
   int get countryId => safeInt(country['id']);
   int get stateId => safeInt(state['id']);
   int get cityId => safeInt(city['id']);

@@ -37,6 +37,12 @@ class _ChangePasswordPageState extends State<ChangePasswordPage>
       either.fold((failure) => null, (res) {
         showLoading(context, false);
         messenger.showSnackBar(message: res, color: AppColors.success);
+        final Map<String, dynamic> data = {
+          "currentPassword": currentPassword!,
+          "newPassword": password!,
+          "confirmNewPassword": confirmPassword!,
+        };
+        context.goNamed(Routes.otp, extra: data);
       });
     });
   }

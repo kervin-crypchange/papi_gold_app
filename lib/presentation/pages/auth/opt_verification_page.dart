@@ -1,29 +1,54 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:papi_gold/app/common/mixins/messenger_mixin.dart';
+import 'package:papi_gold/app/common/utils/utils.dart';
+import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/constants/index.dart';
+import 'package:papi_gold/app/core/store/persistent_client_data.dart';
+import 'package:papi_gold/app/core/theme/colors.dart';
+import 'package:papi_gold/domain/entities/index.dart';
+import 'package:papi_gold/presentation/cubits/auth/auth_cubit.dart';
 
 class OptVerificationPage extends StatefulWidget {
-  const OptVerificationPage({super.key});
+  final String currentPassword;
+  final String newPassword;
+  final String confirmNewPassword;
+
+  const OptVerificationPage({
+    super.key,
+    required this.currentPassword,
+    required this.newPassword,
+    required this.confirmNewPassword,
+  });
 
   @override
   State<OptVerificationPage> createState() => _OptVerificationPageState();
 }
 
 class _OptVerificationPageState extends State<OptVerificationPage> {
+  final String email = PersistentClientData().getEmail();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(leading: BackButton(onPressed: () => context.goNamed(Routes.navigation))),
+      appBar: AppBar(
+        leading: BackButton(
+          onPressed: () => context.goNamed(Routes.navigation),
+        ),
+      ),
       body: SafeArea(
         child: LogoWithTitle(
-          title: 'Verification',
-          subText: "SMS Verification code has been sent",
+          title: 'Código OTP',
+          subText: "El código de verificación ha sido enviado a tu correo",
           children: [
-            const Text("+1 18577 11111"),
+            Text(email),
             SizedBox(height: MediaQuery.of(context).size.height * 0.04),
-            const OtpForm(),
+            OtpForm(
+              currentPassword: widget.currentPassword,
+              newPassword: widget.newPassword,
+              confirmNewPassword: widget.confirmNewPassword,
+            ),
           ],
         ),
       ),
@@ -32,13 +57,22 @@ class _OptVerificationPageState extends State<OptVerificationPage> {
 }
 
 class OtpForm extends StatefulWidget {
-  const OtpForm({super.key});
+  final String currentPassword;
+  final String newPassword;
+  final String confirmNewPassword;
+
+  const OtpForm({
+    super.key,
+    required this.currentPassword,
+    required this.newPassword,
+    required this.confirmNewPassword,
+  });
 
   @override
   State<OtpForm> createState() => _OtpFormState();
 }
 
-class _OtpFormState extends State<OtpForm> {
+class _OtpFormState extends State<OtpForm> with MessengerMixin {
   final _formKey = GlobalKey<FormState>();
   final List<TextInputFormatter> otpTextInputFormatters = [
     FilteringTextInputFormatter.digitsOnly,
@@ -50,6 +84,8 @@ class _OtpFormState extends State<OtpForm> {
   late FocusNode _pin4Node;
   late FocusNode _pin5Node;
   late FocusNode _pin6Node;
+
+  String? pin1, pin2, pin3, pin4, pin5, pin6;
 
   @override
   void initState() {
@@ -73,6 +109,18 @@ class _OtpFormState extends State<OtpForm> {
     _pin6Node.dispose();
   }
 
+  void _execute(UpdatePasswordEntity entity) {
+    showLoading(context);
+
+    context.read<AuthCubit>().updatePassword(entity).then((either) {
+      either.fold((failure) => null, (res) {
+        showLoading(context, false);
+        messenger.showSnackBar(message: res, color: AppColors.success);
+        context.goNamed(Routes.navigation);
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -88,7 +136,9 @@ class _OtpFormState extends State<OtpForm> {
                     if (value.length == 1) _pin2Node.requestFocus();
                   },
                   onSaved: (pin) {
-                    // Save it
+                    setState(() {
+                      pin1 = pin;
+                    });
                   },
                   autofocus: true,
                 ),
@@ -101,7 +151,9 @@ class _OtpFormState extends State<OtpForm> {
                     if (value.length == 1) _pin3Node.requestFocus();
                   },
                   onSaved: (pin) {
-                    // Save it
+                    setState(() {
+                      pin2 = pin;
+                    });
                   },
                 ),
               ),
@@ -113,7 +165,9 @@ class _OtpFormState extends State<OtpForm> {
                     if (value.length == 1) _pin4Node.requestFocus();
                   },
                   onSaved: (pin) {
-                    // Save it
+                    setState(() {
+                      pin3 = pin;
+                    });
                   },
                 ),
               ),
@@ -122,10 +176,12 @@ class _OtpFormState extends State<OtpForm> {
                 child: OtpTextFormField(
                   focusNode: _pin4Node,
                   onChanged: (value) {
-                    if (value.length == 1) _pin4Node.unfocus();
+                    if (value.length == 1) _pin4Node.requestFocus();
                   },
                   onSaved: (pin) {
-                    // Save it
+                    setState(() {
+                      pin4 = pin;
+                    });
                   },
                 ),
               ),
@@ -134,10 +190,12 @@ class _OtpFormState extends State<OtpForm> {
                 child: OtpTextFormField(
                   focusNode: _pin5Node,
                   onChanged: (value) {
-                    if (value.length == 1) _pin5Node.unfocus();
+                    if (value.length == 1) _pin6Node.requestFocus();
                   },
                   onSaved: (pin) {
-                    // Save it
+                    setState(() {
+                      pin5 = pin;
+                    });
                   },
                 ),
               ),
@@ -145,32 +203,35 @@ class _OtpFormState extends State<OtpForm> {
               Expanded(
                 child: OtpTextFormField(
                   focusNode: _pin6Node,
-                  onChanged: (value) {
-                    if (value.length == 1) _pin6Node.unfocus();
-                  },
                   onSaved: (pin) {
-                    // Save it
+                    setState(() {
+                      pin6 = pin;
+                    });
                   },
                 ),
               ),
             ],
           ),
           const SizedBox(height: 16.0),
-          ElevatedButton(
-            onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                _formKey.currentState!.save();
-                // check your code
-              }
-            },
-            style: ElevatedButton.styleFrom(
-              elevation: 0,
-              backgroundColor: const Color(0xFF00BF6D),
-              foregroundColor: Colors.white,
-              minimumSize: const Size(double.infinity, 48),
-              shape: const StadiumBorder(),
+          SizedBox(
+            width: 0.9.sw,
+            child: FilledButtonWidget(
+              title: 'Enviar',
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  _formKey.currentState!.save();
+                  final String otp =
+                      '$pin1$pin2$pin3$pin4$pin5$pin6';
+                  final entity = UpdatePasswordEntity(
+                    currentPassword: widget.currentPassword,
+                    newPassword: widget.newPassword,
+                    confirmNewPassword: widget.confirmNewPassword,
+                    verificationCode: otp,
+                  );
+                  _execute(entity);
+                }
+              },
             ),
-            child: const Text("Next"),
           ),
         ],
       ),

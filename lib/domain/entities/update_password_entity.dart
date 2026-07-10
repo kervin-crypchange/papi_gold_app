@@ -4,7 +4,7 @@ class UpdatePasswordEntity extends Equatable {
   final String currentPassword;
   final String newPassword;
   final String confirmNewPassword;
-  final int? verificationCode;
+  final String? verificationCode;
 
   const UpdatePasswordEntity({
     required this.currentPassword,
