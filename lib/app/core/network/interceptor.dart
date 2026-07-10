@@ -48,6 +48,13 @@ class LoggerInterceptor extends Interceptor with MessengerMixin {
       case 404:
         logger.e('Error 404');
         break;
+      case 409:
+         messenger.showSnackBar(
+          message: err.response?.data['message'],
+          color: AppColors.error,
+        );
+         handler.next(err);
+        break;
       case 500:
         messenger.showSnackBar(
           message: err.response?.data['message'],

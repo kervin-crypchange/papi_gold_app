@@ -31,13 +31,7 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
     showLoading(context);
     context.read<PaymentCubit>().paymentIntent(order).then((either) {
       either.fold(
-        (failure) {
-          showLoading(context, false);
-          messenger.showSnackBar(
-            message: failure.toString(),
-            color: AppColors.error,
-          );
-        },
+        (failure) => null,
         (res) async {
           showLoading(context, false);
           await stripePayment(context, res.clientSecret);
@@ -359,7 +353,7 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
   Widget _badge(String text, Color color) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.success,
+        color: color,
         borderRadius: BorderRadius.circular(12.r),
       ),
       child: Text(

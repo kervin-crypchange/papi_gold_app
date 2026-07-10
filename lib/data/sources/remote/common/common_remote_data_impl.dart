@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
 import 'package:logger/web.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
@@ -23,7 +24,7 @@ class CommonRemoteDataImpl extends CommonRemoteData {
           .map<CountryModel>((json) => CountryModel.fromJson(json))
           .toList();
       return Right(countries);
-    } catch (e) {
+    } on DioException catch (e) {
       return Left(ServerException(e));
     }
   }
@@ -41,7 +42,7 @@ class CommonRemoteDataImpl extends CommonRemoteData {
           .map<LocationModel>((json) => LocationModel.fromJson(json))
           .toList();
       return Right(locations);
-    } catch (e) {
+    } on DioException catch (e) {
       return Left(ServerException(e));
     }
   }
@@ -54,7 +55,7 @@ class CommonRemoteDataImpl extends CommonRemoteData {
         (x) => MetalModel.fromJson(x),
       );
       return Right(metals);
-    } catch (e) {
+    } on DioException catch (e) {
       return Left(ServerException(e));
     }
   }
@@ -67,7 +68,7 @@ class CommonRemoteDataImpl extends CommonRemoteData {
         queryParameters: {'page': page, 'per_page': 15},
       );
       return Right(ResponseProductsModel.fromJson(res.data));
-    } catch (e) {
+    } on DioException catch (e) {
       return Left(ServerException(e));
     }
   }
@@ -77,7 +78,7 @@ class CommonRemoteDataImpl extends CommonRemoteData {
     try {
       final res = await sl<DioClient>().get('${Apis.product}/$id');
       return Right(ProductModel.fromJson(res.data['data']));
-    } catch (e) {
+    } on DioException catch (e) {
       return Left(ServerException(e));
     }
   }
@@ -88,9 +89,8 @@ class CommonRemoteDataImpl extends CommonRemoteData {
   ) async {
     try {
       final res = await sl<DioClient>().post(Apis.order, data: model.toJson());
-      debugPrint('--- $res');
       return Right(ResponseCheckOutModel.fromJson(res.data));
-    } catch (e) {
+    } on DioException catch (e) {
       return Left(ServerException(e));
     }
   }
@@ -103,7 +103,7 @@ class CommonRemoteDataImpl extends CommonRemoteData {
         queryParameters: {'page': page, 'per_page': 15},
       );
       return Right(ResponseOrdersModel.fromJson(res.data));
-    } catch (e) {
+    } on DioException catch (e) {
       logger.e(e);
       return Left(ServerException(e));
     }
@@ -116,7 +116,7 @@ class CommonRemoteDataImpl extends CommonRemoteData {
     try {
       final res = await sl<DioClient>().get('${Apis.order}/$orderCode');
       return Right(OrderDetailModel.fromJson(res.data['data']));
-    } catch (e) {
+    } on DioException catch (e) {
       return Left(ServerException(e));
     }
   }
@@ -128,7 +128,7 @@ class CommonRemoteDataImpl extends CommonRemoteData {
     try {
       final res = await sl<DioClient>().get(Apis.chat);
       return Right(ResponseChatModel.fromJson(res.data['data']));
-    } catch (e) {
+    } on DioException catch (e) {
       return Left(ServerException(e));
     }
   }
@@ -140,7 +140,7 @@ class CommonRemoteDataImpl extends CommonRemoteData {
     try {
       final res = await sl<DioClient>().get('${Apis.chat}/$identifier');
       return Right(ResponseMessageLogModel.fromJson(res.data['data']));
-    } catch (e) {
+    } on DioException catch (e) {
       return Left(ServerException(e));
     }
   }
@@ -152,7 +152,7 @@ class CommonRemoteDataImpl extends CommonRemoteData {
     try {
       final res = await sl<DioClient>().get(Apis.consultation);
       return Right(res.data['message']);
-    } catch (e) {
+    } on DioException catch (e) {
       return Left(ServerException(e));
     }
   }
@@ -166,9 +166,8 @@ class CommonRemoteDataImpl extends CommonRemoteData {
         Apis.paymentIntent,
         data: {'sale_id': safeString(order)},
       );
-      debugPrint('Payment Intent Response: ${res.data}');
       return Right(ResponsePaymentIntentModel.fromJson(res.data));
-    } catch (e) {
+    } on DioException catch (e) {
       return Left(ServerException(e));
     }
   }
