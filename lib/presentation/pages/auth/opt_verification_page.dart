@@ -2,26 +2,20 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:papi_gold/app/common/enums/index.dart';
 import 'package:papi_gold/app/common/mixins/messenger_mixin.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/constants/index.dart';
 import 'package:papi_gold/app/core/store/persistent_client_data.dart';
 import 'package:papi_gold/app/core/theme/colors.dart';
+import 'package:papi_gold/data/models/index.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 import 'package:papi_gold/presentation/cubits/auth/auth_cubit.dart';
 
 class OptVerificationPage extends StatefulWidget {
-  final String currentPassword;
-  final String newPassword;
-  final String confirmNewPassword;
-
-  const OptVerificationPage({
-    super.key,
-    required this.currentPassword,
-    required this.newPassword,
-    required this.confirmNewPassword,
-  });
+  final OptTypeEnum type;
+  const OptVerificationPage({super.key, required this.type});
 
   @override
   State<OptVerificationPage> createState() => _OptVerificationPageState();
@@ -44,11 +38,7 @@ class _OptVerificationPageState extends State<OptVerificationPage> {
           children: [
             Text(email),
             SizedBox(height: MediaQuery.of(context).size.height * 0.04),
-            OtpForm(
-              currentPassword: widget.currentPassword,
-              newPassword: widget.newPassword,
-              confirmNewPassword: widget.confirmNewPassword,
-            ),
+            OtpForm(type: widget.type,),
           ],
         ),
       ),
@@ -57,16 +47,8 @@ class _OptVerificationPageState extends State<OptVerificationPage> {
 }
 
 class OtpForm extends StatefulWidget {
-  final String currentPassword;
-  final String newPassword;
-  final String confirmNewPassword;
-
-  const OtpForm({
-    super.key,
-    required this.currentPassword,
-    required this.newPassword,
-    required this.confirmNewPassword,
-  });
+  final OptTypeEnum type;
+  const OtpForm({super.key, required this.type});
 
   @override
   State<OtpForm> createState() => _OtpFormState();
@@ -109,8 +91,11 @@ class _OtpFormState extends State<OtpForm> with MessengerMixin {
     _pin6Node.dispose();
   }
 
-  void _execute(UpdatePasswordEntity entity) {
+  void _updatePassword(String otp) {
     showLoading(context);
+    final Map<String, dynamic> data = context.read<AuthCubit>().getdata();
+    data['verificationCode'] = otp;
+    final UpdatePasswordEntity entity = UpdatePasswordModel.fromJson(data);
 
     context.read<AuthCubit>().updatePassword(entity).then((either) {
       either.fold((failure) => null, (res) {
@@ -120,6 +105,8 @@ class _OtpFormState extends State<OtpForm> with MessengerMixin {
       });
     });
   }
+
+  void _updateClientData(String otp) {}
 
   @override
   Widget build(BuildContext context) {
@@ -176,7 +163,7 @@ class _OtpFormState extends State<OtpForm> with MessengerMixin {
                 child: OtpTextFormField(
                   focusNode: _pin4Node,
                   onChanged: (value) {
-                    if (value.length == 1) _pin4Node.requestFocus();
+                    if (value.length == 1) _pin5Node.requestFocus();
                   },
                   onSaved: (pin) {
                     setState(() {
@@ -220,15 +207,10 @@ class _OtpFormState extends State<OtpForm> with MessengerMixin {
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
-                  final String otp =
-                      '$pin1$pin2$pin3$pin4$pin5$pin6';
-                  final entity = UpdatePasswordEntity(
-                    currentPassword: widget.currentPassword,
-                    newPassword: widget.newPassword,
-                    confirmNewPassword: widget.confirmNewPassword,
-                    verificationCode: otp,
-                  );
-                  _execute(entity);
+                  final String otp = '$pin1$pin2$pin3$pin4$pin5$pin6';
+                  (widget.type == OptTypeEnum.updatePassword)
+                      ? _updatePassword(otp)
+                      : _updateClientData(otp);
                 }
               },
             ),

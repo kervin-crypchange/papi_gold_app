@@ -125,11 +125,47 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
 
   Widget _orderDetail(OrderDetailEntity e) {
     final List<dynamic> data = [
-      _dataFormat('Fecha', getFormatDate(e.createdAt)),
-      _dataFormat('Descripción', e.description),
-      _dataFormat('Invoice', e.invoice),
-      _dataFormat('Status', e.status.name),
-      _dataFormat('Número de orden', e.order),
+      _dataFormat(
+        'Fecha',
+        Text(
+          getFormatDate(e.createdAt),
+          style: context.bodyMedium.copyWith(color: AppColors.white),
+        ),
+      ),
+      _dataFormat(
+        'Descripción',
+        Text(
+          e.description,
+          style: context.bodyMedium.copyWith(color: AppColors.white),
+        ),
+      ),
+      _dataFormat(
+        'Invoice',
+        Text(
+          e.invoice,
+          style: context.bodyMedium.copyWith(color: AppColors.white),
+        ),
+      ),
+      _dataFormat(
+        'Status',
+        Text(
+          e.status.name,
+          style: context.bodyMedium.copyWith(color: AppColors.white),
+        ),
+      ),
+      _dataFormat(
+        'Status del pago',
+        (e.totalVenta > e.totalPagoVenta)
+            ? _badge('Pendiente', AppColors.error)
+            : _badge('Aprobado', AppColors.success),
+      ),
+      _dataFormat(
+        'Número de orden',
+        Text(
+          e.order,
+          style: context.bodyMedium.copyWith(color: AppColors.white),
+        ),
+      ),
     ];
     return _section('Detalle de la orden', Icons.inventory_outlined, data);
   }
@@ -164,12 +200,33 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
   Widget _shippinfInfo(List<ShippingEntity> shippings) {
     final ShippingEntity? s = shippings.isNotEmpty ? shippings[0] : null;
     final List<dynamic> data = [
-      _dataFormat('Shipping status', (s != null) ? s.status.name : 'Pending'),
-      _dataFormat('Shipping courrier', (s != null) ? s.courier.name : '-'),
-      _dataFormat('Tracking number', (s != null) ? s.tracking : 'No asignado'),
+      _dataFormat(
+        'Shipping status',
+        Text(
+          (s != null) ? s.status.name : 'Pending',
+          style: context.bodyMedium.copyWith(color: AppColors.white),
+        ),
+      ),
+      _dataFormat(
+        'Shipping courrier',
+        Text(
+          (s != null) ? s.courier.name : '-',
+          style: context.bodyMedium.copyWith(color: AppColors.white),
+        ),
+      ),
+      _dataFormat(
+        'Tracking number',
+        Text(
+          (s != null) ? s.tracking : 'No asignado',
+          style: context.bodyMedium.copyWith(color: AppColors.white),
+        ),
+      ),
       _dataFormat(
         'Shipping address',
-        (s != null) ? s.address : 'Sin dirección registrada',
+        Text(
+          (s != null) ? s.address : 'Sin dirección registrada',
+          style: context.bodyMedium.copyWith(color: AppColors.white),
+        ),
       ),
     ];
     return _section('Detalle del envío', Icons.local_shipping_outlined, data);
@@ -261,15 +318,12 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
     );
   }
 
-  Widget _dataFormat(String label, String content) {
+  Widget _dataFormat(String label, Widget content) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(label, style: context.bodyMedium.copyWith(color: AppColors.grey)),
-        Text(
-          content,
-          style: context.bodyMedium.copyWith(color: AppColors.white),
-        ),
+        content,
       ],
     );
   }
@@ -299,6 +353,18 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
           ).paddingAll(6.r),
         ),
       ],
+    );
+  }
+
+  Widget _badge(String text, Color color) {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.success,
+        borderRadius: BorderRadius.circular(12.r),
+      ),
+      child: Text(
+        text,
+      ).paddingSymmetric(horizontal: 12, vertical: 1),
     );
   }
 

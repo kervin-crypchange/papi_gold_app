@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:papi_gold/app/common/enums/opt_type_enum.dart';
 import 'package:papi_gold/app/common/mixins/index.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
@@ -42,7 +43,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage>
           "newPassword": password!,
           "confirmNewPassword": confirmPassword!,
         };
-        context.goNamed(Routes.otp, extra: data);
+        context.read<AuthCubit>().setOtpdata(data);
+        context.go('${Routes.otp}?type=${OptTypeEnum.updatePassword}');
       });
     });
   }
