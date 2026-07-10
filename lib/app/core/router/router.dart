@@ -1,14 +1,12 @@
 import 'package:go_router/go_router.dart';
+import 'package:papi_gold/app/common/enums/index.dart';
 import 'package:papi_gold/app/common/pages/index.dart';
 import 'package:papi_gold/app/common/pages/navigation_page.dart';
-import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/core/class/app_navigation.dart';
 import 'package:papi_gold/app/core/constants/index.dart';
 
-// final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
 final GoRouter router = GoRouter(
   initialLocation: '/',
-  // navigatorKey: rootNavigatorKey,
   navigatorKey: AppNavigation.navigatorKey,
   routes: [
     GoRoute(
@@ -35,12 +33,9 @@ final GoRouter router = GoRouter(
       path: '/${Routes.otp}',
       name: Routes.otp,
       builder: (context, state) {
-        final data = state.extra as Map<String, dynamic>;
-        return OptVerificationPage(
-          currentPassword: safeString(data['currentPassword']),
-          newPassword: safeString(data['newPassword']),
-          confirmNewPassword: safeString(data['confirmNewPassword']),
-        );
+        final typeStr = state.uri.queryParameters['type'];
+        final type = OptTypeEnum.fromString(typeStr);
+        return OptVerificationPage(type: type);
       },
     ),
     GoRoute(

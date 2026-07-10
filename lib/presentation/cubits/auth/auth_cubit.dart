@@ -10,6 +10,8 @@ import 'package:papi_gold/injection_container.dart';
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> with LoggerMixin {
+  Map<String, dynamic>? _data;
+
   AuthCubit() : super(AuthInitial());
 
   void login(LoginEntity entity) async {
@@ -24,7 +26,9 @@ class AuthCubit extends Cubit<AuthState> with LoggerMixin {
     });
   }
 
-  Future<Either<Failure, ResponseRegisterEntity>> register(RegisterEntity entity) async {
+  Future<Either<Failure, ResponseRegisterEntity>> register(
+    RegisterEntity entity,
+  ) async {
     return await sl<RegisterUseCase>().call(param: entity);
   }
 
@@ -39,4 +43,10 @@ class AuthCubit extends Cubit<AuthState> with LoggerMixin {
   bool isLogged() {
     return sl<AuthLocalData>().getIsLogged();
   }
+
+  void setOtpdata(Map<String, dynamic> data) {
+    _data = data;
+  }
+
+  Map<String, dynamic> getdata() => _data!;
 }
