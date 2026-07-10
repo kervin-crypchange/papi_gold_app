@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:papi_gold/app/core/extensions/index.dart';
 import 'package:papi_gold/app/core/theme/index.dart';
 import '../../core/extensions/global.dart' as globals;
 
@@ -28,14 +29,14 @@ class MessengerImpl implements Messenger {
                 children: [
                   Icon(icon, color: AppColors.bg),
                   Gap(4.w),
-                  Text(message),
+                  Text(message).color(AppColors.white),
                 ],
               )
-            : Text(message),
+            : Text(message).color(AppColors.white),
         duration: Duration(seconds: seconds),
         backgroundColor: color,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6.r)),
+        behavior: SnackBarBehavior.fixed,
+        // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
       ),
     );
   }
