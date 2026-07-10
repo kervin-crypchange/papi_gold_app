@@ -31,8 +31,8 @@ final GoRouter router = GoRouter(
       builder: (context, state) => RegisterPage(),
     ),
     GoRoute(
-      path: '/${Routes.verificationRegister}',
-      name: Routes.verificationRegister,
+      path: '/${Routes.otp}',
+      name: Routes.otp,
       builder: (context, state) => OptVerificationPage(),
     ),
     GoRoute(

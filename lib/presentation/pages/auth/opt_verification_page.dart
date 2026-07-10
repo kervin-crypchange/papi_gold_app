@@ -1,27 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:papi_gold/app/core/constants/index.dart';
 
 class OptVerificationPage extends StatefulWidget {
   const OptVerificationPage({super.key});
 
   @override
-  State<OptVerificationPage> createState() =>
-      _OptVerificationPageState();
+  State<OptVerificationPage> createState() => _OptVerificationPageState();
 }
 
 class _OptVerificationPageState extends State<OptVerificationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: LogoWithTitle(
-        title: 'Verification',
-        subText: "SMS Verification code has been sent",
-        children: [
-          const Text("+1 18577 11111"),
-          SizedBox(height: MediaQuery.of(context).size.height * 0.04),
-          const OtpForm(),
-        ],
+      appBar: AppBar(leading: BackButton(onPressed: () => context.goNamed(Routes.navigation))),
+      body: SafeArea(
+        child: LogoWithTitle(
+          title: 'Verification',
+          subText: "SMS Verification code has been sent",
+          children: [
+            const Text("+1 18577 11111"),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.04),
+            const OtpForm(),
+          ],
+        ),
       ),
     );
   }

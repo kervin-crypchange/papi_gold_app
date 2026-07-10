@@ -1,4 +1,5 @@
 enum ServerExceptionType {
+  
   requestCancelled,
 
   badCertificate,

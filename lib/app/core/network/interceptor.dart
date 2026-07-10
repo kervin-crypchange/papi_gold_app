@@ -1,13 +1,11 @@
 import 'package:dio/dio.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:papi_gold/app/common/enums/index.dart';
 import 'package:logger/logger.dart';
 import 'package:papi_gold/app/common/mixins/index.dart';
+import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/class/app_navigation.dart';
-import 'package:papi_gold/app/core/constants/index.dart';
-import 'package:papi_gold/app/core/router/router.dart';
 import 'package:papi_gold/app/core/store/persistent_client_data.dart';
 import 'package:papi_gold/app/core/theme/colors.dart';
 import 'package:papi_gold/data/sources/local/auth/auth_local_data.dart';
@@ -30,21 +28,19 @@ class LoggerInterceptor extends Interceptor with MessengerMixin {
   ) async {
     // final options = err.requestOptions;
     // final requestPath = '${options.baseUrl}${options.path}';
+    final context = AppNavigation.navigatorKey.currentContext;
+    if (context != null && context.mounted) showLoading(context, false);
+
     switch (err.response?.statusCode) {
       case 401:
         sl<AuthLocalData>().clear();
         await PersistentClientData().clearClientData();
-        // logger.i('${options.method} request ==> $requestPath'); //Info log
-        try {} on DioException catch (e) {
-          // If refresh fails or retry fails, navigate to login or handle as needed
-          // appRouter.goNamed(Routes.login);
-          handler.next(e); // Pass the error further if needed
-        }
+        handler.next(err); // Pass the error further if needed
         break;
       case 403:
         final bool requiresVerification =
             err.response?.data['requires_verification'] ?? false;
-        final context = AppNavigation.navigatorKey.currentContext;
+
         if (context != null && context.mounted) {
           if (requiresVerification == true) {
             final String message = err.response?.data['message'];
@@ -54,6 +50,13 @@ class LoggerInterceptor extends Interceptor with MessengerMixin {
         break;
       case 404:
         logger.e('Error 404');
+        break;
+      case 500:
+        messenger.showSnackBar(
+          message: err.response?.data['message'],
+          color: AppColors.error,
+        );
+        handler.next(err); // Pass the error further if needed
         break;
       default:
         handler.next(err); //Continue with the Error

@@ -34,19 +34,10 @@ class _ChangePasswordPageState extends State<ChangePasswordPage>
     );
 
     context.read<AuthCubit>().updatePassword(entity).then((either) {
-      either.fold(
-        (failure) {
-          showLoading(context, false);
-          messenger.showSnackBar(
-            message: failure.toString(),
-            color: AppColors.error,
-          );
-        },
-        (res) {
-          showLoading(context, false);
-          messenger.showSnackBar(message: res, color: AppColors.success);
-        },
-      );
+      either.fold((failure) => null, (res) {
+        showLoading(context, false);
+        messenger.showSnackBar(message: res, color: AppColors.success);
+      });
     });
   }
 

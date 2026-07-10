@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:papi_gold/app/common/mixins/index.dart';
 import 'package:papi_gold/app/core/constants/index.dart';
@@ -24,7 +25,7 @@ class AuthDataImpl extends AuthData with LoggerMixin {
         await getClientData();
       });
       return Right(ResponseLoginModel.fromJson(res.data));
-    } catch (e) {
+    } on DioException catch (e) {
       return Left(ServerException(e));
     }
   }
@@ -37,7 +38,7 @@ class AuthDataImpl extends AuthData with LoggerMixin {
         data: model.toJson(),
       );
       return Right(res.data);
-    } catch (e) {
+    } on DioException catch (e) {
       return Left(ServerException(e));
     }
   }
@@ -50,7 +51,7 @@ class AuthDataImpl extends AuthData with LoggerMixin {
         data: model.toJson(),
       );
       return Right(ResponseRegisterModel.fromJson(res.data));
-    } catch (e) {
+    } on DioException catch (e) {
       return Left(ServerException(e));
     }
   }
@@ -62,7 +63,7 @@ class AuthDataImpl extends AuthData with LoggerMixin {
       sl<AuthLocalData>().clear();
       PersistentClientData().clearClientData();
       return Right(LogoutModel.fromJson(res));
-    } catch (e) {
+    } on DioException catch (e) {
       return Left(ServerException(e));
     }
   }
@@ -74,8 +75,8 @@ class AuthDataImpl extends AuthData with LoggerMixin {
     try {
       debugPrint('UpdatePassword model ${model.toJson()}');
       final res = await sl<DioClient>().put(Apis.updatePassword, data: model.toJson());
-      return Right(res.data['message']);
-    } catch (e) {
+      return Right(res.data['errors']['verification_code'][0]);
+    } on DioException catch (e) {
       return Left(ServerException(e));
     }
   }
@@ -86,7 +87,7 @@ class AuthDataImpl extends AuthData with LoggerMixin {
       final clientData = PersistentClientDataModel.fromJson(res.data['data']);
       await PersistentClientData().saveClientData(clientData);
       return Right(null);
-    } catch (e) {
+    } on DioException catch (e) {
       return Left(ServerException(e));
     }
   }
