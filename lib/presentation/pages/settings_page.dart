@@ -24,7 +24,7 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
   @override
   void initState() {
     super.initState();
-    _changeTheme();
+    _isDark = AppThemes.themeModeNotifier.value == ThemeMode.dark;
   }
 
   void _logout() {
@@ -48,9 +48,9 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
   }
 
   void _changeTheme() {
-    (_isDark)
-        ? AppThemes.themeModeNotifier.value = ThemeMode.dark
-        : AppThemes.themeModeNotifier.value = ThemeMode.light;
+    AppThemes.themeModeNotifier.value = _isDark
+        ? ThemeMode.dark
+        : ThemeMode.light;
   }
 
   @override
@@ -66,7 +66,9 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
               children: [
                 _CustomListTile(
                   title: _isDark ? "Dark Mode" : "Light Mode",
-                  icon: Icons.dark_mode_outlined,
+                  icon: _isDark
+                      ? Icons.light_mode_outlined
+                      : Icons.dark_mode_outlined,
                   trailing: Switch(
                     value: _isDark,
                     onChanged: (value) {

@@ -108,10 +108,9 @@ class _MainAppState extends State<MainApp> {
       builder: (context, child) {
         return ValueListenableBuilder<ThemeMode>(
           valueListenable: AppThemes.themeModeNotifier,
-          builder: (context, currentMode, __) {
+          builder: (context, currentMode,_) {
             return MaterialApp.router(
               debugShowCheckedModeBanner: true,
-              // theme: appTheme(),
               theme: AppThemes.lightTheme,
               darkTheme: AppThemes.darkTheme,
               themeMode: currentMode,
