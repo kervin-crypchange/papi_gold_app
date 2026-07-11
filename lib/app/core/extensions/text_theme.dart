@@ -3,6 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:papi_gold/app/core/theme/index.dart';
 
 extension TextThemeExtension on BuildContext {
+  Color get themeColor {
+    return (AppThemes.themeModeNotifier.value == ThemeMode.dark)
+        ? AppColors.white
+        : AppColors.black;
+  }
+
   // * (default) TextTheme
   TextStyle get displayLarge => _baseStyle(38.sp, AppColors.secondary);
   TextStyle get displayMedium => _baseStyle(36.sp, AppColors.secondary);
@@ -21,15 +27,12 @@ extension TextThemeExtension on BuildContext {
   TextStyle get labelSmall => _baseStyle(12.sp, AppColors.secondary);
   TextStyle get labelXSmall => _baseStyle(10.sp, AppColors.secondary);
 
-  TextStyle get bodyLarge => _baseStyle(16.sp, AppColors.white);
-  TextStyle get bodyMedium => _baseStyle(14.sp, AppColors.white);
-  TextStyle get bodySmall => _baseStyle(12.sp, AppColors.white);
-  TextStyle get bodyXSmall => _baseStyle(10.sp, AppColors.white);
+  TextStyle get bodyLarge => _baseStyle(16.sp, themeColor);
+  TextStyle get bodyMedium => _baseStyle(14.sp, themeColor);
+  TextStyle get bodySmall => _baseStyle(12.sp, themeColor);
+  TextStyle get bodyXSmall => _baseStyle(10.sp, themeColor);
 
   static TextStyle _baseStyle(double fontSize, Color color) {
-    return TextStyle(
-      fontSize: fontSize,
-      color: color,
-    );
+    return TextStyle(fontSize: fontSize, color: color);
   }
 }
