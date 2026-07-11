@@ -195,8 +195,7 @@ class _SingleSection extends StatelessWidget {
           Text(
             title!,
             style: context.bodyLarge,
-            // style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ).paddingAll(8.r),
+          ).paddingAll(8.r).medium,
         Column(children: children),
       ],
     );
