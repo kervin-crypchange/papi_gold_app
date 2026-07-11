@@ -21,6 +21,12 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
   bool _isDark = true;
   bool _isLoading = false;
 
+  @override
+  void initState() {
+    super.initState();
+    _changeTheme();
+  }
+
   void _logout() {
     setState(() {
       _isLoading = true;
