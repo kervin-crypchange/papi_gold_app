@@ -63,18 +63,23 @@ final GoRouter router = GoRouter(
         ),
         GoRoute(
           name: Routes.profile,
-          path: '/${Routes.profile}',
+          path: Routes.profile,
           builder: (context, state) => ProfilePage(),
         ),
         GoRoute(
           name: Routes.cart,
-          path: '/${Routes.cart}',
+          path: Routes.cart,
           builder: (context, state) => CartPage(),
         ),
         GoRoute(
           name: Routes.changePassword,
-          path: '/${Routes.changePassword}',
+          path: Routes.changePassword,
           builder: (context, state) => ChangePasswordPage(),
+        ),
+        GoRoute(
+          name: Routes.notifications,
+          path: Routes.notifications,
+          builder: (context, state) => NotificationsPage(),
         ),
       ],
     ),

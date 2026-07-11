@@ -1,3 +1,4 @@
+export 'package:papi_gold/presentation/pages/notifications_page.dart';
 export 'package:papi_gold/presentation/pages/auth/opt_verification_page.dart';
 export 'package:papi_gold/presentation/pages/change_password_page.dart';
 export 'package:papi_gold/presentation/pages/settings_page.dart';

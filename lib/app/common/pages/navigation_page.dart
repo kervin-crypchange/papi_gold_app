@@ -75,7 +75,7 @@ class _NavigationPageState extends State<NavigationPage> {
             },
           ),
           IconButton(
-            onPressed: () => debugPrint('press'),
+            onPressed: () => context.goNamed(Routes.notifications),
             icon: Icon(Icons.notifications_none_outlined),
           ),
         ],

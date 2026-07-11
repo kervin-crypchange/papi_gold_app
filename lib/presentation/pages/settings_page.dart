@@ -69,7 +69,7 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
                   _CustomListTile(
                     title: "Notifications",
                     icon: Icons.notifications_none_rounded,
-                    onTap: () => null,
+                    onTap: () => context.goNamed(Routes.notifications),
                   ),
                   _CustomListTile(
                     title: "Security Status",
