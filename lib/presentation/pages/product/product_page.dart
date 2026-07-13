@@ -102,7 +102,7 @@ class InfoProduct extends StatelessWidget with MessengerMixin {
                      Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12.r),
-                        color: AppColors.secondary.withValues(alpha: 0.1),
+                        color: AppColors.secondaryLigth
                       ),
                       child: Text(
                         p.category.name.capitalizeFirst,

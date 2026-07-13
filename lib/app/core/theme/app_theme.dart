@@ -12,6 +12,9 @@ class AppThemes {
     brightness: Brightness.light,
     scaffoldBackgroundColor: Colors.white,
     colorScheme: const ColorScheme.light(primary: Color(0xFFD4AF37)),
+    // listTileTheme: ListTileThemeData(
+    //   tileColor: AppColors.secondaryLigth
+    // ),
     switchTheme: SwitchThemeData(
       thumbColor: WidgetStateProperty.all(AppColors.secondary),
       trackOutlineColor: WidgetStateProperty.all(Color(0xFFE7E0E8)),
