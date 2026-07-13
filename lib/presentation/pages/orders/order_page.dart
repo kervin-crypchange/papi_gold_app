@@ -30,13 +30,10 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
   void _makePayment(String order) {
     showLoading(context);
     context.read<PaymentCubit>().paymentIntent(order).then((either) {
-      either.fold(
-        (failure) => null,
-        (res) async {
-          showLoading(context, false);
-          await stripePayment(context, res.clientSecret);
-        },
-      );
+      either.fold((failure) => null, (res) async {
+        showLoading(context, false);
+        await stripePayment(context, res.clientSecret);
+      });
     });
   }
 
@@ -53,8 +50,8 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
         ).medium,
         actions: [
           IconButton(
-            icon: const Icon(Icons.help_outline, color: AppColors.white),
-            tooltip: 'Soporte',
+            icon: const Icon(Icons.location_on_outlined, color: AppColors.white),
+            tooltip: 'Tracking',
             onPressed: () {
               // Handle search action
             },
@@ -97,6 +94,22 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
               TextButton(
                 onPressed: () => _showModalBottomSheet(context, e.payments),
                 child: const Text('Ver pagos'),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Wrap(
+                spacing: 8.w,
+                children: [
+                  Icon(Icons.location_on_outlined, color: AppColors.secondary),
+                  Text('Rastreo de orden', style: context.bodyMedium).medium,
+                ],
+              ),
+              TextButton(
+                onPressed: () => _showModalBottomSheet(context, e.payments),
+                child: const Text('Ver estado'),
               ),
             ],
           ),
@@ -356,9 +369,7 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
         color: color,
         borderRadius: BorderRadius.circular(12.r),
       ),
-      child: Text(
-        text,
-      ).paddingSymmetric(horizontal: 12, vertical: 1),
+      child: Text(text).paddingSymmetric(horizontal: 12, vertical: 1),
     );
   }
 
