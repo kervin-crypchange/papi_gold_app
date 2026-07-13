@@ -15,10 +15,16 @@ class CustomNavBar extends StatelessWidget {
     required this.onTap,
   });
 
-  Color get themeColor {
+  Color get bgColor {
     return (AppThemes.themeModeNotifier.value == ThemeMode.dark)
         ? AppColors.black
         : AppColors.white;
+  }
+
+  Color get unSelectColor {
+    return (AppThemes.themeModeNotifier.value == ThemeMode.dark)
+        ? AppColors.white
+        : AppColors.black;
   }
 
   @override
@@ -30,7 +36,7 @@ class CustomNavBar extends StatelessWidget {
           height: 45.h,
           width: .85.sw,
           decoration: BoxDecoration(
-            color: themeColor,
+            color: bgColor,
             borderRadius: BorderRadius.circular(100.r),
             boxShadow: [
               BoxShadow(
@@ -65,17 +71,13 @@ class CustomNavBar extends StatelessWidget {
                           isSelected
                               ? navItems[index]['iconSelected']
                               : navItems[index]['icon'],
-                          color: isSelected
-                              ? AppColors.secondary
-                              : Colors.grey.shade600,
+                          color: isSelected ? AppColors.secondary : unSelectColor,
                           size: 18,
                         ),
                         Text(
                           navItems[index]['label'],
                           style: context.labelXSmall.copyWith(
-                            color: isSelected
-                                ? AppColors.secondary
-                                : Colors.grey.shade600,
+                            color: isSelected ? AppColors.secondary : unSelectColor,
                           ),
                         ),
                       ],

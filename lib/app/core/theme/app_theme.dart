@@ -10,7 +10,7 @@ class AppThemes {
       actionsIconTheme: IconThemeData(color: AppColors.white),
     ),
     brightness: Brightness.light,
-    scaffoldBackgroundColor: Colors.grey.shade100,
+    scaffoldBackgroundColor: Colors.white,
     colorScheme: const ColorScheme.light(primary: Color(0xFFD4AF37)),
     switchTheme: SwitchThemeData(
       thumbColor: WidgetStateProperty.all(AppColors.secondary),

@@ -65,7 +65,7 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
               title: "General",
               children: [
                 _CustomListTile(
-                  title: _isDark ? "Dark Mode" : "Light Mode",
+                  title: _isDark ? "Modo diurno":"Modo nocturno",
                   icon: _isDark
                       ? Icons.light_mode_outlined
                       : Icons.dark_mode_outlined,
@@ -81,7 +81,7 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
                   onTap: () => null,
                 ),
                 _CustomListTile(
-                  title: "Notifications",
+                  title: "Notificaciones",
                   icon: Icons.notifications_none_rounded,
                   onTap: () => context.goNamed(Routes.notifications),
                 ),
@@ -97,27 +97,27 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
               title: "Organización",
               children: [
                 _CustomListTile(
-                  title: "Profile Information",
+                  title: "Información del perfil",
                   icon: Icons.person_outline_rounded,
                   onTap: () => context.goNamed(Routes.profile),
                 ),
                 _CustomListTile(
-                  title: "Change Password",
+                  title: "Cambiar contraseña",
                   icon: Icons.lock_outline,
                   onTap: () => context.goNamed(Routes.changePassword),
                 ),
                 _CustomListTile(
-                  title: "Help & Feedback",
+                  title: "Ayuda & Feedback",
                   icon: Icons.help_outline_rounded,
                   onTap: () => null,
                 ),
                 _CustomListTile(
-                  title: "About",
+                  title: "Acerca de",
                   icon: Icons.info_outline_rounded,
                   onTap: () => null,
                 ),
                 _CustomListTile(
-                  title: "Sign out",
+                  title: "Cerrar sesión",
                   icon: Icons.exit_to_app_rounded,
                   onTap: () {
                     showDialog(
