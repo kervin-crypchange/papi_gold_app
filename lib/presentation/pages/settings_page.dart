@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -65,7 +66,7 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
               title: "General",
               children: [
                 _CustomListTile(
-                  title: _isDark ? "Modo diurno":"Modo nocturno",
+                  title: _isDark ? "Modo diurno" : "Modo nocturno",
                   icon: _isDark
                       ? Icons.light_mode_outlined
                       : Icons.dark_mode_outlined,
@@ -119,32 +120,17 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
                 _CustomListTile(
                   title: "Cerrar sesión",
                   icon: Icons.exit_to_app_rounded,
-                  onTap: () {
-                    showDialog(
+                  onTap: () async {
+                    final OkCancelResult res = await showOkCancelAlertDialog(
+                      title: 'Cerrar sesión',
+                      cancelLabel: 'No, cancelar',
+                      okLabel: 'Cerrar sesión',
                       context: context,
-                      barrierDismissible: false,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: const Text('Cerrar sesión'),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: const Text('Cancelar'),
-                            ),
-                            ElevatedButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                                Timer(
-                                  Duration(milliseconds: 200),
-                                  () => _logout(),
-                                );
-                              },
-                              child: const Text('Confirmar'),
-                            ),
-                          ],
-                        );
-                      },
                     );
+
+                    if (res == OkCancelResult.ok) {
+                      _logout();
+                    }
                   },
                 ),
               ],
@@ -192,10 +178,7 @@ class _SingleSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (title != null)
-          Text(
-            title!,
-            style: context.bodyLarge,
-          ).paddingAll(8.r).medium,
+          Text(title!, style: context.bodyLarge).paddingAll(8.r).medium,
         Column(children: children),
       ],
     );

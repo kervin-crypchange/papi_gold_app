@@ -34,14 +34,14 @@ class AppThemes {
   static final darkTheme = ThemeData(
     useMaterial3: true,
     brightness: Brightness.dark,
-    appBarTheme: AppBarTheme(backgroundColor: Colors.grey.shade900),
-    scaffoldBackgroundColor: Colors.grey.shade900,
+    appBarTheme: AppBarTheme(backgroundColor: AppColors.grey),
+    scaffoldBackgroundColor: AppColors.grey,
     colorScheme: const ColorScheme.dark(primary: Color(0xFFD4AF37)),
+    dialogTheme: DialogThemeData(backgroundColor: AppColors.grey),
     inputDecorationTheme: InputDecorationTheme(
       prefixIconColor: WidgetStateColor.resolveWith((states) {
         if (states.contains(WidgetState.focused)) {
-          return AppColors
-              .secondary; // Or Theme.of(context).colorScheme.primary
+          return AppColors.secondary;
         }
         return AppColors.white;
       }),
@@ -51,8 +51,7 @@ class AppThemes {
     ),
   );
 
-  // Holds the current theme mode state
   static final ValueNotifier<ThemeMode> themeModeNotifier = ValueNotifier(
-    ThemeMode.light,
+    ThemeMode.dark,
   );
 }

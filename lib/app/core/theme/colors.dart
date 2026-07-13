@@ -11,6 +11,6 @@ abstract class AppColors {
 
   static const black = Colors.black;
   static const white = Colors.white;
-  static const grey = Colors.grey;
+  static final grey = Colors.grey.shade900;
   static const bg = Colors.black87;
 }
