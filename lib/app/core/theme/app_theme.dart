@@ -17,6 +17,18 @@ class AppThemes {
       trackOutlineColor: WidgetStateProperty.all(Color(0xFFE7E0E8)),
       trackColor: WidgetStateProperty.all(Color(0xFFE7E0E8)),
     ),
+    inputDecorationTheme: InputDecorationTheme(
+      prefixIconColor: WidgetStateColor.resolveWith((states) {
+        if (states.contains(WidgetState.focused)) {
+          return AppColors
+              .secondary; // Or Theme.of(context).colorScheme.primary
+        }
+        return AppColors.black;
+      }),
+      border: OutlineInputBorder(
+        borderSide: BorderSide(color: AppColors.secondary),
+      ),
+    ),
   );
 
   static final darkTheme = ThemeData(
@@ -25,6 +37,18 @@ class AppThemes {
     appBarTheme: AppBarTheme(backgroundColor: Colors.grey.shade900),
     scaffoldBackgroundColor: Colors.grey.shade900,
     colorScheme: const ColorScheme.dark(primary: Color(0xFFD4AF37)),
+    inputDecorationTheme: InputDecorationTheme(
+      prefixIconColor: WidgetStateColor.resolveWith((states) {
+        if (states.contains(WidgetState.focused)) {
+          return AppColors
+              .secondary; // Or Theme.of(context).colorScheme.primary
+        }
+        return AppColors.white;
+      }),
+      border: OutlineInputBorder(
+        borderSide: BorderSide(color: AppColors.secondary),
+      ),
+    ),
   );
 
   // Holds the current theme mode state
