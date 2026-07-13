@@ -29,6 +29,7 @@ class OrderCardWidget extends StatelessWidget {
           child: Icon(
             Icons.inventory_2_outlined,
             color: isDarkTheme ? AppColors.secondary : AppColors.white,
+            size: 18.r,
           ),
         ),
         title: Text(order.invoice, style: context.bodySmall).medium,
@@ -40,7 +41,7 @@ class OrderCardWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            BadgeWidget(label: order.status.name, color: AppColors.secondaryLigth,),
+            BadgeWidget(label: order.status.name, color: isDarkTheme ? AppColors.secondaryLigth: AppColors.secondary,),
             Text(
               getFormatMoney(order.totalVenta),
               style: context.bodyMedium.copyWith(color: AppColors.secondary),
