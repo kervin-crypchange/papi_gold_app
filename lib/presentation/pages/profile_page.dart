@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:papi_gold/app/common/widgets/filled_button_widget.dart';
+import 'package:papi_gold/app/core/extensions/index.dart';
 import 'package:papi_gold/app/core/store/client_data_model.dart';
 import 'package:papi_gold/app/core/store/persistent_client_data.dart';
 
@@ -9,6 +12,7 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final PersistentClientDataModel user = PersistentClientData()
         .getClientData();
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
@@ -21,30 +25,21 @@ class ProfilePage extends StatelessWidget {
         child: Column(
           children: [
             // const ProfilePic(image: "https://i.postimg.cc/cCsYDjvj/user-2.png"),
-            Text(
-              user.fullName,
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-             Divider(height: 16.0 * 2),
-             Info(infoKey: "País", info: user.country['name']),
-             Info(infoKey: "Ubicación", info: user.location),
-             Info(infoKey: "teléfono", info: user.phone ),
-             Info(infoKey: "Email", info: user.email),
-             Info(infoKey: "Categoría", info: user.category),
-             SizedBox(height: 16.0),
+            Text(user.fullName, style: context.titleLarge).paddingOnly(top: 16.h),
+            Divider(height: 16.0 * 2),
+            Info(infoKey: "País", info: user.country['name']),
+            Info(infoKey: "Ubicación", info: user.location),
+            Info(infoKey: "teléfono", info: user.phone),
+            Info(infoKey: "Email", info: user.email),
+            Info(infoKey: "Categoría", info: user.category),
+            SizedBox(height: 16.0),
             Align(
               alignment: Alignment.centerRight,
               child: SizedBox(
                 width: 160,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF00BF6D),
-                    foregroundColor: Colors.white,
-                    minimumSize: const Size(double.infinity, 48),
-                    shape: const StadiumBorder(),
-                  ),
-                  onPressed: () {},
-                  child: const Text("Edit profile"),
+                child: FilledButtonWidget(
+                  title: "Edit profile",
+                  onPressed: () => {},
                 ),
               ),
             ),

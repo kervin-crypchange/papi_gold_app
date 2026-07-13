@@ -4,6 +4,7 @@ import 'package:papi_gold/app/common/mixins/messenger_mixin.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
+import 'package:papi_gold/app/core/theme/app_theme.dart';
 import 'package:papi_gold/app/core/theme/colors.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 import 'package:persistent_shopping_cart/model/cart_model.dart';
@@ -22,6 +23,12 @@ class ProductCard extends StatelessWidget with MessengerMixin {
   final ProductEntity product;
   final VoidCallback onPress;
 
+  Color get boxBgColor {
+    return AppThemes.themeModeNotifier.value == ThemeMode.dark
+        ? AppColors.greyLigth
+        : AppColors.secondaryLigth;
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -36,16 +43,13 @@ class ProductCard extends StatelessWidget with MessengerMixin {
               child: Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade800,
+                  color: boxBgColor,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: CachedNetworkImage(
                   imageUrl: product.imagen,
                   progressIndicatorBuilder: (context, url, downloadProgress) =>
-                      SizedBox(
-                        height: 250.h,
-                        child: LoadingWidget(),
-                      ),
+                      SizedBox(height: 250.h, child: LoadingWidget()),
                   errorWidget: (context, url, error) => Icon(Icons.error),
                 ),
               ),
@@ -64,7 +68,6 @@ class ProductCard extends StatelessWidget with MessengerMixin {
                 InkWell(
                   borderRadius: BorderRadius.circular(50),
                   onTap: () async {
-                   
                     await PersistentShoppingCart().addToCart(
                       PersistentShoppingCartItem(
                         productId: safeString(product.id),
@@ -75,7 +78,7 @@ class ProductCard extends StatelessWidget with MessengerMixin {
                         productImages: [product.imagen],
                       ),
                     );
-                     messenger.showSnackBar(
+                    messenger.showSnackBar(
                       message: 'Item agregado al carrito',
                       color: AppColors.success,
                       seconds: 1,
@@ -84,12 +87,14 @@ class ProductCard extends StatelessWidget with MessengerMixin {
                   child: Container(
                     padding: const EdgeInsets.all(5),
                     decoration: BoxDecoration(
-                      color: Colors.black54,
+                      color: boxBgColor,
                       shape: BoxShape.circle,
                     ),
                     child: Icon(
                       Icons.shopping_cart_outlined,
-                      color: Colors.white,
+                      color: AppThemes.themeModeNotifier.value == ThemeMode.dark
+                          ? AppColors.white
+                          : AppColors.secondary,
                       size: 14,
                     ).paddingAll(1.r),
                   ),

@@ -10,13 +10,13 @@ import 'package:papi_gold/app/core/theme/colors.dart';
 import 'package:papi_gold/data/sources/local/auth/auth_local_data.dart';
 import 'package:papi_gold/injection_container.dart';
 
-class LoggerInterceptor extends Interceptor with MessengerMixin {
+class InterceptorWrapper extends Interceptor with MessengerMixin {
   Logger logger = Logger(
     printer: PrettyPrinter(methodCount: 0, colors: true, printEmojis: true),
   );
   late final Box box;
 
-  LoggerInterceptor() {
+  InterceptorWrapper() {
     box = Hive.box(BoxEnum.config.name);
   }
 
@@ -27,7 +27,11 @@ class LoggerInterceptor extends Interceptor with MessengerMixin {
   ) async {
     final context = AppNavigation.navigatorKey.currentContext;
     if (context != null && context.mounted) showLoading(context, false);
-
+    if (err.response == null) {
+      // Handle global internet or timeout errors where response object doesn't exist
+      print("Network failure or timeout occurred.");
+      return handler.next(err); // Forward error to try-catch blocks
+    }
     switch (err.response?.statusCode) {
       case 401:
         sl<AuthLocalData>().clear();
@@ -92,14 +96,12 @@ class LoggerInterceptor extends Interceptor with MessengerMixin {
     // header para peticiones publicas sin login
     options.headers['X-API-KEY'] = 'cYaS7nA1IHUzuZQ42AbjPYzsiygFmegUiARPPv6t';
 
-    logger.i('headers ==> ${options.headers}'); //Info log
-    logger.i('queryParameters ==> ${options.queryParameters}'); //Info log
-    logger.i('Bearer Token ==> $token'); //Info log
-    logger.i('${options.method} request ==> $requestPath'); //Info log
-    logger.i(
-      '${options.method} data:${options.data} request ==> $requestPath',
-    ); //Info log
-    handler.next(options); // continue with the Request
+    logger.i('headers ==> ${options.headers}');
+    logger.i('queryParameters ==> ${options.queryParameters}');
+    logger.i('Bearer Token ==> $token');
+    logger.i('${options.method} request ==> $requestPath');
+    logger.i('${options.method} data:${options.data} request ==> $requestPath');
+    handler.next(options);
   }
 
   @override

@@ -21,7 +21,7 @@ Future<void> main() async {
   try {
     await Hive.initFlutter();
     Stripe.publishableKey = publishableKey;
-    
+
     await Hive.openBox(BoxEnum.config.name);
     await PersistentShoppingCart().init();
     await PersistentClientData().init();
@@ -106,11 +106,18 @@ class _MainAppState extends State<MainApp> {
       designSize: const Size(360, 690),
       splitScreenMode: true,
       builder: (context, child) {
-        return MaterialApp.router(
-          debugShowCheckedModeBanner: true,
-          theme: appTheme(),
-          routerConfig: router,
-          scaffoldMessengerKey: globals.scaffoldMessengerKey,
+        return ValueListenableBuilder<ThemeMode>(
+          valueListenable: AppThemes.themeModeNotifier,
+          builder: (context, currentMode,_) {
+            return MaterialApp.router(
+              debugShowCheckedModeBanner: true,
+              theme: AppThemes.lightTheme,
+              darkTheme: AppThemes.darkTheme,
+              themeMode: currentMode,
+              routerConfig: router,
+              scaffoldMessengerKey: globals.scaffoldMessengerKey,
+            );
+          },
         );
       },
     );

@@ -1,31 +1,60 @@
 import 'package:flutter/material.dart';
 import 'package:papi_gold/app/core/theme/colors.dart';
 
-ThemeData appTheme() {
-  return ThemeData(
+class AppThemes {
+  static final lightTheme = ThemeData(
     useMaterial3: true,
     appBarTheme: AppBarTheme(
-      backgroundColor: Colors.grey.shade900,
+      backgroundColor: Color(0xFFD4AF37),
+      iconTheme: IconThemeData(color: AppColors.white),
+      actionsIconTheme: IconThemeData(color: AppColors.white),
     ),
-    scaffoldBackgroundColor: Colors.grey.shade900,
-    colorScheme: ColorScheme.fromSeed(
-      seedColor: Color(0xFFD4AF37),
-      brightness: Brightness.dark,
+    brightness: Brightness.light,
+    scaffoldBackgroundColor: Colors.white,
+    colorScheme: const ColorScheme.light(primary: Color(0xFFD4AF37)),
+    // listTileTheme: ListTileThemeData(
+    //   tileColor: AppColors.secondaryLigth
+    // ),
+    switchTheme: SwitchThemeData(
+      thumbColor: WidgetStateProperty.all(AppColors.secondary),
+      trackOutlineColor: WidgetStateProperty.all(Color(0xFFE7E0E8)),
+      trackColor: WidgetStateProperty.all(Color(0xFFE7E0E8)),
     ),
-    floatingActionButtonTheme: const FloatingActionButtonThemeData(
-      shape: CircleBorder(),
-    ),
-    navigationBarTheme: NavigationBarThemeData(
-      // overlayColor: WidgetStateProperty.resolveWith<Color?>((states) {
-      //   return Colors.transparent;
-      // }),
-      indicatorColor: Colors.transparent,
-      iconTheme: WidgetStateProperty.resolveWith<IconThemeData?>((states) {
-        if (states.contains(WidgetState.selected)) {
-          return const IconThemeData(color: AppColors.secondary);
+    inputDecorationTheme: InputDecorationTheme(
+      prefixIconColor: WidgetStateColor.resolveWith((states) {
+        if (states.contains(WidgetState.focused)) {
+          return AppColors
+              .secondary; // Or Theme.of(context).colorScheme.primary
         }
-        return const IconThemeData();
+        return AppColors.black;
       }),
+      border: OutlineInputBorder(
+        borderSide: BorderSide(color: AppColors.secondary),
+      ),
     ),
+  );
+
+  static final darkTheme = ThemeData(
+    useMaterial3: true,
+    brightness: Brightness.dark,
+    appBarTheme: AppBarTheme(backgroundColor: AppColors.grey),
+    scaffoldBackgroundColor: AppColors.grey,
+    colorScheme: const ColorScheme.dark(primary: Color(0xFFD4AF37)),
+    dialogTheme: DialogThemeData(backgroundColor: AppColors.grey),
+    inputDecorationTheme: InputDecorationTheme(
+      prefixIconColor: WidgetStateColor.resolveWith((states) {
+        if (states.contains(WidgetState.focused)) {
+          return AppColors.secondary;
+        }
+        return AppColors.white;
+      }),
+      border: OutlineInputBorder(
+        borderSide: BorderSide(color: AppColors.secondary),
+      ),
+    ),
+  );
+
+  static final ValueNotifier<ThemeMode> themeModeNotifier = ValueNotifier(
+    ThemeMode.dark,
   );
 }

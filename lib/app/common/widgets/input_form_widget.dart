@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:papi_gold/app/core/extensions/text_theme.dart';
-import 'package:papi_gold/app/core/theme/index.dart';
 
 class InputFormWidget extends StatelessWidget {
   final String? hintText;
@@ -21,7 +19,7 @@ class InputFormWidget extends StatelessWidget {
   final bool enabled;
   final bool readOnly;
   final String? initialValue;
-  final Color? color;
+  // final Color? color;
   final TextCapitalization textCapitalization;
 
   const InputFormWidget({
@@ -44,7 +42,7 @@ class InputFormWidget extends StatelessWidget {
     this.minLines = 1,
     this.maxLines,
     this.initialValue,
-    this.color,
+    // this.color,
     this.textCapitalization = TextCapitalization.none,
   });
 
@@ -52,7 +50,7 @@ class InputFormWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       textCapitalization: TextCapitalization.sentences,
-      style: TextStyle(color: color ?? AppColors.grey),
+      // style: TextStyle(color: color ?? AppColors.grey),
       initialValue: initialValue,
       minLines: minLines,
       maxLines: obscureText ? 1 : maxLines,
@@ -67,18 +65,11 @@ class InputFormWidget extends StatelessWidget {
       validator: validator,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: color ?? AppColors.grey,
-          ), 
-        ),
+        // labelStyle: context.bodySmall.copyWith(color: color ?? AppColors.white),
         hintText: hintText,
-        labelStyle: context.bodySmall.copyWith(
-          color: color ?? AppColors.white,
-        ),
         labelText: labelText,
         helperText: helperText,
-        helperStyle: TextStyle(color: color ?? AppColors.grey),
+        // helperStyle: TextStyle(color: color ?? AppColors.grey),
         prefixIcon: prefixIcon,
         suffix: suffix,
         suffixIcon: suffixIcon,

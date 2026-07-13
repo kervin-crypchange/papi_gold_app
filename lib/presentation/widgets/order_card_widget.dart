@@ -23,7 +23,7 @@ class OrderCardWidget extends StatelessWidget {
         leading: Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: AppColors.secondary.withValues(alpha: 0.1),
+            color: AppColors.secondaryLigth,
             borderRadius: BorderRadius.circular(100),
           ),
           child: const Icon(
@@ -42,12 +42,13 @@ class OrderCardWidget extends StatelessWidget {
           children: [
             Container(
               decoration: BoxDecoration(
-                color: AppColors.secondary.withValues(alpha: 0.1),
+                color: AppColors.secondaryLigth,
                 borderRadius: BorderRadius.circular(16.r),
               ),
-              child: Text(order.status.name, style: context.bodyXSmall)
-                  .color(AppColors.secondary)
-                  .paddingSymmetric(horizontal: 8.w, vertical: 1.h),
+              child: Text(
+                order.status.name,
+                style: context.bodyXSmall.copyWith(color: AppColors.secondary),
+              ).paddingSymmetric(horizontal: 8.w, vertical: 1.h),
             ).light,
             Text(
               getFormatMoney(order.totalVenta),
