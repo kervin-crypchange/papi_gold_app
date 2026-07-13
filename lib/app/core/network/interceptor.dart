@@ -96,15 +96,12 @@ class InterceptorWrapper extends Interceptor with MessengerMixin {
     // header para peticiones publicas sin login
     options.headers['X-API-KEY'] = 'cYaS7nA1IHUzuZQ42AbjPYzsiygFmegUiARPPv6t';
 
-    logger.i('headers ==> ${options.headers}'); //Info log
-    logger.i('queryParameters ==> ${options.queryParameters}'); //Info log
-    logger.i('Bearer Token ==> $token'); //Info log
-    logger.i('${options.method} request ==> $requestPath'); //Info log
-    logger.i(
-      '${options.method} data:${options.data} request ==> $requestPath',
-    ); //Info log
-    logger.i('Response data $options');
-    handler.next(options); // continue with the Request
+    logger.i('headers ==> ${options.headers}');
+    logger.i('queryParameters ==> ${options.queryParameters}');
+    logger.i('Bearer Token ==> $token');
+    logger.i('${options.method} request ==> $requestPath');
+    logger.i('${options.method} data:${options.data} request ==> $requestPath');
+    handler.next(options);
   }
 
   @override
