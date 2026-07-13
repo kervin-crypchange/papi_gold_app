@@ -11,6 +11,7 @@ abstract class AppColors {
   static const warning = Colors.yellow;
 
   static const black = Colors.black;
+  static final blackLigth = Colors.black38;
   static const white = Colors.white;
   static final grey = Colors.grey.shade900;
   static final greyLigth = Colors.grey.shade800;

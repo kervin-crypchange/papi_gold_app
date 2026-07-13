@@ -31,7 +31,7 @@ class _CartItemCardWidgetState extends State<CartItemCardWidget> {
       height: 130,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12.r),
-        color: Colors.black38,
+        color:isDarkTheme ? AppColors.blackLigth : AppColors.secondaryLigth,
       ),
       child: Row(
         spacing: 8.w,

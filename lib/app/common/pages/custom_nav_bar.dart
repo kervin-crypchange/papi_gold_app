@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
 import 'package:papi_gold/app/core/theme/index.dart';
 
@@ -16,15 +17,11 @@ class CustomNavBar extends StatelessWidget {
   });
 
   Color get bgColor {
-    return (AppThemes.themeModeNotifier.value == ThemeMode.dark)
-        ? AppColors.black
-        : AppColors.white;
+    return isDarkTheme ? AppColors.black : AppColors.white;
   }
 
   Color get unSelectColor {
-    return (AppThemes.themeModeNotifier.value == ThemeMode.dark)
-        ? AppColors.white
-        : AppColors.black;
+    return isDarkTheme ? AppColors.white : AppColors.black;
   }
 
   @override
@@ -59,6 +56,9 @@ class CustomNavBar extends StatelessWidget {
                     duration: Duration(milliseconds: 300),
                     curve: Curves.easeInOut,
                     decoration: BoxDecoration(
+                      border: (isSelected && !isDarkTheme)
+                          ? Border.all(color: AppColors.secondary)
+                          : null,
                       color: isSelected
                           ? AppColors.secondary.withValues(alpha: 0.15)
                           : Colors.transparent,
@@ -71,13 +71,17 @@ class CustomNavBar extends StatelessWidget {
                           isSelected
                               ? navItems[index]['iconSelected']
                               : navItems[index]['icon'],
-                          color: isSelected ? AppColors.secondary : unSelectColor,
+                          color: isSelected
+                              ? AppColors.secondary
+                              : unSelectColor,
                           size: 18,
                         ),
                         Text(
                           navItems[index]['label'],
                           style: context.labelXSmall.copyWith(
-                            color: isSelected ? AppColors.secondary : unSelectColor,
+                            color: isSelected
+                                ? AppColors.secondary
+                                : unSelectColor,
                           ),
                         ),
                       ],

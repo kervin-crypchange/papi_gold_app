@@ -15,9 +15,6 @@ class ProfilePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        centerTitle: false,
-        elevation: 0,
-        foregroundColor: Colors.white,
         title: const Text("Perfil"),
       ),
       body: SingleChildScrollView(

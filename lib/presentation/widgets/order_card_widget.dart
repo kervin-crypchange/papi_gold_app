@@ -23,12 +23,12 @@ class OrderCardWidget extends StatelessWidget {
         leading: Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: AppColors.secondaryLigth,
+            color: isDarkTheme ? AppColors.secondaryLigth : AppColors.secondary,
             borderRadius: BorderRadius.circular(100),
           ),
-          child: const Icon(
+          child: Icon(
             Icons.inventory_2_outlined,
-            color: AppColors.secondary,
+            color: isDarkTheme ? AppColors.secondary : AppColors.white,
           ),
         ),
         title: Text(order.invoice, style: context.bodySmall).medium,
@@ -40,16 +40,7 @@ class OrderCardWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Container(
-              decoration: BoxDecoration(
-                color: AppColors.secondaryLigth,
-                borderRadius: BorderRadius.circular(16.r),
-              ),
-              child: Text(
-                order.status.name,
-                style: context.bodyXSmall.copyWith(color: AppColors.secondary),
-              ).paddingSymmetric(horizontal: 8.w, vertical: 1.h),
-            ).light,
+            BadgeWidget(label: order.status.name, color: AppColors.secondaryLigth,),
             Text(
               getFormatMoney(order.totalVenta),
               style: context.bodyMedium.copyWith(color: AppColors.secondary),

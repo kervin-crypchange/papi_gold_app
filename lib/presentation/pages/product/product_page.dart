@@ -99,16 +99,10 @@ class InfoProduct extends StatelessWidget with MessengerMixin {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(p.name, style: context.bodyLarge),
-                     Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12.r),
-                        color: AppColors.secondaryLigth
-                      ),
-                      child: Text(
-                        p.category.name.capitalizeFirst,
-                        style: context.labelSmall,
-                      ).paddingSymmetric(horizontal: 12.w, vertical: 1.h),
-                    ),
+                    BadgeWidget(
+                      label: p.category.name.capitalizeFirst,
+                      color: AppColors.secondary,
+                    ).paddingSymmetric(horizontal: 12.w, vertical: 1.h),
                   ],
                 ),
                 const SizedBox(height: 8),

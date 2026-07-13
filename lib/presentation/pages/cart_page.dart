@@ -100,7 +100,7 @@ class _CartPageState extends State<CartPage> with MessengerMixin {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.goNamed(Routes.navigation),
         ),
-        title: Text('Mi carrito'),
+        title: const Text('Mi carrito'),
         actions: [
           IconButton(
             onPressed: () => PersistentShoppingCart().clearCart(),
@@ -163,7 +163,7 @@ class _CartPageState extends State<CartPage> with MessengerMixin {
                             },
                           );
                         },
-                      );
+                      ).paddingOnly(top: 6.h);
                     },
               ),
       ).paddingSymmetric(horizontal: 12.w),
