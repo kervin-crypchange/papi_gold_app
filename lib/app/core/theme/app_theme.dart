@@ -45,6 +45,18 @@ class AppThemes {
     switchTheme: SwitchThemeData(
       thumbColor: WidgetStateProperty.all(AppColors.white),
     ),
+    bottomSheetTheme: BottomSheetThemeData(
+      backgroundColor: AppColors.grey,
+      elevation: 5.0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24.0)),
+      ),
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      constraints: BoxConstraints(
+        maxWidth: 600, // Useful for tablets/web
+      ),
+      showDragHandle: true, // Adds a top grabber handle
+    ),
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(foregroundColor: AppColors.white),
     ),

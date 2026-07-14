@@ -23,4 +23,5 @@ abstract class CommonRemoteData {
   Future<Either<Failure, String>> consultation(ConsultationPayloadModel m);
 
   Future<Either<Failure, ResponsePaymentIntentModel>> paymentIntent(String order);
+  Future<Either<Failure, TrackingModel>> tracking(String tracking);
 }

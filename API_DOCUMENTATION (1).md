@@ -44,6 +44,15 @@ Punto de entrada para que Stripe notifique cambios de estado en los pagos de for
 }
 ```
 
+- **Respuesta de la API (Lo que Stripe recibe):**
+La API responde con un `200 OK` tras validar la firma y procesar el evento.
+```json
+{
+  "status": "success",
+  "message": "Webhook processed: payment_intent.succeeded"
+}
+```
+
 ---
 
 ## 2. Arquitectura y Seguridad
@@ -87,6 +96,8 @@ La API utiliza **Laravel Reverb** para notificar cambios en los datos de forma i
 | `products` | `product.updated` | Se dispara cuando se modifica un producto, su stock o su precio. |
 | `settings` | `settings.updated` | Se dispara cuando cambian los ajustes globales del sitio. |
 | `chat.{identifier}` | `message.sent` | Canal privado/presencia para el chat de soporte (requiere identificador de sesión). |
+| `App.Models.Client.{id}` | `notification.received` | **Canal Privado**: Se dispara cuando el cliente recibe una nueva notificación de sistema. |
+| `App.Models.Client.{id}` | `sale.updated` | **Canal Privado**: Se dispara cuando un pedido del cliente cambia de estado o datos. |
 
 #### Ejemplo de Suscripción (JavaScript/Laravel Echo)
 ```javascript
@@ -169,6 +180,28 @@ echo.channel('products')
 }
 ```
 
+### 2.3 Eventos en Tiempo Real (WebSockets)
+El sistema emite actualizaciones instantáneas cuando un producto es creado, modificado o eliminado.
+- **Canal Público:** `products`
+- **Evento:** `product.updated`
+- **Data Recibida (Payload):**
+```json
+{
+  "productId": 10,
+  "action": "updated",
+  "product": {
+    "id": 10,
+    "name": "Anillo Clásico",
+    "description": "Anillo de oro...",
+    "stock": 5,
+    "imagen": "...",
+    "price": 1250.50,
+    "category": { "id": 1, "name": "Anillos" },
+    "translations": { ... }
+  }
+}
+```
+
 ---
 
 ## 4. Precios de Metales (Públicos)
@@ -235,6 +268,24 @@ echo.channel('products')
         }
       ],
       "translations": {"en": { "name": "Gold" } }
+    }
+  ]
+}
+```
+
+### 3.3 Eventos en Tiempo Real (WebSockets)
+Actualización automática de precios internacionales de metales.
+- **Canal Público:** `prices`
+- **Evento:** `prices.updated`
+- **Data Recibida (Payload):**
+```json
+{
+  "prices": [
+    {
+      "symbol": "XAU",
+      "name": "Oro",
+      "price": 65.45,
+      "last_updated": "2026-06-10 14:30:00"
     }
   ]
 }
@@ -553,13 +604,51 @@ Endpoint dedicado exclusivamente al cambio de contraseña.
 }
 ```
 
-### 8.4 Historial de Órdenes
+### 8.4 Valuación de Activos (Portafolio)
+Obtiene un resumen financiero de las compras del cliente, calculando el costo de adquisición vs el valor de mercado actual según los precios spot.
+- **URL:** `GET /api/valuation`
+- **Seguridad:** Requiere Bearer Token.
+- **Respuesta (200 OK):**
+```json
+{
+  "data": {
+    "total": {
+      "totalAcquisitionCost": 5250.25,
+      "currentMarketValue": 5840.10,
+      "totalWeightOz": 2.5412,
+      "unrealizedProfitLoss": 589.85,
+      "profitPercentage": 11.23,
+      "avgPurchasePrice": 2066.05,
+      "currentSpotPriceGold": 2350.50,
+      "currentSpotPrice": 0
+    },
+    "metals": [
+      {
+        "name": "Oro",
+        "symbol": "XAU",
+        "stats": {
+          "totalAcquisitionCost": 5250.25,
+          "currentMarketValue": 5840.10,
+          "totalWeightOz": 2.5412,
+          "unrealizedProfitLoss": 589.85,
+          "profitPercentage": 11.23,
+          "avgPurchasePrice": 2066.05,
+          "currentSpotPriceGold": 2350.50,
+          "currentSpotPrice": 2350.50
+        }
+      }
+    ]
+  }
+}
+```
+
+### 8.5 Historial de Órdenes
 - **URL:** `GET /api/order`
 - **Query Params:**
   - `?per_page={n}` (opcional): Cantidad de elementos por página (default: 5).
 - **Respuesta (200 OK):** Lista paginada que incluye estadísticas globales (`invested`, `sold`) del cliente.
 
-### 8.5 Ver Detalle de una Orden
+### 8.6 Ver Detalle de una Orden
 Obtiene la información detallada de una orden específica.
 - **URL:** `GET /api/order/{order_code}`
 - **Parámetro:** El `{order_code}` es el identificador único de la orden (ej. `ORD-123`), **no** su ID numérico.
@@ -695,6 +784,20 @@ Obtiene configuraciones públicas dinámicas del sitio.
 }
 ```
 
+### 9.4 Eventos en Tiempo Real (WebSockets)
+- **Canal Público:** `settings`
+- **Evento:** `settings.updated`
+- **Data Recibida (Payload):**
+```json
+{
+  "settings": {
+    "site_name": "Papi Gold",
+    "contact_email": "soporte@papi.gold",
+    "social_links": { ... }
+  }
+}
+```
+
 ---
 
 ## 10. Seguimiento de Envíos (Públicos)
@@ -702,13 +805,66 @@ Obtiene configuraciones públicas dinámicas del sitio.
 ### 10.1 Consultar Tracking
 Obtiene el estado detallado y el historial de un envío utilizando su número de guía.
 - **URL:** `GET /api/tracking`
+- **Seguridad:** Requiere header `X-API-Key`.
 - **Query Params:**
-  - `?trackingNumber={string}` (requerido): El número de guía del envío.
+  - `?trackingNumber={string}` (requerido): El número de guía del envío proporcionado por el courier (ej. ZOOM, UPS).
 - **Respuesta Exitosa (200 OK):**
 ```json
 {
   "success": true,
   "data": {
+    "order": "ORD-123",
+    "tracking_number": "1234567890",
+    "status": "ENTREGADO AL DESTINATARIO",
+    "summary_steps": [
+      {
+        "id": "1",
+        "label": "ENVIO PROCESADO EN ORIGEN",
+        "status": "completed"
+      },
+      {
+        "id": "21",
+        "label": "ENTREGADO AL DESTINATARIO",
+        "status": "current"
+      }
+    ],
+    "history": [
+      {
+        "id": 21, 
+        "date": "10/06/2026 16:08", 
+        "status": "DISPONIBLE PARA EL RETIRO EN TAQUILLA", 
+        "direction": "CARACAS - ZOOM CARACAS-CHACAO",
+      },
+      {
+        "id": 1, 
+        "date": "08/06/2026 15:08",
+        "status": "ENVIO PROCESADO EN ORIGEN", 
+        "direction": "CARACAS - ZOOM YAGUARA",
+      },
+      ...
+    ],
+    "fallback": false,
+    "fallback_url": null,
+    "address_shipping": "Av. Principal 123, Caracas, VE",
+    "translations": {
+      "en": {
+        "status": "Delivery to Customer International Casillero - Time: 4: 08: 36 P.M.",
+        "ENTREGADO AL DESTINATARIO": "Delivered to recipient",
+        "ENVIO PROCESADO EN ORIGEN": "Shipment processed at origin",
+        ...
+      }
+    }
+  }
+}
+```
+
+- **Respuesta con Redirección a Courier (Fallback) (200 OK):**
+Ocurre cuando el sistema no puede obtener datos en tiempo real (por ejemplo, servicio externo caído o datos obsoletos) y sugiere consultar directamente en la web del transportista.
+```json
+{
+  "success": true,
+  "data": {
+    "order": "ORD-123",
     "tracking_number": "1234567890",
     "status": "ENTREGADO",
     "summary_steps": [
@@ -717,40 +873,130 @@ Obtiene el estado detallado y el historial de un envío utilizando su número de
       ...
     ],
     "history": [
-      ["#", "Fecha", "Ubicación", "Descripción"],
-      ["21", "10/06/2026", "CARACAS", "ENTREGADO AL DESTINATARIO"],
-      ["1", "08/06/2026", "VALENCIA", "RECIBIDO EN ORIGEN"],
+      {
+        "id": 21, 
+        "date": "10/06/2026 16:08", 
+        "status": "DISPONIBLE PARA EL RETIRO EN TAQUILLA", 
+        "direction": "CARACAS - ZOOM CARACAS-CHACAO",
+      },
+      {
+        "id": 1, 
+        "date": "08/06/2026 15:08",
+        "status": "ENVIO PROCESADO EN ORIGEN", 
+        "direction": "CARACAS - ZOOM YAGUARA",
+      },
       ...
     ],
-    "fallback": false,
-    "fallback_url": null,
-    "address_shipping": "Av. Principal 123, Caracas"
-  }
-}
-```
-
-- **Respuesta con Redirección a Courier (Fallback) (200 OK):**
-Ocurre cuando el sistema no puede obtener datos en tiempo real y sugiere consultar directamente en la web del transportista.
-```json
-{
-  "success": true,
-  "data": {
-    "tracking_number": "1234567890",
     "fallback": true,
-    "fallback_url": "https://www.zoom.red/...&nro-guia=1234567890",
+    "fallback_url": "https://www.zoom.red/Tracking/Resultados?nro-guia=1234567890&tipo-consulta=1",
     "message": "En este momento no podemos obtener el detalle exacto. Por favor consulte el sitio del courier.",
-    "address_shipping": "Av. Principal 123, Caracas"
+    "address_shipping": "Av. Principal 123, Caracas, VE",
+    "translations": { 
+      "en": {
+        "status": "Delivery to Customer International Casillero - Time: 4: 08: 36 P.M.",
+        "ENTREGADO AL DESTINATARIO": "Available for The Retreat In Box Office",
+        "ENVIO PROCESADO EN ORIGEN": "Envio Processed In Origin",
+        ...
+      }
+    } 
   }
 }
 ```
 
 - **Errores:**
-  - `422 Unprocessable Content`: Si el `trackingNumber` es inválido o no existe en el sistema.
-  - `500 Internal Server Error`: Si ocurre un error inesperado al procesar la solicitud.
+  - `422 Unprocessable Content`: Si el `trackingNumber` no es enviado o no es válido.
+    - `500 Internal Server Error`: Si ocurre un error inesperado al procesar la solicitud.
 
 ---
 
-## 11. Manejo de Errores
+## 11. Notificaciones del Cliente (Área Privada)
+
+Endpoints para gestionar las notificaciones persistentes en la base de datos para el cliente autenticado.
+
+### 11.1 Listar Notificaciones
+Permite obtener el historial de notificaciones del cliente. Los datos están localizados según el idioma del cliente.
+- **URL:** `GET /api/notifications`
+- **Seguridad:** Requiere Bearer Token.
+- **Query Params:**
+  - `?per_page={n}` (opcional): Cantidad de elementos por página (default: 10).
+- **Respuesta (200 OK):** Lista paginada de notificaciones.
+```json
+{
+  "current_page": 1,
+  "data": [
+    {
+      "id": "9c6b96...",
+      "type": "App\\Notifications\\OrderStatusChanged",
+      "notifiable_type": "App\\Models\\Client",
+      "notifiable_id": 5,
+      "data": {
+        "title": "Pedido #ORD-123",
+        "body": "El estado de tu pedido ha cambiado a: Enviado",
+        "order_id": "ORD-123",
+        "status": "Enviado",
+        "status"	"info",
+        "iconColor"	"info",
+        "icon": "heroicon-o-truck",
+      },
+      "read_at": null,
+      "created_at": "2026-07-13 12:00:00"
+    }
+  ],
+  "first_page_url": "...",
+  "from": 1,
+  "last_page": 1,
+  "last_page_url": "...",
+  "next_page_url": null,
+  "path": "...",
+  "per_page": 10,
+  "prev_page_url": null,
+  "to": 1,
+  "total": 1
+}
+```
+
+### 11.2 Obtener Contador de No Leídas
+- **URL:** `GET /api/notifications/unread-count`
+- **Seguridad:** Requiere Bearer Token.
+- **Respuesta (200 OK):**
+```json
+{
+  "count": 5
+}
+```
+
+### 11.3 Marcar como Leída
+- **URL:** `PUT /api/notifications/{id}`
+- **Parámetro `{id}`**: Puede ser el UUID de la notificación o el valor literal `all` para marcar todas.
+- **Seguridad:** Requiere Bearer Token.
+- **Respuesta (200 OK):**
+```json
+{
+  "success": true
+}
+```
+
+### 11.4 Webhook de Notificaciones (Eventos en Tiempo Real)
+El sistema emite eventos a través de WebSockets (Laravel Reverb) para que el cliente reciba notificaciones instantáneas.
+- **Canal Privado:** `App.Models.Client.{id}`
+- **Evento:** `notification.received`
+- **Data Recibida (Payload):**
+```json
+{
+  "id": "9c6b96...",
+  "title": "Actualización de Pedido",
+  "message": "Tu pedido #ORD-123 ha sido aprobado.",
+  "type": "order_status",
+  "metadata": {
+    "order_id": "ORD-123",
+    "status": "approved"
+  }
+}
+```
+
+---
+
+## 12. Manejo de Errores
 
 | Código | Código de Error (`code`) | Descripción |
 | :--- | :--- | :--- |

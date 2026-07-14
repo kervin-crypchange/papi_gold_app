@@ -1,3 +1,6 @@
+export 'package:papi_gold/domain/entities/summary_steps_entity.dart';
+export 'package:papi_gold/domain/entities/tracking_entity.dart';
+export 'package:papi_gold/domain/entities/tracking_history_entity.dart';
 export 'package:papi_gold/domain/entities/responses/response_register_entity.dart';
 export 'package:papi_gold/domain/entities/update_password_entity.dart';
 export 'package:papi_gold/domain/entities/responses/response_payment_intent_entity.dart';

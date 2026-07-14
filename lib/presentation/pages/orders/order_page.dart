@@ -1,3 +1,4 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
@@ -11,6 +12,7 @@ import 'package:papi_gold/app/core/theme/index.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 import 'package:papi_gold/domain/entities/order_detail_entity.dart';
 import 'package:papi_gold/presentation/cubits/index.dart';
+import 'package:papi_gold/presentation/widgets/courrier_tracking.dart';
 
 class OrderPage extends StatefulWidget {
   final String orderId;
@@ -37,6 +39,21 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
     });
   }
 
+  void _getTracking(String tracking) {
+    context.read<TrackingCubit>().tracking(tracking).then((either) {
+      either.fold((l) => null, (r) {
+        showLoading(context, false);
+        showModalBottomSheet<void>(
+          context: context,
+          builder: (context) => CourierTracking(
+            history: r.history.reversed.toList(),
+            status: r.status,
+          ),
+        );
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,15 +65,15 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
           'Resumen de Orden',
           style: context.titleMedium.copyWith(color: AppColors.white),
         ).medium,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.location_on_outlined, color: AppColors.white),
-            tooltip: 'Tracking',
-            onPressed: () {
-              // Handle search action
-            },
-          ),
-        ],
+        // actions: [
+        //   IconButton(
+        //     icon: const Icon(Icons.location_on_outlined, color: AppColors.white),
+        //     tooltip: 'Tracking',
+        //     onPressed: () {
+        //       context.read<TrackingCubit>().tracking(tracking)
+        //     },
+        //   ),
+        // ],
       ),
       body: SafeArea(
         child: BlocConsumer<OrdersCubit, OrdersState>(
@@ -108,8 +125,11 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
                 ],
               ),
               TextButton(
-                onPressed: () => _showModalBottomSheet(context, e.payments),
-                child: const Text('Ver estado'),
+                onPressed: () {
+                  showLoading(context);
+                  _getTracking(e.shippings[0].tracking);
+                },
+                child: const Text('Ver'),
               ),
             ],
           ),
@@ -211,28 +231,28 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
         'Shipping status',
         Text(
           (s != null) ? s.status.name : 'Pending',
-          style: context.bodyMedium.copyWith(color: AppColors.white),
+          style: context.bodyMedium.copyWith(color: AppColors.secondary),
         ),
       ),
       _dataFormat(
         'Shipping courrier',
         Text(
           (s != null) ? s.courier.name : '-',
-          style: context.bodyMedium.copyWith(color: AppColors.white),
+          style: context.bodyMedium.copyWith(color: AppColors.secondary),
         ),
       ),
       _dataFormat(
         'Tracking number',
         Text(
           (s != null) ? s.tracking : 'No asignado',
-          style: context.bodyMedium.copyWith(color: AppColors.white),
+          style: context.bodyMedium.copyWith(color: AppColors.secondary),
         ),
       ),
       _dataFormat(
         'Shipping address',
         Text(
           (s != null) ? s.address : 'Sin dirección registrada',
-          style: context.bodyMedium.copyWith(color: AppColors.white),
+          style: context.bodyMedium.copyWith(color: AppColors.secondary),
         ),
       ),
     ];
@@ -374,10 +394,6 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
   ) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: Colors.black,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24.0)),
-      ),
       builder: (BuildContext context) {
         return SingleChildScrollView(
           child: SizedBox(
