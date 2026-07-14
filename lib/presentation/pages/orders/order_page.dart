@@ -1,4 +1,3 @@
-import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
@@ -40,6 +39,7 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
   }
 
   void _getTracking(String tracking) {
+    showLoading(context);
     context.read<TrackingCubit>().tracking(tracking).then((either) {
       either.fold((l) => null, (r) {
         showLoading(context, false);
@@ -109,7 +109,9 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
                 ],
               ),
               TextButton(
-                onPressed: () => _showModalBottomSheet(context, e.payments),
+                onPressed: e.payments.isNotEmpty
+                    ? () => _showModalBottomSheet(context, e.payments)
+                    : null,
                 child: const Text('Ver pagos'),
               ),
             ],
@@ -125,10 +127,9 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
                 ],
               ),
               TextButton(
-                onPressed: () {
-                  showLoading(context);
-                  _getTracking(e.shippings[0].tracking);
-                },
+                onPressed: e.shippings.isNotEmpty
+                    ? () => _getTracking(e.shippings[0].tracking)
+                    : null,
                 child: const Text('Ver'),
               ),
             ],
