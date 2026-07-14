@@ -27,11 +27,6 @@ class InterceptorWrapper extends Interceptor with MessengerMixin {
   ) async {
     final context = AppNavigation.navigatorKey.currentContext;
     if (context != null && context.mounted) showLoading(context, false);
-    if (err.response == null) {
-      // Handle global internet or timeout errors where response object doesn't exist
-      print("Network failure or timeout occurred.");
-      return handler.next(err); // Forward error to try-catch blocks
-    }
     switch (err.response?.statusCode) {
       case 401:
         sl<AuthLocalData>().clear();

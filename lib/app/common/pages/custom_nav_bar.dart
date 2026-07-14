@@ -30,7 +30,7 @@ class CustomNavBar extends StatelessWidget {
       valueListenable: AppThemes.themeModeNotifier,
       builder: (context, _, _) {
         return Container(
-          height: 45.h,
+          height: 38.h,
           width: .85.sw,
           decoration: BoxDecoration(
             color: bgColor,
@@ -47,7 +47,6 @@ class CustomNavBar extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: List.generate(navItems.length, (index) {
               final isSelected = currentIndex == index;
-
               return Expanded(
                 child: GestureDetector(
                   onTap: () => onTap(index),
@@ -62,10 +61,11 @@ class CustomNavBar extends StatelessWidget {
                       color: isSelected
                           ? AppColors.secondary.withValues(alpha: 0.15)
                           : Colors.transparent,
-                      borderRadius: BorderRadius.circular(100),
+                      borderRadius: BorderRadius.circular(100.r),
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Icon(
                           isSelected
@@ -74,7 +74,7 @@ class CustomNavBar extends StatelessWidget {
                           color: isSelected
                               ? AppColors.secondary
                               : unSelectColor,
-                          size: 18,
+                          size: 16.r,
                         ),
                         Text(
                           navItems[index]['label'],
@@ -85,12 +85,12 @@ class CustomNavBar extends StatelessWidget {
                           ),
                         ),
                       ],
-                    ),
-                  ).paddingSymmetric(vertical: 4.h),
+                    ).paddingSymmetric(vertical: 2.h),
+                  ),
                 ),
               );
             }),
-          ).paddingSymmetric(horizontal: 6.w),
+          ).paddingSymmetric(horizontal: 4.w),
         ).paddingOnly(bottom: 32);
       },
     );

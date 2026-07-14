@@ -167,6 +167,13 @@ class _CartPageState extends State<CartPage> with MessengerMixin {
                     },
               ),
       ).paddingSymmetric(horizontal: 12.w),
+      persistentFooterDecoration:BoxDecoration(
+        border: Border(
+          top: BorderSide(
+            color: AppColors.secondary
+          )
+        )
+      ),
       persistentFooterButtons: [
         Column(
           spacing: 12.h,

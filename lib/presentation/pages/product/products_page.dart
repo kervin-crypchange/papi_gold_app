@@ -90,6 +90,6 @@ class _ProductsPageState extends State<ProductsPage> with MessengerMixin {
         }
         return Center(child: Text('Ha ocurrido un error'));
       },
-    ).paddingSymmetric(horizontal: 4.w);
+    ).paddingSymmetric(horizontal: 8.w);
   }
 }

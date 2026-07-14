@@ -62,6 +62,6 @@ class AppThemes {
   );
 
   static final ValueNotifier<ThemeMode> themeModeNotifier = ValueNotifier(
-    ThemeMode.light,
+    ThemeMode.dark,
   );
 }
