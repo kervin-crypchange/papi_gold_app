@@ -81,6 +81,11 @@ final GoRouter router = GoRouter(
           path: Routes.notifications,
           builder: (context, state) => NotificationsPage(),
         ),
+        GoRoute(
+          name: Routes.about,
+          path: Routes.about,
+          builder: (context, state) => AboutPage(),
+        ),
       ],
     ),
   ],

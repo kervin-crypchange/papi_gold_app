@@ -146,11 +146,11 @@ class _CartPageState extends State<CartPage> with MessengerMixin {
                             key: ValueKey(item.productId),
                             background: Container(),
                             secondaryBackground: Container(
-                              color: Colors.red,
+                              color: Colors.red.shade300,
                               alignment: Alignment.centerRight,
                               child: const Icon(
-                                Icons.delete,
-                                color: Colors.white,
+                                Icons.delete_outline_outlined,
+                                color: Colors.red,
                               ).paddingOnly(right: 20.w),
                             ),
                             child: CartItemCardWidget(item: item),

@@ -11,7 +11,9 @@ dependencies:
   dartz: ^0.10.1
   dio: ^5.9.2
   adaptive_dialog: ^2.8.0
+  socket_io_client: ^3.1.6
   equatable: ^2.1.0
+  package_info_plus: ^10.2.0
   flutter:
     sdk: flutter
   flutter_bloc: ^9.1.1

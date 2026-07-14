@@ -119,7 +119,7 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
                 _CustomListTile(
                   title: "Acerca de",
                   icon: Icons.info_outline_rounded,
-                  onTap: () => null,
+                  onTap: () => context.goNamed(Routes.about),
                 ),
                 _CustomListTile(
                   title: "Cerrar sesión",
