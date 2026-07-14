@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -71,6 +70,11 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
                       ? Icons.light_mode_outlined
                       : Icons.dark_mode_outlined,
                   trailing: Switch(
+                    thumbIcon: WidgetStateProperty.resolveWith<Icon>((states) {
+                      return _isDark
+                          ? const Icon(Icons.light_mode_outlined, color: AppColors.secondary,)
+                          : const Icon(Icons.dark_mode_outlined);
+                    }),
                     value: _isDark,
                     onChanged: (value) {
                       setState(() {

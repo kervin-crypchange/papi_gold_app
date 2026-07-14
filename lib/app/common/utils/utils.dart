@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:intl/intl.dart';
+import 'package:papi_gold/app/core/theme/app_theme.dart';
 
 String getConnectedStatus(String connectStatus) {
   final Map<String, String> statusColors = {
@@ -172,3 +173,5 @@ void showLoading(BuildContext context, [bool isLoading = true]) {
         )
       : Navigator.of(context).pop();
 }
+
+bool get isDarkTheme => AppThemes.themeModeNotifier.value == ThemeMode.dark;

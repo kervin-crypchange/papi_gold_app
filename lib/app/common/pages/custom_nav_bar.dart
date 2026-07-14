@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
 import 'package:papi_gold/app/core/theme/index.dart';
 
@@ -16,15 +17,11 @@ class CustomNavBar extends StatelessWidget {
   });
 
   Color get bgColor {
-    return (AppThemes.themeModeNotifier.value == ThemeMode.dark)
-        ? AppColors.black
-        : AppColors.white;
+    return isDarkTheme ? AppColors.black : AppColors.white;
   }
 
   Color get unSelectColor {
-    return (AppThemes.themeModeNotifier.value == ThemeMode.dark)
-        ? AppColors.white
-        : AppColors.black;
+    return isDarkTheme ? AppColors.white : AppColors.black;
   }
 
   @override
@@ -33,7 +30,7 @@ class CustomNavBar extends StatelessWidget {
       valueListenable: AppThemes.themeModeNotifier,
       builder: (context, _, _) {
         return Container(
-          height: 45.h,
+          height: 38.h,
           width: .85.sw,
           decoration: BoxDecoration(
             color: bgColor,
@@ -50,7 +47,6 @@ class CustomNavBar extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: List.generate(navItems.length, (index) {
               final isSelected = currentIndex == index;
-
               return Expanded(
                 child: GestureDetector(
                   onTap: () => onTap(index),
@@ -59,34 +55,42 @@ class CustomNavBar extends StatelessWidget {
                     duration: Duration(milliseconds: 300),
                     curve: Curves.easeInOut,
                     decoration: BoxDecoration(
+                      border: (isSelected && !isDarkTheme)
+                          ? Border.all(color: AppColors.secondary)
+                          : null,
                       color: isSelected
                           ? AppColors.secondary.withValues(alpha: 0.15)
                           : Colors.transparent,
-                      borderRadius: BorderRadius.circular(100),
+                      borderRadius: BorderRadius.circular(100.r),
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Icon(
                           isSelected
                               ? navItems[index]['iconSelected']
                               : navItems[index]['icon'],
-                          color: isSelected ? AppColors.secondary : unSelectColor,
-                          size: 18,
+                          color: isSelected
+                              ? AppColors.secondary
+                              : unSelectColor,
+                          size: 16.r,
                         ),
                         Text(
                           navItems[index]['label'],
                           style: context.labelXSmall.copyWith(
-                            color: isSelected ? AppColors.secondary : unSelectColor,
+                            color: isSelected
+                                ? AppColors.secondary
+                                : unSelectColor,
                           ),
                         ),
                       ],
-                    ),
-                  ).paddingSymmetric(vertical: 4.h),
+                    ).paddingSymmetric(vertical: 2.h),
+                  ),
                 ),
               );
             }),
-          ).paddingSymmetric(horizontal: 6.w),
+          ).paddingSymmetric(horizontal: 4.w),
         ).paddingOnly(bottom: 32);
       },
     );

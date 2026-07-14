@@ -1,3 +1,4 @@
+export 'package:papi_gold/app/common/widgets/badge_widget.dart';
 export 'package:papi_gold/app/common/widgets/filled_button_widget.dart';
 export 'package:papi_gold/app/common/widgets/loading_widget.dart';
 export 'package:flutter/material.dart';

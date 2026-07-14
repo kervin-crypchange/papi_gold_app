@@ -6,15 +6,13 @@ class AppThemes {
     useMaterial3: true,
     appBarTheme: AppBarTheme(
       backgroundColor: Color(0xFFD4AF37),
+      foregroundColor: AppColors.white,
       iconTheme: IconThemeData(color: AppColors.white),
       actionsIconTheme: IconThemeData(color: AppColors.white),
     ),
     brightness: Brightness.light,
     scaffoldBackgroundColor: Colors.white,
     colorScheme: const ColorScheme.light(primary: Color(0xFFD4AF37)),
-    // listTileTheme: ListTileThemeData(
-    //   tileColor: AppColors.secondaryLigth
-    // ),
     switchTheme: SwitchThemeData(
       thumbColor: WidgetStateProperty.all(AppColors.secondary),
       trackOutlineColor: WidgetStateProperty.all(Color(0xFFE7E0E8)),
@@ -32,6 +30,9 @@ class AppThemes {
         borderSide: BorderSide(color: AppColors.secondary),
       ),
     ),
+    dialogTheme: DialogThemeData(
+      surfaceTintColor: Color.fromARGB(255, 95, 95, 95),
+    ),
   );
 
   static final darkTheme = ThemeData(
@@ -41,6 +42,12 @@ class AppThemes {
     scaffoldBackgroundColor: AppColors.grey,
     colorScheme: const ColorScheme.dark(primary: Color(0xFFD4AF37)),
     dialogTheme: DialogThemeData(backgroundColor: AppColors.grey),
+    switchTheme: SwitchThemeData(
+      thumbColor: WidgetStateProperty.all(AppColors.white),
+    ),
+    filledButtonTheme: FilledButtonThemeData(
+      style: FilledButton.styleFrom(foregroundColor: AppColors.white),
+    ),
     inputDecorationTheme: InputDecorationTheme(
       prefixIconColor: WidgetStateColor.resolveWith((states) {
         if (states.contains(WidgetState.focused)) {

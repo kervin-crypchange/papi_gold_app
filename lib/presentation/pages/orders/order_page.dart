@@ -163,8 +163,8 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
       _dataFormat(
         'Status del pago',
         (e.totalVenta > e.totalPagoVenta)
-            ? _badge('Pendiente', AppColors.error)
-            : _badge('Aprobado', AppColors.success),
+            ? BadgeWidget(label: 'Pendiente', color: AppColors.error)
+            : BadgeWidget(label: 'Aprobado', color: AppColors.success),
       ),
       _dataFormat(
         'Número de orden',
@@ -329,7 +329,12 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: context.bodyMedium.copyWith(color: AppColors.grey)),
+        Text(
+          label,
+          style: context.bodyMedium.copyWith(
+            color: isDarkTheme ? AppColors.white : AppColors.grey,
+          ),
+        ),
         content,
       ],
     );
@@ -360,16 +365,6 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
           ).paddingAll(6.r),
         ),
       ],
-    );
-  }
-
-  Widget _badge(String text, Color color) {
-    return Container(
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(12.r),
-      ),
-      child: Text(text).paddingSymmetric(horizontal: 12, vertical: 1),
     );
   }
 
