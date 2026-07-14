@@ -1,3 +1,6 @@
+export 'package:papi_gold/data/models/summary_steps_model.dart';
+export 'package:papi_gold/data/models/tracking_history_model.dart';
+export 'package:papi_gold/data/models/tracking_model.dart';
 export 'package:papi_gold/data/models/update_password_model.dart';
 export 'package:papi_gold/data/models/responses/response_payment_intent_model.dart';
 export 'package:papi_gold/data/models/responses/response_checkout_model.dart';

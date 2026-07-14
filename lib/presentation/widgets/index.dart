@@ -1,3 +1,4 @@
+export 'package:papi_gold/presentation/widgets/courrier_tracking.dart';
 export 'package:papi_gold/presentation/widgets/product_card.dart';
 export 'package:papi_gold/presentation/widgets/cart_item_card_widget.dart';
 export 'package:papi_gold/presentation/widgets/product_carousel_widget.dart';

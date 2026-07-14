@@ -17,6 +17,7 @@ abstract class Apis {
   static const chat = 'chat';
   static const client = 'client/me';
   static const updatePassword = 'client/password';
+  static const tracking = 'tracking';
 
 
   // envio de consulta via formulario

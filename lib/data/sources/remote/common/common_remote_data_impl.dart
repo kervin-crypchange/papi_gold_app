@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:logger/web.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/core/constants/index.dart';
@@ -99,7 +100,7 @@ class CommonRemoteDataImpl extends CommonRemoteData {
     try {
       final res = await sl<DioClient>().get(
         Apis.order,
-        queryParameters: {'page': page, 'per_page': 15},
+        queryParameters: {'page': page, 'per_page': 20},
       );
       return Right(ResponseOrdersModel.fromJson(res.data));
     } on DioException catch (e) {
@@ -166,6 +167,19 @@ class CommonRemoteDataImpl extends CommonRemoteData {
         data: {'sale_id': safeString(order)},
       );
       return Right(ResponsePaymentIntentModel.fromJson(res.data));
+    } on DioException catch (e) {
+      return Left(ServerException(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, TrackingModel>> tracking(String tracking) async {
+    try {
+      final res = await sl<DioClient>().get(
+        Apis.tracking,
+        queryParameters: {"trackingNumber": tracking},
+      );
+      return Right(TrackingModel.fromJson(res.data['data']));
     } on DioException catch (e) {
       return Left(ServerException(e));
     }
