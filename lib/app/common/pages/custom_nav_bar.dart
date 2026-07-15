@@ -26,6 +26,7 @@ class CustomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double navigationBarHeight = MediaQuery.of(context).padding.bottom;
     return ValueListenableBuilder<ThemeMode>(
       valueListenable: AppThemes.themeModeNotifier,
       builder: (context, _, _) {
@@ -91,7 +92,7 @@ class CustomNavBar extends StatelessWidget {
               );
             }),
           ).paddingSymmetric(horizontal: 4.w),
-        ).paddingOnly(bottom: 32);
+        ).paddingOnly(bottom: navigationBarHeight + 6);
       },
     );
   }

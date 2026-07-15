@@ -127,8 +127,7 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
                   onTap: () async {
                     final OkCancelResult res = await showOkCancelAlertDialog(
                       title: 'Cerrar sesión',
-                      cancelLabel: 'No, cancelar',
-                      okLabel: 'Cerrar sesión',
+                      message: '¿Seguro desea cerrar sesión?',
                       context: context,
                     );
 

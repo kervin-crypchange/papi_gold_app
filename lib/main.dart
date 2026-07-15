@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
@@ -8,6 +9,7 @@ import 'package:papi_gold/app/common/enums/box_enum.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/store/persistent_client_data.dart';
 import 'package:papi_gold/app/core/router/router.dart';
+import 'package:papi_gold/app/core/system/full_screen_config.dart';
 import 'package:papi_gold/app/core/theme/app_theme.dart';
 import 'package:papi_gold/injection_container.dart';
 import 'package:papi_gold/app/core/extensions/index.dart' as globals;
@@ -18,6 +20,14 @@ String publishableKey =
     "pk_test_51T3zYL8jtYx1E1JT3qN550tkyWo3JYLrHcGGLGVAadTtGUA62FTusAQHoceMJZI8iJm0Mi0mvmpJXEk9auleG8ax008dKcvIoV";
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge); 
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    systemNavigationBarColor: Colors.transparent,
+    systemNavigationBarDividerColor: Colors.transparent,
+    // systemNavigationBarIconBrightness: Brightness.dark,
+    statusBarColor: Colors.transparent,
+    statusBarIconBrightness: Brightness.dark,
+  ));
   try {
     await Hive.initFlutter();
     Stripe.publishableKey = publishableKey;
@@ -77,7 +87,7 @@ class BlocProviders extends StatelessWidget {
       child: const MainApp(),
     );
   }
-}
+} 
 
 class MainApp extends StatefulWidget {
   const MainApp({super.key});
@@ -93,6 +103,7 @@ class _MainAppState extends State<MainApp> {
   @override
   void initState() {
     super.initState();
+    // fullScreenConfig();
   }
 
   @override

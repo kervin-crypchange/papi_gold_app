@@ -83,7 +83,10 @@ class _NavigationPageState extends State<NavigationPage> {
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
-          SafeArea(child: pages[_currentIndex]),
+          SafeArea(
+            bottom: false,  
+            child: pages[_currentIndex]
+          ),
           CustomNavBar(
             currentIndex: _currentIndex,
             navItems: navItems,

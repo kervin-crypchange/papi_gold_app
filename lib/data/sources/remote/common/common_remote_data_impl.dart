@@ -100,7 +100,7 @@ class CommonRemoteDataImpl extends CommonRemoteData {
     try {
       final res = await sl<DioClient>().get(
         Apis.order,
-        queryParameters: {'page': page, 'per_page': 20},
+        queryParameters: {'page': page, 'per_page': 50},
       );
       return Right(ResponseOrdersModel.fromJson(res.data));
     } on DioException catch (e) {
