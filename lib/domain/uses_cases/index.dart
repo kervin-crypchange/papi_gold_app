@@ -1,6 +1,7 @@
+export 'package:papi_gold/domain/uses_cases/app_socket_use_case.dart';
 export 'package:papi_gold/domain/uses_cases/tracking_use_case.dart';
 export 'package:papi_gold/domain/uses_cases/location_use_case.dart';
-export 'package:papi_gold/domain/uses_cases/products_user_case.dart';
+export 'package:papi_gold/domain/uses_cases/products_use_case.dart';
 export 'package:papi_gold/domain/uses_cases/auth.dart';
 export 'package:papi_gold/domain/uses_cases/orders_use_case.dart';
 export 'package:papi_gold/domain/uses_cases/checkout_use_case.dart';

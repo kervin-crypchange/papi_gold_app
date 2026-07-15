@@ -12,6 +12,7 @@ dependencies:
   dio: ^5.9.2
   adaptive_dialog: ^2.8.0
   socket_io_client: ^3.1.6
+  web_socket_channel: ^3.0.3
   equatable: ^2.1.0
   package_info_plus: ^10.2.0
   flutter:
