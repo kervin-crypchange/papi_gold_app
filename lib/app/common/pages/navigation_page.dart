@@ -8,7 +8,6 @@ import 'package:papi_gold/app/core/constants/index.dart';
 import 'package:papi_gold/app/core/theme/index.dart';
 import 'package:papi_gold/presentation/cubits/index.dart';
 import 'package:persistent_shopping_cart/persistent_shopping_cart.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
 
 class NavigationPage extends StatefulWidget {
   const NavigationPage({super.key});

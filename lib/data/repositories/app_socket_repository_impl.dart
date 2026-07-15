@@ -5,12 +5,14 @@ import 'package:papi_gold/app/core/error/failure.dart';
 import 'package:papi_gold/data/sources/remote/index.dart';
 import 'package:papi_gold/domain/repositories/index.dart';
 import 'package:papi_gold/injection_container.dart';
+import 'package:flutter/material.dart';
 
-class AppSocketRepositoryImpl extends AppSocketRespository{
+
+class AppSocketRepositoryImpl extends AppSocketRespository {
   @override
   Future<Either<Failure, void>> connect(AppSocketsEnum event) async {
-    debugPrint('--- AppSocketRepositoryImpl');
     try {
+      debugPrint('--- AppSocketRepositoryImpl');
       sl<AppSocketSource>().connect(event);
       return Right(null);
     } on Failure catch (e) {
@@ -26,7 +28,7 @@ class AppSocketRepositoryImpl extends AppSocketRespository{
   }
 
   @override
-  Stream<Either<Failure, String>> getMessages()  {
+  Stream<Either<Failure, String>> getMessages() {
     throw UnimplementedError();
   }
 }
