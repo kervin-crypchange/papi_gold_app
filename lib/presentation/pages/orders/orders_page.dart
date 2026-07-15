@@ -104,7 +104,7 @@ class _OrdersPageState extends State<OrdersPage> with LoggerMixin {
             Text(
               getFormatMoney(stat.amount),
               style: context.headlineSmall,
-            ).light,
+            ).medium,
             Text('${stat.count} orders', style: context.bodySmall).light,
           ],
         ).paddingAll(8.r),

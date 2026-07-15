@@ -95,8 +95,8 @@ class ProductCard extends StatelessWidget with MessengerMixin {
                       color: AppThemes.themeModeNotifier.value == ThemeMode.dark
                           ? AppColors.white
                           : AppColors.secondary,
-                      size: 14,
-                    ).paddingAll(1.r),
+                      size: 16,
+                    ).paddingAll(2.r),
                   ),
                 ),
               ],

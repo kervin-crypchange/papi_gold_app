@@ -28,7 +28,7 @@ class _CartItemCardWidgetState extends State<CartItemCardWidget> {
     return Container(
       padding: EdgeInsets.all(8.r),
       width: 1.sw,
-      height: 130,
+      height: 150,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12.r),
         color:isDarkTheme ? AppColors.blackLigth : AppColors.secondaryLigth,

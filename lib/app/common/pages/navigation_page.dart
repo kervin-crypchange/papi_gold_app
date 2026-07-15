@@ -5,7 +5,6 @@ import 'package:papi_gold/app/common/mixins/index.dart';
 import 'package:papi_gold/app/common/pages/index.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/constants/index.dart';
-import 'package:papi_gold/app/core/theme/index.dart';
 import 'package:papi_gold/presentation/cubits/index.dart';
 import 'package:persistent_shopping_cart/persistent_shopping_cart.dart';
 
@@ -126,28 +125,16 @@ class _NavigationPageState extends State<NavigationPage> with MessengerMixin {
           ),
         ],
       ),
-      body: BlocListener<AppSocketCubit, AppSocketState>(
-        listener: (context, state) {
-          if (state is AppSocketConnected) {
-            messenger.showSnackBar(
-              message: 'Conexion exitosa',
-              color: AppColors.success,
-            );
-          }
-        },
-        child: SafeArea(
-          child: Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              pages[_currentIndex],
-              CustomNavBar(
-                currentIndex: _currentIndex,
-                navItems: navItems,
-                onTap: _onSelectedPage,
-              ),
-            ],
+      body: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          SafeArea(bottom: false, child: pages[_currentIndex]),
+          CustomNavBar(
+            currentIndex: _currentIndex,
+            navItems: navItems,
+            onTap: _onSelectedPage,
           ),
-        ),
+        ],
       ),
     );
   }
