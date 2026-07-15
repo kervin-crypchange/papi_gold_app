@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:dartz/dartz.dart';
+import 'package:flutter/widgets.dart';
 import 'package:logger/logger.dart';
 import 'package:papi_gold/app/common/enums/index.dart';
 import 'package:papi_gold/app/core/error/failure.dart';
@@ -22,6 +23,7 @@ class AppSocketSourceImpl extends AppSocketSource {
 
   @override
   Future<Either<Failure, void>> connect(AppSocketsEnum socket) async {
+    debugPrint('--- AppSocketSourceImpl');
     final String token = sl<AuthLocalData>().getSavedToken();
     final PersistentClientDataModel pcd = PersistentClientData()
         .getClientData();

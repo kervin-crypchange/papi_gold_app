@@ -73,6 +73,7 @@ class BlocProviders extends StatelessWidget {
         BlocProvider(create: (_) => sl<PaymentCubit>()),
         BlocProvider(create: (_) => sl<LocationCubit>()),
         BlocProvider(create: (_) => sl<TrackingCubit>()),
+        BlocProvider(create: (_) => sl<AppSocketCubit>()),
       ],
       child: const MainApp(),
     );
@@ -88,7 +89,7 @@ class MainApp extends StatefulWidget {
 
 class _MainAppState extends State<MainApp> {
   // Locale? _locale;
-  late final StreamSubscription<String> _localeSubscription;
+  // late final StreamSubscription<String> _localeSubscription;
 
   @override
   void initState() {
@@ -97,7 +98,7 @@ class _MainAppState extends State<MainApp> {
 
   @override
   void dispose() {
-    _localeSubscription.cancel();
+    // _localeSubscription.cancel();
     super.dispose();
   }
 

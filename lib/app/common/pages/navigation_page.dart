@@ -1,7 +1,12 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:papi_gold/app/common/enums/index.dart';
+import 'package:papi_gold/app/common/mixins/index.dart';
 import 'package:papi_gold/app/common/pages/index.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/constants/index.dart';
+import 'package:papi_gold/app/core/theme/index.dart';
+import 'package:papi_gold/presentation/cubits/index.dart';
 import 'package:persistent_shopping_cart/persistent_shopping_cart.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
@@ -12,8 +17,8 @@ class NavigationPage extends StatefulWidget {
   State<NavigationPage> createState() => _NavigationPageState();
 }
 
-class _NavigationPageState extends State<NavigationPage> {
-  late WebSocketChannel _channel;
+class _NavigationPageState extends State<NavigationPage> with MessengerMixin {
+  // late WebSocketChannel _channel;
 
   int _currentIndex = 0;
 
@@ -27,6 +32,8 @@ class _NavigationPageState extends State<NavigationPage> {
   @override
   void initState() {
     super.initState();
+    debugPrint('--- initState NavigationPage');
+    context.read<AppSocketCubit>().connect(AppSocketsEnum.notification);
     // _iniSocket();
   }
 
@@ -62,7 +69,7 @@ class _NavigationPageState extends State<NavigationPage> {
 
   @override
   void dispose() {
-    _channel.sink.close();
+    // _channel.sink.close();
     super.dispose();
   }
 
@@ -120,16 +127,28 @@ class _NavigationPageState extends State<NavigationPage> {
           ),
         ],
       ),
-      body: Stack(
-        alignment: Alignment.bottomCenter,
-        children: [
-          SafeArea(child: pages[_currentIndex]),
-          CustomNavBar(
-            currentIndex: _currentIndex,
-            navItems: navItems,
-            onTap: _onSelectedPage,
+      body: BlocListener<AppSocketCubit, AppSocketState>(
+        listener: (context, state) {
+          if (state is AppSocketConnected) {
+            messenger.showSnackBar(
+              message: 'Conexion exitosa',
+              color: AppColors.success,
+            );
+          }
+        },
+        child: SafeArea(
+          child: Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              pages[_currentIndex],
+              CustomNavBar(
+                currentIndex: _currentIndex,
+                navItems: navItems,
+                onTap: _onSelectedPage,
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
