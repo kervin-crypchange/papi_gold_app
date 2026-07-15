@@ -8,11 +8,11 @@ import 'package:papi_gold/app/core/error/server_exception.dart';
 import 'package:papi_gold/app/core/store/client_data_model.dart';
 import 'package:papi_gold/app/core/store/persistent_client_data.dart';
 import 'package:papi_gold/data/sources/local/index.dart';
-import 'package:papi_gold/data/sources/remote/socket/app_socket.dart';
+import 'package:papi_gold/data/sources/remote/socket/app_socket_source.dart';
 import 'package:papi_gold/injection_container.dart';
 import 'package:socket_io_client/socket_io_client.dart' as client;
 
-class AppSocketImpl extends AppSocket {
+class AppSocketSourceImpl extends AppSocketSource {
   Logger logger = Logger();
   late client.Socket _socket;
   late StreamController<String> _messageController;

@@ -1,5 +1,6 @@
 
 import 'package:dartz/dartz.dart';
+import 'package:papi_gold/app/common/enums/index.dart';
 import 'package:papi_gold/app/core/error/index.dart';
 import 'package:papi_gold/app/core/use_case/use_case.dart';
 import 'package:papi_gold/domain/repositories/index.dart';
@@ -13,9 +14,9 @@ class StreamMessagesUseCase
   }
 }
 
-class ConnectSocketUseCase implements UseCase<Either<Failure, void>, String> {
+class ConnectSocketUseCase implements UseCase<Either<Failure, void>, AppSocketsEnum> {
   @override
-  Future<Either<Failure, void>> call({String? param}) async {
+  Future<Either<Failure, void>> call({AppSocketsEnum? param}) async {
     return await sl<AppSocketRespository>().connect(param!);
   }
 }

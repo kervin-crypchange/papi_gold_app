@@ -4,6 +4,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:logger/logger.dart';
+import 'package:papi_gold/app/common/enums/index.dart';
 import 'package:papi_gold/app/core/error/index.dart';
 import 'package:papi_gold/domain/uses_cases/index.dart';
 import 'package:papi_gold/injection_container.dart';
@@ -15,7 +16,7 @@ class AppSocketCubit extends Cubit<AppSocketState> {
   StreamSubscription<Either<Failure, String>>? _messagesSubscription;
   AppSocketCubit() : super(AppSocketInitial());
 
-  Future<void> conect(String event) async {
+  Future<void> conect(AppSocketsEnum event) async {
     emit(AppSocketInitial());
     final connectionResult = await sl<ConnectSocketUseCase>().call(param: event);
     connectionResult.fold(
