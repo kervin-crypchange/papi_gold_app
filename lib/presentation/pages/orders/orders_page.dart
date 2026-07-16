@@ -19,8 +19,7 @@ class OrdersPage extends StatefulWidget {
   State<OrdersPage> createState() => _OrdersPageState();
 }
 
-class _OrdersPageState extends State<OrdersPage>
-    with LoggerMixin, MessengerMixin {
+class _OrdersPageState extends State<OrdersPage> with MessengerMixin {
   final ScrollController _scrollController = ScrollController();
   List<OrderDetailEntity> orders = [];
   MetaEntity? meta;
@@ -35,7 +34,7 @@ class _OrdersPageState extends State<OrdersPage>
   }
 
   Future<void> loadData(int page) async {
-    context.read<OrdersCubit>().orders(page).then((either) {
+    context.read<OrdersCubit>().list(page).then((either) {
       either.fold(
         (failure) => setState(() => orders = []),
         (response) => setState(() {
@@ -49,7 +48,6 @@ class _OrdersPageState extends State<OrdersPage>
   }
 
   void _onScroll() {
-    print('--- scrolling');
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
       if (meta!.currentPage < meta!.lastPage) {

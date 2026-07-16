@@ -64,7 +64,7 @@ class CommonRemoteDataImpl extends CommonRemoteData {
     try {
       final res = await sl<DioClient>().get(
         Apis.product,
-        queryParameters: {'page': page, 'per_page': 15},
+        queryParameters: {'page': page, 'per_page': 10},
       );
       return Right(ResponseProductsModel.fromJson(res.data));
     } on DioException catch (e) {

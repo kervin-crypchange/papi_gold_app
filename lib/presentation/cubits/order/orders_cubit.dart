@@ -12,18 +12,7 @@ part 'orders_state.dart';
 class OrdersCubit extends Cubit<OrdersState> {
   OrdersCubit() : super(OrdersInitial());
 
-  void orderList(int page) async {
-    emit(OrdersLoadding());
-
-    Either response = await sl<OrdersUseCase>().call(param: page);
-
-    response.fold(
-      (l) => emit(OrdersFailure(message: l.toString())),
-      (r) => emit(OrdersSuccess(response: r)),
-    );
-  }
-
-  Future<Either<Failure, ResponseOrdersEntity>> orders(int page) async {
+  Future<Either<Failure, ResponseOrdersEntity>> list(int page) async {
     return await sl<OrdersUseCase>().call(param: page);
   }
 
