@@ -27,6 +27,7 @@ class InterceptorWrapper extends Interceptor with MessengerMixin {
   ) async {
     final context = AppNavigation.navigatorKey.currentContext;
     if (context != null && context.mounted) showLoading(context, false);
+
     switch (err.response?.statusCode) {
       case 401:
         sl<AuthLocalData>().clear();
@@ -88,25 +89,18 @@ class InterceptorWrapper extends Interceptor with MessengerMixin {
     if (token != null && token.isNotEmpty) {
       options.headers['Authorization'] = 'Bearer $token';
     }
-    // header para peticiones publicas sin login
     options.headers['X-API-KEY'] = 'cYaS7nA1IHUzuZQ42AbjPYzsiygFmegUiARPPv6t';
 
     logger.i('headers ==> ${options.headers}');
     logger.i('queryParameters ==> ${options.queryParameters}');
     logger.i('Bearer Token ==> $token');
     logger.i('${options.method} request ==> $requestPath');
-    logger.i('${options.method} data:${options.data} request ==> $requestPath');
+    
     handler.next(options);
   }
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    logger.d(
-      'STATUSCODE: ${response.statusCode} \n '
-      'STATUSMESSAGE: ${response.statusMessage} \n'
-      'HEADERS: ${response.headers} \n'
-      'Data: ${response.data}',
-    ); // Debug log
     handler.next(response); // continue with the Response
   }
 }

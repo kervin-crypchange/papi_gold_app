@@ -1,11 +1,8 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:papi_gold/app/common/enums/index.dart';
 import 'package:papi_gold/app/common/mixins/index.dart';
 import 'package:papi_gold/app/common/pages/index.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/constants/index.dart';
-import 'package:papi_gold/presentation/cubits/index.dart';
 import 'package:persistent_shopping_cart/persistent_shopping_cart.dart';
 
 class NavigationPage extends StatefulWidget {
@@ -16,7 +13,6 @@ class NavigationPage extends StatefulWidget {
 }
 
 class _NavigationPageState extends State<NavigationPage> with MessengerMixin {
-  // late WebSocketChannel _channel;
 
   int _currentIndex = 0;
 
@@ -30,44 +26,11 @@ class _NavigationPageState extends State<NavigationPage> with MessengerMixin {
   @override
   void initState() {
     super.initState();
-    debugPrint('--- initState NavigationPage');
-    context.read<AppSocketCubit>().connect(AppSocketsEnum.notification);
-    // _iniSocket();
+    // context.read<AppSocketCubit>().connect(AppSocketsEnum.notification);
   }
-
-  // Future<void> _iniSocket() async {
-  //   debugPrint('--- InitSocket');
-
-  //   final String token = sl<AuthLocalData>().getSavedToken();
-  //   final wsUrl = Uri.parse('ws://192.168.100.162:443');
-  //   _channel = IOWebSocketChannel.connect(
-  //     wsUrl,
-  //     headers: {
-  //       'Content-type': 'application/json',
-  //       'Accept': 'application/json',
-  //       'x-api-key': 'cYaS7nA1IHUzuZQ42AbjPYzsiygFmegUiARPPv6t',
-  //       'Authorization': 'Bearer $token',
-  //     },
-  //   );
-  //   await _channel.ready;
-
-  //   _channel.stream.listen(
-  //     (event) {
-  //       debugPrint('--- New event received: $event');
-  //     },
-  //     onError: (error) {
-  //       debugPrint('--- WebSocket error: $error');
-  //     },
-  //     onDone: () {
-  //       debugPrint('--- WebSocket connection closed.');
-  //     },
-  //     cancelOnError: true,
-  //   );
-  // }
 
   @override
   void dispose() {
-    // _channel.sink.close();
     super.dispose();
   }
 

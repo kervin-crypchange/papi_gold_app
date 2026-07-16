@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:papi_gold/app/core/error/failure.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 import 'package:papi_gold/domain/entities/order_detail_entity.dart';
 import 'package:papi_gold/domain/uses_cases/index.dart';
@@ -21,6 +22,11 @@ class OrdersCubit extends Cubit<OrdersState> {
       (r) => emit(OrdersSuccess(response: r)),
     );
   }
+
+  Future<Either<Failure, ResponseOrdersEntity>> orders(int page) async {
+    return await sl<OrdersUseCase>().call(param: page);
+  }
+
   void orderDetail(String id) async {
     emit(OrdersLoadding());
 

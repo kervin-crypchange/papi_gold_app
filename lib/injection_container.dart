@@ -19,6 +19,7 @@ Future<void> initializeDependencies() async {
   sl.registerLazySingleton<AuthData>(() => AuthDataImpl());
   sl.registerLazySingleton<AuthLocalData>(() => AuthLocalDataImpl());
   sl.registerLazySingleton<CommonRemoteData>(() => CommonRemoteDataImpl());
+  sl.registerLazySingleton<AppSocketSource>(() => AppSocketSourceImpl());
 
   // Repositories
   sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl());

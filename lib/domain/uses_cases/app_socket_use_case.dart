@@ -1,6 +1,5 @@
 
 import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart';
 import 'package:papi_gold/app/common/enums/index.dart';
 import 'package:papi_gold/app/core/error/index.dart';
 import 'package:papi_gold/app/core/use_case/use_case.dart';
@@ -18,15 +17,13 @@ class StreamMessagesUseCase
 class ConnectSocketUseCase implements UseCase<Either<Failure, void>, AppSocketsEnum> {
   @override
   Future<Either<Failure, void>> call({AppSocketsEnum? param}) async {
-    debugPrint('--- ConnectSocketUseCase');
-
     return await sl<AppSocketRespository>().connect(param!);
   }
 }
 
-class DisconnectSocketUseCase implements UseCase<Either<Failure, void>, void> {
+class DisconnectSocketUseCase implements UseCase<Either<Failure, void>, AppSocketsEnum> {
   @override
-  Future<Either<Failure, void>> call({void param}) async {
-    return await sl<AppSocketRespository>().disconnect();
+  Future<Either<Failure, void>> call({AppSocketsEnum? param}) async {
+    return await sl<AppSocketRespository>().disconnect(param!);
   }
 }

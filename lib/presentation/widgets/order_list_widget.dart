@@ -9,12 +9,19 @@ import 'package:papi_gold/presentation/widgets/index.dart';
 class OrderListWidget extends StatelessWidget {
   final MetaEntity meta;
   final List<OrderDetailEntity> orders;
+  final ScrollController controller;
 
-  const OrderListWidget({super.key, required this.meta, required this.orders});
+  const OrderListWidget({
+    super.key,
+    required this.meta,
+    required this.orders,
+    required this.controller,
+  });
 
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
+      controller: controller,
       padding: EdgeInsets.only(bottom: 70.h),
       separatorBuilder: (context, index) => Divider(
         color: AppColors.secondary,

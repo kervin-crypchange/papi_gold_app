@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:logger/logger.dart';
@@ -17,8 +16,7 @@ class AppSocketCubit extends Cubit<AppSocketState> {
   AppSocketCubit() : super(AppSocketInitial());
 
   Future<void> connect(AppSocketsEnum event) async {
-    debugPrint('--- connect Cubit');
-    
+
     emit(AppSocketInitial());
     final connectionResult = await sl<ConnectSocketUseCase>().call(
       param: event,

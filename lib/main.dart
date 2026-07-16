@@ -9,7 +9,6 @@ import 'package:papi_gold/app/common/enums/box_enum.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/store/persistent_client_data.dart';
 import 'package:papi_gold/app/core/router/router.dart';
-import 'package:papi_gold/app/core/system/full_screen_config.dart';
 import 'package:papi_gold/app/core/theme/app_theme.dart';
 import 'package:papi_gold/injection_container.dart';
 import 'package:papi_gold/app/core/extensions/index.dart' as globals;
