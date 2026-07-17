@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:papi_gold/app/common/mixins/logger_mixin.dart';
 import 'package:papi_gold/app/common/mixins/messenger_mixin.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';

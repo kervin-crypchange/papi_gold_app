@@ -23,7 +23,6 @@ Future<void> main() async {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     systemNavigationBarColor: Colors.transparent,
     systemNavigationBarDividerColor: Colors.transparent,
-    // systemNavigationBarIconBrightness: Brightness.dark,
     statusBarColor: Colors.transparent,
     statusBarIconBrightness: Brightness.dark,
   ));

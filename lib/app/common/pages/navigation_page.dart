@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:go_router/go_router.dart';
+import 'package:papi_gold/app/common/enums/index.dart';
 import 'package:papi_gold/app/common/mixins/index.dart';
 import 'package:papi_gold/app/common/pages/index.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/constants/index.dart';
+import 'package:papi_gold/app/core/services/socket_service.dart';
 import 'package:persistent_shopping_cart/persistent_shopping_cart.dart';
 
 class NavigationPage extends StatefulWidget {
@@ -13,8 +17,9 @@ class NavigationPage extends StatefulWidget {
 }
 
 class _NavigationPageState extends State<NavigationPage> with MessengerMixin {
-
   int _currentIndex = 0;
+  late String token;
+  SocketService socketService = SocketService();
 
   final List<Widget> pages = [
     HomePage(),
@@ -26,7 +31,17 @@ class _NavigationPageState extends State<NavigationPage> with MessengerMixin {
   @override
   void initState() {
     super.initState();
-    // context.read<AppSocketCubit>().connect(AppSocketsEnum.notification);
+    initSocket();
+    final String channelName = AppSocketsEnum.notification.channel;
+    final String eventName = AppSocketsEnum.notification.event;
+
+    socketService.listenToPrivateChannel(channelName, eventName, (data) {
+      debugPrint('--- $data');
+    });
+  }
+
+  Future<void> initSocket() async {
+    await socketService.init();
   }
 
   @override
