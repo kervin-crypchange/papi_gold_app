@@ -2,38 +2,34 @@ import 'package:flutter/cupertino.dart';
 import 'package:papi_gold/app/common/enums/box_enum.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:papi_gold/app/common/enums/index.dart';
+import 'package:papi_gold/app/core/store/client_data_model.dart';
+import 'package:papi_gold/app/core/store/persistent_client_data.dart';
 
 import 'package:pusher_reverb_flutter/pusher_reverb_flutter.dart';
 
 class SocketService {
   static final SocketService _instance = SocketService._internal();
-  ReverbClient? _client;
+  ReverbClient? client;
   Channel? publicChannel;
   PrivateChannel? privateChannel;
-
+  PersistentClientDataModel? user;
   SocketService._internal();
 
   factory SocketService() => _instance;
 
   Future<void> init() async {
-    if (_client != null) return;
+    if (client != null) return;
 
-    _client = ReverbClient.instance(
+    client = ReverbClient.instance(
       host: '192.168.100.162',
       port: 8080,
       authorizer: _myAuthorizer,
       useTLS: false,
       appKey: 'numgwtsytqyccouvi54w',
       authEndpoint: 'http://192.168.100.162:8000/api/broadcasting/auth',
-      onConnecting: () => debugPrint('--- Connecting to server...'),
-      onConnected: (socketId) =>
-          debugPrint('--- Connected! Socket ID: $socketId'),
-      onReconnecting: () => debugPrint('--- Connection lost. Reconnecting...'),
-      onDisconnected: () => debugPrint('--- Disconnected from server'),
-      onError: (error) => debugPrint('--- Connection error: $error'),
     );
 
-    await _client?.connect();
+    await client!.connect();
   }
 
   Future<void> listenToPublicChannel(
@@ -41,18 +37,11 @@ class SocketService {
     String eventName,
     Function(dynamic) onEvent,
   ) async {
-    if (_client == null) {
-      debugPrint(
-        'Error: Debes llamar a init() primero antes de escuchar canales',
-      );
-      return;
-    }
+    if (client == null) return;
 
-    // Suscribirse al canal (público en este ejemplo)
-    publicChannel = _client!.subscribeToChannel(channelName);
+    publicChannel = client!.subscribeToChannel(channelName);
     await publicChannel?.subscribe();
 
-    // Listen for events
     publicChannel?.bind(eventName, (eventName, data) {
       onEvent(data);
     });
@@ -63,19 +52,13 @@ class SocketService {
     String eventName,
     Function(dynamic) onEvent,
   ) async {
-    if (_client == null) {
-      debugPrint(
-        'Error: Debes llamar a init() primero antes de escuchar canales',
-      );
-      return;
-    }
+    if (client == null) return;
+    user = PersistentClientData().getClientData();
+    final String channel = 'private-$channelName.${user!.id}';
+    privateChannel = client!.subscribeToPrivateChannel(channel);
+    await privateChannel!.subscribe();
 
-    // Suscribirse al canal (público en este ejemplo)
-    privateChannel = _client!.subscribeToPrivateChannel(channelName);
-    await privateChannel?.subscribe();
-
-    // Listen for events
-    privateChannel?.bind(eventName, (eventName, data) {
+    privateChannel?.bind('private-$eventName', (eventName, data) {
       onEvent(data);
     });
   }
@@ -89,8 +72,8 @@ class SocketService {
   }
 
   void disconnect() {
-    _client?.disconnect();
-    _client = null;
+    client?.disconnect();
+    client = null;
   }
 
   Future<Map<String, String>> _myAuthorizer(
