@@ -1,5 +1,4 @@
 import 'package:papi_gold/app/common/widgets/index.dart';
-import 'package:papi_gold/app/core/extensions/text_theme.dart';
 
 class AddressPage extends StatelessWidget {
   const AddressPage({super.key});
@@ -7,10 +6,28 @@ class AddressPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Mis direcciones')),
-      body: SafeArea(
-        child: Center(child: Text('Address Page', style: context.labelLarge)),
-      ),
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            pinned: true,
+            expandedHeight: 150.0,
+            flexibleSpace: FlexibleSpaceBar(
+              title: Text('Mis direcciones'),
+            ),
+          ),
+           SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (BuildContext context, int index) {
+                return ListTile(
+                  leading: CircleAvatar(child: Text('${index + 1}')),
+                  title: Text('Item Number ${index + 1}'),
+                );
+              },
+              childCount: 20, // Defines total list capacity
+            ),
+          ),
+        ],
+      )
     );
   }
 }
