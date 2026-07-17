@@ -107,6 +107,11 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
                   onTap: () => context.goNamed(Routes.profile),
                 ),
                 _CustomListTile(
+                  title: "Mis direcciones",
+                  icon: Icons.location_on_outlined,
+                  onTap: () => context.goNamed(Routes.address),
+                ),
+                _CustomListTile(
                   title: "Cambiar contraseña",
                   icon: Icons.lock_outline,
                   onTap: () => context.goNamed(Routes.changePassword),
