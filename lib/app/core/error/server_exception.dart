@@ -68,12 +68,11 @@ class ServerException extends Equatable with LoggerMixin implements Failure {
             break;
 
           case DioExceptionType.unknown:
-            if (error.response?.statusCode == null) {
-              serverException = ServerException._(
-                statusCode: 500,
-                message: 'Verify your internet connection',
-              );
-            }
+            serverException = ServerException._(
+              exceptionType: ServerExceptionType.unknown,
+              message: 'Connection error',
+              statusCode: 500
+            );
             break;
 
           case DioExceptionType.badResponse:

@@ -1,3 +1,4 @@
+export 'package:papi_gold/app/common/enums/app_sockets_enum.dart';
 export 'package:papi_gold/app/common/enums/opt_type_enum.dart';
 export 'package:papi_gold/app/common/enums/checkout_format_enum.dart';
 export 'package:papi_gold/app/common/enums/exception_type_enum.dart';

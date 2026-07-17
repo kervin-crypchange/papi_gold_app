@@ -1,6 +1,6 @@
 abstract class Apis {
-  static const baseUrl = 'https://papigold.com/api/';
-  // static const baseUrl = 'http://192.168.100.162:8000/api/';
+  // static const baseUrl = 'https://papigold.com/api/';
+  static const baseUrl = 'http://192.168.100.162:8000/api/';
 
   // AUTH
   static const session = 'session';
@@ -12,6 +12,7 @@ abstract class Apis {
   static  const countries = 'location';
   static const location = 'location/show';
 
+  static const notifications = 'notifications';
   static const order = 'order';
   static const paymentIntent = 'payment';
   static const chat = 'chat';

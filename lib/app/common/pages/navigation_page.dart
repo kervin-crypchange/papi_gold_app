@@ -1,8 +1,12 @@
 import 'package:go_router/go_router.dart';
+import 'package:papi_gold/app/common/enums/app_sockets_enum.dart';
+import 'package:papi_gold/app/common/mixins/index.dart';
 import 'package:papi_gold/app/common/pages/index.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/constants/index.dart';
+import 'package:papi_gold/app/core/services/socket_service.dart';
 import 'package:persistent_shopping_cart/persistent_shopping_cart.dart';
+import 'package:pusher_reverb_flutter/pusher_reverb_flutter.dart' as connstate;
 
 class NavigationPage extends StatefulWidget {
   const NavigationPage({super.key});
@@ -11,8 +15,10 @@ class NavigationPage extends StatefulWidget {
   State<NavigationPage> createState() => _NavigationPageState();
 }
 
-class _NavigationPageState extends State<NavigationPage> {
+class _NavigationPageState extends State<NavigationPage> with MessengerMixin {
   int _currentIndex = 0;
+  late String token;
+  SocketService socketService = SocketService();
 
   final List<Widget> pages = [
     HomePage(),
@@ -20,6 +26,31 @@ class _NavigationPageState extends State<NavigationPage> {
     OrdersPage(),
     SettingsPage(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration(milliseconds: 5000), () async => initSocket());
+  }
+
+  Future<void> initSocket() async {
+    await socketService.init();
+
+    socketService.client!.onConnectionStateChange.listen((state) {
+      if (state == connstate.ConnectionState.connected) {
+        final String channelName = AppSocketsEnum.notification.channel;
+        final String eventName = AppSocketsEnum.notification.event;
+        socketService.listenToPrivateChannel(channelName, eventName, (data) {
+          debugPrint('--- $data');
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   final List<Map<String, dynamic>> navItems = [
     {
@@ -51,11 +82,6 @@ class _NavigationPageState extends State<NavigationPage> {
   }
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
@@ -83,10 +109,7 @@ class _NavigationPageState extends State<NavigationPage> {
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
-          SafeArea(
-            bottom: false,  
-            child: pages[_currentIndex]
-          ),
+          SafeArea(bottom: false, child: pages[_currentIndex]),
           CustomNavBar(
             currentIndex: _currentIndex,
             navItems: navItems,

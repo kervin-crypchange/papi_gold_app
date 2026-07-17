@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:papi_gold/app/common/mixins/logger_mixin.dart';
+import 'package:papi_gold/app/common/mixins/messenger_mixin.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
@@ -18,30 +18,54 @@ class OrdersPage extends StatefulWidget {
   State<OrdersPage> createState() => _OrdersPageState();
 }
 
-class _OrdersPageState extends State<OrdersPage> with LoggerMixin {
+class _OrdersPageState extends State<OrdersPage> with MessengerMixin {
+  final ScrollController _scrollController = ScrollController();
+  List<OrderDetailEntity> orders = [];
+  MetaEntity? meta;
+  StatsEntity? stats;
+  bool isLoading = true;
+
   @override
   void initState() {
     super.initState();
     loadData(1);
+    _scrollController.addListener(_onScroll);
   }
 
-  void loadData(int page) {
-    context.read<OrdersCubit>().orderList(page);
+  Future<void> loadData(int page) async {
+    context.read<OrdersCubit>().list(page).then((either) {
+      either.fold(
+        (failure) => setState(() => orders = []),
+        (response) => setState(() {
+          meta = response.meta;
+          orders.addAll(response.data);
+          stats = response.stats;
+          isLoading = false;
+        }),
+      );
+    });
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+      if (meta!.currentPage < meta!.lastPage) {
+        loadData(meta!.currentPage + 1);
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<OrdersCubit, OrdersState>(
-      listener: (context, state) {},
-      builder: (context, state) {
-        if (state is OrdersLoadding) {
-          return LoadingWidget();
-        }
-        if (state is OrdersSuccess) {
-          final StatsEntity stats = state.response.stats;
-          final List<OrderDetailEntity> orders = state.response.data;
-          final MetaEntity meta = state.response.meta;
-          return Column(
+    return isLoading
+        ? LoadingWidget()
+        : Column(
             spacing: 20.h,
             mainAxisSize: MainAxisSize.max,
             children: [
@@ -49,14 +73,14 @@ class _OrdersPageState extends State<OrdersPage> with LoggerMixin {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  statCard('Invested', stats.invested),
+                  statCard('Invested', stats!.invested),
                   Container(
                     height: 60,
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.white60, width: 0.5),
                     ),
                   ),
-                  statCard('Sold', stats.sold),
+                  statCard('Sold', stats!.sold),
                 ],
               ).paddingAll(6.r),
               Row(
@@ -78,17 +102,14 @@ class _OrdersPageState extends State<OrdersPage> with LoggerMixin {
                     border: Border(top: BorderSide(color: Colors.white38)),
                   ),
                   child: OrderListWidget(
-                    meta: meta,
+                    controller: _scrollController,
+                    meta: meta!,
                     orders: orders,
                   ).paddingOnly(top: 16.h),
                 ),
               ),
             ],
           ).paddingSymmetric(vertical: 12.h);
-        }
-        return Center(child: Text('Error en la carga de datos'));
-      },
-    );
   }
 
   Widget statCard(String label, StatsDataEntity stat) {
@@ -99,13 +120,13 @@ class _OrdersPageState extends State<OrdersPage> with LoggerMixin {
           children: [
             Text(
               label,
-              style: context.bodySmall.copyWith(color: AppColors.secondary),
+              style: context.bodyMedium.copyWith(color: AppColors.secondary),
             ),
             Text(
               getFormatMoney(stat.amount),
               style: context.headlineSmall,
             ).medium,
-            Text('${stat.count} orders', style: context.bodySmall).light,
+            Text('${stat.count} orders', style: context.bodySmall),
           ],
         ).paddingAll(8.r),
       ),

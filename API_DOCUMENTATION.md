@@ -96,8 +96,8 @@ La API utiliza **Laravel Reverb** para notificar cambios en los datos de forma i
 | `products` | `product.updated` | Se dispara cuando se modifica un producto, su stock o su precio. |
 | `settings` | `settings.updated` | Se dispara cuando cambian los ajustes globales del sitio. |
 | `chat.{identifier}` | `message.sent` | Canal privado/presencia para el chat de soporte (requiere identificador de sesión). |
-| `App.Models.Client.{id}` | `notification.received` | **Canal Privado**: Se dispara cuando el cliente recibe una nueva notificación de sistema. |
-| `App.Models.Client.{id}` | `sale.updated` | **Canal Privado**: Se dispara cuando un pedido del cliente cambia de estado o datos. |
+| `client.{id}` | `notification.received` | **Canal Privado**: Se dispara cuando el cliente recibe una nueva notificación de sistema. |
+| `client.{id}` | `sale.updated` | **Canal Privado**: Se dispara cuando un pedido del cliente cambia de estado o datos. |
 
 #### Ejemplo de Suscripción (JavaScript/Laravel Echo)
 ```javascript
@@ -135,10 +135,25 @@ echo.channel('products')
   - `?per_page={n}` (opcional): Cantidad de elementos por página (default: 4).
   - `?metal={id}` (opcional): Filtrar por ID de tipo de metal.
   - `?category={id}` (opcional): Filtrar por ID de categoría de producto.
-- **Respuesta:** Lista paginada agrupada por tipo de metal, incluyendo metadatos inteligentes de filtros disponibles. Los filtros están jerárquicamente vinculados (Metal -> Categorías).
+- **Respuesta:** Lista paginada agrupada por tipo de metal, incluyendo metadatos inteligentes de filtros disponibles. Los filtros están jerárquicamente vinculados (Metal -> Categorías). Sigue la estructura estándar de paginación (`data`, `links`, `meta`).
 ```json
 {
   "data": [ ... ],
+  "links": {
+    "first": "http://api.papi.gold/api/product?page=1",
+    "last": "http://api.papi.gold/api/product?page=5",
+    "prev": null,
+    "next": "http://api.papi.gold/api/product?page=2"
+  },
+  "meta": {
+    "current_page": 1,
+    "from": 1,
+    "last_page": 5,
+    "path": "http://api.papi.gold/api/product",
+    "per_page": 4,
+    "to": 4,
+    "total": 20
+  },
   "filters": {
     "metal_types": [
       { 
@@ -157,8 +172,7 @@ echo.channel('products')
         "translations": { "es": { "name": "Oro" }, "en": { "name": "Gold" } } 
       }
     ]
-  },
-  "meta": { ... }
+  }
 }
 ```
 
@@ -646,7 +660,18 @@ Obtiene un resumen financiero de las compras del cliente, calculando el costo de
 - **URL:** `GET /api/order`
 - **Query Params:**
   - `?per_page={n}` (opcional): Cantidad de elementos por página (default: 5).
-- **Respuesta (200 OK):** Lista paginada que incluye estadísticas globales (`invested`, `sold`) del cliente.
+- **Respuesta (200 OK):** Lista paginada que sigue la estructura estándar (`data`, `links`, `meta`) e incluye estadísticas globales (`invested`, `sold`) del cliente en el campo `stats`.
+```json
+{
+  "data": [ ... ],
+  "links": { ... },
+  "meta": { ... },
+  "stats": {
+    "invested": { "amount": 5250.25, "count": 3 },
+    "sold": { "amount": 0, "count": 0 }
+  }
+}
+```
 
 ### 8.6 Ver Detalle de una Orden
 Obtiene la información detallada de una orden específica.
@@ -919,10 +944,9 @@ Permite obtener el historial de notificaciones del cliente. Los datos están loc
 - **Seguridad:** Requiere Bearer Token.
 - **Query Params:**
   - `?per_page={n}` (opcional): Cantidad de elementos por página (default: 10).
-- **Respuesta (200 OK):** Lista paginada de notificaciones.
+- **Respuesta (200 OK):** Lista paginada de notificaciones siguiendo la estructura estándar (`data`, `links`, `meta`).
 ```json
 {
-  "current_page": 1,
   "data": [
     {
       "id": "9c6b96...",
@@ -934,24 +958,29 @@ Permite obtener el historial de notificaciones del cliente. Los datos están loc
         "body": "El estado de tu pedido ha cambiado a: Enviado",
         "order_id": "ORD-123",
         "status": "Enviado",
-        "status"	"info",
-        "iconColor"	"info",
-        "icon": "heroicon-o-truck",
+        "status": "info",
+        "iconColor": "info",
+        "icon": "heroicon-o-truck"
       },
       "read_at": null,
       "created_at": "2026-07-13 12:00:00"
     }
   ],
-  "first_page_url": "...",
-  "from": 1,
-  "last_page": 1,
-  "last_page_url": "...",
-  "next_page_url": null,
-  "path": "...",
-  "per_page": 10,
-  "prev_page_url": null,
-  "to": 1,
-  "total": 1
+  "links": {
+    "first": "http://api.papi.gold/api/notifications?page=1",
+    "last": "http://api.papi.gold/api/notifications?page=5",
+    "prev": null,
+    "next": "http://api.papi.gold/api/notifications?page=2"
+  },
+  "meta": {
+    "current_page": 1,
+    "from": 1,
+    "last_page": 1,
+    "path": "...",
+    "per_page": 10,
+    "to": 1,
+    "total": 1
+  }
 }
 ```
 
@@ -978,7 +1007,7 @@ Permite obtener el historial de notificaciones del cliente. Los datos están loc
 
 ### 11.4 Webhook de Notificaciones (Eventos en Tiempo Real)
 El sistema emite eventos a través de WebSockets (Laravel Reverb) para que el cliente reciba notificaciones instantáneas.
-- **Canal Privado:** `App.Models.Client.{id}`
+- **Canal Privado:** `client.{id}`
 - **Evento:** `notification.received`
 - **Data Recibida (Payload):**
 ```json

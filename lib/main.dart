@@ -9,7 +9,6 @@ import 'package:papi_gold/app/common/enums/box_enum.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/store/persistent_client_data.dart';
 import 'package:papi_gold/app/core/router/router.dart';
-import 'package:papi_gold/app/core/system/full_screen_config.dart';
 import 'package:papi_gold/app/core/theme/app_theme.dart';
 import 'package:papi_gold/injection_container.dart';
 import 'package:papi_gold/app/core/extensions/index.dart' as globals;
@@ -24,7 +23,6 @@ Future<void> main() async {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     systemNavigationBarColor: Colors.transparent,
     systemNavigationBarDividerColor: Colors.transparent,
-    // systemNavigationBarIconBrightness: Brightness.dark,
     statusBarColor: Colors.transparent,
     statusBarIconBrightness: Brightness.dark,
   ));
@@ -83,6 +81,7 @@ class BlocProviders extends StatelessWidget {
         BlocProvider(create: (_) => sl<PaymentCubit>()),
         BlocProvider(create: (_) => sl<LocationCubit>()),
         BlocProvider(create: (_) => sl<TrackingCubit>()),
+        BlocProvider(create: (_) => sl<AppSocketCubit>()),
       ],
       child: const MainApp(),
     );
@@ -98,7 +97,7 @@ class MainApp extends StatefulWidget {
 
 class _MainAppState extends State<MainApp> {
   // Locale? _locale;
-  late final StreamSubscription<String> _localeSubscription;
+  // late final StreamSubscription<String> _localeSubscription;
 
   @override
   void initState() {
@@ -108,7 +107,7 @@ class _MainAppState extends State<MainApp> {
 
   @override
   void dispose() {
-    _localeSubscription.cancel();
+    // _localeSubscription.cancel();
     super.dispose();
   }
 
