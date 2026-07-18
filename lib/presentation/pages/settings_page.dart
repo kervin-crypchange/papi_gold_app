@@ -6,9 +6,11 @@ import 'package:papi_gold/app/common/mixins/index.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/constants/routes.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
+import 'package:papi_gold/app/core/services/index.dart';
 import 'package:papi_gold/app/core/theme/app_theme.dart';
 import 'package:papi_gold/app/core/theme/colors.dart';
 import 'package:papi_gold/presentation/cubits/auth/auth_cubit.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -20,11 +22,33 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
   bool _isDark = true;
   bool _isLoading = false;
+  bool _isCameraGranted = false;
+  bool _isLocationGranted = false;
+  bool _isNotificationGranted = false;
 
   @override
   void initState() {
     super.initState();
     _isDark = AppThemes.themeModeNotifier.value == ThemeMode.dark;
+    _checkPermission();
+  }
+
+  Future<void> _checkPermission() async {
+    final isCameraGranted = await PermissionService().checkPermission(
+      Permission.camera,
+    );
+    final isLocationGranted = await PermissionService().checkPermission(
+      Permission.location,
+    );
+    final isNotificationGranted = await PermissionService().checkPermission(
+      Permission.notification,
+    );
+    if (!mounted) return;
+    setState(() {
+      _isCameraGranted = isCameraGranted;
+      _isLocationGranted = isLocationGranted;
+      _isNotificationGranted = isNotificationGranted;
+    });
   }
 
   void _logout() {
@@ -107,19 +131,28 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
                 _CustomListTile(
                   title: "Camara",
                   icon: Icons.camera_outlined,
-                  trailing: Switch(value: true, onChanged: (value) {}),
+                  trailing: Switch(
+                    value: _isCameraGranted,
+                    onChanged: (value) {},
+                  ),
                   onTap: () => null,
                 ),
                 _CustomListTile(
                   title: "Ubicación",
                   icon: Icons.location_on_outlined,
-                  trailing: Switch(value: true, onChanged: (value) {}),
+                  trailing: Switch(
+                    value: _isLocationGranted,
+                    onChanged: (value) {},
+                  ),
                   onTap: () => null,
                 ),
                 _CustomListTile(
                   title: "Notificaciones",
                   icon: Icons.notifications_none_outlined,
-                  trailing: Switch(value: true, onChanged: (value) {}),
+                  trailing: Switch(
+                    value: _isNotificationGranted,
+                    onChanged: (value) {},
+                  ),
                   onTap: () => null,
                 ),
               ],
