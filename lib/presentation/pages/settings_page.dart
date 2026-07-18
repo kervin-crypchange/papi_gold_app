@@ -72,7 +72,10 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
                   trailing: Switch(
                     thumbIcon: WidgetStateProperty.resolveWith<Icon>((states) {
                       return _isDark
-                          ? const Icon(Icons.light_mode_outlined, color: AppColors.secondary,)
+                          ? const Icon(
+                              Icons.light_mode_outlined,
+                              color: AppColors.secondary,
+                            )
                           : const Icon(Icons.dark_mode_outlined);
                     }),
                     value: _isDark,
@@ -93,6 +96,30 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
                 _CustomListTile(
                   title: "Security Status",
                   icon: Icons.security_outlined,
+                  onTap: () => null,
+                ),
+              ],
+            ),
+            const Divider(),
+            _SingleSection(
+              title: "Permisos",
+              children: [
+                _CustomListTile(
+                  title: "Camara",
+                  icon: Icons.camera_outlined,
+                  trailing: Switch(value: true, onChanged: (value) {}),
+                  onTap: () => null,
+                ),
+                _CustomListTile(
+                  title: "Ubicación",
+                  icon: Icons.location_on_outlined,
+                  trailing: Switch(value: true, onChanged: (value) {}),
+                  onTap: () => null,
+                ),
+                _CustomListTile(
+                  title: "Notificaciones",
+                  icon: Icons.notifications_none_outlined,
+                  trailing: Switch(value: true, onChanged: (value) {}),
                   onTap: () => null,
                 ),
               ],
