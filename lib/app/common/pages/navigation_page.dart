@@ -30,7 +30,7 @@ class _NavigationPageState extends State<NavigationPage> with MessengerMixin {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(milliseconds: 500), () async => initSocket());
+    // Future.delayed(Duration(milliseconds: 300), () async => initSocket());
   }
 
   Future<void> initSocket() async {
