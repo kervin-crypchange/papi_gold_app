@@ -30,16 +30,17 @@ class _NavigationPageState extends State<NavigationPage> with MessengerMixin {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(milliseconds: 5000), () async => initSocket());
+    Future.delayed(Duration(milliseconds: 500), () async => initSocket());
   }
 
   Future<void> initSocket() async {
     await socketService.init();
 
-    socketService.client!.onConnectionStateChange.listen((state) {
+    final String channelName = AppSocketsEnum.notification.channel;
+    final String eventName = AppSocketsEnum.notification.event;
+
+    socketService.client.onConnectionStateChange.listen((state) {
       if (state == connstate.ConnectionState.connected) {
-        final String channelName = AppSocketsEnum.notification.channel;
-        final String eventName = AppSocketsEnum.notification.event;
         socketService.listenToPrivateChannel(channelName, eventName, (data) {
           debugPrint('--- $data');
         });
