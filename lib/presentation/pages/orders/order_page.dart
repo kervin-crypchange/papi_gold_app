@@ -22,6 +22,8 @@ class OrderPage extends StatefulWidget {
 }
 
 class _OrderPageState extends State<OrderPage> with MessengerMixin {
+  final double width = 3;
+
   @override
   void initState() {
     super.initState();
@@ -205,7 +207,7 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
           (i) => ListTile(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
-              side: const BorderSide(color: Colors.white38, width: 0.5),
+              side: BorderSide(color: Colors.white38, width: width),
             ),
             leading: Image.network(
               i.image,
@@ -275,7 +277,7 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
         Container(
           width: 1.sw,
           decoration: BoxDecoration(
-            border: Border.all(color: AppColors.secondary, width: 0.5),
+            border: Border.all(color: AppColors.secondary, width: width),
             borderRadius: BorderRadius.circular(6.r),
           ),
           child: Column(
@@ -288,13 +290,13 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
-                        border: Border.all(color: Colors.white12, width: 0.5),
+                        border: Border.all(color: Colors.white, width: width),
                         borderRadius: BorderRadius.circular(6.r),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Total Value').color(AppColors.grey),
+                          Text('Total Value').color(AppColors.white),
                           Text(
                             getFormatMoney(e.totalVenta),
                           ).medium.color(AppColors.white),
@@ -307,7 +309,7 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
                       decoration: BoxDecoration(
                         border: Border.all(
                           color: AppColors.success,
-                          width: 0.5,
+                          width: width,
                         ),
                         borderRadius: BorderRadius.circular(6.r),
                       ),
@@ -326,7 +328,7 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
               ),
               Container(
                 decoration: BoxDecoration(
-                  border: Border.all(color: AppColors.secondary, width: 0.5),
+                  border: Border.all(color: AppColors.secondary, width: width),
                   borderRadius: BorderRadius.circular(6.r),
                 ),
                 child: Row(
@@ -376,7 +378,7 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
         Container(
           width: 1.sw,
           decoration: BoxDecoration(
-            border: Border.all(color: AppColors.secondary, width: 0.5),
+            border: Border.all(color: AppColors.secondary, width: width),
             borderRadius: BorderRadius.circular(6.r),
           ),
           child: Column(
