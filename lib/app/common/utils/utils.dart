@@ -175,3 +175,7 @@ void showLoading(BuildContext context, [bool isLoading = true]) {
 }
 
 bool get isDarkTheme => AppThemes.themeModeNotifier.value == ThemeMode.dark;
+
+double navBarHeight(BuildContext context){
+  return MediaQuery.of(context).padding.bottom + 70;
+}

@@ -1,4 +1,5 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/extensions/widget.dart';
 import 'package:papi_gold/app/core/theme/colors.dart';
@@ -22,7 +23,7 @@ class OrderListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.separated(
       controller: controller,
-      padding: EdgeInsets.only(bottom: 70.h),
+      padding: EdgeInsets.only(bottom: navBarHeight(context)),
       separatorBuilder: (context, index) => Divider(
         color: AppColors.secondary,
         height: 0.5.sp,
