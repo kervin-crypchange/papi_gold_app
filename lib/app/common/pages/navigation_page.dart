@@ -6,6 +6,7 @@ import 'package:papi_gold/app/common/pages/index.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/constants/index.dart';
 import 'package:papi_gold/app/core/services/socket_service.dart';
+import 'package:papi_gold/app/core/theme/index.dart';
 import 'package:persistent_shopping_cart/persistent_shopping_cart.dart';
 import 'package:pusher_reverb_flutter/pusher_reverb_flutter.dart' as connstate;
 
@@ -120,7 +121,7 @@ class _NavigationPageState extends State<NavigationPage> with MessengerMixin {
           if (_lastPressedTime == null ||
               now.difference(_lastPressedTime!) > maxDuration) {
             _lastPressedTime = now;
-            messenger.showSnackBar(message: 'Presione de nuevo para salir');
+            messenger.showSnackBar(message: 'Presione de nuevo para salir', color: AppColors.greyLigth);
           } else {
             await SystemNavigator.pop();
           }
