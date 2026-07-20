@@ -146,7 +146,7 @@ class _CartPageState extends State<CartPage> with MessengerMixin {
                             key: ValueKey(item.productId),
                             background: Container(),
                             secondaryBackground: Container(
-                              color: Colors.red.shade300,
+                              color: Colors.red.shade200,
                               alignment: Alignment.centerRight,
                               child: const Icon(
                                 Icons.delete_outline_outlined,

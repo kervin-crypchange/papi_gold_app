@@ -71,7 +71,6 @@ class AppThemes {
         borderSide: BorderSide(color: AppColors.secondary),
       ),
     ),
-
   );
 
   static final ValueNotifier<ThemeMode> themeModeNotifier = ValueNotifier(

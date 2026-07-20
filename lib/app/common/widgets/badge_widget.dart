@@ -17,8 +17,8 @@ class BadgeWidget extends StatelessWidget {
       ),
       child: Text(
         label,
-        style: context.bodyXSmall.copyWith(color: AppColors.white),
-      ).paddingSymmetric(horizontal: 8.w, vertical: 1.h),
-    ).light;
+        style: context.bodySmall.copyWith(color: AppColors.white),
+      ).paddingSymmetric(horizontal: 8.w, vertical: 1.5.h),
+    );
   }
 }

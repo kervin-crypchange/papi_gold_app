@@ -66,7 +66,7 @@ class _ProductsPageState extends State<ProductsPage> with MessengerMixin {
     return  isLoading
         ? LoadingWidget()
         : ListView.builder(
-      padding: EdgeInsets.only(bottom: 70.h),
+      padding: EdgeInsets.only(bottom: navBarHeight(context)),
       scrollCacheExtent: ScrollCacheExtent.viewport(1.0),
       itemCount: products.length,
       itemBuilder: (context, index) {

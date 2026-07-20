@@ -98,7 +98,7 @@ class InfoProduct extends StatelessWidget with MessengerMixin {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(p.name, style: context.titleSmall),
+                    Text(p.name, style: context.titleMedium),
                     BadgeWidget(
                       label: p.category.name.capitalizeFirst,
                       color: AppColors.secondary,
@@ -108,9 +108,20 @@ class InfoProduct extends StatelessWidget with MessengerMixin {
                 const SizedBox(height: 8),
                 Text(p.description),
                 Gap(16.h),
-                Text('Stock disponible: ${p.stock}'),
-                Gap(16.h),
-                Text(getFormatMoney(p.price), style: context.labelLarge),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Stock disponible: ${p.stock}',
+                      style: context.bodyLarge.copyWith(
+                        color: p.stock > 0
+                            ? AppColors.success
+                            : AppColors.error,
+                      ),
+                    ).medium,
+                    Text(getFormatMoney(p.price), style: context.titleMedium).medium,
+                  ],
+                ),
               ],
             ).paddingSymmetric(horizontal: 16.w),
           ),
@@ -139,7 +150,7 @@ class InfoProduct extends StatelessWidget with MessengerMixin {
               },
             ),
           ),
-        ).paddingOnly(bottom: 30.h),
+        ).paddingOnly(bottom: 6.h),
       ],
     );
   }

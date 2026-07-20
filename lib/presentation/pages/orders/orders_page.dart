@@ -87,7 +87,7 @@ class _OrdersPageState extends State<OrdersPage> with MessengerMixin {
                 spacing: 10.w,
                 children: [
                   Icon(Icons.history, color: AppColors.secondary),
-                  Text('Ordenes recientes', style: context.bodyLarge),
+                  Text('Ordenes recientes', style: context.titleSmall),
                 ],
               ).paddingSymmetric(horizontal: 12.w),
               Expanded(
@@ -120,13 +120,13 @@ class _OrdersPageState extends State<OrdersPage> with MessengerMixin {
           children: [
             Text(
               label,
-              style: context.bodyMedium.copyWith(color: AppColors.secondary),
+              style: context.bodyLarge.copyWith(color: AppColors.secondary),
             ),
             Text(
               getFormatMoney(stat.amount),
               style: context.headlineSmall,
-            ).medium,
-            Text('${stat.count} orders', style: context.bodySmall),
+            ).overflowText(TextOverflow.ellipsis).medium,
+            Text('${stat.count} orders', style: context.bodyMedium),
           ],
         ).paddingAll(8.r),
       ),
