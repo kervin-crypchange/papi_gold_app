@@ -123,7 +123,7 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
                 spacing: 8.w,
                 children: [
                   Icon(Icons.location_on_outlined, color: AppColors.secondary),
-                  Text('Rastreo de orden', style: context.bodyMedium).medium,
+                  Text('Rastreo de orden', style: context.bodyLarge).medium,
                 ],
               ),
               TextButton(
@@ -370,7 +370,7 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
           spacing: 8.w,
           children: [
             Icon(icon, color: AppColors.secondary),
-            Text(label, style: context.bodyMedium).medium,
+            Text(label, style: context.bodyLarge).medium,
           ],
         ),
         Container(

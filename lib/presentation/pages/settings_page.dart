@@ -166,7 +166,7 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
               title: "Organización",
               children: [
                 _CustomListTile(
-                  title: "Información del perfil",
+                  title: "Mi perfil",
                   icon: Icons.person_outline_rounded,
                   onTap: () => context.goNamed(Routes.profile),
                 ),
@@ -191,7 +191,7 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
                 ),
                 _CustomListTile(
                   title: "Cerrar sesión",
-                  icon: Icons.exit_to_app_rounded,
+                  icon: Icons.logout_outlined,
                   onTap: () async {
                     final OkCancelResult res = await showOkCancelAlertDialog(
                       title: 'Cerrar sesión',
@@ -249,7 +249,7 @@ class _SingleSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (title != null)
-          Text(title!, style: context.bodyLarge).paddingAll(8.r).medium,
+          Text(title!, style: context.labelLarge).paddingAll(8.r),
         Column(children: children),
       ],
     );
