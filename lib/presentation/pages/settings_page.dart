@@ -110,7 +110,6 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
                       });
                     },
                   ),
-                  onTap: () => null,
                 ),
                 _CustomListTile(
                   title: "Notificaciones",
@@ -120,7 +119,6 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
                 _CustomListTile(
                   title: "Security Status",
                   icon: Icons.security_outlined,
-                  onTap: () => null,
                 ),
               ],
             ),
@@ -135,7 +133,6 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
                     value: _isCameraGranted,
                     onChanged: (value) {},
                   ),
-                  onTap: () => null,
                 ),
                 _CustomListTile(
                   title: "Ubicación",
@@ -144,16 +141,22 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
                     value: _isLocationGranted,
                     onChanged: (value) {},
                   ),
-                  onTap: () => null,
                 ),
                 _CustomListTile(
                   title: "Notificaciones",
                   icon: Icons.notifications_none_outlined,
                   trailing: Switch(
                     value: _isNotificationGranted,
-                    onChanged: (value) {},
+                    onChanged: (value) async {
+                      if (value) {
+                        final isGranted = await PermissionService()
+                            .requestPermission(Permission.notification);
+                        setState(() {
+                          _isNotificationGranted = isGranted;
+                        });
+                      }
+                    },
                   ),
-                  onTap: () => null,
                 ),
               ],
             ),
@@ -179,7 +182,6 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
                 _CustomListTile(
                   title: "Ayuda & Feedback",
                   icon: Icons.help_outline_rounded,
-                  onTap: () => null,
                 ),
                 _CustomListTile(
                   title: "Acerca de",
@@ -215,11 +217,11 @@ class _CustomListTile extends StatelessWidget {
   final String title;
   final IconData icon;
   final Widget? trailing;
-  final Function() onTap;
+  final Function()? onTap;
   const _CustomListTile({
     required this.title,
     required this.icon,
-    required this.onTap,
+    this.onTap,
     this.trailing,
   });
 
