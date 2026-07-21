@@ -129,6 +129,27 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
             ),
             const Divider(),
             _SingleSection(
+              title: "Organización",
+              children: [
+                _CustomListTile(
+                  title: "Mi perfil",
+                  icon: Icons.person_outline_rounded,
+                  onTap: () => context.goNamed(Routes.profile),
+                ),
+                _CustomListTile(
+                  title: "Direcciones",
+                  icon: Icons.location_on_outlined,
+                  onTap: () => context.goNamed(Routes.address),
+                ),
+                _CustomListTile(
+                  title: "Cambiar contraseña",
+                  icon: Icons.lock_outline,
+                  onTap: () => context.goNamed(Routes.changePassword),
+                ),
+              ],
+            ),
+            const Divider(),
+            _SingleSection(
               title: "Permisos",
               children: [
                 _CustomListTile(
@@ -165,23 +186,7 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
             ),
             const Divider(),
             _SingleSection(
-              title: "Organización",
               children: [
-                _CustomListTile(
-                  title: "Mi perfil",
-                  icon: Icons.person_outline_rounded,
-                  onTap: () => context.goNamed(Routes.profile),
-                ),
-                _CustomListTile(
-                  title: "Direcciones",
-                  icon: Icons.location_on_outlined,
-                  onTap: () => context.goNamed(Routes.address),
-                ),
-                _CustomListTile(
-                  title: "Cambiar contraseña",
-                  icon: Icons.lock_outline,
-                  onTap: () => context.goNamed(Routes.changePassword),
-                ),
                 _CustomListTile(
                   title: "Ayuda & Feedback",
                   icon: Icons.help_outline_rounded,

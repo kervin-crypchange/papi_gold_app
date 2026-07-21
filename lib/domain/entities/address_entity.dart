@@ -1,15 +1,17 @@
 import 'package:equatable/equatable.dart';
 
 class AddressEntity extends Equatable {
-  final int country;
-  final int state;
-  final int city;
+  final int id;
+  final AddressLocationEntity country;
+  final AddressLocationEntity state;
+  final AddressLocationEntity city;
   final String address1;
   final String address2;
   final int zipCode;
   final bool isMain;
 
   const AddressEntity({
+    required this.id,
     required this.country,
     required this.state,
     required this.city,
@@ -21,6 +23,7 @@ class AddressEntity extends Equatable {
 
   @override
   List<Object?> get props => [
+    id,
     country,
     state,
     city,
@@ -29,4 +32,16 @@ class AddressEntity extends Equatable {
     zipCode,
     isMain,
   ];
+}
+
+
+class AddressLocationEntity extends Equatable{
+  final int id;
+  final String name;
+
+  const AddressLocationEntity({required this.id, required this.name});
+  
+  @override
+  List<Object?> get props => [id, name];
+  
 }
