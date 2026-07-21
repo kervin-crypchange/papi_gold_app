@@ -155,32 +155,24 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
                 _CustomListTile(
                   title: "Camara",
                   icon: Icons.camera_outlined,
-                  trailing: Switch(
-                    value: _isCameraGranted,
-                    onChanged: (value) async {
-                      if (value) PermissionService().openAppSettingsScreen();
-                    },
-                  ),
+                  onTap: () async =>
+                      await PermissionService().openAppSettingsScreen(),
                 ),
                 _CustomListTile(
-                  title: "Ubicación",
-                  icon: Icons.location_on_outlined,
-                  trailing: Switch(
-                    value: _isLocationGranted,
-                    onChanged: (value) async {
-                      if (value) PermissionService().openAppSettingsScreen();
-                    },
-                  ),
+                  title: "Activar Ubicación",
+                  icon: _isLocationGranted
+                      ? Icons.location_on_outlined
+                      : Icons.location_off_outlined,
+                  onTap: () async =>
+                      await PermissionService().openAppSettingsScreen(),
                 ),
                 _CustomListTile(
-                  title: "Notificaciones",
-                  icon: Icons.notifications_none_outlined,
-                  trailing: Switch(
-                    value: _isNotificationGranted,
-                    onChanged: (value) async {
-                      if (value) PermissionService().openAppSettingsScreen();
-                    },
-                  ),
+                  title: "Activar Notificaciones",
+                  icon: _isNotificationGranted
+                      ? Icons.notifications_active_outlined
+                      : Icons.notifications_off_outlined,
+                  onTap: () async =>
+                      await PermissionService().openAppSettingsScreen(),
                 ),
               ],
             ),
@@ -189,7 +181,7 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
               children: [
                 _CustomListTile(
                   title: "Ayuda & Feedback",
-                  icon: Icons.help_outline_rounded,
+                  icon: Icons.support_agent_outlined,
                 ),
                 _CustomListTile(
                   title: "Acerca de",

@@ -74,9 +74,11 @@ class _AddressPageState extends State<AddressPage> {
                 subtitle: Text('${add.city.name}, ${add.state.name}. ${add.country.name}'),
                 dense: _isDense,
                 trailing: InkWell(
-                  onTap: () => debugPrint('--- tapped'),
-                  child: Icon(Icons.edit, size: 18.r),
+                  borderRadius: BorderRadius.circular(100),
+                  onTap: () => debugPrint('--- tapped ${add.id}'),
+                  child: Icon(Icons.edit, size: 18.r).paddingAll(10.r),
                 ),
+                onLongPress: () => debugPrint('--- onLongPress ${add.id}'),
               ),
             );
           },
