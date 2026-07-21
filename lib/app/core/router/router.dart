@@ -89,7 +89,7 @@ final GoRouter router = GoRouter(
         GoRoute(
           name: Routes.address,
           path: Routes.address,
-          builder: (context, state) => AddressPage(),
+          builder: (context, state) => DirectionsPage(),
           routes: [
             GoRoute(
               name: Routes.newAddress,

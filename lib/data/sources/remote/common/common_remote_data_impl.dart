@@ -182,4 +182,20 @@ class CommonRemoteDataImpl extends CommonRemoteData {
       return Left(ServerException(e));
     }
   }
+  
+  @override
+  Future<Either<Failure, List<AddressEntity>>> directions() async {
+     try {
+      final res = await sl<DioClient>().get(
+        Apis.directions,
+      );
+       List<AddressModel> directions = (res.data['data'] as List)
+          .map<AddressModel>((json) => AddressModel.fromJson(json))
+          .toList();
+
+        return Right(directions);
+    } on DioException catch (e) {
+      return Left(ServerException(e));
+    }
+  }
 }

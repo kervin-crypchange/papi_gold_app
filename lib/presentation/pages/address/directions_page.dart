@@ -7,14 +7,14 @@ import 'package:papi_gold/app/core/extensions/index.dart';
 import 'package:papi_gold/app/core/theme/index.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 
-class AddressPage extends StatefulWidget {
-  const AddressPage({super.key});
+class DirectionsPage extends StatefulWidget {
+  const DirectionsPage({super.key});
 
   @override
-  State<AddressPage> createState() => _AddressPageState();
+  State<DirectionsPage> createState() => _DirectionsPageState();
 }
 
-class _AddressPageState extends State<AddressPage> {
+class _DirectionsPageState extends State<DirectionsPage> {
   bool _isDense = false;
 
   final List<AddressEntity> address = [
