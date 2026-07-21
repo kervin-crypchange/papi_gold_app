@@ -16,4 +16,6 @@ abstract class Routes {
   static const notifications = 'notifications';
   static const about = 'about';
   static const address = 'address';
+  static const newAddress = 'newAddres';
+  static const map = 'map';
 }

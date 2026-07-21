@@ -7,6 +7,12 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Home'),
+        actions: [
+          Icon(Icons.location_city)
+        ],
+      ),
       body: SafeArea(
         child: Center(
           child: Text('PapiGold Home Page', style: context.titleMedium),

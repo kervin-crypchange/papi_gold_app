@@ -90,6 +90,18 @@ final GoRouter router = GoRouter(
           name: Routes.address,
           path: Routes.address,
           builder: (context, state) => AddressPage(),
+          routes: [
+            GoRoute(
+              name: Routes.newAddress,
+              path: Routes.newAddress,
+              builder: (context, state) => NewAddressPage(),
+            ),
+            GoRoute(
+              name: Routes.map,
+              path: Routes.map,
+              builder: (context, state) => MapsPage(),
+            ),
+          ],
         ),
       ],
     ),
