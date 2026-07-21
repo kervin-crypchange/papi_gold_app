@@ -61,6 +61,7 @@ class _LoginPageState extends State<LoginPage> with MessengerMixin {
                             prefixIcon: Icon(Icons.mail_outline),
                             labelText: 'Correo electrónico',
                             keyboardType: TextInputType.emailAddress,
+                            textCapitalization: TextCapitalization.none,
                             onSaved: (value) => setState(() => email = value),
                             validator: (value) =>
                                 value?.requiredError ?? value?.emailError,

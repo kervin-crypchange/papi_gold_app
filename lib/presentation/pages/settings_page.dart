@@ -72,6 +72,10 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
     });
   }
 
+  void setPermission() {
+    debugPrint('--- setPermission');
+  }
+
   void _changeTheme() {
     AppThemes.themeModeNotifier.value = _isDark
         ? ThemeMode.dark
@@ -132,7 +136,9 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
                   icon: Icons.camera_outlined,
                   trailing: Switch(
                     value: _isCameraGranted,
-                    onChanged: (value) {},
+                    onChanged: (value) async {
+                      if (value) PermissionService().openAppSettingsScreen();
+                    },
                   ),
                 ),
                 _CustomListTile(
@@ -140,7 +146,9 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
                   icon: Icons.location_on_outlined,
                   trailing: Switch(
                     value: _isLocationGranted,
-                    onChanged: (value) {},
+                    onChanged: (value) async {
+                      if (value) PermissionService().openAppSettingsScreen();
+                    },
                   ),
                 ),
                 _CustomListTile(
@@ -149,13 +157,7 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
                   trailing: Switch(
                     value: _isNotificationGranted,
                     onChanged: (value) async {
-                      if (value) {
-                        final isGranted = await PermissionService()
-                            .requestPermission(Permission.notification);
-                        setState(() {
-                          _isNotificationGranted = isGranted;
-                        });
-                      }
+                      if (value) PermissionService().openAppSettingsScreen();
                     },
                   ),
                 ),
