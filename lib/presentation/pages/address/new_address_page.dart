@@ -197,19 +197,19 @@ class _NewAddressPageState extends State<NewAddressPage> with MessengerMixin {
                 ],
               ).paddingAll(8.r),
             ),
-            TextButton(
-              onPressed: () => context.goNamed(Routes.map),
-              child: Wrap(
-                spacing: 6.w,
-                children: [
-                  Icon(Icons.location_on_outlined),
-                  Text(
-                    'Ubicación actual',
-                    style: TextStyle(decoration: TextDecoration.underline),
-                  ),
-                ],
-              ),
-            ),
+            // TextButton(
+            //   onPressed: () => context.goNamed(Routes.map),
+            //   child: Wrap(
+            //     spacing: 6.w,
+            //     children: [
+            //       Icon(Icons.location_on_outlined),
+            //       Text(
+            //         'Ubicación actual',
+            //         style: TextStyle(decoration: TextDecoration.underline),
+            //       ),
+            //     ],
+            //   ),
+            // ),
           ],
         ),
       ),

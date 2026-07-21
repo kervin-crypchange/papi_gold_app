@@ -1,3 +1,4 @@
+export 'package:papi_gold/domain/entities/address_entity.dart';
 export 'package:papi_gold/domain/entities/summary_steps_entity.dart';
 export 'package:papi_gold/domain/entities/tracking_entity.dart';
 export 'package:papi_gold/domain/entities/tracking_history_entity.dart';
