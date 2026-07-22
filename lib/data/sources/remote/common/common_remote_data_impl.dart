@@ -183,13 +183,13 @@ class CommonRemoteDataImpl extends CommonRemoteData {
   }
   
   @override
-  Future<Either<Failure, List<AddressEntity>>> directions() async {
+  Future<Either<Failure, List<DirectionEntity>>> directions() async {
      try {
       final res = await sl<DioClient>().get(
         Apis.directions,
       );
-       List<AddressModel> directions = (res.data['data'] as List)
-          .map<AddressModel>((json) => AddressModel.fromJson(json))
+       List<DirectionModel> directions = (res.data['data'] as List)
+          .map<DirectionModel>((json) => DirectionModel.fromJson(json))
           .toList();
 
         return Right(directions);

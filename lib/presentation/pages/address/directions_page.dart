@@ -1,4 +1,5 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -7,6 +8,7 @@ import 'package:papi_gold/app/core/constants/routes.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
 import 'package:papi_gold/app/core/theme/index.dart';
 import 'package:papi_gold/domain/entities/index.dart';
+import 'package:papi_gold/presentation/cubits/directions/directions_cubit.dart';
 
 class DirectionsPage extends StatefulWidget {
   const DirectionsPage({super.key});
@@ -16,30 +18,30 @@ class DirectionsPage extends StatefulWidget {
 }
 
 class _DirectionsPageState extends State<DirectionsPage> {
-  final List<AddressEntity> address = [
-    AddressEntity(
+  final List<DirectionEntity> address = [
+    DirectionEntity(
       id: 1,
-      country: AddressLocationEntity(id: 1, name: 'Venezuela'),
-      state: AddressLocationEntity(id: 1, name: 'Vargas'),
-      city: AddressLocationEntity(id: 1, name: 'Macuto'),
+      country: AddressLocationEntity(id: 239, name: 'Venezuela'),
+      state: AddressLocationEntity(id: 2037, name: 'Miranda'),
+      city: AddressLocationEntity(id: 130083, name: 'Guarenas'),
       address1: 'Av. Intercomunal Macuto',
       address2: 'Sector El Cojo',
-      zipCode: 1160,
+      codeZip: '1160',
       isMain: true,
     ),
-    AddressEntity(
+    DirectionEntity(
       id: 2,
-      country: AddressLocationEntity(id: 1, name: 'Venezuela'),
-      state: AddressLocationEntity(id: 2, name: 'Distrito Capital'),
-      city: AddressLocationEntity(id: 1, name: 'Caracas'),
+      country: AddressLocationEntity(id: 239, name: 'Venezuela'),
+      state: AddressLocationEntity(id: 2037, name: 'Miranda'),
+      city: AddressLocationEntity(id: 130083, name: 'Guarenas'),
       address1: 'La Pastora',
       address2: '',
-      zipCode: 1160,
+      codeZip: '1160',
       isMain: false,
     ),
   ];
 
-  void _showModalSheet(BuildContext context, AddressEntity address) async {
+  void _showModalSheet(BuildContext context, DirectionEntity address) async {
     final res = await showModalActionSheet(
       context: context,
       title: '${address.address1}, ${address.address2}',
@@ -53,9 +55,10 @@ class _DirectionsPageState extends State<DirectionsPage> {
         ),
       ],
     );
-    if(!context.mounted) return;
+    if (!context.mounted) return;
 
     if (res == 'edit') {
+      context.read<DirectionsCubit>().direction = address;
       context.goNamed(Routes.newAddress);
     }
   }
@@ -76,7 +79,7 @@ class _DirectionsPageState extends State<DirectionsPage> {
                 borderRadius: BorderRadius.circular(12.r),
               ),
               child: ListTile(
-                title: Text('${add.address1}, ${add.address2}. ${add.zipCode}'),
+                title: Text('${add.address1}, ${add.address2}. ${add.codeZip}'),
                 subtitle: Text(
                   '${add.city.name}, ${add.state.name}. ${add.country.name}',
                 ),
@@ -101,7 +104,10 @@ class _DirectionsPageState extends State<DirectionsPage> {
           width: 0.9.sw,
           child: FilledButtonWidget(
             title: 'Agregar dirección',
-            onPressed: () => context.goNamed(Routes.newAddress),
+            onPressed: (){
+              context.read<DirectionsCubit>().direction = null;
+              context.goNamed(Routes.newAddress);
+            },
           ),
         ),
       ],

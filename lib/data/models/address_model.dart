@@ -1,39 +1,39 @@
 import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 
-class AddressModel extends AddressEntity {
-  const AddressModel({
+class DirectionModel extends DirectionEntity {
+  const DirectionModel({
     required super.id,
     required super.country,
     required super.state,
     required super.city,
     required super.address1,
     required super.address2,
-    required super.zipCode,
+    required super.codeZip,
     required super.isMain,
   });
 
-  factory AddressModel.fromJson(Map<String, dynamic> json) {
-    return AddressModel(
+  factory DirectionModel.fromJson(Map<String, dynamic> json) {
+    return DirectionModel(
       id: safeInt(json['id']),
       country: AddressLocationModel.fromJson(json['country']),
       state: AddressLocationModel.fromJson(json['state']),
       city: AddressLocationModel.fromJson(json['city']),
       address1: safeString(json['address1']),
       address2: safeString(json['address2']),
-      zipCode: safeInt(json['zip_code']),
+      codeZip: safeString(json['zip_code']),
       isMain: safeBool(json['default']),
     );
   }
-  factory AddressModel.fromEntity(AddressEntity e) {
-    return AddressModel(
+  factory DirectionModel.fromEntity(DirectionEntity e) {
+    return DirectionModel(
       id: e.id,
       country: e.country,
       state: e.state,
       city: e.city,
       address1: e.address1,
       address2: e.address2,
-      zipCode: e.zipCode,
+      codeZip: e.codeZip,
       isMain: e.isMain,
     );
   }
@@ -46,7 +46,7 @@ class AddressModel extends AddressEntity {
       'city': city.id,
       'address1': address1,
       'address2': address2,
-      'zip_code': zipCode,
+      'zip_code': codeZip,
       'default': isMain,
     };
   }

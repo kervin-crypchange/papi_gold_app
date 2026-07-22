@@ -22,27 +22,32 @@ class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
   List<CountryEntity> countries = [];
   List<LocationEntity> states = [];
   List<LocationEntity> cities = [];
+  DirectionEntity? _direction;
 
   @override
   void initState() {
+    _direction = context.read<DirectionsCubit>().direction;
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      showLoading(context);
+      loadCountries();
     });
-    loadCountries();
   }
 
   void loadCountries() {
+    showLoading(context);
     context.read<LocationCubit>().countries().then((either) {
       either.fold(
         (failure) => messenger.showSnackBar(
           message: failure.toString(),
           color: AppColors.error,
         ),
-        (c) => setState(() {
-          showLoading(context, false);
-          countries = c;
-        }),
+        (c) {
+          setState(() {
+            showLoading(context, false);
+            countries = c;
+            _selectCountry(_direction?.country.id);
+          });
+        },
       );
     });
   }
@@ -57,6 +62,7 @@ class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
         (s) => setState(() {
           showLoading(context, false);
           states = s;
+          _selectState(_direction?.state.id);
         }),
       );
     });
@@ -72,13 +78,14 @@ class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
         (c) => setState(() {
           showLoading(context, false);
           cities = c;
+          _selectCity(_direction?.city.id);
         }),
       );
     });
   }
 
-  void _selectCountry(int c) {
-    debugPrint('country $c');
+  void _selectCountry(int? c) {
+    if (c == null) return;
     setState(() {
       showLoading(context);
       country = c;
@@ -86,9 +93,8 @@ class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
     });
   }
 
-  void _selectState(int s) {
-    debugPrint('state $s');
-
+  void _selectState(int? s) {
+    if(s == null) return;
     setState(() {
       showLoading(context);
       state = s;
@@ -96,9 +102,8 @@ class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
     });
   }
 
-  void _selectCity(int c) {
-    debugPrint('city $c');
-
+  void _selectCity(int? c) {
+    if(c == null) return;
     setState(() {
       city = c;
     });
@@ -137,6 +142,7 @@ class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
                     onChanged: (value) => _selectCountry(value!),
                   ),
                   DropdownButtonFormField(
+                    initialValue: state,
                     hint: Text('Seleccione estado'),
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
@@ -144,7 +150,6 @@ class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
                       ),
                     ),
                     isExpanded: true,
-                    initialValue: state,
                     items: [
                       ...states.map(
                         (location) => DropdownMenuItem(
@@ -156,6 +161,7 @@ class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
                     onChanged: (value) => _selectState(value!),
                   ),
                   DropdownButtonFormField(
+                    initialValue: city,
                     hint: Text('Seleccione ciudad'),
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
@@ -163,7 +169,6 @@ class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
                       ),
                     ),
                     isExpanded: true,
-                    initialValue: city,
                     items: [
                       ...cities.map(
                         (location) => DropdownMenuItem(
@@ -175,18 +180,21 @@ class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
                     onChanged: (value) => _selectCity(value!),
                   ),
                   InputFormWidget(
+                    initialValue: _direction?.address1,
                     labelText: 'Dirección',
                     keyboardType: TextInputType.text,
                     onSaved: (value) => setState(() => address1 = value),
                     validator: (value) => value?.requiredError,
                   ),
                   InputFormWidget(
+                    initialValue: _direction?.address2,
                     labelText: 'Dirección 2',
                     keyboardType: TextInputType.text,
                     onSaved: (value) => setState(() => address2 = value),
                     validator: (value) => value?.requiredError,
                   ),
                   InputFormWidget(
+                    initialValue: _direction?.codeZip,
                     labelText: 'Código postal',
                     keyboardType: TextInputType.number,
                     onSaved: (value) => setState(() => codeZip = value),
@@ -195,19 +203,6 @@ class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
                 ],
               ).paddingAll(8.r),
             ),
-            // TextButton(
-            //   onPressed: () => context.goNamed(Routes.map),
-            //   child: Wrap(
-            //     spacing: 6.w,
-            //     children: [
-            //       Icon(Icons.location_on_outlined),
-            //       Text(
-            //         'Ubicación actual',
-            //         style: TextStyle(decoration: TextDecoration.underline),
-            //       ),
-            //     ],
-            //   ),
-            // ),
           ],
         ),
       ),

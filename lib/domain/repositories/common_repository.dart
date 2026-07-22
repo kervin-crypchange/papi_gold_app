@@ -24,6 +24,6 @@ abstract class CommonRepository {
   Future<Either<Failure, ResponsePaymentIntentEntity>> paymentIntent(String orderId);
 
   Future<Either<Failure, TrackingEntity>> tracking(String tracking);
-  Future<Either<Failure,List<AddressEntity>>> directions();
+  Future<Either<Failure,List<DirectionEntity>>> directions();
 
 }

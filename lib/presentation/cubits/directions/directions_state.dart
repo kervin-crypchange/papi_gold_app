@@ -12,7 +12,7 @@ final class DirectionsInitial extends DirectionsState {}
 final class DirectionsLoading extends DirectionsState {}
 
 final class DirectionsSuccess extends DirectionsState {
-  final List<AddressEntity> directions;
+  final List<DirectionEntity> directions;
 
   const DirectionsSuccess({required this.directions});
 }
