@@ -69,10 +69,9 @@ class AddressLocationModel extends AddressLocationEntity {
   }
 
   factory AddressLocationModel.fromJson(Map<String, dynamic> json) {
-    debugPrint('--- $json');
     return AddressLocationModel(
       id: safeInt(json['id']),
-      name: safeString(json['nane']),
+      name: safeString(json['name']),
     );
   }
 }

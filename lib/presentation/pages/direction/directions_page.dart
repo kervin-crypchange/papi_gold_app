@@ -19,11 +19,8 @@ class DirectionsPage extends StatefulWidget {
 }
 
 class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
-  // late final List<DirectionEntity> directions;
-  // late final DirectionEntity primaryDirection;
-  // late final MetaEntity meta;
-
   bool isLoading = true;
+
   @override
   void initState() {
     super.initState();
@@ -33,7 +30,7 @@ class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
   void _showModalSheet(BuildContext context, DirectionEntity direction) async {
     final res = await showModalActionSheet(
       context: context,
-      title: '${direction.address1}, ${direction.address2}',
+      title: direction.name,
       actions: [
         SheetAction(label: 'Editar', icon: Icons.edit_outlined, key: 'edit'),
         SheetAction(
@@ -63,36 +60,13 @@ class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
               return LoadingWidget();
             }
             if (state is DirectionsSuccess) {
-              return ListView.separated(
-                separatorBuilder: (context, index) => Gap(12.h),
-                itemCount: state.response.data.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final direction = state.response.data[index];
-                  return Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: AppColors.secondary),
-                      borderRadius: BorderRadius.circular(12.r),
-                    ),
-                    child: ListTile(
-                      title: Text(direction.name),
-                      subtitle: Text(
-                         '${direction.address1}, ${direction.address2}. ${direction.codeZip}, ${direction.state.name}',
-                      ),
-                      dense: true,
-                      trailing: InkWell(
-                        borderRadius: BorderRadius.circular(100),
-                        child: Icon(
-                          Icons.more_vert,
-                          size: 18.r,
-                          color: Colors.white38,
-                        ).paddingAll(10.r),
-                        onTap: () => _showModalSheet(context, direction),
-                      ),
-                      onLongPress: () =>
-                          debugPrint('--- onLongPress ${direction.id}'),
-                    ),
-                  );
-                },
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: 12.h,
+                children: [
+                  directionCard(state.response.primaryDirection),
+                  Expanded(child: _listViewUI(state.response.data)),
+                ],
               ).paddingAll(8.r);
             }
             return Center(child: Text('Ha ocurrido un error'));
@@ -114,6 +88,53 @@ class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
       persistentFooterDecoration: BoxDecoration(
         border: Border(top: BorderSide.none),
       ),
+    );
+  }
+
+  ListView _listViewUI(List<DirectionEntity> directions) {
+    return ListView.separated(
+      separatorBuilder: (context, index) => Gap(12.h),
+      itemCount: directions.length,
+      itemBuilder: (BuildContext context, int index) {
+        final direction = directions[index];
+        return directionCard(direction);
+      },
+    );
+  }
+
+  Widget directionCard(DirectionEntity d) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: 6.h,
+      children: [
+        Text(
+          d.type == 'primary' ? 'Dirección principal' : d.name.capitalizeFirst,
+          style: context.bodyMedium.copyWith(color: Colors.white54),
+        ),
+        Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: AppColors.secondary),
+            borderRadius: BorderRadius.circular(12.r),
+          ),
+          child: ListTile(
+            title: Text('${d.address1}, ${d.address2}. ${d.codeZip}.'),
+            subtitle: Text('${d.city.name} ${d.state.name}. ${d.country.name}'),
+            dense: true,
+            trailing: (d.type != 'primary')
+                ? InkWell(
+                    borderRadius: BorderRadius.circular(100),
+                    child: Icon(
+                      Icons.more_vert,
+                      size: 18.r,
+                      color: Colors.white38,
+                    ).paddingAll(10.r),
+                    onTap: () => _showModalSheet(context, d),
+                  )
+                : null,
+            onLongPress: () => debugPrint('--- onLongPress ${d.id}'),
+          ),
+        ),
+      ],
     );
   }
 }

@@ -18,7 +18,7 @@ class DirectionPage extends StatefulWidget {
 class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
   final _formKey = GlobalKey<FormState>();
   int? country, state, city;
-  String? address1, address2, codeZip;
+  String? address1, address2, codeZip, type;
   List<CountryEntity> countries = [];
   List<LocationEntity> states = [];
   List<LocationEntity> cities = [];
@@ -31,6 +31,7 @@ class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       loadCountries();
     });
+      _selectType(_direction?.type);
   }
 
   void loadCountries() {
@@ -94,7 +95,7 @@ class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
   }
 
   void _selectState(int? s) {
-    if(s == null) return;
+    if (s == null) return;
     setState(() {
       showLoading(context);
       state = s;
@@ -103,9 +104,16 @@ class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
   }
 
   void _selectCity(int? c) {
-    if(c == null) return;
+    if (c == null) return;
     setState(() {
       city = c;
+    });
+  }
+
+  void _selectType(String? t) {
+    if (t == null) return;
+    setState(() {
+      type = t;
     });
   }
 
@@ -192,6 +200,28 @@ class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
                     keyboardType: TextInputType.text,
                     onSaved: (value) => setState(() => address2 = value),
                     validator: (value) => value?.requiredError,
+                  ),
+                  DropdownButtonFormField(
+                    initialValue: type,
+                    hint: Text('Tipo de dirección'),
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(color: AppColors.grey),
+                      ),
+                    ),
+                    isExpanded: true,
+                    items: [
+                      DropdownMenuItem(
+                        value: 'shipping',
+                        child: Text('Envíos'),
+                      ),
+                      DropdownMenuItem(
+                        value: 'receiving',
+                        child: Text('Receptoria'),
+                      ),
+                      DropdownMenuItem(value: 'both', child: Text('Ambos')),
+                    ],
+                    onChanged: (value) => _selectType(value!),
                   ),
                   InputFormWidget(
                     initialValue: _direction?.codeZip,
