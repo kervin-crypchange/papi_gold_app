@@ -43,6 +43,7 @@ Future<void> initializeDependencies() async {
   sl.registerLazySingleton(() => StreamMessagesUseCase());
   sl.registerLazySingleton(() => ConnectSocketUseCase());
   sl.registerLazySingleton(() => DisconnectSocketUseCase());
+  sl.registerLazySingleton(() => DirectionsUseCase());
 
   // Cubits
   sl.registerFactory(() => AuthCubit());
@@ -53,4 +54,5 @@ Future<void> initializeDependencies() async {
   sl.registerFactory(() => LocationCubit());
   sl.registerFactory(() => TrackingCubit());
   sl.registerFactory(() => AppSocketCubit());
+  sl.registerFactory(() => DirectionsCubit());
 }

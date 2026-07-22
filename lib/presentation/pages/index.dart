@@ -1,6 +1,6 @@
 export 'package:papi_gold/presentation/pages/address/maps_page.dart';
 export 'package:papi_gold/presentation/pages/address/directions_page.dart';
-export 'package:papi_gold/presentation/pages/address/new_address_page.dart';
+export 'package:papi_gold/presentation/pages/address/direction_page.dart';
 export 'package:papi_gold/presentation/pages/notifications_page.dart';
 export 'package:papi_gold/presentation/pages/auth/opt_verification_page.dart';
 export 'package:papi_gold/presentation/pages/change_password_page.dart';

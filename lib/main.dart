@@ -84,6 +84,7 @@ class BlocProviders extends StatelessWidget {
         BlocProvider(create: (_) => sl<LocationCubit>()),
         BlocProvider(create: (_) => sl<TrackingCubit>()),
         BlocProvider(create: (_) => sl<AppSocketCubit>()),
+        BlocProvider(create: (_) => sl<DirectionsCubit>()),
       ],
       child: const MainApp(),
     );

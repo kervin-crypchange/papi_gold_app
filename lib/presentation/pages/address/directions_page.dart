@@ -1,3 +1,4 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -15,8 +16,6 @@ class DirectionsPage extends StatefulWidget {
 }
 
 class _DirectionsPageState extends State<DirectionsPage> {
-  bool _isDense = false;
-
   final List<AddressEntity> address = [
     AddressEntity(
       id: 1,
@@ -40,22 +39,31 @@ class _DirectionsPageState extends State<DirectionsPage> {
     ),
   ];
 
+  void _showModalSheet(BuildContext context, AddressEntity address) async {
+    final res = await showModalActionSheet(
+      context: context,
+      title: '${address.address1}, ${address.address2}',
+      actions: [
+        SheetAction(label: 'Editar', icon: Icons.edit_outlined, key: 'edit'),
+        SheetAction(
+          label: 'Eliminar',
+          icon: Icons.delete_outline,
+          isDestructiveAction: true,
+          key: 'delete',
+        ),
+      ],
+    );
+    if(!context.mounted) return;
+
+    if (res == 'edit') {
+      context.goNamed(Routes.newAddress);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Direcciones'),
-        actions: [
-          IconButton(
-            onPressed: () {
-              setState(() {
-                _isDense = !_isDense;
-              });
-            },
-            icon: Icon(_isDense ? Icons.open_in_full : Icons.close_fullscreen),
-          ),
-        ],
-      ),
+      appBar: AppBar(title: Text('Direcciones')),
       body: SafeArea(
         child: ListView.separated(
           separatorBuilder: (context, index) => Gap(12.h),
@@ -68,15 +76,19 @@ class _DirectionsPageState extends State<DirectionsPage> {
                 borderRadius: BorderRadius.circular(12.r),
               ),
               child: ListTile(
-                title: Text(
-                  '${add.address1}, ${add.address2}. ${add.zipCode}',
+                title: Text('${add.address1}, ${add.address2}. ${add.zipCode}'),
+                subtitle: Text(
+                  '${add.city.name}, ${add.state.name}. ${add.country.name}',
                 ),
-                subtitle: Text('${add.city.name}, ${add.state.name}. ${add.country.name}'),
-                dense: _isDense,
+                dense: true,
                 trailing: InkWell(
                   borderRadius: BorderRadius.circular(100),
-                  onTap: () => debugPrint('--- tapped ${add.id}'),
-                  child: Icon(Icons.edit, size: 18.r).paddingAll(10.r),
+                  child: Icon(
+                    Icons.more_vert,
+                    size: 18.r,
+                    color: Colors.white38,
+                  ).paddingAll(10.r),
+                  onTap: () => _showModalSheet(context, add),
                 ),
                 onLongPress: () => debugPrint('--- onLongPress ${add.id}'),
               ),

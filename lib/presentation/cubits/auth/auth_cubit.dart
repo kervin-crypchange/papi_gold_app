@@ -48,5 +48,5 @@ class AuthCubit extends Cubit<AuthState> with LoggerMixin {
     _data = data;
   }
 
-  Map<String, dynamic> getdata() => _data!;
+  Map<String, dynamic> get data => _data!;
 }

@@ -23,7 +23,6 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
   bool _isDark = true;
   bool _isLoading = false;
-  bool _isCameraGranted = false;
   bool _isLocationGranted = false;
   bool _isNotificationGranted = false;
 
@@ -35,9 +34,6 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
   }
 
   Future<void> _checkPermission() async {
-    final isCameraGranted = await PermissionService().checkPermission(
-      Permission.camera,
-    );
     final isLocationGranted = await PermissionService().checkPermission(
       Permission.location,
     );
@@ -46,7 +42,6 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
     );
     if (!mounted) return;
     setState(() {
-      _isCameraGranted = isCameraGranted;
       _isLocationGranted = isLocationGranted;
       _isNotificationGranted = isNotificationGranted;
     });
@@ -70,10 +65,6 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
         },
       );
     });
-  }
-
-  void setPermission() {
-    debugPrint('--- setPermission');
   }
 
   void _changeTheme() {
