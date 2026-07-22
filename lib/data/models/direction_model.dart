@@ -11,6 +11,8 @@ class DirectionModel extends DirectionEntity {
     required super.address2,
     required super.codeZip,
     required super.isMain,
+    required super.name,
+    required super.type,
   });
 
   factory DirectionModel.fromJson(Map<String, dynamic> json) {
@@ -21,8 +23,10 @@ class DirectionModel extends DirectionEntity {
       city: AddressLocationModel.fromJson(json['city']),
       address1: safeString(json['address1']),
       address2: safeString(json['address2']),
+      name: safeString(json['name']),
+      type: safeString(json['type']),
       codeZip: safeString(json['zip_code']),
-      isMain: safeBool(json['default']),
+      isMain: safeBool(json['is_default']),
     );
   }
   factory DirectionModel.fromEntity(DirectionEntity e) {
@@ -34,6 +38,8 @@ class DirectionModel extends DirectionEntity {
       address1: e.address1,
       address2: e.address2,
       codeZip: e.codeZip,
+      name: e.name,
+      type: e.type,
       isMain: e.isMain,
     );
   }
@@ -41,13 +47,15 @@ class DirectionModel extends DirectionEntity {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'country':  country.id,
-      'state':  state.id,
+      'country': country.id,
+      'state': state.id,
       'city': city.id,
       'address1': address1,
       'address2': address2,
       'zip_code': codeZip,
-      'default': isMain,
+      'name': name,
+      'type': type,
+      'is_default': isMain,
     };
   }
 }

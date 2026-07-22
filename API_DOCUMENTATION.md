@@ -9,6 +9,7 @@ Esta documentación detalla el uso, funcionamiento y estructura de la API Headle
 ### 1.1 Health Check (Estado del Servidor)
 Permite monitorear la salud del servidor y la conexión a la base de datos de forma pública.
 - **URL:** `GET /api/health`
+- **Parámetros:** Ninguno.
 - **Respuesta (200 OK):**
 ```json
 {
@@ -17,17 +18,20 @@ Permite monitorear la salud del servidor y la conexión a la base de datos de fo
   "timestamp": "2026-06-10T14:30:00.000000Z"
 }
 ```
+- **Errores:**
+  - `500 Internal Server Error`: Si el servidor o la base de datos no están disponibles.
 
 ### 1.2 Webhook de Stripe
 Punto de entrada para que Stripe notifique cambios de estado en los pagos de forma asíncrona. 
 - **URL:** `POST /api/stripe/webhook`
-- **Seguridad:** Requiere validación de firma mediante el header `Stripe-Signature` (Middleware `StripeSignature`).
+- **Parámetros (Headers):**
+  - `Stripe-Signature` (requerido): Firma para validación de autenticidad.
 - **Eventos Procesados:**
   - `payment_intent.succeeded`: El pago se completó exitosamente. Actualiza la venta a **Aprobado**, reduce el stock aloof e incrementa el stock de venta real.
   - `payment_intent.payment_failed`: El pago falló. Actualiza el estado a **Fallido**.
   - `payment_intent.processing`, `payment_intent.canceled`, `payment_intent.requires_action`.
   - `charge.refunded`: El cargo fue reembolsado. Actualiza el estado a **Reintegrado**.
-- **Ejemplo de Cuerpo (Payload de Stripe):**
+- **Ejemplo de Petición (Payload de Stripe):**
 ```json
 {
   "id": "evt_1P...",
@@ -43,15 +47,15 @@ Punto de entrada para que Stripe notifique cambios de estado en los pagos de for
   }
 }
 ```
-
-- **Respuesta de la API (Lo que Stripe recibe):**
-La API responde con un `200 OK` tras validar la firma y procesar el evento.
+- **Respuesta (200 OK):**
 ```json
 {
   "status": "success",
   "message": "Webhook processed: payment_intent.succeeded"
 }
 ```
+- **Errores:**
+  - `400 Bad Request`: Si la firma es inválida o el payload está mal formado.
 
 ---
 
@@ -59,17 +63,17 @@ La API responde con un `200 OK` tras validar la firma y procesar el evento.
 
 La API utiliza capas de seguridad obligatorias para proteger los datos y asegurar que solo las aplicaciones autorizadas interactúen con ella.
 
-### 1.1 App Key (Header X-API-Key)
+### 2.1 App Key (Header X-API-Key)
 Requerido para **todas** las peticiones públicas (bajo el middleware `app_key`).
 - **Header:** `X-API-Key`
 - **Valor:** Definido en el entorno del servidor (ej. `base64:vI6...`)
 
-### 1.2 Autenticación Sanctum (Bearer Token)
+### 2.2 Autenticación Sanctum (Bearer Token)
 Requerido para endpoints del área privada del cliente. Los tokens emitidos pueden tener alcances (scopes):
 - `full-access`: Permite realizar acciones críticas como cambiar la contraseña.
 - **Header:** `Authorization: Bearer {token}`
 
-### 1.3 Sistema de Traducciones
+### 2.3 Sistema de Traducciones
 La mayoría de los recursos devuelven un campo `translations` que contiene las versiones localizadas de los campos descriptivos.
 - **Formato:** Objeto con códigos de idioma (ISO 639-1) como llaves.
 - **Ejemplo:**
@@ -80,7 +84,7 @@ La mayoría de los recursos devuelven un campo `translations` que contiene las v
 }
 ```
 
-### 1.4 Actualizaciones en Tiempo Real (WebSockets)
+### 2.4 Actualizaciones en Tiempo Real (WebSockets)
 La API utiliza **Laravel Reverb** para notificar cambios en los datos de forma inmediata. Las aplicaciones clientes pueden suscribirse a estos canales utilizando **Laravel Echo**.
 
 #### Configuración de Conexión
@@ -100,17 +104,33 @@ La API utiliza **Laravel Reverb** para notificar cambios en los datos de forma i
 | `client.{id}` | `sale.updated` | **Canal Privado**: Se dispara cuando un pedido del cliente cambia de estado o datos. |
 
 #### Ejemplo de Suscripción (JavaScript/Laravel Echo)
+
+Para canales públicos y privados, se recomienda la siguiente configuración. Los canales privados requieren el token de autenticación del cliente.
+
 ```javascript
 import Echo from 'laravel-echo';
+import Pusher from 'pusher-js';
+
+window.Pusher = Pusher;
 
 const echo = new Echo({
   broadcaster: 'reverb',
   key: 'TU_REVERB_KEY',
-  wsHost: 'api.papi.gold',
+  wsHost: 'direccion-web',
   wsPort: 443,
   forceTLS: true,
   enabledTransports: ['ws', 'wss'],
+  // Requerido para Canales Privados:
+  authEndpoint: 'https://direccion-web/api/broadcasting/auth',
+  auth: {
+    headers: {
+      Authorization: `Bearer {TOKEN_DEL_CLIENTE}`,
+      Accept: 'application/json',
+    },
+  },
 });
+
+// --- CANALES PÚBLICOS ---
 
 // Escuchar cambios en precios
 echo.channel('prices')
@@ -123,19 +143,45 @@ echo.channel('products')
   .listen('.product.updated', (data) => {
     console.log(`Producto ${data.productId} ${data.action}`, data.product);
   });
+
+// Escuchar cambios en ajustes globales
+echo.channel('settings')
+  .listen('.settings.updated', (data) => {
+    console.log('Ajustes actualizados:', data.settings);
+  });
+
+// --- CANALES PRIVADOS (Requiere Autenticación) ---
+
+const clientId = 5; // ID del cliente autenticado
+
+// Notificaciones y Actualizaciones de Pedidos
+echo.private(`client.${clientId}`)
+  .listen('.notification.received', (data) => {
+    console.log('Nueva notificación:', data.title, data.message);
+  })
+  .listen('.sale.updated', (data) => {
+    console.log('Pedido actualizado:', data);
+  });
+
+// Chat de Soporte
+const chatIdentifier = 'session_xyz'; 
+echo.join(`chat.${chatIdentifier}`)
+  .listen('.message.sent', (data) => {
+    console.log('Nuevo mensaje de chat:', data.message);
+  });
 ```
 
 ---
 
 ## 3. Catálogo de Productos (Públicos)
 
-### 2.1 Listar Productos
+### 3.1 Listar Productos
 - **URL:** `GET /api/product`
-- **Query Params:**
-  - `?per_page={n}` (opcional): Cantidad de elementos por página (default: 4).
-  - `?metal={id}` (opcional): Filtrar por ID de tipo de metal.
-  - `?category={id}` (opcional): Filtrar por ID de categoría de producto.
-- **Respuesta:** Lista paginada agrupada por tipo de metal, incluyendo metadatos inteligentes de filtros disponibles. Los filtros están jerárquicamente vinculados (Metal -> Categorías). Sigue la estructura estándar de paginación (`data`, `links`, `meta`).
+- **Parámetros (Query Params):**
+  - `per_page` (opcional): Cantidad de elementos por página (default: 4).
+  - `metal` (opcional): Filtrar por ID de tipo de metal.
+  - `category` (opcional): Filtrar por ID de categoría de producto.
+- **Respuesta (200 OK):** Lista paginada agrupada por tipo de metal, incluyendo metadatos inteligentes de filtros disponibles.
 ```json
 {
   "data": [ ... ],
@@ -175,10 +221,14 @@ echo.channel('products')
   }
 }
 ```
+- **Errores:**
+  - `401 Unauthorized`: Si falta el `X-API-Key`.
 
-### 2.2 Ver Producto Detallado
+### 3.2 Ver Producto Detallado
 - **URL:** `GET /api/product/{id}`
-- **Respuesta:** Objeto `ProductResource`.
+- **Parámetros (Path Params):**
+  - `id` (requerido): ID numérico del producto.
+- **Respuesta (200 OK):** Objeto `ProductResource`.
 ```json
 {
   "data": {
@@ -188,13 +238,16 @@ echo.channel('products')
     "stock": 5,
     "imagen": "...",
     "price": 1250.50,
-    "category": { "id": 1, "name": "Anillos", ... },
-    "translations": { ... }
+    "category": { "id": 1, "name": "Anillos" },
+    "translations": { "es": { "name": "Anillo..." }, "en": { "name": "Ring..." } }
   }
 }
 ```
+- **Errores:**
+  - `404 Not Found`: Si el producto no existe.
+  - `401 Unauthorized`: Si falta el `X-API-Key`.
 
-### 2.3 Eventos en Tiempo Real (WebSockets)
+### 3.3 Eventos en Tiempo Real (WebSockets)
 El sistema emite actualizaciones instantáneas cuando un producto es creado, modificado o eliminado.
 - **Canal Público:** `products`
 - **Evento:** `product.updated`
@@ -220,9 +273,10 @@ El sistema emite actualizaciones instantáneas cuando un producto es creado, mod
 
 ## 4. Precios de Metales (Públicos)
 
-### 3.1 Listar Precios Actuales
+### 4.1 Listar Precios Actuales
 - **URL:** `GET /api/price`
-- **Respuesta:** Análisis completo de metales activos. El campo `categories` contiene la representación minimalista de los productos de ese metal.
+- **Parámetros:** Ninguno.
+- **Respuesta (200 OK):** Análisis completo de metales activos. El campo `categories` contiene la representación minimalista de los productos de ese metal.
 ```json
 {
   "success": true,
@@ -252,11 +306,14 @@ El sistema emite actualizaciones instantáneas cuando un producto es creado, mod
   ]
 }
 ```
+- **Errores:**
+  - `401 Unauthorized`: Si falta el `X-API-Key`.
 
-### 3.2 Historial y Detalle por Metal
+### 4.2 Historial y Detalle por Metal
 - **URL:** `GET /api/price/{symbol}`
-- **Ejemplo:** `/api/price/XAU`
-- **Nota:** La respuesta devuelve un **array** dentro del campo `data` con la misma estructura normalizada que el listado general.
+- **Parámetros (Path Params):**
+  - `symbol` (requerido): Símbolo del metal (ej. `XAU`).
+- **Respuesta (200 OK):** La respuesta devuelve un **array** dentro del campo `data` con la misma estructura normalizada que el listado general.
 ```json
 {
   "success": true,
@@ -286,8 +343,10 @@ El sistema emite actualizaciones instantáneas cuando un producto es creado, mod
   ]
 }
 ```
+- **Errores:**
+  - `404 Not Found`: Si el símbolo del metal no existe.
 
-### 3.3 Eventos en Tiempo Real (WebSockets)
+### 4.3 Eventos en Tiempo Real (WebSockets)
 Actualización automática de precios internacionales de metales.
 - **Canal Público:** `prices`
 - **Evento:** `prices.updated`
@@ -309,9 +368,10 @@ Actualización automática de precios internacionales de metales.
 
 ## 5. Ubicaciones (Públicos)
 
-### 4.1 Listar Países
+### 5.1 Listar Países
 Obtiene la lista de países configurados como activos en el sistema.
 - **URL:** `GET /api/location`
+- **Parámetros:** Ninguno.
 - **Respuesta (200 OK):**
 ```json
 {
@@ -323,32 +383,20 @@ Obtiene la lista de países configurados como activos en el sistema.
       "phone_code": "58",
       "emoji": "🇻🇪"
     },
-    {
-      "id": 2,
-      "name": "United States",
-      "iso2": "US",
-      "phone_code": "1",
-      "emoji": "🇺🇸"
-    }
+    ...
   ]
 }
 ```
+- **Errores:**
+  - `401 Unauthorized`: Si falta el `X-API-Key`.
 
-### 4.2 Ver Estados o Ciudades
+### 5.2 Ver Estados o Ciudades
 Filtra ubicaciones geográficas de forma jerárquica.
 - **URL:** `GET /api/location/show`
-- **Query Params:**
-  - `?country={id}`: Devuelve la lista de estados de un país.
-  - `?country={id}&state={id}`: Devuelve la lista de ciudades de un estado.
-- **Respuesta Estados (200 OK):**
-```json
-{
-  "data": [
-    { "id": 10, "name": "Distrito Capital", "country_id": 1 }
-  ]
-}
-```
-- **Respuesta Ciudades (200 OK):**
+- **Parámetros (Query Params):**
+  - `country` (requerido): ID del país.
+  - `state` (opcional): ID del estado (para obtener ciudades).
+- **Respuesta (200 OK):**
 ```json
 {
   "data": [
@@ -359,33 +407,46 @@ Filtra ubicaciones geográficas de forma jerárquica.
 - **Errores:**
   - `400 Bad Request`: Si no se envían parámetros o la combinación es inválida.
   - `404 Not Found`: Si el país o estado solicitado no existe.
+  - `401 Unauthorized`: Si falta el `X-API-Key`.
 
 ---
 
 ## 6. Autenticación y Sesión
 
-### 5.1 Magic Link (Acceso Temporal)
+### 6.1 Magic Link (Acceso Temporal)
 Permite el acceso a clientes que no tienen una contraseña establecida o que prefieren entrar vía enlace de correo.
-1. **Solicitar (`POST /api/request-access`):**
-   - **Cuerpo:**
-   ```json
-   { 
-     "email": "juan@papi.com", 
-     "invoice_number": "PG-5521" 
-   }
-   ```
-   - **Validación:** El `invoice_number` debe pertenecer al cliente con ese `email`.
-   - **Respuesta (200 OK):** `{"message": "Enlace enviado exitosamente."}`
-   - **Errores:** `422` (Si el cliente tiene contraseña establecida o datos incorrectos).
+- **URL:** `POST /api/request-access`
+- **Parámetros (Request Body):**
+  - `email` (requerido): Correo electrónico del cliente.
+  - `invoice_number` (requerido): Número de factura/orden vinculada.
+- **Respuesta (200 OK):**
+```json
+{
+  "message": "Enlace enviado exitosamente."
+}
+```
+- **Errores:**
+  - `422 Unprocessable Content`: Si el cliente ya tiene contraseña o los datos son incorrectos.
+  - `401 Unauthorized`: Si falta el `X-API-Key`.
 
-2. **Verificación (`GET /api/request-access/verify`):** Endpoint interno que verifica la firma y redirige al frontend:
-   - Éxito: `{frontend_url}/verify-access?token={token}&sale_id={invoice_number}`
-   - Error: `{frontend_url}/verify-access?error=expired|invalid`
+### 6.2 Verificar Magic Link
+Endpoint interno que verifica la firma y redirige al frontend.
+- **URL:** `GET /api/request-access/verify`
+- **Parámetros (Query Params):**
+  - `token` (requerido): Token de acceso temporal.
+  - `sale_id` (requerido): Número de factura.
+- **Flujos de Redirección:**
+  - **Éxito:** `{frontend_url}/verify-access?token={token}&sale_id={invoice_number}`
+  - **Error:** `{frontend_url}/verify-access?error=expired|invalid`
+- **Errores:**
+  - `401 Unauthorized`: Token expirado o inválido.
 
-### 5.2 Login (Sesión por Contraseña)
+### 6.3 Login (Sesión por Contraseña)
 Autenticación tradicional para clientes con contraseña establecida.
 - **URL:** `POST /api/session`
-- **Petición:** `{ "email": "usuario@papi.com", "password": "..." }`
+- **Parámetros (Request Body):**
+  - `email` (requerido): Correo del usuario.
+  - `password` (requerido): Contraseña del usuario.
 - **Respuesta (200 OK):**
 ```json
 {
@@ -399,40 +460,48 @@ Autenticación tradicional para clientes con contraseña establecida.
   "message": "Inicio de sesión exitoso."
 }
 ```
-- **Respuestas de Error:**
-  - `403 Forbidden`: `{ "message": "...", "requires_verification": true }` (Email no verificado).
-  - `422 Unprocessable Content`: `{ "message": "Las credenciales... son incorrectas." }`
+- **Errores:**
+  - `403 Forbidden`: Correo electrónico no verificado.
+  - `422 Unprocessable Content`: Credenciales incorrectas o error de validación.
 
-### 5.3 Logout
-Cierra la sesión actual revocando el token Bearer.
-- **URL:** `DELETE /api/session` (Requiere Token Bearer).
-- **Respuesta (200 OK):** `{ "message": "Sesión cerrada correctamente." }`
-
-### 5.4 Registro de Clientes
-Permite registrar un nuevo cliente en el sistema.
-- **URL:** `POST /api/register`
-- **Cuerpo:**
+### 6.4 Refrescar Token
+Permite renovar el token de sesión actual.
+- **URL:** `PUT /api/session`
+- **Parámetros:** Ninguno (Requiere Bearer Token en Header).
+- **Respuesta (200 OK):**
 ```json
 {
-  "name": "Juan",
-  "lastname": "Pérez",
-  "email": "juan@papi.com",
-  "phone": "+584120000000",
-  "country": 1,
-  "state": 10,
-  "city": 50,
-  "address1": "Av. Principal 123",
-  "address2": "Edif. Centro",
-  "code_zip": "1010",
-  "password": "Password123!",
-  "password_confirmation": "Password123!"
+  "token": "2|XYZ...",
+  "message": "Token refrescado exitosamente."
 }
 ```
-- **Validaciones:**
-  - `email`: Debe ser único en la tabla `clients`.
-  - `phone`: Debe ser único en la tabla `clients`.
-  - `country`, `state`, `city`: Deben ser IDs válidos y estar activos.
-  - `password`: Mínimo 8 caracteres, debe incluir letras (mayúsculas y minúsculas), números y símbolos.
+- **Errores:**
+  - `401 Unauthorized`: Token inválido, expirado o falta App Key.
+
+### 6.5 Logout
+Cierra la sesión actual revocando el token Bearer.
+- **URL:** `DELETE /api/session`
+- **Parámetros:** Ninguno (Requiere Bearer Token en Header).
+- **Respuesta (200 OK):**
+```json
+{
+  "message": "Sesión cerrada correctamente."
+}
+```
+- **Errores:**
+  - `401 Unauthorized`: Token inválido o no proporcionado.
+
+### 6.6 Registro de Clientes
+Permite registrar un nuevo cliente en el sistema.
+- **URL:** `POST /api/register`
+- **Parámetros (Request Body):**
+```json
+{
+  "name": "Juan", "lastname": "Pérez", "email": "juan@papi.com", "phone": "+584120000000",
+  "country": 1, "state": 10, "city": 50, "address1": "Av...", "code_zip": "1010",
+  "password": "Password123!", "password_confirmation": "Password123!"
+}
+```
 - **Respuesta (201 Created):**
 ```json
 {
@@ -440,75 +509,55 @@ Permite registrar un nuevo cliente en el sistema.
   "status": "pending_verification"
 }
 ```
+- **Errores:**
+  - `422 Unprocessable Content`: Datos inválidos o duplicados (email/phone).
 
 ---
 
 ## 7. Proceso de Checkout y Pagos
 
-### 6.1 Crear Orden (Checkout)
+### 7.1 Crear Orden (Checkout)
 - **URL:** `POST /api/order`
-- **Cuerpo de Petición:**
+- **Parámetros (Request Body):**
 ```json
 {
   "clientData": {
-    "name": "Juan", 
-    "lastname": "Pérez", 
-    "email": "juan@papi.com", 
-    "phone": "+1234567890", 
-    "country": 1, 
-    "state": 10, 
-    "city": 50,
-    "address1": "Av. Principal 123", 
-    "address2": "Edif. Centro",
-    "code_zip": "1010", 
-    "receive_advertise": true
+    "name": "Juan", "lastname": "Pérez", "email": "juan@papi.com", ...
   },
   "cartItems": [
-    { 
-      "id": 10, 
-      "quantity": 1, 
-      "price": 1250.50, 
-      "format": 1 
-    }
+    { "id": 10, "quantity": 1, "price": 1250.50, "format": 1 }
   ],
+  "address_id": 5,
   "confirm_existing_client": false
 }
 ```
-- **Validaciones Principales:**
-  - `clientData.email`: Único en el sistema. Si existe, requiere `confirm_existing_client: true` para proceder.
-  - `cartItems.*.quantity`: No puede exceder el stock disponible real (`stock - aloof`).
-  - `cartItems.*.price`: Si el precio del producto subió en el servidor durante el proceso, devuelve error `409 price_changed`.
-  - `format`: 1 para Compra, 0 para Empeño (Inversión).
-- **Respuesta Éxito (201 Created):**
+- **Respuesta (201 Created):**
 ```json
 {
   "message": "Orden creada exitosamente",
-  "sale": { 
-    "order": "ORD-123", 
-    "invoice_number": "PG-5521", 
-    "total_v": 1250.50 
-  },
-  "items": [ 
-    { "id": 1, "product": "Anillo Clásico", "quantity": 1, "price": 1250.50, "type": "Compra" } 
-  ],
-  "clientSecret": "pi_...", 
-  "paymentId": "pay_..."
+  "sale": { "order": "ORD-123", "invoice_number": "PG-5521", "total_v": 1250.50 },
+  "clientSecret": "pi_...", "paymentId": "pay_..."
 }
 ```
-- **Flujo Alternativo (Éxito con error en Pasarela):** Si la orden se crea pero Stripe falla, devuelve `201 Created` con `payment_error` y el código de la orden para reintento posterior.
+- **Errores:**
+  - `409 Conflict`: `price_changed` (el precio subió) o `client_exists_confirmation_required`.
+  - `422 Unprocessable Content`: `insufficient_stock` o errores de validación.
 
-### 6.2 Refrescar Intento de Pago
-Permite generar una nueva intención de pago para una orden existente.
+### 7.2 Refrescar Intento de Pago
+Genera una nueva intención de pago para una orden existente.
 - **URL:** `POST /api/payment`
-- **Cuerpo (Stripe):** `{ "sale_id": "ORD-123" }`
-- **Cuerpo (Manual/Otro):** `{ "sale_id": 99, "pay_method_id": 1, "pay_amount": 1250.50 }`
-- **Respuesta Stripe (200 OK):**
+- **Parámetros (Request Body):**
+  - `sale_id` (requerido): ID o código de la orden.
+- **Respuesta (200 OK):**
 ```json
 {
   "clientSecret": "pi_...",
   "paymentId": "pay_..."
 }
 ```
+- **Errores:**
+  - `404 Not Found`: Si la orden no existe.
+  - `422 Unprocessable Content`: Si la orden ya está pagada o el monto es inválido.
 
 ---
 
@@ -543,9 +592,9 @@ Obtiene la información del perfil del cliente autenticado.
 ### 8.2 Actualizar Datos del Perfil
 Permite actualizar la información personal del cliente. No permite cambiar la contraseña directamente por este medio.
 - **URL:** `PUT /api/client/{id}`
-- **Seguridad:** Requiere Bearer Token. El `{id}` puede ser el ID numérico o la palabra `me`.
-- **Nota sobre 2FA:** Si el sistema lo requiere, el middleware/trait enviará un código al correo y devolverá un `422` solicitando el `verification_code`.
-- **Cuerpo (Ejemplo):**
+- **Parámetros (Path Params):**
+  - `id` (requerido): ID del cliente o `me`.
+- **Cuerpo de Petición (Ejemplo):**
 ```json
 {
   "name": "Juan Ignacio",
@@ -585,11 +634,11 @@ Permite actualizar la información personal del cliente. No permite cambiar la c
 ```
 
 ### 8.3 Actualizar Contraseña
-Endpoint dedicado exclusivamente al cambio de contraseña.
+Endpoint dedicado exclusivamente al cambio de contraseña. Requiere validación de identidad mediante `verification_code`.
 - **URL:** `PUT /api/client/password`
 - **Seguridad:** Requiere Bearer Token.
 - **Nota sobre 2FA:** Este proceso requiere validación de identidad mediante `verification_code`.
-- **Cuerpo:**
+- **Cuerpo de Petición (Ejemplo):**
 ```json
 {
   "current_password": "mi_password_actual",
@@ -598,7 +647,7 @@ Endpoint dedicado exclusivamente al cambio de contraseña.
   "verification_code": "123456"
 }
 ```
-- **Validación:** 
+ **Validación:** 
   - `current_password`: Obligatoria si el cliente ya tiene una contraseña establecida.
   - `password`: Mínimo 8 caracteres, debe incluir letras (mayúsculas y minúsculas), números y símbolos.
 - **Respuesta (200 OK):**
@@ -607,26 +656,28 @@ Endpoint dedicado exclusivamente al cambio de contraseña.
   "message": "Contraseña actualizada exitosamente."
 }
 ```
-- **Error (422 Unprocessable Content):**
-```json
-{
-  "message": "Los datos proporcionados no son válidos.",
-  "errors": {
-    "current_password": ["La contraseña actual no es correcta."],
-    "password": ["La contraseña debe tener al menos 8 caracteres."]
-  }
-}
-```
+- **Errores:**
+  - `422 Unprocessable Content`:
+    ```json
+    {
+      "message": "Los datos proporcionados no son válidos.",
+      "errors": {
+        "current_password": ["La contraseña actual no es correcta."],
+        "password": ["La contraseña debe tener al menos 8 caracteres."]
+      }
+    }
+    ```
+  - `401 Unauthorized`: Token inválido.
 
 ### 8.4 Valuación de Activos (Portafolio)
-Obtiene un resumen financiero de las compras del cliente, calculando el costo de adquisición vs el valor de mercado actual según los precios spot.
+Obtiene un resumen financiero de las compras del cliente.
 - **URL:** `GET /api/valuation`
-- **Seguridad:** Requiere Bearer Token.
+- **Parámetros:** Ninguno (Requiere Bearer Token en Header).
 - **Respuesta (200 OK):**
 ```json
 {
   "data": {
-    "total": {
+     "total": {
       "totalAcquisitionCost": 5250.25,
       "currentMarketValue": 5840.10,
       "totalWeightOz": 2.5412,
@@ -655,29 +706,28 @@ Obtiene un resumen financiero de las compras del cliente, calculando el costo de
   }
 }
 ```
+- **Errores:**
+  - `401 Unauthorized`: Token inválido.
 
 ### 8.5 Historial de Órdenes
 - **URL:** `GET /api/order`
-- **Query Params:**
-  - `?per_page={n}` (opcional): Cantidad de elementos por página (default: 5).
-- **Respuesta (200 OK):** Lista paginada que sigue la estructura estándar (`data`, `links`, `meta`) e incluye estadísticas globales (`invested`, `sold`) del cliente en el campo `stats`.
+- **Parámetros (Query Params):**
+  - `per_page` (opcional): Cantidad de elementos por página (default: 5).
+- **Respuesta (200 OK):** Lista paginada de órdenes e estadísticas globales.
 ```json
 {
   "data": [ ... ],
-  "links": { ... },
-  "meta": { ... },
-  "stats": {
-    "invested": { "amount": 5250.25, "count": 3 },
-    "sold": { "amount": 0, "count": 0 }
-  }
+  "stats": { "invested": { "amount": 5250.25, "count": 3 }, "sold": { "amount": 0, "count": 0 } }
 }
 ```
+- **Errores:**
+  - `401 Unauthorized`: Token inválido.
 
 ### 8.6 Ver Detalle de una Orden
-Obtiene la información detallada de una orden específica.
 - **URL:** `GET /api/order/{order_code}`
-- **Parámetro:** El `{order_code}` es el identificador único de la orden (ej. `ORD-123`), **no** su ID numérico.
-- **Respuesta:**
+- **Parámetros (Path Params):**
+  - `order_code` (requerido): Código único de la orden (ej. `ORD-123`).
+- **Respuesta (200 OK):** Objeto detallado de la orden, incluyendo items, pagos y envíos.
 ```json
 {
   "data": {
@@ -714,21 +764,24 @@ Obtiene la información detallada de una orden específica.
   }
 }
 ```
+- **Errores:**
+  - `404 Not Found`: Si la orden no existe.
+  - `401 Unauthorized`: Token inválido.
 
 ---
 
 ## 9. Soporte y Configuración
 
 ### 9.1 Chat
-- **Enviar Mensaje (`POST /api/chat`):** Envío de mensajes y archivos (Multipart/Form-Data).
-  - **Campos:** 
-    - `identifier` (req): ID único de sesión/chat.
-    - `message` (req_without:file): Texto del mensaje.
-    - `file` (opcional): Imagen (jpg, png, webp, max 10MB).
-    - `name`, `email`, `phone`, `order_id` (opcionales): Para identificar al cliente o asociar a una orden. Si se envía `order_id`, el sistema valida que el `email` y `phone` correspondan al cliente de dicha orden.
-  - **Respuesta (201 Created):**
+- **Enviar Mensaje (`POST /api/chat`):** Envío de mensajes y archivos.
+- **Parámetros (Request Body - Multipart):**
+  - `identifier` (requerido): ID único de sesión/chat.
+  - `message` (requerido si no hay file): Texto del mensaje.
+  - `file` (opcional): Imagen (jpg, png, webp, max 10MB).
+  - `order_id` (opcional): Para asociar a una orden.
+- **Respuesta (201 Created):**
   ```json
-  {
+   {
     "success": true,
     "data": {
       "id": 1,
@@ -743,12 +796,14 @@ Obtiene la información detallada de una orden específica.
     }
   }
   ```
-  - **Errores:**
-    - `422 Unprocessable Content`: Si el `order_id` no existe o no corresponde a los datos del cliente proporcionados.
+- **Errores:**
+  - `422 Unprocessable Content`: Si el `order_id` no existe o no corresponde al cliente.
 
 - **Ver Historial (`GET /api/chat/{identifier}`):**
-  - **Respuesta (200 OK):**
-  ```json
+- **Parámetros (Path Params):**
+  - `identifier` (requerido): ID único de sesión/chat.
+- **Respuesta (200 OK):** Historial completo de mensajes.
+```json
   {
     "success": true,
     "data": {
@@ -776,26 +831,24 @@ Obtiene la información detallada de una orden específica.
     }
   }
   ```
-  - **Errores:**
-    - `404 Not Found`: Si el chat con el `identifier` proporcionado no existe.
+- **Errores:**
+  - `404 Not Found`: Si el chat no existe.
 
 ### 9.2 Formulario de Contacto (Consulta)
 - **URL:** `POST /api/consultation`
-- **Cuerpo:** 
+- **Parámetros (Request Body):**
+  - `name`, `email`, `phone`, `type`, `details` (requeridos).
+- **Respuesta (201 Created):**
 ```json
-{ 
-  "name": "Juan", 
-  "email": "juan@papi.com", 
-  "phone": "584120000000", 
-  "type": "Compra de Oro", 
-  "details": "Deseo información sobre..." 
-}
+{ "message": "Consulta enviada exitosamente." }
 ```
-- **Respuesta (201 Created):** `{ "message": "Consulta enviada exitosamente." }`
+- **Errores:**
+  - `422 Unprocessable Content`: Errores de validación.
 
 ### 9.3 Ajustes Globales
 Obtiene configuraciones públicas dinámicas del sitio.
 - **URL:** `GET /api/settings`
+- **Parámetros:** Ninguno.
 - **Respuesta (200 OK):**
 ```json
 {
@@ -810,6 +863,7 @@ Obtiene configuraciones públicas dinámicas del sitio.
 ```
 
 ### 9.4 Eventos en Tiempo Real (WebSockets)
+Actualización de ajustes globales.
 - **Canal Público:** `settings`
 - **Evento:** `settings.updated`
 - **Data Recibida (Payload):**
@@ -828,12 +882,11 @@ Obtiene configuraciones públicas dinámicas del sitio.
 ## 10. Seguimiento de Envíos (Públicos)
 
 ### 10.1 Consultar Tracking
-Obtiene el estado detallado y el historial de un envío utilizando su número de guía.
+Obtiene el estado detallado de un envío.
 - **URL:** `GET /api/tracking`
-- **Seguridad:** Requiere header `X-API-Key`.
-- **Query Params:**
-  - `?trackingNumber={string}` (requerido): El número de guía del envío proporcionado por el courier (ej. ZOOM, UPS).
-- **Respuesta Exitosa (200 OK):**
+- **Parámetros (Query Params):**
+  - `trackingNumber` (requerido): Número de guía.
+- **Respuesta (200 OK):** Detalle del envío, pasos del resumen e historial.
 ```json
 {
   "success": true,
@@ -845,11 +898,13 @@ Obtiene el estado detallado y el historial de un envío utilizando su número de
       {
         "id": "1",
         "label": "ENVIO PROCESADO EN ORIGEN",
+        "date": "10/06/2026 16:08", 
         "status": "completed"
       },
       {
         "id": "21",
         "label": "ENTREGADO AL DESTINATARIO",
+        "date": "10/06/2026 16:08", 
         "status": "current"
       }
     ],
@@ -882,72 +937,23 @@ Obtiene el estado detallado y el historial de un envío utilizando su número de
   }
 }
 ```
-
-- **Respuesta con Redirección a Courier (Fallback) (200 OK):**
-Ocurre cuando el sistema no puede obtener datos en tiempo real (por ejemplo, servicio externo caído o datos obsoletos) y sugiere consultar directamente en la web del transportista.
-```json
-{
-  "success": true,
-  "data": {
-    "order": "ORD-123",
-    "tracking_number": "1234567890",
-    "status": "ENTREGADO",
-    "summary_steps": [
-      { "id": "1", "label": "RECIBIDO EN ORIGEN", "status": "completed" },
-      { "id": "21", "label": "ENTREGADO AL DESTINATARIO", "status": "current" },
-      ...
-    ],
-    "history": [
-      {
-        "id": 21, 
-        "date": "10/06/2026 16:08", 
-        "status": "DISPONIBLE PARA EL RETIRO EN TAQUILLA", 
-        "direction": "CARACAS - ZOOM CARACAS-CHACAO",
-      },
-      {
-        "id": 1, 
-        "date": "08/06/2026 15:08",
-        "status": "ENVIO PROCESADO EN ORIGEN", 
-        "direction": "CARACAS - ZOOM YAGUARA",
-      },
-      ...
-    ],
-    "fallback": true,
-    "fallback_url": "https://www.zoom.red/Tracking/Resultados?nro-guia=1234567890&tipo-consulta=1",
-    "message": "En este momento no podemos obtener el detalle exacto. Por favor consulte el sitio del courier.",
-    "address_shipping": "Av. Principal 123, Caracas, VE",
-    "translations": { 
-      "en": {
-        "status": "Delivery to Customer International Casillero - Time: 4: 08: 36 P.M.",
-        "ENTREGADO AL DESTINATARIO": "Available for The Retreat In Box Office",
-        "ENVIO PROCESADO EN ORIGEN": "Envio Processed In Origin",
-        ...
-      }
-    } 
-  }
-}
-```
-
+- **Nota Fallback:** Si no se obtienen datos en tiempo real, devuelve `fallback: true` con `fallback_url`.
 - **Errores:**
-  - `422 Unprocessable Content`: Si el `trackingNumber` no es enviado o no es válido.
-    - `500 Internal Server Error`: Si ocurre un error inesperado al procesar la solicitud.
+  - `422 Unprocessable Content`: Número de guía inválido.
+  - `500 Internal Server Error`: Falla en servicio de courier.
 
 ---
 
 ## 11. Notificaciones del Cliente (Área Privada)
 
-Endpoints para gestionar las notificaciones persistentes en la base de datos para el cliente autenticado.
-
 ### 11.1 Listar Notificaciones
-Permite obtener el historial de notificaciones del cliente. Los datos están localizados según el idioma del cliente.
 - **URL:** `GET /api/notifications`
-- **Seguridad:** Requiere Bearer Token.
-- **Query Params:**
-  - `?per_page={n}` (opcional): Cantidad de elementos por página (default: 10).
-- **Respuesta (200 OK):** Lista paginada de notificaciones siguiendo la estructura estándar (`data`, `links`, `meta`).
+- **Parámetros (Query Params):**
+  - `per_page` (opcional): default 10.
+- **Respuesta (200 OK):** Lista paginada de notificaciones localizadas.
 ```json
 {
-  "data": [
+   "data": [
     {
       "id": "9c6b96...",
       "type": "App\\Notifications\\OrderStatusChanged",
@@ -983,33 +989,23 @@ Permite obtener el historial de notificaciones del cliente. Los datos están loc
   }
 }
 ```
+- **Errores:**
+  - `401 Unauthorized`: Token inválido.
 
-### 11.2 Obtener Contador de No Leídas
+### 11.2 Contador de No Leídas
 - **URL:** `GET /api/notifications/unread-count`
-- **Seguridad:** Requiere Bearer Token.
-- **Respuesta (200 OK):**
-```json
-{
-  "count": 5
-}
-```
+- **Respuesta (200 OK):** `{ "count": 5 }`
 
 ### 11.3 Marcar como Leída
 - **URL:** `PUT /api/notifications/{id}`
-- **Parámetro `{id}`**: Puede ser el UUID de la notificación o el valor literal `all` para marcar todas.
-- **Seguridad:** Requiere Bearer Token.
-- **Respuesta (200 OK):**
-```json
-{
-  "success": true
-}
-```
+- **Parámetros (Path Params):**
+  - `id` (requerido): UUID o `all`.
+- **Respuesta (200 OK):** `{ "success": true }`
 
-### 11.4 Webhook de Notificaciones (Eventos en Tiempo Real)
-El sistema emite eventos a través de WebSockets (Laravel Reverb) para que el cliente reciba notificaciones instantáneas.
+### 11.4 Webhook de Notificaciones (WebSockets)
 - **Canal Privado:** `client.{id}`
 - **Evento:** `notification.received`
-- **Data Recibida (Payload):**
+- **Data Recibida:** Objeto notificación.
 ```json
 {
   "id": "9c6b96...",
@@ -1025,23 +1021,127 @@ El sistema emite eventos a través de WebSockets (Laravel Reverb) para que el cl
 
 ---
 
-## 12. Manejo de Errores
+## 12. Direcciones del Cliente (Área Privada)
 
-| Código | Código de Error (`code`) | Descripción |
-| :--- | :--- | :--- |
-| `409` | `price_changed` | El precio subió durante el proceso. |
-| `409` | `client_exists_confirmation_required` | El cliente ya existe, requiere `confirm_existing_client: true`. |
-| `422` | `insufficient_stock` | Stock insuficiente disponible. |
-| `422` | (Validación) | Errores de validación en el campo `errors`. |
-| `500` | (Error Interno) | Error al procesar el tracking o falla del servicio. |
-
-### Ejemplo de Error de Validación (422)
+### 12.1 Listar Direcciones
+- **URL:** `GET /api/client/address`
+- **Parámetros (Query Params):**
+  - `per_page` (opcional): default 4.
+- **Respuesta (200 OK):** Lista de direcciones adicionales y la `primary_address`.
 ```json
 {
-  "message": "Los datos proporcionados no son válidos.",
-  "errors": {
-    "email": ["El formato del correo es inválido."],
-    "phone": ["El número de teléfono ya está registrado."]
+  "data": [
+    {
+      "id": 1,
+      "name": "Casa Principal",
+      "country": { "id": 1, "name": "Venezuela", "iso2": "VE" },
+      "state": { "id": 10, "name": "Distrito Capital" },
+      "city": { "id": 50, "name": "Caracas" },
+      "address1": "Av. Universidad",
+      "address2": "Edf. Las Flores, Piso 2",
+      "code_zip": "1010",
+      "phone": "+584120000000",
+      "type": "both", //('shipping','receiving','both')
+      "is_default": true
+    },
+    ...
+  ],
+  "primary_address": {
+    "id": 5,
+    "name": "Dirección de Registro",
+    "country": { "id": 1, "name": "Venezuela" },
+    "state": { "id": 10, "name": "Distrito Capital" },
+    "city": { "id": 50, "name": "Caracas" },
+    "address1": "Av. Principal",
+    "address2": "Edif. Centro",
+    "code_zip": "1010",
+    "phone": "+58412...",
+    "type": "primary",
+    "is_default": false
+  },
+  "links": {
+    "first": "http://api.papi.gold/api/client/address?page=1",
+    "last": "http://api.papi.gold/api/client/address?page=5",
+    "prev": null,
+    "next": "http://api.papi.gold/api/client/address?page=2"
+  },
+  "meta": {
+    "current_page": 1,
+    "from": 1,
+    "last_page": 5,
+    "path": "http://api.papi.gold/api/client/address",
+    "per_page": 4,
+    "to": 4,
+    "total": 20
   }
 }
 ```
+
+- **Errores:**
+  - `401 Unauthorized`: Token inválido.
+
+### 12.2 Crear Dirección
+- **URL:** `POST /api/client/address`
+- **Parámetros (Request Body):**
+- **Cuerpo (JSON):**
+```json
+{
+  "name": "Oficina",
+  "country": 1,
+  "state": 10,
+  "city": 50,
+  "address1": "Calle El Centro",
+  "address2": "Torre B, Nivel 4",
+  "code_zip": "1012",
+  "phone": "+582125556677",
+  "type": "shipping", 
+  "is_default": false
+}
+```
+- **Respuesta (201 Created):** `{ "data": { ... }, "primary_address": { ... } }`
+- **Errores:**
+  - `422 Unprocessable Content`: Validación fallida.
+
+### 12.3 Ver Detalle de Dirección
+- **URL:** `GET /api/client/address/{id}`
+- **Parámetros (Path Params):**
+  - `id` (requerido): ID de la dirección.
+- **Respuesta (200 OK):** Objeto `data` con el recurso de la dirección.
+- **Errores:**
+  - `404 Not Found`: Si la dirección no existe.
+  - `401 Unauthorized`: Token inválido.
+
+### 12.4 Actualizar Dirección
+- **URL:** `PUT /api/client/address/{id}`
+- **Cuerpo de Petición (Ejemplo Parcial):**
+```json
+{
+  "name": "Casa Nueva",
+  "country": 1,
+  "state": 10,
+  "city": 50,
+  "address1": "Av. Nueva Dirección 123",
+  "address2": "Apto 4B",
+  "code_zip": "1050",
+  "phone": "+584121112233",
+  "type": "shipping",
+  "is_default": true
+}
+```
+- **Respuesta (200 OK):** Retorna el objeto actualizado y la `primary_address`.
+- **Errores:**
+  - `422 Unprocessable Content`: Validación fallida.
+  - `404 Not Found`: Si la dirección no existe.
+  - `401 Unauthorized`: Token inválido.
+
+### 12.5 Eliminar Dirección
+- **URL:** `DELETE /api/client/address/{id}`
+- **Respuesta (200 OK):**
+```json
+{
+  "message": "Dirección eliminada exitosamente."
+}
+```
+- **Errores:**
+  - `404 Not Found`: Si la dirección no existe.
+  - `401 Unauthorized`: Token inválido.
