@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 
@@ -25,7 +26,7 @@ class DirectionModel extends DirectionEntity {
       address2: safeString(json['address2']),
       name: safeString(json['name']),
       type: safeString(json['type']),
-      codeZip: safeString(json['zip_code']),
+      codeZip: safeString(json['code_zip']),
       isMain: safeBool(json['is_default']),
     );
   }
@@ -52,7 +53,7 @@ class DirectionModel extends DirectionEntity {
       'city': city.id,
       'address1': address1,
       'address2': address2,
-      'zip_code': codeZip,
+      'code_zip': codeZip,
       'name': name,
       'type': type,
       'is_default': isMain,
@@ -68,6 +69,7 @@ class AddressLocationModel extends AddressLocationEntity {
   }
 
   factory AddressLocationModel.fromJson(Map<String, dynamic> json) {
+    debugPrint('--- $json');
     return AddressLocationModel(
       id: safeInt(json['id']),
       name: safeString(json['nane']),
