@@ -20,9 +20,9 @@ class DirectionRepositoryImpl extends DirectionRepository {
   }
 
   @override
-  Future<Either<Failure, void>> delete(int id) async {
-    Either<Failure, void> res = await sl<DirectionRemoteData>().delete(id);
-    return res.fold((l) => Left(l), (r) => Right(null));
+  Future<Either<Failure, String>> delete(int id) async {
+    Either<Failure, String> res = await sl<DirectionRemoteData>().delete(id);
+    return res.fold((l) => Left(l), (r) => Right(r));
   }
 
   @override

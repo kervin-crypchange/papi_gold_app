@@ -19,10 +19,10 @@ class DirectionRemoteDataImpl extends DirectionRemoteData {
   }
 
   @override
-  Future<Either<Failure, void>> delete(int id) async {
+  Future<Either<Failure, String>> delete(int id) async {
     try {
-      await sl<DioClient>().delete('${Apis.directions}/$id');
-      return Right(null);
+      final res = await sl<DioClient>().delete('${Apis.directions}/$id');
+      return Right(res.data['message']);
     } on DioException catch (e) {
       return Left(ServerException(e));
     }

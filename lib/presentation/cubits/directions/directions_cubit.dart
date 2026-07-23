@@ -23,7 +23,7 @@ class DirectionsCubit extends Cubit<DirectionsState> {
     );
   }
 
-  Future<Either<Failure, void>> delete(int id) async {
+  Future<Either<Failure, String>> delete(int id) async {
     return await sl<DeleteDirectionUseCase>().call(param: id);
   }
   

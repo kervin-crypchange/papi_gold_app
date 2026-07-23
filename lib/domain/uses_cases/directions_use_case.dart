@@ -13,9 +13,9 @@ class DirectionsUseCase
   }
 }
 class DeleteDirectionUseCase
-    implements UseCase<Either<Failure, void>, int> {
+    implements UseCase<Either<Failure, String>, int> {
   @override
-  Future<Either<Failure, void>> call({int? param}) {
+  Future<Either<Failure, String>> call({int? param}) {
     return sl<DirectionRepository>().delete(param!);
   }
 }

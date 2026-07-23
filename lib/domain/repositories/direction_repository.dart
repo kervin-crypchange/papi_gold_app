@@ -3,7 +3,7 @@ import 'package:papi_gold/app/core/error/failure.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 
 abstract class DirectionRepository {
-  Future<Either<Failure, void>> delete(int id);
+  Future<Either<Failure, String>> delete(int id);
   Future<Either<Failure, DirectionEntity>> detail(int id);
   Future<Either<Failure, ResponseDirectionsEntity>> list();
   Future<Either<Failure, void>> update(CreateUpdateDirectionEntity body);

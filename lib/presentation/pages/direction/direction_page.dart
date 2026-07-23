@@ -259,7 +259,7 @@ class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
                     labelText: 'Dirección 2',
                     keyboardType: TextInputType.text,
                     onSaved: (value) => setState(() => address2 = value),
-                    validator: (value) => null,
+                    validator: (value) => value?.requiredError,
                   ),
                   DropdownButtonFormField(
                     initialValue: type,
@@ -288,7 +288,7 @@ class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
                     labelText: 'Código postal',
                     keyboardType: TextInputType.number,
                     onSaved: (value) => setState(() => codeZip = value),
-                    validator: (value) => null,
+                    validator: (value) => value?.requiredError,
                   ),
                   CheckboxListTile(
                     title: const Text('Establecer como dirección por defecto'),
