@@ -50,8 +50,9 @@ class DirectionRemoteDataImpl extends DirectionRemoteData {
 
   @override
   Future<Either<Failure, void>> update(CreateUpdateDirectionModel body) async {
+    final Map<String, dynamic> data = body.toJson();
     try {
-      await sl<DioClient>().put('${Apis.directions}/$id', data: body.toJson());
+      await sl<DioClient>().put('${Apis.directions}/${body!.id}', data:data );
       return Right(null);
     } on DioException catch (e) {
       return Left(ServerException(e));

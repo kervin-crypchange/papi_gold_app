@@ -22,7 +22,7 @@ class CreateUpdateDirectionModel extends CreateUpdateDirectionEntity {
       state: e.state,
       city: e.city,
       address1: e.address1,
-      address2: e.address1,
+      address2: e.address2,
       codeZip: e.codeZip,
       type: e.type,
       isMain: e.isMain,
