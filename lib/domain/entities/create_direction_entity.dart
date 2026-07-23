@@ -1,18 +1,18 @@
 import 'package:equatable/equatable.dart';
 
-class DirectionEntity extends Equatable {
+class CreateUpdateDirectionEntity extends Equatable {
   final int? id;
   final String name;
-  final AddressLocationEntity country;
-  final AddressLocationEntity state;
-  final AddressLocationEntity city;
+  final int country;
+  final int state;
+  final int city;
   final String address1;
   final String address2;
   final String codeZip;
   final String type;
   final bool isMain;
 
-   const DirectionEntity({
+  const CreateUpdateDirectionEntity({
     this.id,
     required this.name,
     required this.country,
@@ -27,7 +27,6 @@ class DirectionEntity extends Equatable {
 
   @override
   List<Object?> get props => [
-    id,
     name,
     country,
     state,
@@ -38,14 +37,4 @@ class DirectionEntity extends Equatable {
     type,
     isMain,
   ];
-}
-
-class AddressLocationEntity extends Equatable {
-  final int id;
-  final String name;
-
-  const AddressLocationEntity({required this.id, required this.name});
-
-  @override
-  List<Object?> get props => [id, name];
 }

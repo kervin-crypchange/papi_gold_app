@@ -18,8 +18,8 @@ class DirectionPage extends StatefulWidget {
 class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
   final _formKey = GlobalKey<FormState>();
   int? country, state, city;
-  String? address1, address2, codeZip, type;
-  late bool isDefault;
+  String? address1, address2, codeZip, type, name;
+  late bool isMain;
   late bool isEdit;
   List<CountryEntity> countries = [];
   List<LocationEntity> states = [];
@@ -29,7 +29,7 @@ class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
   @override
   void initState() {
     _direction = context.read<DirectionsCubit>().direction;
-    isDefault = _direction?.isMain ?? false;
+    isMain = _direction?.isMain ?? false;
     isEdit = _direction?.isMain ?? false;
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -121,9 +121,53 @@ class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
     });
   }
 
-  void _create() {}
-  
-  void _edit() {}
+  void _create() {
+    final e = CreateUpdateDirectionEntity(
+      name: name!,
+      country: country!,
+      state: state!,
+      city: city!,
+      address1: address1!,
+      address2: address2!,
+      codeZip: codeZip!,
+      type: type!,
+      isMain: isMain,
+    );
+    context.read<DirectionsCubit>().create(e).then((either) {
+      either.fold((l) => null, (r) {
+        showLoading(context, false);
+        messenger.showSnackBar(
+          message: 'Nueva dirección creada',
+          color: AppColors.success,
+        );
+      });
+    });
+  }
+
+  void _edit() {
+    final e = CreateUpdateDirectionEntity(
+      id: _direction!.id,
+      name: name!,
+      country: country!,
+      state: state!,
+      city: city!,
+      address1: address1!,
+      address2: address2!,
+      codeZip: codeZip!,
+      type: type!,
+      isMain: isMain,
+    );
+    debugPrint('--- Editar $e');
+    context.read<DirectionsCubit>().update(e).then((either) {
+      either.fold((l) => null, (r) {
+        showLoading(context, false);
+        messenger.showSnackBar(
+          message: 'Dirección actualizada',
+          color: AppColors.success,
+        );
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -140,6 +184,13 @@ class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
               child: Column(
                 spacing: 12.h,
                 children: [
+                  InputFormWidget(
+                    initialValue: _direction?.name,
+                    labelText: 'Nombre',
+                    keyboardType: TextInputType.text,
+                    onSaved: (value) => setState(() => name = value),
+                    validator: (value) => value?.requiredError,
+                  ),
                   DropdownButtonFormField(
                     hint: Text('Seleccione país'),
                     initialValue: country,
@@ -209,7 +260,7 @@ class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
                     labelText: 'Dirección 2',
                     keyboardType: TextInputType.text,
                     onSaved: (value) => setState(() => address2 = value),
-                    validator: (value) => value?.requiredError,
+                    validator: (value) => null,
                   ),
                   DropdownButtonFormField(
                     initialValue: type,
@@ -238,15 +289,15 @@ class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
                     labelText: 'Código postal',
                     keyboardType: TextInputType.number,
                     onSaved: (value) => setState(() => codeZip = value),
-                    validator: (value) => value?.requiredError,
+                    validator: (value) => null,
                   ),
                   CheckboxListTile(
                     title: const Text('Establecer como dirección por defecto'),
-                    value: isDefault,
+                    value: isMain,
                     controlAffinity: ListTileControlAffinity.leading,
                     onChanged: (bool? value) {
                       setState(() {
-                        isDefault = value ?? false;
+                        isMain = value ?? false;
                       });
                     },
                   ),
@@ -261,7 +312,13 @@ class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
           width: 0.9.sw,
           child: FilledButtonWidget(
             title: 'Confirmar dirección',
-            onPressed: () => isEdit ? _edit() : _create(),
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                _formKey.currentState?.save();
+                showLoading(context);
+                isEdit ? _edit() : _create();
+              }
+            },
           ),
         ),
       ],

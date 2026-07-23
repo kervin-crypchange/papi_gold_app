@@ -1,7 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:papi_gold/app/core/error/failure.dart';
-import 'package:papi_gold/data/models/direction_model.dart';
+import 'package:papi_gold/data/models/index.dart';
 import 'package:papi_gold/data/sources/remote/index.dart';
+import 'package:papi_gold/domain/entities/create_direction_entity.dart';
 import 'package:papi_gold/domain/entities/direction_entity.dart';
 import 'package:papi_gold/domain/entities/responses/response_directions_entity.dart';
 import 'package:papi_gold/domain/repositories/index.dart';
@@ -9,8 +10,11 @@ import 'package:papi_gold/injection_container.dart';
 
 class DirectionRepositoryImpl extends DirectionRepository {
   @override
-  Future<Either<Failure, void>> create(DirectionEntity direction) async {
-    final DirectionModel model = DirectionModel.fromEntity(direction);
+  Future<Either<Failure, void>> create(
+    CreateUpdateDirectionEntity direction,
+  ) async {
+    final CreateUpdateDirectionModel model =
+        CreateUpdateDirectionModel.fromEntity(direction);
     Either<Failure, void> res = await sl<DirectionRemoteData>().create(model);
     return res.fold((l) => Left(l), (r) => Right(null));
   }
@@ -36,13 +40,11 @@ class DirectionRepositoryImpl extends DirectionRepository {
   }
 
   @override
-  Future<Either<Failure, DirectionEntity>> update(
-    DirectionEntity body,
-  ) async {
-    final DirectionModel model = DirectionModel.fromEntity(body);
+  Future<Either<Failure, void>> update(CreateUpdateDirectionEntity body) async {
+    final CreateUpdateDirectionModel model =
+        CreateUpdateDirectionModel.fromEntity(body);
 
-    Either<Failure, DirectionEntity> res = await sl<DirectionRemoteData>()
-        .update( model);
+    Either<Failure, void> res = await sl<DirectionRemoteData>().update(model);
     return res.fold((l) => Left(l), (r) => Right(r));
   }
 }

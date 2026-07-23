@@ -21,17 +21,17 @@ class DeleteDirectionUseCase
 }
 
 class CreateDirectionUseCase
-    implements UseCase<Either<Failure, void>, DirectionEntity> {
+    implements UseCase<Either<Failure, void>, CreateUpdateDirectionEntity> {
   @override
-  Future<Either<Failure, void>> call({DirectionEntity? param}) {
+  Future<Either<Failure, void>> call({CreateUpdateDirectionEntity? param}) {
     return sl<DirectionRepository>().create(param!);
   }
 }
 
 class UpdateDirectionUseCase
-    implements UseCase<Either<Failure, void>, DirectionEntity> {
+    implements UseCase<Either<Failure, void>, CreateUpdateDirectionEntity> {
   @override
-  Future<Either<Failure, void>> call({DirectionEntity? param}) {
+  Future<Either<Failure, void>> call({CreateUpdateDirectionEntity? param}) {
     return sl<DirectionRepository>().update(param!);
   }
 }

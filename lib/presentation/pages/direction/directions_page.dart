@@ -55,7 +55,7 @@ class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
         title: direction.name,
         message: '¿Esta seguro que desea eliminar esta dirección?',
       );
-      if (r == OkCancelResult.ok) _delete(direction.id);
+      if (r == OkCancelResult.ok) _delete(direction.id!);
     }
   }
 

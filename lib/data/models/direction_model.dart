@@ -3,7 +3,7 @@ import 'package:papi_gold/domain/entities/index.dart';
 
 class DirectionModel extends DirectionEntity {
   const DirectionModel({
-    required super.id,
+    super.id,
     required super.country,
     required super.state,
     required super.city,

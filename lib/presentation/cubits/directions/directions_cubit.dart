@@ -27,11 +27,11 @@ class DirectionsCubit extends Cubit<DirectionsState> {
     return await sl<DeleteDirectionUseCase>().call(param: id);
   }
   
-  Future<Either<Failure, void>> create(DirectionEntity e) async {
+  Future<Either<Failure, void>> create(CreateUpdateDirectionEntity e) async {
     return await sl<CreateDirectionUseCase>().call(param: e);
   }
   
-  Future<Either<Failure, void>> update(DirectionEntity e) async {
+  Future<Either<Failure, void>> update(CreateUpdateDirectionEntity e) async {
     return await sl<UpdateDirectionUseCase>().call(param: e);
   }
 }
