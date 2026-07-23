@@ -126,10 +126,4 @@ class CommonRepositoryImpl extends CommonRepository {
     return res.fold((l) => Left(l), (r) => Right(r));
   }
 
-  @override
-  Future<Either<Failure, ResponseDirectionsEntity>> directions() async {
-    Either<Failure, ResponseDirectionsEntity> res = await sl<CommonRemoteData>()
-        .directions();
-    return res.fold((l) => Left(l), (r) => Right(r));
-  }
 }

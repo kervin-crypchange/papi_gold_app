@@ -7,6 +7,6 @@ abstract class DirectionRepository {
   Future<Either<Failure, ResponseDirectionsEntity>> list();
   Future<Either<Failure, DirectionEntity>> detail(int id);
   Future<Either<Failure, DirectionEntity>> add(DirectionEntity direction);
-  Future<Either<Failure, ResponseDirectionsEntity>> delete(int id);
-  Future<Either<Failure, DirectionEntity>> update(int id, DirectionEntity? body);
+  Future<Either<Failure, DirectionEntity>> delete(int id);
+  Future<Either<Failure, DirectionEntity>> update(int id, DirectionEntity body);
 }

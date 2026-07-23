@@ -6,6 +6,6 @@ abstract class DirectionRemoteData {
   Future<Either<Failure, ResponseDirectionModel>> list();
   Future<Either<Failure, DirectionModel>> detail(int id);
   Future<Either<Failure, DirectionModel>> add(DirectionModel direction);
-  Future<Either<Failure, ResponseDirectionModel>> delete(int id);
-  Future<Either<Failure, DirectionModel>> update(int id, DirectionModel? body);
+  Future<Either<Failure, DirectionModel>> delete(int id);
+  Future<Either<Failure, DirectionModel>> update(int id, DirectionModel body);
 }

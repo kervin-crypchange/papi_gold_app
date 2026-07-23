@@ -182,15 +182,4 @@ class CommonRemoteDataImpl extends CommonRemoteData {
     }
   }
   
-  @override
-  Future<Either<Failure, ResponseDirectionModel>> directions() async {
-     try {
-      final res = await sl<DioClient>().get(
-        Apis.directions,
-      );
-      return Right(ResponseDirectionModel.fromJson(res.data));
-    } on DioException catch (e) {
-      return Left(ServerException(e));
-    }
-  }
 }
