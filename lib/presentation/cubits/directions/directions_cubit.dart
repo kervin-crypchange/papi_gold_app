@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:papi_gold/app/core/error/failure.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 import 'package:papi_gold/domain/uses_cases/directions_use_case.dart';
 import 'package:papi_gold/injection_container.dart';
@@ -12,10 +13,6 @@ class DirectionsCubit extends Cubit<DirectionsState> {
 
   DirectionsCubit() : super(DirectionsInitial());
 
-  // Future<Either<Failure, ResponseDirectionsEntity>> list() async {
-  //   return await sl<DirectionsUseCase>().call();
-  // }
-
   void list() async {
     emit(DirectionsLoading());
 
@@ -24,5 +21,17 @@ class DirectionsCubit extends Cubit<DirectionsState> {
       (l) => emit(DirectionsFailure(message: l.toString())),
       (r) => emit(DirectionsSuccess(response: r)),
     );
+  }
+
+  Future<Either<Failure, void>> delete(int id) async {
+    return await sl<DeleteDirectionUseCase>().call(param: id);
+  }
+  
+  Future<Either<Failure, void>> create(DirectionEntity e) async {
+    return await sl<CreateDirectionUseCase>().call(param: e);
+  }
+  
+  Future<Either<Failure, void>> update(DirectionEntity e) async {
+    return await sl<UpdateDirectionUseCase>().call(param: e);
   }
 }

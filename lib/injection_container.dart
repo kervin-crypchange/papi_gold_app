@@ -46,6 +46,9 @@ Future<void> initializeDependencies() async {
   sl.registerLazySingleton(() => ConnectSocketUseCase());
   sl.registerLazySingleton(() => DisconnectSocketUseCase());
   sl.registerLazySingleton(() => DirectionsUseCase());
+  sl.registerLazySingleton(() => DeleteDirectionUseCase());
+  sl.registerLazySingleton(() => UpdateDirectionUseCase());
+  sl.registerLazySingleton(() => CreateDirectionUseCase());
 
   // Cubits
   sl.registerFactory(() => AuthCubit());

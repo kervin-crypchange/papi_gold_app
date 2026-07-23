@@ -10,7 +10,9 @@ import 'package:papi_gold/injection_container.dart';
 
 class DirectionRemoteDataImpl extends DirectionRemoteData {
   @override
-  Future<Either<Failure, DirectionModel>> add(DirectionModel direction) async {
+  Future<Either<Failure, DirectionModel>> create(
+    DirectionModel direction,
+  ) async {
     try {
       final res = await sl<DioClient>().post(
         Apis.directions,
@@ -26,7 +28,7 @@ class DirectionRemoteDataImpl extends DirectionRemoteData {
   Future<Either<Failure, DirectionModel>> delete(int id) async {
     try {
       final res = await sl<DioClient>().delete('${Apis.directions}/$id');
-      return Right(DirectionModel.fromJson(res.data));
+      return Right(DirectionModel.fromJson(res.data['data']));
     } on DioException catch (e) {
       return Left(ServerException(e));
     }
@@ -53,10 +55,7 @@ class DirectionRemoteDataImpl extends DirectionRemoteData {
   }
 
   @override
-  Future<Either<Failure, DirectionModel>> update(
-    int id,
-    DirectionModel body,
-  ) async {
+  Future<Either<Failure, DirectionModel>> update(DirectionModel body) async {
     try {
       final res = await sl<DioClient>().put(
         '${Apis.directions}/$id',

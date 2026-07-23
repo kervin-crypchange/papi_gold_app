@@ -19,6 +19,8 @@ class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
   final _formKey = GlobalKey<FormState>();
   int? country, state, city;
   String? address1, address2, codeZip, type;
+  late bool isDefault;
+  late bool isEdit;
   List<CountryEntity> countries = [];
   List<LocationEntity> states = [];
   List<LocationEntity> cities = [];
@@ -27,11 +29,13 @@ class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
   @override
   void initState() {
     _direction = context.read<DirectionsCubit>().direction;
+    isDefault = _direction?.isMain ?? false;
+    isEdit = _direction?.isMain ?? false;
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       loadCountries();
     });
-      _selectType(_direction?.type);
+    _selectType(_direction?.type);
   }
 
   void loadCountries() {
@@ -117,10 +121,16 @@ class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
     });
   }
 
+  void _create() {}
+  
+  void _edit() {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Agregar dirección')),
+      appBar: AppBar(
+        title: Text(isEdit ? 'Editar dirección' : 'Agregar dirección'),
+      ),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -230,6 +240,16 @@ class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
                     onSaved: (value) => setState(() => codeZip = value),
                     validator: (value) => value?.requiredError,
                   ),
+                  CheckboxListTile(
+                    title: const Text('Establecer como dirección por defecto'),
+                    value: isDefault,
+                    controlAffinity: ListTileControlAffinity.leading,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        isDefault = value ?? false;
+                      });
+                    },
+                  ),
                 ],
               ).paddingAll(8.r),
             ),
@@ -241,7 +261,7 @@ class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
           width: 0.9.sw,
           child: FilledButtonWidget(
             title: 'Confirmar dirección',
-            onPressed: () {},
+            onPressed: () => isEdit ? _edit() : _create(),
           ),
         ),
       ],

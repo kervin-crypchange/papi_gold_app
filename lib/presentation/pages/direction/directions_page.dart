@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:papi_gold/app/common/mixins/index.dart';
+import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/constants/routes.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
@@ -20,7 +21,7 @@ class DirectionsPage extends StatefulWidget {
 
 class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
   bool isLoading = true;
-
+  List<DirectionEntity> _directions = [];
   @override
   void initState() {
     super.initState();
@@ -47,6 +48,28 @@ class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
       context.read<DirectionsCubit>().direction = direction;
       context.goNamed(Routes.newAddress);
     }
+
+    if (res == 'delete') {
+      final r = await showOkCancelAlertDialog(
+        context: context,
+        title: direction.name,
+        message: '¿Esta seguro que desea eliminar esta dirección?',
+      );
+      if (r == OkCancelResult.ok) _delete(direction.id);
+    }
+  }
+
+  void _delete(int id) {
+    showLoading(context);
+    context.read<DirectionsCubit>().delete(id).then((either) {
+      either.fold((l) => null, (r) {
+        messenger.showSnackBar(message: 'Dirección eliminada');
+        _directions.removeWhere((d) => d.id == id );
+        setState(() {
+          _directions = _directions;
+        });
+      });
+    });
   }
 
   @override
@@ -60,12 +83,13 @@ class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
               return LoadingWidget();
             }
             if (state is DirectionsSuccess) {
+              _directions = state.response.data;
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 spacing: 12.h,
                 children: [
                   directionCard(state.response.primaryDirection),
-                  Expanded(child: _listViewUI(state.response.data)),
+                  Expanded(child: _listViewUI(_directions)),
                 ],
               ).paddingAll(8.r);
             }

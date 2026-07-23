@@ -17,6 +17,12 @@ final class DirectionsSuccess extends DirectionsState {
   const DirectionsSuccess({required this.response});
 }
 
+final class DirectionSuccess extends DirectionsState {
+  final DirectionEntity response;
+
+  const DirectionSuccess({required this.response});
+}
+
 final class DirectionsFailure extends DirectionsState {
   final String message;
 

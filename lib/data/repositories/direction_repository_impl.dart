@@ -9,21 +9,16 @@ import 'package:papi_gold/injection_container.dart';
 
 class DirectionRepositoryImpl extends DirectionRepository {
   @override
-  Future<Either<Failure, DirectionEntity>> add(
-    DirectionEntity direction,
-  ) async {
+  Future<Either<Failure, void>> create(DirectionEntity direction) async {
     final DirectionModel model = DirectionModel.fromEntity(direction);
-    Either<Failure, DirectionEntity> res = await sl<DirectionRemoteData>().add(
-      model,
-    );
-    return res.fold((l) => Left(l), (r) => Right(r));
+    Either<Failure, void> res = await sl<DirectionRemoteData>().create(model);
+    return res.fold((l) => Left(l), (r) => Right(null));
   }
 
   @override
-  Future<Either<Failure, DirectionEntity>> delete(int id) async {
-    Either<Failure, DirectionEntity> res = await sl<DirectionRemoteData>()
-        .delete(id);
-    return res.fold((l) => Left(l), (r) => Right(r));
+  Future<Either<Failure, void>> delete(int id) async {
+    Either<Failure, void> res = await sl<DirectionRemoteData>().delete(id);
+    return res.fold((l) => Left(l), (r) => Right(null));
   }
 
   @override
@@ -42,13 +37,12 @@ class DirectionRepositoryImpl extends DirectionRepository {
 
   @override
   Future<Either<Failure, DirectionEntity>> update(
-    int id,
     DirectionEntity body,
   ) async {
     final DirectionModel model = DirectionModel.fromEntity(body);
 
     Either<Failure, DirectionEntity> res = await sl<DirectionRemoteData>()
-        .update(id, model);
+        .update( model);
     return res.fold((l) => Left(l), (r) => Right(r));
   }
 }
