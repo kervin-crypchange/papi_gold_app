@@ -63,8 +63,9 @@ class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
     showLoading(context);
     context.read<DirectionsCubit>().delete(id).then((either) {
       either.fold((l) => null, (r) {
+        showLoading(context, false);
         messenger.showSnackBar(message: 'Dirección eliminada');
-        _directions.removeWhere((d) => d.id == id );
+        _directions.removeWhere((d) => d.id == id);
         setState(() {
           _directions = _directions;
         });

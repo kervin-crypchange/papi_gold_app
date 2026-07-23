@@ -157,7 +157,6 @@ class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
       type: type!,
       isMain: isMain,
     );
-    debugPrint('--- Editar $e');
     context.read<DirectionsCubit>().update(e).then((either) {
       either.fold((l) => null, (r) {
         showLoading(context, false);
