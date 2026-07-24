@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:papi_gold/app/common/enums/index.dart';
 import 'package:papi_gold/app/common/pages/index.dart';
@@ -89,7 +90,7 @@ final GoRouter router = GoRouter(
         GoRoute(
           name: Routes.address,
           path: Routes.address,
-          builder: (context, state) => DirectionsPage(),
+          builder: (context, state) => DirectionsPage(key: UniqueKey()),
           routes: [
             GoRoute(
               name: Routes.newAddress,

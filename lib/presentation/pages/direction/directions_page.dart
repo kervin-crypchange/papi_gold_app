@@ -24,6 +24,7 @@ class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
   List<DirectionEntity> _directions = [];
   @override
   void initState() {
+    debugPrint('--- Initstate DirectionsPageState');
     super.initState();
     context.read<DirectionsCubit>().list();
   }

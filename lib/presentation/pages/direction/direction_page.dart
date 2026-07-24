@@ -122,8 +122,6 @@ class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
   }
 
   void _create() {
-    debugPrint('--- Create');
-
     final e = CreateUpdateDirectionEntity(
       name: name!,
       country: country!,
@@ -147,7 +145,6 @@ class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
   }
 
   void _edit() {
-    debugPrint('--- Edit');
     final e = CreateUpdateDirectionEntity(
       id: _direction!.id,
       name: name!,
@@ -176,6 +173,7 @@ class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
     return Scaffold(
       appBar: AppBar(
         title: Text(isEdit ? 'Editar dirección' : 'Agregar dirección'),
+        
       ),
       body: SafeArea(
         child: Column(
