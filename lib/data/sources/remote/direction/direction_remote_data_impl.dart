@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/widgets.dart';
 import 'package:papi_gold/app/core/constants/index.dart';
 import 'package:papi_gold/app/core/error/index.dart';
 import 'package:papi_gold/app/core/network/dio_client.dart';
@@ -22,7 +23,8 @@ class DirectionRemoteDataImpl extends DirectionRemoteData {
   Future<Either<Failure, String>> delete(int id) async {
     try {
       final res = await sl<DioClient>().delete('${Apis.directions}/$id');
-      return Right(res.data['message']);
+      debugPrint('--- DELETE ${res.data}');
+      return Right('Dirección eliminada');
     } on DioException catch (e) {
       return Left(ServerException(e));
     }
@@ -52,7 +54,7 @@ class DirectionRemoteDataImpl extends DirectionRemoteData {
   Future<Either<Failure, void>> update(CreateUpdateDirectionModel body) async {
     final Map<String, dynamic> data = body.toJson();
     try {
-      await sl<DioClient>().put('${Apis.directions}/${body!.id}', data:data );
+      await sl<DioClient>().put('${Apis.directions}/${body.id}', data:data );
       return Right(null);
     } on DioException catch (e) {
       return Left(ServerException(e));

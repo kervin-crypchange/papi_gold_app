@@ -30,7 +30,7 @@ class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
   void initState() {
     _direction = context.read<DirectionsCubit>().direction;
     isMain = _direction?.isMain ?? false;
-    isEdit = _direction?.isMain ?? false;
+    isEdit = _direction != null;
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       loadCountries();
@@ -122,6 +122,8 @@ class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
   }
 
   void _create() {
+    debugPrint('--- Create');
+
     final e = CreateUpdateDirectionEntity(
       name: name!,
       country: country!,
@@ -145,6 +147,7 @@ class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
   }
 
   void _edit() {
+    debugPrint('--- Edit');
     final e = CreateUpdateDirectionEntity(
       id: _direction!.id,
       name: name!,

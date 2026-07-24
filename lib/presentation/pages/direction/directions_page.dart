@@ -64,11 +64,45 @@ class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
     context.read<DirectionsCubit>().delete(id).then((either) {
       either.fold((l) => null, (r) {
         showLoading(context, false);
-        messenger.showSnackBar(message: r);
+        messenger.showSnackBar(message: r, color: AppColors.success);
         _directions.removeWhere((d) => d.id == id);
         setState(() {
           _directions = _directions;
         });
+      });
+    });
+  }
+
+  void _setAsDefault(DirectionEntity direction) async {
+    final r = await showOkCancelAlertDialog(
+      context: context,
+      title: direction.name,
+      message: 'Establecer como dirección por defecto',
+    );
+    if (r == OkCancelResult.ok) {
+      final e = CreateUpdateDirectionEntity(
+        id: direction.id,
+        name: direction.name,
+        country: direction.country.id,
+        state: direction.state.id,
+        city: direction.city.id,
+        address1: direction.address1,
+        address2: direction.address2,
+        codeZip: direction.codeZip,
+        type: direction.type,
+        isMain: true,
+      );
+      _update(e);
+    }
+  }
+
+  void _update(CreateUpdateDirectionEntity e) {
+    context.read<DirectionsCubit>().update(e).then((either) {
+      either.fold((l) => null, (r) {
+        messenger.showSnackBar(
+          message: 'Dirección actualizada',
+          color: AppColors.success,
+        );
       });
     });
   }
@@ -142,6 +176,7 @@ class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
             borderRadius: BorderRadius.circular(12.r),
           ),
           child: ListTile(
+            leading: (d.isMain) ? Icon(Icons.star) : null,
             title: Text('${d.address1}, ${d.address2}. ${d.codeZip}.'),
             subtitle: Text('${d.city.name} ${d.state.name}. ${d.country.name}'),
             dense: true,
@@ -156,7 +191,7 @@ class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
                     onTap: () => _showModalSheet(context, d),
                   )
                 : null,
-            onLongPress: () => debugPrint('--- onLongPress ${d.id}'),
+            onLongPress: () => _setAsDefault(d),
           ),
         ),
       ],
