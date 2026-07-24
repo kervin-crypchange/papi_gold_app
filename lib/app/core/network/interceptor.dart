@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/widgets.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:papi_gold/app/common/enums/index.dart';
 import 'package:logger/logger.dart';
@@ -28,6 +29,8 @@ class InterceptorWrapper extends Interceptor with MessengerMixin {
     final context = AppNavigation.navigatorKey.currentContext;
     if (context != null && context.mounted) showLoading(context, false);
 
+    final String message = errorMessageFormat(err.response?.data);
+
     switch (err.response?.statusCode) {
       case 401:
         sl<AuthLocalData>().clear();
@@ -40,7 +43,6 @@ class InterceptorWrapper extends Interceptor with MessengerMixin {
 
         if (context != null && context.mounted) {
           if (requiresVerification == true) {
-            final String message = err.response?.data['message'];
             messenger.showSnackBar(message: message, color: AppColors.error);
           }
         }
@@ -57,21 +59,21 @@ class InterceptorWrapper extends Interceptor with MessengerMixin {
         break;
       case 422:
         messenger.showSnackBar(
-          message: err.response?.data['message'],
+          message: message,
           color: AppColors.error,
         );
         handler.next(err);
         break;
       case 500:
         messenger.showSnackBar(
-          message: err.response?.data['message'],
+          message: message,
           color: AppColors.error,
         );
         handler.next(err);
         break;
       default:
         messenger.showSnackBar(
-          message: err.response?.data['message'],
+          message: message,
           color: AppColors.error,
         );
         handler.next(err);
@@ -95,12 +97,20 @@ class InterceptorWrapper extends Interceptor with MessengerMixin {
     logger.i('queryParameters ==> ${options.queryParameters}');
     logger.i('Bearer Token ==> $token');
     logger.i('${options.method} request ==> $requestPath');
-    
+
     handler.next(options);
   }
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
     handler.next(response); // continue with the Response
+  }
+
+  String errorMessageFormat(Map<String, dynamic> data) {
+    if (data.containsKey('errors')) {
+      Iterable<String> errorKeys = data['errors'].keys;
+      return data['errors'][errorKeys.first][0];
+    }
+    return data['message'];
   }
 }
