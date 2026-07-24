@@ -24,7 +24,6 @@ class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
   List<DirectionEntity> _directions = [];
   @override
   void initState() {
-    debugPrint('--- Initstate DirectionsPageState');
     super.initState();
     context.read<DirectionsCubit>().list();
   }
@@ -34,7 +33,11 @@ class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
       context: context,
       title: direction.name,
       actions: [
-        SheetAction(label: 'Editar', icon: Icons.edit_outlined, key: 'edit'),
+        SheetAction(
+          label: 'Editar',
+          icon: Icons.edit_location_alt_outlined,
+          key: 'edit',
+        ),
         SheetAction(
           label: 'Eliminar',
           icon: Icons.delete_outline,
@@ -91,7 +94,7 @@ class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
         address2: direction.address2,
         codeZip: direction.codeZip,
         type: direction.type,
-        isMain: true,
+        isMain: !direction.isMain,
       );
       _update(e);
     }
@@ -100,6 +103,7 @@ class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
   void _update(CreateUpdateDirectionEntity e) {
     context.read<DirectionsCubit>().update(e).then((either) {
       either.fold((l) => null, (r) {
+        context.read<DirectionsCubit>().list();
         messenger.showSnackBar(
           message: 'Dirección actualizada',
           color: AppColors.success,
@@ -197,5 +201,24 @@ class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
         ),
       ],
     );
+  }
+
+  Icon? iconCard(String type) {
+    Icon? icon;
+    switch (type) {
+      case 'shipping':
+        icon = Icon(Icons.local_shipping_outlined);
+        break;
+      case 'receiving':
+        icon = Icon(Icons.my_location_outlined);
+        break;
+      case 'both':
+        icon = Icon(Icons.multiple_stop);
+        break;
+      default:
+      icon = null;
+    }
+
+    return icon;
   }
 }
