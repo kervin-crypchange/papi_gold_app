@@ -1,5 +1,4 @@
 import 'package:papi_gold/app/common/widgets/index.dart';
-import 'package:papi_gold/app/core/extensions/index.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -8,9 +7,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Center(
-          child: Text('PapiGold Home Page', style: context.titleMedium),
-        ),
+        child: MapWidget(),
       ),
     );
   }
