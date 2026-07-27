@@ -16,8 +16,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.papi_gold"
-        // minSdk = flutter.minSdkVersion
-        minSdk = flutter.minSdkVersion
+        minSdk = 26
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName

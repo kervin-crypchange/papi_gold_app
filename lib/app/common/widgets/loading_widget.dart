@@ -6,11 +6,5 @@ class LoadingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(child: CircularProgressIndicator.adaptive(),);
-    // return Container(
-    //   height: 1.sh,
-    //   width: 1.sw,
-    //   decoration: BoxDecoration(color: Colors.black87),
-    //   child:LoadingWidget(),
-    // );
   }
 }

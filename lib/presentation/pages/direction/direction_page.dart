@@ -144,6 +144,31 @@ class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
     });
   }
 
+  void _showMap() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true, // Key property to allow full-screen height
+      useSafeArea: true, // Avoids overlapping with status/navigation bars
+      builder: (BuildContext context) {
+        return SizedBox(
+          height: 1.sh, // Force full height
+          child: Column(
+            children: [
+              AppBar(
+                title: const Text('Full Screen Bottom Sheet'),
+                leading: IconButton(
+                  icon: const Icon(Icons.close),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              ),
+              const Expanded(child: MapWidget()),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   void _edit() {
     final e = CreateUpdateDirectionEntity(
       id: _direction!.id,
@@ -173,7 +198,6 @@ class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
     return Scaffold(
       appBar: AppBar(
         title: Text(isEdit ? 'Editar dirección' : 'Agregar dirección'),
-        
       ),
       body: SafeArea(
         child: Column(
@@ -303,6 +327,11 @@ class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
                   ),
                 ],
               ).paddingAll(8.r),
+            ),
+            TextButton.icon(
+              label: Text('Ubicación actual'),
+              onPressed: () => _showMap(),
+              icon: Icon(Icons.location_on_outlined),
             ),
           ],
         ),
