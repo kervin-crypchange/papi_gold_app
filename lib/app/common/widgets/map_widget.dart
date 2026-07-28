@@ -14,6 +14,7 @@ class MapWidget extends StatefulWidget {
 }
 
 class _MapWidgetState extends State<MapWidget> {
+  bool isMapReady = false;
   ValueNotifier<GeoPoint?> lastGeoPoint = ValueNotifier(null);
   final Debouncer _debouncer = Debouncer();
   late GeoPoint currentPosition;
@@ -71,8 +72,12 @@ class _MapWidgetState extends State<MapWidget> {
         alignment: AlignmentGeometry.center,
         children: [
           OSMFlutter(
+            mapIsLoading: LoadingWidget(),
             controller: controller,
             osmOption: osmOptions,
+            onMapIsReady: (p0) => setState(() {
+              isMapReady = p0;
+            }),
             onMapMoved: (p0) {
               _debouncer.debounce(
                 duration: Duration(milliseconds: 300),
@@ -82,7 +87,8 @@ class _MapWidgetState extends State<MapWidget> {
               );
             },
           ),
-          Icon(Icons.location_on, color: AppColors.error, size: 48),
+          if (isMapReady)
+            Icon(Icons.location_on, color: AppColors.error, size: 48),
           Align(
             alignment: AlignmentGeometry.bottomRight,
             child: IconButton.filled(
