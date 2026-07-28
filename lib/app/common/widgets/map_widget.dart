@@ -44,14 +44,14 @@ class _MapWidgetState extends State<MapWidget> {
       initPosition: currentPosition,
       customTile: CustomTile.openFreeMap(minZoomLevel: 3, maxZoomLevel: 19),
     );
-    
-    controller.listenerMapSingleTapping.addListener(() async {
-      final GeoPoint? mapSingleTapping =
-          controller.listenerMapSingleTapping.value;
-      if (mapSingleTapping != null) {
-        await _changeLocation(mapSingleTapping);
-      }
-    });
+
+    // controller.listenerMapSingleTapping.addListener(() async {
+    //   final GeoPoint? mapSingleTapping =
+    //       controller.listenerMapSingleTapping.value;
+    //   if (mapSingleTapping != null) {
+    //     await _changeLocation(mapSingleTapping);
+    //   }
+    // });
   }
 
   Future<void> _changeLocation(GeoPoint point) async {
@@ -86,14 +86,23 @@ class _MapWidgetState extends State<MapWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: OSMFlutter(
-        controller: controller,
-        osmOption: osmOptions,
-        onMapIsReady: onMapIsReady,
+      body: Stack(
+        alignment: AlignmentGeometry.center,
+        children: [
+          OSMFlutter(
+            controller: controller,
+            osmOption: osmOptions,
+            onMapMoved: (p0) => debugPrint('--- onMapMoved $p0'),
+            onMapIsReady: onMapIsReady,
+          ),
+          Icon(Icons.location_on, color: AppColors.error, size: 48),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         shape: const CircleBorder(),
-        onPressed: () => _changeLocation(currentPosition),
+        onPressed: () async =>
+            await controller.moveTo(currentPosition, animate: true),
+        // onPressed: () => _changeLocation(currentPosition),
         child: Icon(Icons.my_location, color: AppColors.white),
       ),
     );
