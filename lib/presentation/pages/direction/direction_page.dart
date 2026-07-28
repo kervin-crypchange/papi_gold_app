@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:papi_gold/app/common/mixins/messenger_mixin.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
@@ -144,29 +145,15 @@ class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
     });
   }
 
-  void _showMap() {
-    showModalBottomSheet(
+  Future<void> pickLocation() async {
+    GeoPoint? point = await showSimplePickerLocation(
       context: context,
-      isScrollControlled: true, // Key property to allow full-screen height
-      useSafeArea: true, // Avoids overlapping with status/navigation bars
-      builder: (BuildContext context) {
-        return SizedBox(
-          height: 1.sh, // Force full height
-          child: Column(
-            children: [
-              AppBar(
-                title: const Text('Full Screen Bottom Sheet'),
-                leading: IconButton(
-                  icon: const Icon(Icons.close),
-                  onPressed: () => Navigator.pop(context),
-                ),
-              ),
-              const Expanded(child: MapWidget()),
-            ],
-          ),
-        );
-      },
+      isDismissible: true,
+      title: "Title dialog",
+      textConfirmPicker: "pick",
+      initCurrentUserPosition: UserTrackingOption(),
     );
+    debugPrint('--- pickLocation $point');
   }
 
   void _edit() {
@@ -200,140 +187,145 @@ class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
         title: Text(isEdit ? 'Editar dirección' : 'Agregar dirección'),
       ),
       body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Form(
-              key: _formKey,
-              child: Column(
-                spacing: 12.h,
-                children: [
-                  InputFormWidget(
-                    initialValue: _direction?.name,
-                    labelText: 'Nombre',
-                    keyboardType: TextInputType.text,
-                    onSaved: (value) => setState(() => name = value),
-                    validator: (value) => value?.requiredError,
-                  ),
-                  DropdownButtonFormField(
-                    hint: Text('Seleccione país'),
-                    initialValue: country,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.grey),
-                      ),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Form(
+                key: _formKey,
+                child: Column(
+                  spacing: 12.h,
+                  children: [
+                    InputFormWidget(
+                      initialValue: _direction?.name,
+                      labelText: 'Nombre',
+                      keyboardType: TextInputType.text,
+                      onSaved: (value) => setState(() => name = value),
+                      validator: (value) => value?.requiredError,
                     ),
-                    isExpanded: true,
-                    items: [
-                      ...countries.map(
-                        (country) => DropdownMenuItem(
-                          value: country.id,
-                          child: Text(country.name),
+                    DropdownButtonFormField(
+                      hint: Text('Seleccione país'),
+                      initialValue: country,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: AppColors.grey),
                         ),
                       ),
-                    ],
-                    onChanged: (value) => _selectCountry(value!),
-                  ),
-                  DropdownButtonFormField(
-                    initialValue: state,
-                    hint: Text('Seleccione estado'),
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.grey),
-                      ),
+                      isExpanded: true,
+                      items: [
+                        ...countries.map(
+                          (country) => DropdownMenuItem(
+                            value: country.id,
+                            child: Text(country.name),
+                          ),
+                        ),
+                      ],
+                      onChanged: (value) => _selectCountry(value!),
                     ),
-                    isExpanded: true,
-                    items: [
-                      ...states.map(
-                        (location) => DropdownMenuItem(
-                          value: location.id,
-                          child: Text(location.name),
+                    DropdownButtonFormField(
+                      initialValue: state,
+                      hint: Text('Seleccione estado'),
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: AppColors.grey),
                         ),
                       ),
-                    ],
-                    onChanged: (value) => _selectState(value!),
-                  ),
-                  DropdownButtonFormField(
-                    initialValue: city,
-                    hint: Text('Seleccione ciudad'),
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.grey),
-                      ),
+                      isExpanded: true,
+                      items: [
+                        ...states.map(
+                          (location) => DropdownMenuItem(
+                            value: location.id,
+                            child: Text(location.name),
+                          ),
+                        ),
+                      ],
+                      onChanged: (value) => _selectState(value!),
                     ),
-                    isExpanded: true,
-                    items: [
-                      ...cities.map(
-                        (location) => DropdownMenuItem(
-                          value: location.id,
-                          child: Text(location.name),
+                    DropdownButtonFormField(
+                      initialValue: city,
+                      hint: Text('Seleccione ciudad'),
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: AppColors.grey),
                         ),
                       ),
-                    ],
-                    onChanged: (value) => _selectCity(value!),
-                  ),
-                  InputFormWidget(
-                    initialValue: _direction?.address1,
-                    labelText: 'Dirección',
-                    keyboardType: TextInputType.text,
-                    onSaved: (value) => setState(() => address1 = value),
-                    validator: (value) => value?.requiredError,
-                  ),
-                  InputFormWidget(
-                    initialValue: _direction?.address2,
-                    labelText: 'Dirección 2',
-                    keyboardType: TextInputType.text,
-                    onSaved: (value) => setState(() => address2 = value),
-                    validator: (value) => value?.requiredError,
-                  ),
-                  DropdownButtonFormField(
-                    initialValue: type,
-                    hint: Text('Tipo de dirección'),
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.grey),
-                      ),
+                      isExpanded: true,
+                      items: [
+                        ...cities.map(
+                          (location) => DropdownMenuItem(
+                            value: location.id,
+                            child: Text(location.name),
+                          ),
+                        ),
+                      ],
+                      onChanged: (value) => _selectCity(value!),
                     ),
-                    isExpanded: true,
-                    items: [
-                      DropdownMenuItem(
-                        value: 'shipping',
-                        child: Text('Envíos'),
+                    InputFormWidget(
+                      initialValue: _direction?.address1,
+                      labelText: 'Dirección',
+                      keyboardType: TextInputType.text,
+                      onSaved: (value) => setState(() => address1 = value),
+                      validator: (value) => value?.requiredError,
+                    ),
+                    InputFormWidget(
+                      initialValue: _direction?.address2,
+                      labelText: 'Dirección 2',
+                      keyboardType: TextInputType.text,
+                      onSaved: (value) => setState(() => address2 = value),
+                      validator: (value) => value?.requiredError,
+                    ),
+                    DropdownButtonFormField(
+                      initialValue: type,
+                      hint: Text('Tipo de dirección'),
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: AppColors.grey),
+                        ),
                       ),
-                      DropdownMenuItem(
-                        value: 'receiving',
-                        child: Text('Receptoria'),
+                      isExpanded: true,
+                      items: [
+                        DropdownMenuItem(
+                          value: 'shipping',
+                          child: Text('Envíos'),
+                        ),
+                        DropdownMenuItem(
+                          value: 'receiving',
+                          child: Text('Receptoria'),
+                        ),
+                        DropdownMenuItem(value: 'both', child: Text('Ambos')),
+                      ],
+                      onChanged: (value) => _selectType(value!),
+                    ),
+                    InputFormWidget(
+                      initialValue: _direction?.codeZip,
+                      labelText: 'Código postal',
+                      keyboardType: TextInputType.number,
+                      onSaved: (value) => setState(() => codeZip = value),
+                      validator: (value) => value?.requiredError,
+                    ),
+                    CheckboxListTile(
+                      title: Text(
+                        'Establecer como dirección por defecto',
+                        style: context.bodySmall,
                       ),
-                      DropdownMenuItem(value: 'both', child: Text('Ambos')),
-                    ],
-                    onChanged: (value) => _selectType(value!),
-                  ),
-                  InputFormWidget(
-                    initialValue: _direction?.codeZip,
-                    labelText: 'Código postal',
-                    keyboardType: TextInputType.number,
-                    onSaved: (value) => setState(() => codeZip = value),
-                    validator: (value) => value?.requiredError,
-                  ),
-                  CheckboxListTile(
-                    title: const Text('Establecer como dirección por defecto'),
-                    value: isMain,
-                    controlAffinity: ListTileControlAffinity.leading,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        isMain = value ?? false;
-                      });
-                    },
-                  ),
-                ],
-              ).paddingAll(8.r),
-            ),
-            TextButton.icon(
-              label: Text('Ubicación actual'),
-              onPressed: () => _showMap(),
-              icon: Icon(Icons.location_on_outlined),
-            ),
-          ],
+                      value: isMain,
+                      controlAffinity: ListTileControlAffinity.leading,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          isMain = value ?? false;
+                        });
+                      },
+                    ),
+                  ],
+                ).paddingAll(8.r),
+              ),
+              TextButton.icon(
+                label: Text('Ubicación actual'),
+                onPressed: () async => pickLocation(),
+                icon: Icon(Icons.location_on_outlined),
+              ),
+            ],
+          ),
         ),
       ),
       persistentFooterButtons: [

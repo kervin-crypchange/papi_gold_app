@@ -12,8 +12,10 @@ class MapWidget extends StatefulWidget {
 
 class _MapWidgetState extends State<MapWidget> {
   ValueNotifier<GeoPoint?> lastGeoPoint = ValueNotifier(null);
+  late GeoPoint currentPosition;
   late MapController controller;
   late OSMOption osmOptions = OSMOption(
+    showZoomController: true,
     isPicker: true,
     zoomOption: const ZoomOption(
       initZoom: 16,
@@ -27,18 +29,22 @@ class _MapWidgetState extends State<MapWidget> {
   void initState() {
     super.initState();
     initMap();
+    final double latitude = LocationService().locationData.latitude;
+    final double longitude = LocationService().locationData.longitude;
+    currentPosition = GeoPoint(latitude: latitude, longitude: longitude);
   }
 
   Future<void> initMap() async {
-    debugPrint('--- initMap');
     final double latitude = LocationService().locationData.latitude;
     final double longitude = LocationService().locationData.longitude;
 
+    currentPosition = GeoPoint(latitude: latitude, longitude: longitude);
+
     controller = MapController.customLayer(
-      initPosition: GeoPoint(latitude: latitude, longitude: longitude),
+      initPosition: currentPosition,
       customTile: CustomTile.openFreeMap(minZoomLevel: 3, maxZoomLevel: 19),
     );
-
+    
     controller.listenerMapSingleTapping.addListener(() async {
       final GeoPoint? mapSingleTapping =
           controller.listenerMapSingleTapping.value;
@@ -49,13 +55,17 @@ class _MapWidgetState extends State<MapWidget> {
   }
 
   Future<void> _changeLocation(GeoPoint point) async {
-    debugPrint('--- changeLocation: $point');
-
     try {
-      await controller.moveTo(
-        GeoPoint(latitude: point.latitude, longitude: point.longitude),
-        animate: true,
-      );
+      if (lastGeoPoint.value != null) {
+        await controller.removeMarker(lastGeoPoint.value!);
+      }
+
+      Future.delayed(Duration(milliseconds: 200), () async {
+        await controller.addMarker(point);
+      });
+
+      await controller.moveTo(point, animate: true);
+
       lastGeoPoint.value = point;
     } catch (e) {
       debugPrint('--- changeLocation error $e');
@@ -65,11 +75,6 @@ class _MapWidgetState extends State<MapWidget> {
   Future<void> onMapIsReady(bool isReady) async {
     debugPrint('--- onMapIsReady $isReady');
     if (isReady) {}
-  }
-
-  Future<void> _setMyLocation() async {
-    debugPrint('--- SetMylocation');
-    await controller.currentLocation();
   }
 
   @override
@@ -84,12 +89,11 @@ class _MapWidgetState extends State<MapWidget> {
       body: OSMFlutter(
         controller: controller,
         osmOption: osmOptions,
-        // onMapMoved: (p0) => debugPrint('--- onMapMoved $p0'),
         onMapIsReady: onMapIsReady,
       ),
       floatingActionButton: FloatingActionButton(
         shape: const CircleBorder(),
-        onPressed: _setMyLocation,
+        onPressed: () => _changeLocation(currentPosition),
         child: Icon(Icons.my_location, color: AppColors.white),
       ),
     );
