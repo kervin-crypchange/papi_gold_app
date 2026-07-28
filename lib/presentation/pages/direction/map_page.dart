@@ -36,7 +36,6 @@ class _MapPageState extends State<MapPage> {
               decoration: BoxDecoration(color: AppColors.blackLigth),
               child: MapWidget(
                 onLocationUpdate: (value) {
-                  debugPrint('--- MapPage LocationUpdate: $value');
                   setState(() {
                     location = value;
                   });

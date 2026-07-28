@@ -19,13 +19,13 @@ class _MapWidgetState extends State<MapWidget> {
   bool isMapReady = false;
   ValueNotifier<GeoPoint?> lastGeoPoint = ValueNotifier(null);
   final Debouncer _debouncer = Debouncer();
-  late GeoPoint currentPosition;
+  late GeoPoint currentPosition = LocationService().geoPoint;
   late MapController controller;
   late OSMOption osmOptions = OSMOption(
     showZoomController: true,
     isPicker: true,
     zoomOption: const ZoomOption(
-      initZoom: 16,
+      initZoom: 17,
       minZoomLevel: 3,
       maxZoomLevel: 19,
       stepZoom: 1.0,
@@ -36,17 +36,11 @@ class _MapWidgetState extends State<MapWidget> {
   void initState() {
     super.initState();
     initMap();
-    final double latitude = LocationService().locationData.latitude;
-    final double longitude = LocationService().locationData.longitude;
-    currentPosition = GeoPoint(latitude: latitude, longitude: longitude);
+
   }
 
   Future<void> initMap() async {
-    final double latitude = LocationService().locationData.latitude;
-    final double longitude = LocationService().locationData.longitude;
-
-    currentPosition = GeoPoint(latitude: latitude, longitude: longitude);
-
+    
     controller = MapController.customLayer(
       initPosition: currentPosition,
       customTile: CustomTile.openFreeMap(minZoomLevel: 3, maxZoomLevel: 19),
