@@ -4,6 +4,7 @@ import 'package:papi_gold/app/common/services/location_service.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
 import 'package:papi_gold/app/core/theme/colors.dart';
+import 'package:flutter_debouncer/flutter_debouncer.dart';
 
 class MapWidget extends StatefulWidget {
   const MapWidget({super.key});
@@ -14,6 +15,7 @@ class MapWidget extends StatefulWidget {
 
 class _MapWidgetState extends State<MapWidget> {
   ValueNotifier<GeoPoint?> lastGeoPoint = ValueNotifier(null);
+  final Debouncer _debouncer = Debouncer();
   late GeoPoint currentPosition;
   late MapController controller;
   late OSMOption osmOptions = OSMOption(
@@ -47,36 +49,13 @@ class _MapWidgetState extends State<MapWidget> {
       customTile: CustomTile.openFreeMap(minZoomLevel: 3, maxZoomLevel: 19),
     );
 
-    // controller.listenerMapSingleTapping.addListener(() async {
-    //   final GeoPoint? mapSingleTapping =
-    //       controller.listenerMapSingleTapping.value;
-    //   if (mapSingleTapping != null) {
-    //     await _changeLocation(mapSingleTapping);
-    //   }
-    // });
-  }
-
-  Future<void> _changeLocation(GeoPoint point) async {
-    try {
-      if (lastGeoPoint.value != null) {
-        await controller.removeMarker(lastGeoPoint.value!);
+    controller.listenerMapSingleTapping.addListener(() async {
+      final GeoPoint? mapSingleTapping =
+          controller.listenerMapSingleTapping.value;
+      if (mapSingleTapping != null) {
+        await controller.moveTo(mapSingleTapping, animate: true);
       }
-
-      Future.delayed(Duration(milliseconds: 200), () async {
-        await controller.addMarker(point);
-      });
-
-      await controller.moveTo(point, animate: true);
-
-      lastGeoPoint.value = point;
-    } catch (e) {
-      debugPrint('--- changeLocation error $e');
-    }
-  }
-
-  Future<void> onMapIsReady(bool isReady) async {
-    debugPrint('--- onMapIsReady $isReady');
-    if (isReady) {}
+    });
   }
 
   @override
@@ -94,8 +73,14 @@ class _MapWidgetState extends State<MapWidget> {
           OSMFlutter(
             controller: controller,
             osmOption: osmOptions,
-            onMapMoved: (p0) => debugPrint('--- onMapMoved $p0'),
-            onMapIsReady: onMapIsReady,
+            onMapMoved: (p0) {
+              _debouncer.debounce(
+                duration: Duration(milliseconds: 300),
+                onDebounce: () {
+                  debugPrint('--- onMapMoved $p0');
+                },
+              );
+            },
           ),
           Icon(Icons.location_on, color: AppColors.error, size: 48),
           Align(
