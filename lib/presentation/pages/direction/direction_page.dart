@@ -1,9 +1,11 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:papi_gold/app/common/mixins/messenger_mixin.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
+import 'package:papi_gold/app/core/constants/index.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
 import 'package:papi_gold/app/core/theme/colors.dart';
 import 'package:papi_gold/domain/entities/index.dart';
@@ -321,7 +323,7 @@ class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
               ),
               TextButton.icon(
                 label: Text('Ubicación actual'),
-                onPressed: () async => pickLocation(),
+                onPressed: () => context.goNamed(Routes.map),
                 icon: Icon(Icons.location_on_outlined),
               ),
             ],

@@ -1,6 +1,8 @@
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:papi_gold/app/common/services/location_service.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
+import 'package:papi_gold/app/core/extensions/index.dart';
 import 'package:papi_gold/app/core/theme/colors.dart';
 
 class MapWidget extends StatefulWidget {
@@ -96,14 +98,19 @@ class _MapWidgetState extends State<MapWidget> {
             onMapIsReady: onMapIsReady,
           ),
           Icon(Icons.location_on, color: AppColors.error, size: 48),
+          Align(
+            alignment: AlignmentGeometry.bottomRight,
+            child: IconButton.filled(
+              style: IconButton.styleFrom(
+                backgroundColor: AppColors.white,
+                side: BorderSide(color: AppColors.bg),
+              ),
+              onPressed: () async =>
+                  await controller.moveTo(currentPosition, animate: true),
+              icon: Icon(Icons.my_location),
+            ),
+          ).paddingOnly(right: 10.w, bottom: 10.h),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        shape: const CircleBorder(),
-        onPressed: () async =>
-            await controller.moveTo(currentPosition, animate: true),
-        // onPressed: () => _changeLocation(currentPosition),
-        child: Icon(Icons.my_location, color: AppColors.white),
       ),
     );
   }

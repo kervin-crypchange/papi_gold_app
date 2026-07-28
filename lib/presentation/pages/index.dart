@@ -1,4 +1,4 @@
-export 'package:papi_gold/presentation/pages/direction/maps_page.dart';
+export 'package:papi_gold/presentation/pages/direction/map_page.dart';
 export 'package:papi_gold/presentation/pages/direction/directions_page.dart';
 export 'package:papi_gold/presentation/pages/direction/direction_page.dart';
 export 'package:papi_gold/presentation/cubits/product/notifications_page.dart';

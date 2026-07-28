@@ -100,7 +100,7 @@ final GoRouter router = GoRouter(
             GoRoute(
               name: Routes.map,
               path: Routes.map,
-              builder: (context, state) => MapsPage(),
+              builder: (context, state) => MapPage(),
             ),
           ],
         ),

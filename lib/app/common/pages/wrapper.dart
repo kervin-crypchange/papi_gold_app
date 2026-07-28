@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:papi_gold/app/common/pages/index.dart';
 import 'package:papi_gold/app/common/pages/navigation_page.dart';
-import 'package:papi_gold/app/common/widgets/map_widget.dart';
 import 'package:papi_gold/presentation/cubits/index.dart';
 
 class WrapperPage extends StatelessWidget {
@@ -10,7 +9,6 @@ class WrapperPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isLogged = context.read<AuthCubit>().isLogged();
-    return MapWidget();
-    // return isLogged ? NavigationPage() : LoginPage();
+    return isLogged ? NavigationPage() : LoginPage();
   }
 }
