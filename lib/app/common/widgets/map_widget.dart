@@ -7,7 +7,9 @@ import 'package:papi_gold/app/core/theme/colors.dart';
 import 'package:flutter_debouncer/flutter_debouncer.dart';
 
 class MapWidget extends StatefulWidget {
-  const MapWidget({super.key});
+  final ValueChanged<GeoPoint> onLocationUpdate;
+
+  const MapWidget({super.key, required this.onLocationUpdate});
 
   @override
   State<MapWidget> createState() => _MapWidgetState();
@@ -59,6 +61,13 @@ class _MapWidgetState extends State<MapWidget> {
     });
   }
 
+  void _onMapMoved(Region region) async {
+    _debouncer.debounce(
+      duration: Duration(milliseconds: 300),
+      onDebounce: () => widget.onLocationUpdate(region.center),
+    );
+  }
+
   @override
   dispose() {
     controller.dispose();
@@ -75,17 +84,8 @@ class _MapWidgetState extends State<MapWidget> {
             mapIsLoading: LoadingWidget(),
             controller: controller,
             osmOption: osmOptions,
-            onMapIsReady: (p0) => setState(() {
-              isMapReady = p0;
-            }),
-            onMapMoved: (p0) {
-              _debouncer.debounce(
-                duration: Duration(milliseconds: 300),
-                onDebounce: () {
-                  debugPrint('--- onMapMoved $p0');
-                },
-              );
-            },
+            onMapIsReady: (p0) => setState(() => isMapReady = p0),
+            onMapMoved: _onMapMoved,
           ),
           if (isMapReady)
             Icon(Icons.location_on, color: AppColors.error, size: 48),

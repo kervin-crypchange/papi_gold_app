@@ -409,6 +409,38 @@ Filtra ubicaciones geográficas de forma jerárquica.
   - `404 Not Found`: Si el país o estado solicitado no existe.
   - `401 Unauthorized`: Si falta el `X-API-Key`.
 
+### 5.3 Mapeo de Nombres a IDs (Geolocalización)
+Permite convertir nombres de ubicación (obtenidos de servicios externos como Nominatim) en IDs internos del sistema para autocompletar formularios.
+- **URL:** `POST /api/location/map-names`
+- **Uso Recomendado:** Se integra con el flujo de geolocalización inversa:
+  1. Obtener coordenadas `lat`/`lon` del navegador o dispositivo.
+  2. Consultar Nominatim: `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&accept-language=es`.
+  3. Enviar los nombres resultantes a este endpoint.
+- **Parámetros (Request Body):**
+  - `country_name` (requerido): Nombre del país.
+  - `state_name` (opcional): Nombre del estado/provincia.
+  - `city_name` (opcional): Nombre de la ciudad.
+- **Ejemplo de Petición:**
+```json
+{
+  "country_name": "Venezuela",
+  "state_name": "Distrito Capital",
+  "city_name": "Caracas"
+}
+```
+- **Respuesta (200 OK):**
+```json
+{
+  "country_id": 239,
+  "state_id": 3939,
+  "city_id": 47265
+}
+```
+- **Errores:**
+  - `422 Unprocessable Content`: Si falta el `country_name`.
+  - `404 Not Found`: Si el país especificado no existe en la base de datos.
+  - `401 Unauthorized`: Si falta el `X-API-Key` o `Bearer`.
+
 ---
 
 ## 6. Autenticación y Sesión
