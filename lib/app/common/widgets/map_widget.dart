@@ -27,7 +27,8 @@ class _MapWidgetState extends State<MapWidget> {
 
     controller = MapController.customLayer(
       customTile: CustomTile.openFreeMap(minZoomLevel: 3, maxZoomLevel: 19),
-      initMapWithUserPosition: const UserTrackingOption(),
+      initMapWithUserPosition: UserTrackingOption(),
+      useExternalTracking: true
     );
 
     controller.listenerMapSingleTapping.addListener(() async {
@@ -45,13 +46,20 @@ class _MapWidgetState extends State<MapWidget> {
         GeoPoint(latitude: point.latitude, longitude: point.longitude),
         animate: true,
       );
-      await controller.changeLocationMarker(
-        oldLocation: lastGeoPoint.value!,
-        newLocation: point,
-      );
+      // await controller.changeLocationMarker(
+      //   oldLocation: lastGeoPoint.value!,
+      //   newLocation: point,
+      // );
       lastGeoPoint.value = point;
     } catch (e) {
       debugPrint('--- changeLocation error $e');
+    }
+  }
+
+  Future<void> onMapIsReady(bool isReady) async {
+    debugPrint('--- onMapIsReady $isReady');
+    if (isReady) {
+
     }
   }
 
@@ -68,8 +76,9 @@ class _MapWidgetState extends State<MapWidget> {
       osmOption: osmOptions,
       onLocationChanged: (point) async {
         lastGeoPoint.value = point;
-        controller.addMarker(point);
+        // controller.addMarker(point);
       },
+      onMapIsReady: onMapIsReady,
     );
   }
 }
