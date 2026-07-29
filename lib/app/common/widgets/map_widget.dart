@@ -24,11 +24,8 @@ class _MapWidgetState extends State<MapWidget> {
   late OSMOption osmOptions = OSMOption(
     showZoomController: true,
     isPicker: true,
-    zoomOption: const ZoomOption(
+    zoomOption:  ZoomOption(
       initZoom: 17,
-      minZoomLevel: 3,
-      maxZoomLevel: 19,
-      stepZoom: 1.0,
     ),
   );
 
@@ -41,7 +38,7 @@ class _MapWidgetState extends State<MapWidget> {
   Future<void> initMap() async {
     controller = MapController.customLayer(
       initPosition: currentPosition,
-      customTile: CustomTile.openFreeMap(minZoomLevel: 3, maxZoomLevel: 19),
+      customTile: CustomTile.openFreeMap(),
     );
 
     controller.listenerMapSingleTapping.addListener(() async {
