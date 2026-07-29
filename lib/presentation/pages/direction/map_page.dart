@@ -68,7 +68,7 @@ class _MapPageState extends State<MapPage> {
                         Expanded(
                           child:
                               Text(
-                                    _result?.name ?? 'N/A',
+                                    _result?.name ?? '',
                                     style: context.titleMedium,
                                     textAlign: TextAlign.center,
                                   )
@@ -104,7 +104,9 @@ class _MapPageState extends State<MapPage> {
                       width: double.infinity,
                       child: FilledButtonWidget(
                         title: 'Confirmar',
-                        onPressed: () {},
+                        onPressed: () {
+                          debugPrint('--- Geopoint $location');
+                        },
                       ),
                     ).paddingOnly(bottom: navigationBarHeight + 6),
                   ],

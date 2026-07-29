@@ -1,3 +1,4 @@
+export 'package:papi_gold/data/models/responses/response_map_names_model.dart';
 export 'package:papi_gold/data/models/create_direction_model.dart';
 export 'package:papi_gold/data/models/direction_model.dart';
 export 'package:papi_gold/data/models/summary_steps_model.dart';
