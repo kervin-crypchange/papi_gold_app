@@ -87,15 +87,15 @@ class _MapPageState extends State<MapPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Estado: ${_result?.address['state']}',
+                                  'Estado: ${_result?.state}',
                                   style: context.bodyMedium,
                                 ),
                                 Text(
-                                  'Ciudad: ${_result?.address['city'] ?? _result?.address['town']}',
+                                  'Ciudad: ${_result?.city}',
                                   style: context.bodyMedium,
                                 ),
                                 Text(
-                                  'Municipio: ${_result!.address['county']}',
+                                  'Municipio: ${_result!.municipality}',
                                   style: context.bodyMedium,
                                 ),
                               ],
