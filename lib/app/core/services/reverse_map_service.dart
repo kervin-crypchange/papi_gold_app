@@ -39,11 +39,9 @@ class NominatimResult {
   final String state;
   final String city;
   final String municipality;
-  // final Map<String, dynamic> address;
 
   NominatimResult({
     required this.name,
-    // required this.address,
     required this.state,
     required this.city,
     required this.municipality,
