@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:papi_gold/app/common/utils/utils.dart';
 
 class ReverseMapService {
   static Future<NominatimResult?> getReverseGeocoding({
@@ -36,21 +35,29 @@ class ReverseMapService {
 }
 
 class NominatimResult {
-  final String displayName;
   final String name;
   final Map<String, dynamic> address;
 
-  NominatimResult({
-    required this.name,
-    required this.displayName,
-    required this.address,
-  });
+  NominatimResult({required this.name, required this.address});
 
   factory NominatimResult.fromJson(Map<String, dynamic> json) {
     return NominatimResult(
-      name: safeString(json['name']),
-      displayName: safeString(json['display_name']),
+      name: NominatimResult.nameFormat(json),
       address: json['address'] ?? {},
     );
+  }
+
+  static String nameFormat(Map<String, dynamic> json) {
+    List<String> keys = json['address'].keys.toList();
+    String name = json['name'].isEmpty ? '' : '${json['name']}.';
+
+    if (keys.contains('suburb')) {
+      return '$name ${json['address']['suburb']}';
+    }
+    if (keys.contains('town')) {
+      return '$name ${json['address']['town']}, ${json['address']['quarter']}';
+    }
+
+    return json['name'];
   }
 }

@@ -23,6 +23,7 @@ class _MapPageState extends State<MapPage> {
       lat: location!.latitude,
       lon: location!.longitude,
     );
+
     setState(() {
       _result = r;
     });
@@ -69,7 +70,7 @@ class _MapPageState extends State<MapPage> {
                           child:
                               Text(
                                     _result?.name ?? '',
-                                    style: context.titleSmall,
+                                    style: context.labelLarge,
                                     textAlign: TextAlign.center,
                                   )
                                   .overflowText(TextOverflow.ellipsis)
