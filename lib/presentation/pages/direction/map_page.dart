@@ -65,10 +65,17 @@ class _MapPageState extends State<MapPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(_result?.name ?? '', style: context.titleMedium)
-                            .overflowText(TextOverflow.ellipsis)
-                            .medium
-                            .paddingOnly(top: 12.h),
+                        Expanded(
+                          child:
+                              Text(
+                                    _result?.name ?? 'N/A',
+                                    style: context.titleMedium,
+                                    textAlign: TextAlign.center,
+                                  )
+                                  .overflowText(TextOverflow.ellipsis)
+                                  .medium
+                                  .paddingOnly(top: 12.h),
+                        ),
                       ],
                     ),
                     (_result == null)
@@ -78,12 +85,17 @@ class _MapPageState extends State<MapPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('Estado: ${_result?.address['state']}'),
+                                Text(
+                                  'Estado: ${_result?.address['state']}',
+                                  style: context.bodyMedium,
+                                ),
                                 Text(
                                   'Ciudad: ${_result?.address['city'] ?? _result?.address['town']}',
+                                  style: context.bodyMedium,
                                 ),
                                 Text(
                                   'Municipio: ${_result!.address['county']}',
+                                  style: context.bodyMedium,
                                 ),
                               ],
                             ),
