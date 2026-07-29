@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/constants/routes.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
+import 'package:papi_gold/app/core/services/index.dart';
 import 'package:papi_gold/app/core/theme/index.dart';
 
 class MapPage extends StatefulWidget {
@@ -15,6 +16,18 @@ class MapPage extends StatefulWidget {
 
 class _MapPageState extends State<MapPage> {
   GeoPoint? location;
+  NominatimResult? _result;
+
+  Future<void> _fetchLocation() async {
+    final r = await ReverseMapService.getReverseGeocoding(
+      lat: location!.latitude,
+      lon: location!.longitude,
+    );
+    setState(() {
+      _result = r;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final double navigationBarHeight = MediaQuery.of(context).padding.bottom;
@@ -38,6 +51,7 @@ class _MapPageState extends State<MapPage> {
                 onLocationUpdate: (value) {
                   setState(() {
                     location = value;
+                    _fetchLocation();
                   });
                 },
               ),
@@ -46,17 +60,34 @@ class _MapPageState extends State<MapPage> {
               child: Container(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Confirma tu dirección',
-                      style: context.titleMedium,
-                    ).medium.paddingOnly(top: 12.h),
-                    Column(
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('Latitud: ${location?.latitude}'),
-                        Text('Longitud: ${location?.longitude}'),
+                        Text(_result?.name ?? '', style: context.titleMedium)
+                            .overflowText(TextOverflow.ellipsis)
+                            .medium
+                            .paddingOnly(top: 12.h),
                       ],
                     ),
+                    (_result == null)
+                        ? LoadingWidget()
+                        : Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Estado: ${_result?.address['state']}'),
+                                Text(
+                                  'Ciudad: ${_result?.address['city'] ?? _result?.address['town']}',
+                                ),
+                                Text(
+                                  'Municipio: ${_result!.address['county']}',
+                                ),
+                              ],
+                            ),
+                          ),
                     SizedBox(
                       width: double.infinity,
                       child: FilledButtonWidget(

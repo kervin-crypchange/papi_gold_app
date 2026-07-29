@@ -36,11 +36,9 @@ class _MapWidgetState extends State<MapWidget> {
   void initState() {
     super.initState();
     initMap();
-
   }
 
   Future<void> initMap() async {
-    
     controller = MapController.customLayer(
       initPosition: currentPosition,
       customTile: CustomTile.openFreeMap(minZoomLevel: 3, maxZoomLevel: 19),
@@ -56,6 +54,7 @@ class _MapWidgetState extends State<MapWidget> {
   }
 
   void _onMapMoved(Region region) async {
+    if (!isMapReady) return;
     _debouncer.debounce(
       duration: Duration(milliseconds: 300),
       onDebounce: () => widget.onLocationUpdate(region.center),
