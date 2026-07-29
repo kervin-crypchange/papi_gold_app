@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_osm_interface/src/types/geo_point.dart';
+import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:papi_gold/app/core/constants/index.dart';
 import 'package:papi_gold/app/core/error/index.dart';
 import 'package:papi_gold/app/core/network/dio_client.dart';

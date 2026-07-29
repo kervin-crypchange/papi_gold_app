@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter_osm_interface/src/types/geo_point.dart';
+import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:papi_gold/app/core/error/failure.dart';
 import 'package:papi_gold/data/models/index.dart';
 import 'package:papi_gold/data/sources/remote/index.dart';

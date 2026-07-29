@@ -41,11 +41,9 @@ class _MapWidgetState extends State<MapWidget> {
       customTile: CustomTile(
         urlsServers: [
           TileURLs(url: "https://api.maptiler.com/maps/openstreetmap")
-          // TileURLs(url: "https://api.maptiler.com/maps/streets-v4")
         ], 
         tileExtension: 'png', 
         sourceName: 'osm',
-        // styleURL: "https://api.maptiler.com/maps/streets-v4/style.json?key=kctGi403t1Oerd90Atq6"
         styleURL: "https://api.maptiler.com/maps/openstreetmap/style.json?key=kctGi403t1Oerd90Atq6"        
       )
     );

@@ -69,7 +69,7 @@ class _MapPageState extends State<MapPage> {
                           child:
                               Text(
                                     _result?.name ?? '',
-                                    style: context.titleMedium,
+                                    style: context.titleSmall,
                                     textAlign: TextAlign.center,
                                   )
                                   .overflowText(TextOverflow.ellipsis)
