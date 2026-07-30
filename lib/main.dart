@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:papi_gold/app/common/enums/box_enum.dart';
+import 'package:papi_gold/app/common/services/location_service.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/services/index.dart';
 import 'package:papi_gold/app/core/store/persistent_client_data.dart';
@@ -33,6 +34,7 @@ Future<void> main() async {
     Stripe.publishableKey = publishableKey;
 
     await Hive.openBox(BoxEnum.config.name);
+    await LocationService().init();
     await PersistentShoppingCart().init();
     await PersistentClientData().init();
     await initializeDependencies();
@@ -84,6 +86,7 @@ class BlocProviders extends StatelessWidget {
         BlocProvider(create: (_) => sl<LocationCubit>()),
         BlocProvider(create: (_) => sl<TrackingCubit>()),
         BlocProvider(create: (_) => sl<AppSocketCubit>()),
+        BlocProvider(create: (_) => sl<DirectionsCubit>()),
       ],
       child: const MainApp(),
     );

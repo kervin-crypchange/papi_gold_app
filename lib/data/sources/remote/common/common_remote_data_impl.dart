@@ -7,7 +7,6 @@ import 'package:papi_gold/app/core/error/failure.dart';
 import 'package:papi_gold/app/core/error/server_exception.dart';
 import 'package:papi_gold/app/core/network/dio_client.dart';
 import 'package:papi_gold/data/models/index.dart';
-import 'package:papi_gold/data/models/responses/response_products_model.dart';
 import 'package:papi_gold/data/sources/remote/index.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 import 'package:papi_gold/injection_container.dart';
@@ -18,7 +17,7 @@ class CommonRemoteDataImpl extends CommonRemoteData {
   @override
   Future<Either<Failure, List<CountryModel>>> getCountries() async {
     try {
-      final res = await sl<DioClient>().get(Apis.countries);
+      final res = await sl<DioClient>().get(Apis.location);
       List<CountryModel> countries = (res.data['data'] as List)
           .map<CountryModel>((json) => CountryModel.fromJson(json))
           .toList();
@@ -34,7 +33,7 @@ class CommonRemoteDataImpl extends CommonRemoteData {
   ) async {
     try {
       final res = await sl<DioClient>().get(
-        Apis.location,
+        '${Apis.location}/show',
         queryParameters: params.toJson(),
       );
       List<LocationModel> locations = (res.data['data'] as List)
@@ -182,4 +181,5 @@ class CommonRemoteDataImpl extends CommonRemoteData {
       return Left(ServerException(e));
     }
   }
+  
 }

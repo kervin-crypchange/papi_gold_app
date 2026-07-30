@@ -125,4 +125,5 @@ class CommonRepositoryImpl extends CommonRepository {
     );
     return res.fold((l) => Left(l), (r) => Right(r));
   }
+
 }

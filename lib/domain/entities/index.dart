@@ -1,3 +1,7 @@
+export 'package:papi_gold/domain/entities/responses/response_map_names_entity.dart';
+export 'package:papi_gold/domain/entities/create_direction_entity.dart';
+export 'package:papi_gold/domain/entities/responses/response_directions_entity.dart';
+export 'package:papi_gold/domain/entities/direction_entity.dart';
 export 'package:papi_gold/domain/entities/summary_steps_entity.dart';
 export 'package:papi_gold/domain/entities/tracking_entity.dart';
 export 'package:papi_gold/domain/entities/tracking_history_entity.dart';

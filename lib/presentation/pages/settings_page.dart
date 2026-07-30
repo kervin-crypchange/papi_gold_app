@@ -23,7 +23,6 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
   bool _isDark = true;
   bool _isLoading = false;
-  bool _isCameraGranted = false;
   bool _isLocationGranted = false;
   bool _isNotificationGranted = false;
 
@@ -35,9 +34,6 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
   }
 
   Future<void> _checkPermission() async {
-    final isCameraGranted = await PermissionService().checkPermission(
-      Permission.camera,
-    );
     final isLocationGranted = await PermissionService().checkPermission(
       Permission.location,
     );
@@ -46,7 +42,6 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
     );
     if (!mounted) return;
     setState(() {
-      _isCameraGranted = isCameraGranted;
       _isLocationGranted = isLocationGranted;
       _isNotificationGranted = isNotificationGranted;
     });
@@ -70,10 +65,6 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
         },
       );
     });
-  }
-
-  void setPermission() {
-    debugPrint('--- setPermission');
   }
 
   void _changeTheme() {
@@ -129,42 +120,6 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
             ),
             const Divider(),
             _SingleSection(
-              title: "Permisos",
-              children: [
-                _CustomListTile(
-                  title: "Camara",
-                  icon: Icons.camera_outlined,
-                  trailing: Switch(
-                    value: _isCameraGranted,
-                    onChanged: (value) async {
-                      if (value) PermissionService().openAppSettingsScreen();
-                    },
-                  ),
-                ),
-                _CustomListTile(
-                  title: "Ubicación",
-                  icon: Icons.location_on_outlined,
-                  trailing: Switch(
-                    value: _isLocationGranted,
-                    onChanged: (value) async {
-                      if (value) PermissionService().openAppSettingsScreen();
-                    },
-                  ),
-                ),
-                _CustomListTile(
-                  title: "Notificaciones",
-                  icon: Icons.notifications_none_outlined,
-                  trailing: Switch(
-                    value: _isNotificationGranted,
-                    onChanged: (value) async {
-                      if (value) PermissionService().openAppSettingsScreen();
-                    },
-                  ),
-                ),
-              ],
-            ),
-            const Divider(),
-            _SingleSection(
               title: "Organización",
               children: [
                 _CustomListTile(
@@ -173,7 +128,7 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
                   onTap: () => context.goNamed(Routes.profile),
                 ),
                 _CustomListTile(
-                  title: "Mis direcciones",
+                  title: "Direcciones",
                   icon: Icons.location_on_outlined,
                   onTap: () => context.goNamed(Routes.address),
                 ),
@@ -182,9 +137,42 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
                   icon: Icons.lock_outline,
                   onTap: () => context.goNamed(Routes.changePassword),
                 ),
+              ],
+            ),
+            const Divider(),
+            _SingleSection(
+              title: "Permisos",
+              children: [
+                _CustomListTile(
+                  title: "Camara",
+                  icon: Icons.camera_outlined,
+                  onTap: () async =>
+                      await PermissionService().openAppSettingsScreen(),
+                ),
+                _CustomListTile(
+                  title: "Activar Ubicación",
+                  icon: _isLocationGranted
+                      ? Icons.location_on_outlined
+                      : Icons.location_off_outlined,
+                  onTap: () async =>
+                      await PermissionService().openAppSettingsScreen(),
+                ),
+                _CustomListTile(
+                  title: "Activar Notificaciones",
+                  icon: _isNotificationGranted
+                      ? Icons.notifications_active_outlined
+                      : Icons.notifications_off_outlined,
+                  onTap: () async =>
+                      await PermissionService().openAppSettingsScreen(),
+                ),
+              ],
+            ),
+            const Divider(),
+            _SingleSection(
+              children: [
                 _CustomListTile(
                   title: "Ayuda & Feedback",
-                  icon: Icons.help_outline_rounded,
+                  icon: Icons.support_agent_outlined,
                 ),
                 _CustomListTile(
                   title: "Acerca de",

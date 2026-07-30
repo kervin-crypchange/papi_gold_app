@@ -93,7 +93,7 @@ class _OtpFormState extends State<OtpForm> with MessengerMixin {
 
   void _updatePassword(String otp) {
     showLoading(context);
-    final Map<String, dynamic> data = context.read<AuthCubit>().getdata();
+    final Map<String, dynamic> data = context.read<AuthCubit>().data;
     data['verificationCode'] = otp;
     final UpdatePasswordEntity entity = UpdatePasswordModel.fromJson(data);
 

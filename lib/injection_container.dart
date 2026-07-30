@@ -20,11 +20,13 @@ Future<void> initializeDependencies() async {
   sl.registerLazySingleton<AuthLocalData>(() => AuthLocalDataImpl());
   sl.registerLazySingleton<CommonRemoteData>(() => CommonRemoteDataImpl());
   sl.registerLazySingleton<AppSocketSource>(() => AppSocketSourceImpl());
+  sl.registerLazySingleton<DirectionRemoteData>(() => DirectionRemoteDataImpl());
 
   // Repositories
   sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl());
   sl.registerLazySingleton<CommonRepository>(() => CommonRepositoryImpl());
   sl.registerLazySingleton<AppSocketRespository>(() => AppSocketRepositoryImpl());
+  sl.registerLazySingleton<DirectionRepository>(() => DirectionRepositoryImpl());
 
   // Use cases
   sl.registerLazySingleton(() => LoginUseCase());
@@ -43,6 +45,11 @@ Future<void> initializeDependencies() async {
   sl.registerLazySingleton(() => StreamMessagesUseCase());
   sl.registerLazySingleton(() => ConnectSocketUseCase());
   sl.registerLazySingleton(() => DisconnectSocketUseCase());
+  sl.registerLazySingleton(() => DirectionsUseCase());
+  sl.registerLazySingleton(() => DeleteDirectionUseCase());
+  sl.registerLazySingleton(() => UpdateDirectionUseCase());
+  sl.registerLazySingleton(() => CreateDirectionUseCase());
+  sl.registerLazySingleton(() => MapNamesUseCase());
 
   // Cubits
   sl.registerFactory(() => AuthCubit());
@@ -53,4 +60,5 @@ Future<void> initializeDependencies() async {
   sl.registerFactory(() => LocationCubit());
   sl.registerFactory(() => TrackingCubit());
   sl.registerFactory(() => AppSocketCubit());
+  sl.registerFactory(() => DirectionsCubit());
 }

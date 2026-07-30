@@ -13,9 +13,8 @@ class PermissionService {
   }
 
   // Solicitar permiso
-  Future<bool> requestPermission(Permission permission) async {
-    final status = await permission.request();
-    return status.isGranted;
+  Future<PermissionStatus> requestPermission(Permission permission) async {
+    return await permission.request();
   }
 
   // Verificar permisos múltiples a la vez
