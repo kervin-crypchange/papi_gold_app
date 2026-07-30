@@ -24,12 +24,12 @@ class ResponseMapNamesModel extends ResponseMapNamesEntity {
 
   factory ResponseMapNamesModel.fromJson(Map<String, dynamic> json) {
     return ResponseMapNamesModel(
-      countryId: safeInt(json['countryId']),
-      stateId: safeInt(json['stateId']),
-      cityId: safeInt(json['cityId']),
+      countryId: safeInt(json['country_id']),
+      stateId: safeInt(json['state_id']),
+      cityId: safeInt(json['city_id']),
       address1: safeString(json['address1']),
       address2: safeString(json['address2']),
-      codeZip: safeString(json['codeZip']),
+      codeZip: safeString(json['code_zip']),
     );
   }
 }

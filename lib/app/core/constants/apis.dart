@@ -9,8 +9,7 @@ abstract class Apis {
 
   static const product = 'product';
   static const price = 'price';
-  static  const countries = 'location';
-  static const location = 'location/show';
+  static  const location = 'location';
 
   static const notifications = 'notifications';
   static const order = 'order';

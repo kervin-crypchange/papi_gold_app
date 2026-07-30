@@ -212,7 +212,7 @@ echo.join(`chat.${chatIdentifier}`)
              "id": 5, 
              "name": "Anillos", 
              "has_products": true, 
-             "translations": { "es": { "categ_name": "Anillos" }, "en": { "categ_name": "Rings" } } 
+             "translations": { "es": { "name": "Anillos" }, "en": { "name": "Rings" } } 
            }
         ],
         "translations": { "es": { "name": "Oro" }, "en": { "name": "Gold" } } 
@@ -409,23 +409,20 @@ Filtra ubicaciones geográficas de forma jerárquica.
   - `404 Not Found`: Si el país o estado solicitado no existe.
   - `401 Unauthorized`: Si falta el `X-API-Key`.
 
-### 5.3 Mapeo de Nombres a IDs (Geolocalización)
-Permite convertir nombres de ubicación (obtenidos de servicios externos como Nominatim) en IDs internos del sistema para autocompletar formularios.
+### 5.3 Mapeo de Ubicación GPS a IDs internos
+Permite convertir coordenadas geográficas (`lat`/`lon`) en IDs internos del sistema (`country_id`, `state_id`, `city_id`) y obtener datos de dirección formateados para autocompletar formularios. El servidor consulta internamente servicios de geocodificación inversa.
 - **URL:** `POST /api/location/map-names`
-- **Uso Recomendado:** Se integra con el flujo de geolocalización inversa:
-  1. Obtener coordenadas `lat`/`lon` del navegador o dispositivo.
-  2. Consultar Nominatim: `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&accept-language=es`.
-  3. Enviar los nombres resultantes a este endpoint.
+- **Uso Recomendado:** 
+  1. Obtener coordenadas `lat` y `lon` del navegador o dispositivo del cliente.
+  2. Enviar directamente las coordenadas a este endpoint.
 - **Parámetros (Request Body):**
-  - `country_name` (requerido): Nombre del país.
-  - `state_name` (opcional): Nombre del estado/provincia.
-  - `city_name` (opcional): Nombre de la ciudad.
+  - `lat` (requerido): Latitud numérica.
+  - `lon` (requerido): Longitud numérica.
 - **Ejemplo de Petición:**
 ```json
 {
-  "country_name": "Venezuela",
-  "state_name": "Distrito Capital",
-  "city_name": "Caracas"
+  "lat": 10.4806,
+  "lon": -66.9036
 }
 ```
 - **Respuesta (200 OK):**
@@ -433,13 +430,58 @@ Permite convertir nombres de ubicación (obtenidos de servicios externos como No
 {
   "country_id": 239,
   "state_id": 3939,
-  "city_id": 47265
+  "city_id": 47265,
+  "address1": "Avenida Universidad",
+  "code_zip": "1010"
 }
 ```
 - **Errores:**
-  - `422 Unprocessable Content`: Si falta el `country_name`.
-  - `404 Not Found`: Si el país especificado no existe en la base de datos.
-  - `401 Unauthorized`: Si falta el `X-API-Key` o `Bearer`.
+  - `422 Unprocessable Content`: Si faltan las coordenadas o son inválidas.
+    ```json
+    {
+      "message": "Los datos proporcionados no son válidos.",
+      "errors": {
+        "lat": ["El campo lat es obligatorio."],
+        "lon": ["El campo lon es obligatorio."]
+      }
+    }
+    ```
+  - `404 Not Found (Geocodificación Fallida)`: Si Nominatim no puede resolver las coordenadas.
+    ```json
+    {
+      "message": "No se encontró la ubicación solicitada."
+    }
+    ```
+  - `404 Not Found (País no soportado)`: Si la ubicación se resuelve pero el país no está activo en la base de datos interna.
+    ```json
+    {
+      "message": "No se encontró la ubicación solicitada. (España)",
+      "result": {
+        "country_id": null,
+        "state_id": null,
+        "city_id": null,
+        "code_zip": "28001",
+        "address1": "Calle Mayor 1",
+        "errors": {
+          "country": "No se encontró la ubicación solicitada. (España)"
+        }
+      }
+    }
+    ```
+  - **Éxito con Errores Parciales (200 OK):** Si el país existe pero el estado o ciudad no se encuentran en la base de datos local.
+    ```json
+    {
+      "country_id": 1,
+      "state_id": null,
+      "city_id": null,
+      "code_zip": "1010",
+      "address1": "Av. Principal",
+      "errors": {
+        "state": "No se encontró la ubicación solicitada. (Estado Desconocido)"
+      }
+    }
+    ```
+  - `401 Unauthorized`: Si falta el `X-API-Key` o `Bearer Token`.
 
 ---
 
@@ -559,7 +601,7 @@ Permite registrar un nuevo cliente en el sistema.
   "cartItems": [
     { "id": 10, "quantity": 1, "price": 1250.50, "format": 1 }
   ],
-  "address_id": 5,
+  "address_id": 5, // ID de la dirección del cliente (opcional si se envía clientData completo)
   "confirm_existing_client": false
 }
 ```
@@ -758,7 +800,7 @@ Obtiene un resumen financiero de las compras del cliente.
 ### 8.6 Ver Detalle de una Orden
 - **URL:** `GET /api/order/{order_code}`
 - **Parámetros (Path Params):**
-  - `order_code` (requerido): Código único de la orden (ej. `ORD-123`).
+  - `order` (requerido): Código único de la orden (ej. `ORD-123`).
 - **Respuesta (200 OK):** Objeto detallado de la orden, incluyendo items, pagos y envíos.
 ```json
 {
@@ -778,6 +820,35 @@ Obtiene un resumen financiero de las compras del cliente.
         "translations": { ... }
       }
     ],
+    "client": {
+      "id": 13,
+      "name": "Juan",
+      "lastname": "Perez", 
+      "country": { "id": 1, "name": "Venezuela", "phonecode": "93" },
+      "state": { "id": 10, "name": "Distrito Capital" },
+      "city": { "id": 50, "name": "Caracas" },
+      "address1": "Av. Universidad",
+      "address2": "Edf. Las Flores, Piso 2",
+      "code_zip": "1210",
+      "phone": "+584121234567",
+      "emai": "jp@gmail.com",
+      "receive_advertise": true,
+      "password": true,
+      "email_varified": true,
+      "category": "Estandar"
+    }
+    "address": {
+      "id": 1,
+      "name": "Casa Principal",
+      "country": "Venezuela",
+      "state": "Distrito Capital",
+      "city": "Caracas",
+      "address1": "Av. Universidad",
+      "address2": "Edf. Las Flores, Piso 2",
+      "code_zip": "1010",
+      "phone": "+584120000000",
+      "is_profile_fallback": false
+    },
     "payments": [
       {
         "id": 50, "amount": 1250.50, "reference": "pi_...", "type": "Compra",
@@ -791,8 +862,7 @@ Obtiene un resumen financiero de las compras del cliente.
         "courier": { "id": 5, "name": "UPS" },
         "status": { "id": 3, "name": "Entregado" }
       }
-    ],
-    "translations": { ... }
+    ]
   }
 }
 ```

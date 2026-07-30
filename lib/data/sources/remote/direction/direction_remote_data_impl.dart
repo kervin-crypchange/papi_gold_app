@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:papi_gold/app/core/constants/index.dart';
 import 'package:papi_gold/app/core/error/index.dart';
@@ -25,8 +24,7 @@ class DirectionRemoteDataImpl extends DirectionRemoteData {
   @override
   Future<Either<Failure, String>> delete(int id) async {
     try {
-      final res = await sl<DioClient>().delete('${Apis.directions}/$id');
-      debugPrint('--- DELETE ${res.data}');
+      await sl<DioClient>().delete('${Apis.directions}/$id');
       return Right('Dirección eliminada');
     } on DioException catch (e) {
       return Left(ServerException(e));
@@ -70,7 +68,7 @@ class DirectionRemoteDataImpl extends DirectionRemoteData {
   ) async {
     try {
       final res = await sl<DioClient>().post(
-        '${Apis.directions}/map-names',
+        '${Apis.location}/map-names',
         data: location.toMap(),
       );
       return Right(ResponseMapNamesModel.fromJson(res.data));

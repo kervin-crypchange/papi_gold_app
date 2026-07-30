@@ -172,7 +172,7 @@ class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
       spacing: 6.h,
       children: [
         Text(
-          d.type == 'primary' ? 'Dirección principal' : d.name.capitalizeFirst,
+          d.type == 'primary' ? 'Dirección principal' : '${d.name.capitalizeFirst} - ${d.type.capitalizeFirst}',
           style: context.bodyMedium.copyWith(color: Colors.white54),
         ),
         Container(
@@ -182,7 +182,7 @@ class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
           ),
           child: ListTile(
             leading: (d.isMain) ? Icon(Icons.star) : null,
-            title: Text('${d.address1}, ${d.address2}. ${d.codeZip}.'),
+            title: Text('${d.address1}, ${d.address2}. ${d.codeZip}.', overflow: TextOverflow.ellipsis,),
             subtitle: Text('${d.city.name} ${d.state.name}. ${d.country.name}'),
             dense: true,
             trailing: (d.type != 'primary')

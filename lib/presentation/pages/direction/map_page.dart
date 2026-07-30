@@ -1,11 +1,14 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/constants/routes.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
 import 'package:papi_gold/app/core/services/index.dart';
 import 'package:papi_gold/app/core/theme/index.dart';
+import 'package:papi_gold/presentation/cubits/directions/directions_cubit.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -106,7 +109,18 @@ class _MapPageState extends State<MapPage> {
                       child: FilledButtonWidget(
                         title: 'Confirmar',
                         onPressed: () {
-                          debugPrint('--- Geopoint $location');
+                          showLoading(context);
+                          context
+                              .read<DirectionsCubit>()
+                              .mapNames(location!)
+                              .then((either) {
+                                either.fold((failure) => null, (response) {
+                                  showLoading(context, false);
+                                  context.read<DirectionsCubit>().mapName =
+                                      response;
+                                  context.goNamed(Routes.newAddress);
+                                });
+                              });
                         },
                       ),
                     ).paddingOnly(bottom: navigationBarHeight + 6),
