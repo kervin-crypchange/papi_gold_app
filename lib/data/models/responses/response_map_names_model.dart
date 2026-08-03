@@ -9,6 +9,7 @@ class ResponseMapNamesModel extends ResponseMapNamesEntity {
     required super.address1,
     required super.address2,
     required super.codeZip,
+    required super.errors,
   });
 
   factory ResponseMapNamesModel.fromEntity(ResponseMapNamesEntity e) {
@@ -19,6 +20,7 @@ class ResponseMapNamesModel extends ResponseMapNamesEntity {
       address1: e.address1,
       address2: e.address2,
       codeZip: e.codeZip,
+      errors: e.errors,
     );
   }
 
@@ -30,6 +32,7 @@ class ResponseMapNamesModel extends ResponseMapNamesEntity {
       address1: safeString(json['address1']),
       address2: safeString(json['address2']),
       codeZip: safeString(json['code_zip']),
+      errors: json['errors'] ?? {},
     );
   }
 }

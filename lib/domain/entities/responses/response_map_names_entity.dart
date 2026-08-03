@@ -7,6 +7,7 @@ class ResponseMapNamesEntity extends Equatable {
   final String address1;
   final String address2;
   final String codeZip;
+  final Map<String, dynamic> errors;
 
   const ResponseMapNamesEntity({
     required this.countryId,
@@ -15,6 +16,7 @@ class ResponseMapNamesEntity extends Equatable {
     required this.address1,
     required this.address2,
     required this.codeZip,
+    required this.errors,
   });
 
   @override
@@ -25,5 +27,6 @@ class ResponseMapNamesEntity extends Equatable {
     codeZip,
     address1,
     address2,
+    errors
   ];
 }

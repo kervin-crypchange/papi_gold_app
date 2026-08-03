@@ -1,3 +1,4 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -30,6 +31,16 @@ class _MapPageState extends State<MapPage> {
     setState(() {
       _result = r;
     });
+  }
+
+  void _displayError(Map<String, dynamic> errors){
+    List<String> keys = errors.keys.toList();
+    showOkAlertDialog(
+      style: AdaptiveStyle.adaptive,
+      context: context,
+      title: 'Ha ocurrido un error',
+      message: errors[keys[0]]
+    );
   }
 
   @override
@@ -116,9 +127,13 @@ class _MapPageState extends State<MapPage> {
                               .then((either) {
                                 either.fold((failure) => null, (response) {
                                   showLoading(context, false);
-                                  context.read<DirectionsCubit>().mapName =
-                                      response;
-                                  context.goNamed(Routes.newAddress);
+                                  debugPrint('--- $response');
+                                  if(response.errors.isNotEmpty){
+                                    _displayError(response.errors);
+                                  }
+                                  // context.read<DirectionsCubit>().mapName =
+                                  //     response;
+                                  // context.goNamed(Routes.newAddress);
                                 });
                               });
                         },

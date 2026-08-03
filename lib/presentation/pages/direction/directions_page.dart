@@ -130,6 +130,7 @@ class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
                 children: [
                   directionCard(state.response.primaryDirection),
                   Expanded(child: _listViewUI(_directions)),
+                  Text('El máximo de direcciones permitidas es 3.')
                 ],
               ).paddingAll(8.r);
             }

@@ -51,9 +51,13 @@ class NominatimResult {
     return NominatimResult(
       name: NominatimResult.nameFormat(json),
       state: safeString(json['address']['state']),
-      city: safeString(json['address']['city']),
+      city: cityFormat(json),
       municipality: safeString(json['address']['county']),
     );
+  }
+
+  static String cityFormat(Map<String, dynamic> json){
+    return json['address']['city'] ?? json['address']['town'];
   }
 
   static String nameFormat(Map<String, dynamic> json) {

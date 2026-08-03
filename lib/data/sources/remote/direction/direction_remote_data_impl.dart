@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:papi_gold/app/core/constants/index.dart';
 import 'package:papi_gold/app/core/error/index.dart';
@@ -71,6 +72,7 @@ class DirectionRemoteDataImpl extends DirectionRemoteData {
         '${Apis.location}/map-names',
         data: location.toMap(),
       );
+      debugPrint('--- Remote MapNam $res');
       return Right(ResponseMapNamesModel.fromJson(res.data));
     } on DioException catch (e) {
       return Left(ServerException(e));
