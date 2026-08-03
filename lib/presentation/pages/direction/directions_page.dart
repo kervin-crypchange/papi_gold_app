@@ -125,12 +125,13 @@ class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
             if (state is DirectionsSuccess) {
               _directions = state.response.data;
               return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 spacing: 12.h,
                 children: [
                   directionCard(state.response.primaryDirection),
                   Expanded(child: _listViewUI(_directions)),
-                  Text('El máximo de direcciones permitidas es 3.')
+                  Text('El máximo de direcciones permitidas es 3.'),
                 ],
               ).paddingAll(8.r);
             }
@@ -144,8 +145,16 @@ class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
           child: FilledButtonWidget(
             title: 'Agregar dirección',
             onPressed: () {
-              context.read<DirectionsCubit>().direction = null;
-              context.goNamed(Routes.newAddress);
+              if (_directions.length < 3) {
+                context.read<DirectionsCubit>().direction = null;
+                context.goNamed(Routes.newAddress);
+              }
+              showOkAlertDialog(
+                context: context,
+                title: 'Ha ocurrido un error',
+                message:
+                    'Solo puedes agregar un maximo de 3 dirección, si deseas agregar otra, elimina la que ya tienes.',
+              );
             },
           ),
         ),
@@ -173,7 +182,9 @@ class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
       spacing: 6.h,
       children: [
         Text(
-          d.type == 'primary' ? 'Dirección principal' : '${d.name.capitalizeFirst} - ${d.type.capitalizeFirst}',
+          d.type == 'primary'
+              ? 'Dirección principal'
+              : '${d.name.capitalizeFirst} - ${d.type.capitalizeFirst}',
           style: context.bodyMedium.copyWith(color: Colors.white54),
         ),
         Container(
@@ -183,7 +194,10 @@ class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
           ),
           child: ListTile(
             leading: (d.isMain) ? Icon(Icons.star) : null,
-            title: Text('${d.address1}, ${d.address2}. ${d.codeZip}.', overflow: TextOverflow.ellipsis,),
+            title: Text(
+              '${d.address1}, ${d.address2}. ${d.codeZip}.',
+              overflow: TextOverflow.ellipsis,
+            ),
             subtitle: Text('${d.city.name} ${d.state.name}. ${d.country.name}'),
             dense: true,
             trailing: (d.type != 'primary')
@@ -217,7 +231,7 @@ class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
         icon = Icon(Icons.multiple_stop);
         break;
       default:
-      icon = null;
+        icon = null;
     }
 
     return icon;
