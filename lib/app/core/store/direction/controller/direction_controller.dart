@@ -6,7 +6,7 @@ class DirectionController {
   final Box<PersistenDirectionModel> _directionBox =
       Hive.box<PersistenDirectionModel>('directionBox');
 
-  ValueListenable<Box<PersistenDirectionModel>> get directionBoxListenable =>
+  ValueListenable<Box<PersistenDirectionModel>> get directionListenable =>
       _directionBox.listenable();
 
   void addDirection(PersistenDirectionModel direction) {

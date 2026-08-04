@@ -26,6 +26,13 @@ class PersistentDirection {
     await Hive.openBox<PersistenDirectionModel>('directionBox');
   }
 
+  Future<void> addDirections(List<PersistenDirectionModel> directions) async {
+    for (final direction in directions) {
+      DirectionController().addDirection(direction);
+      log('Direction added to Hive box: ${direction.toJson()}');
+    }
+  }
+
   Future<void> addDirection(PersistenDirectionModel direction) async {
     DirectionController().addDirection(direction);
     log('Direction added to Hive box: ${direction.toJson()}');
@@ -44,5 +51,22 @@ class PersistentDirection {
   void clear() {
    DirectionController().clear();
     log('All directions cleared from Hive box');
+  }
+
+  Widget showDirections({
+    required  Widget Function(
+      BuildContext context,
+      List<PersistenDirectionModel> directions,
+    ) directionBuilder,
+  }){
+    return ValueListenableBuilder<Box<PersistenDirectionModel>>(
+      valueListenable: DirectionController().directionListenable,
+      builder: (context, box, child) {
+        final directions = DirectionController().getAllDirections();
+
+        return directionBuilder(context, directions);
+      },
+    );
+    
   }
 }

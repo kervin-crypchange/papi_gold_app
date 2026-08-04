@@ -63,7 +63,7 @@ class PersistenDirectionModel {
     required this.isMain,
   });
 
-  factory PersistenDirectionModel.fromMap(Map<String, dynamic> map) {
+  factory PersistenDirectionModel.fromJson(Map<String, dynamic> map) {
     return PersistenDirectionModel(
       id: safeInt(map['id']),
       name: safeString(map['name']),
