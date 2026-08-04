@@ -80,4 +80,22 @@ class PersistenDirectionModel {
       isMain: safeBool(map['is_default']),
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'last_name': lastName,
+      'email': email,
+      'phone': phone,
+      'country': country,
+      'state': state,
+      'city': city,
+      'address1': address1,
+      'address2': address2,
+      'code_zip': codeZip,
+      'type': type,
+      'is_default': isMain,
+    };
+  }
 }
