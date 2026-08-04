@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:papi_gold/app/core/store/direction/persistent_direction.dart';
 import 'package:papi_gold/domain/entities/direction_entity.dart';
 
 class DirectionSelectorWidget extends StatefulWidget {

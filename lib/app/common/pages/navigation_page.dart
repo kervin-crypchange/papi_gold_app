@@ -1,11 +1,14 @@
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:papi_gold/app/common/enums/app_sockets_enum.dart';
 import 'package:papi_gold/app/common/mixins/index.dart';
 import 'package:papi_gold/app/common/pages/index.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/constants/index.dart';
+import 'package:papi_gold/app/core/extensions/index.dart';
 import 'package:papi_gold/app/core/services/socket_service.dart';
+import 'package:papi_gold/app/core/store/direction/persistent_direction.dart';
 import 'package:papi_gold/app/core/theme/index.dart';
 import 'package:persistent_shopping_cart/persistent_shopping_cart.dart';
 import 'package:pusher_reverb_flutter/pusher_reverb_flutter.dart' as connstate;
@@ -85,12 +88,50 @@ class _NavigationPageState extends State<NavigationPage> with MessengerMixin {
     });
   }
 
+  void _showBottomSheet() {
+   showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return Container(
+          width: double.infinity,
+          height: 0.5.sh,
+          decoration: BoxDecoration(
+            color: AppColors.bg,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
+          ),
+          child: PersistentDirection().showDirections(
+          directionBuilder: (context, directions) {
+            return ListView.builder(
+              itemCount: directions.length,
+              itemBuilder: (context, index) {
+              final direction = directions[index];
+              return ListTile(
+                  title: Text(direction.address1),
+                  subtitle: Text('${direction.city['name']}, ${direction.state['name']}'),
+                );
+            },).paddingAll(12.r);
+          }
+              
+        ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
       appBar: AppBar(
-        title: DirectionSelectorWidget(),
+        title: TextButton(
+          onPressed: () => _showBottomSheet(),
+          child: Text('Papi Gold', style: context.bodySmall),
+        ),
         actions: [
           PersistentShoppingCart().showCartItemCountWidget(
             cartItemCountWidgetBuilder: (int itemCount) {
@@ -122,7 +163,10 @@ class _NavigationPageState extends State<NavigationPage> with MessengerMixin {
           if (_lastPressedTime == null ||
               now.difference(_lastPressedTime!) > maxDuration) {
             _lastPressedTime = now;
-            messenger.showSnackBar(message: 'Presione de nuevo para salir', color: AppColors.greyLigth);
+            messenger.showSnackBar(
+              message: 'Presione de nuevo para salir',
+              color: AppColors.greyLigth,
+            );
           } else {
             await SystemNavigator.pop();
           }
