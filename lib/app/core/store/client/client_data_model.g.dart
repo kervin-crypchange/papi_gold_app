@@ -36,9 +36,8 @@ class PersistentClientDataModelAdapter
 
   @override
   void write(BinaryWriter writer, PersistentClientDataModel obj) {
-    // writer. ;
     writer
-      ..writeByte(14)
+      ..writeByte(13)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -64,9 +63,7 @@ class PersistentClientDataModelAdapter
       ..writeByte(11)
       ..write(obj.receiveAdvertise)
       ..writeByte(12)
-      ..write(obj.category)
-      ..writeByte(13)
-      ..write(obj.key);
+      ..write(obj.category);
   }
 
   @override

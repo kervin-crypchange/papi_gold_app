@@ -1,7 +1,7 @@
 import 'package:logger/logger.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
-import 'package:papi_gold/app/core/store/client_controller.dart';
-import 'package:papi_gold/app/core/store/client_data_model.dart';
+import 'package:papi_gold/app/core/store/client/client_controller.dart';
+import 'package:papi_gold/app/core/store/client/client_data_model.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 

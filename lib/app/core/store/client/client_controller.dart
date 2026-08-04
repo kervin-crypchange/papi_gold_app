@@ -1,5 +1,5 @@
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:papi_gold/app/core/store/client_data_model.dart';
+import 'package:papi_gold/app/core/store/client/client_data_model.dart';
 
 class ClientController {
   final Box<PersistentClientDataModel> _clientBox =

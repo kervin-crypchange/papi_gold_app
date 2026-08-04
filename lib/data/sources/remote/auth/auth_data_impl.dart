@@ -4,13 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:papi_gold/app/common/mixins/index.dart';
 import 'package:papi_gold/app/core/constants/index.dart';
 import 'package:papi_gold/app/core/error/index.dart';
-import 'package:papi_gold/app/core/store/client_data_model.dart';
-import 'package:papi_gold/app/core/store/persistent_client_data.dart';
+import 'package:papi_gold/app/core/store/client/client_data_model.dart';
+import 'package:papi_gold/app/core/store/client/persistent_client_data.dart';
 import 'package:papi_gold/app/core/network/dio_client.dart';
 import 'package:papi_gold/data/models/index.dart';
 import 'package:papi_gold/data/models/responses/response_register_model.dart';
 import 'package:papi_gold/data/sources/local/auth/auth_local_data.dart';
 import 'package:papi_gold/data/sources/remote/auth/auth_data.dart';
+import 'package:papi_gold/data/sources/remote/direction/direction_remote_data.dart';
 import 'package:papi_gold/injection_container.dart';
 
 class AuthDataImpl extends AuthData with LoggerMixin {
@@ -23,6 +24,7 @@ class AuthDataImpl extends AuthData with LoggerMixin {
       );
       Future.delayed(const Duration(seconds: 2), () async {
         await getClientData();
+
       });
       return Right(ResponseLoginModel.fromJson(res.data));
     } on DioException catch (e) {
@@ -79,6 +81,10 @@ class AuthDataImpl extends AuthData with LoggerMixin {
     } on DioException catch (e) {
       return Left(ServerException(e));
     }
+  }
+
+  Future<void> getDirections() async  {
+     final res = await sl<DioClient>().get(Apis.directions);
   }
 
   Future<Either<Failure, void>> getClientData() async {
