@@ -33,14 +33,16 @@ class _DirectionSelectorWidgetState extends State<DirectionSelectorWidget> {
             return Text('No hay direcciones', style: context.labelXSmall);
           }
           final selectedDirection =
-              context.read<DirectionsCubit>().direction ?? directions.first;
+              context.read<DirectionsCubit>().selected ?? directions.first;
           return DropdownButton<DirectionEntity>(
             underline: const SizedBox(), 
             isExpanded: true,
             isDense: true,
             value: selectedDirection,
             onChanged: (direction) {
-              context.read<DirectionsCubit>().direction = direction;
+              setState(() {
+                context.read<DirectionsCubit>().selected = direction;
+              });
             },
             items: directions.map((direction) {
               return DropdownMenuItem<DirectionEntity>(
