@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:papi_gold/app/core/store/direction/model/persisten_direction_model.dart';
@@ -19,8 +18,6 @@ class DirectionController {
   void addSelectedDirection(PersistenDirectionModel direction) async {
     await _selectedDirectionBox.clear();
     _selectedDirectionBox.put(1, direction);
-    log('--- AddSelectedDirection');
-    
   }
 
   void addDirection(PersistenDirectionModel direction) {

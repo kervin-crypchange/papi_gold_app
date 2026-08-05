@@ -28,7 +28,6 @@ class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
   @override
   void initState() {
     super.initState();
-    context.read<DirectionsCubit>().list();
   }
 
   void _showModalSheet(

@@ -34,7 +34,7 @@ class _LoginPageState extends State<LoginPage> with MessengerMixin {
                 color: AppColors.success,
                 seconds: 1
               );
-              context.goNamed(Routes.home);
+              context.goNamed(Routes.navigation);
             }
           },
           child: LayoutBuilder(
