@@ -88,49 +88,7 @@ class _NavigationPageState extends State<NavigationPage> with MessengerMixin {
     });
   }
 
-  void _showBottomSheet() {
-    showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) {
-        return Container(
-          width: double.infinity,
-          height: 0.5.sh,
-          decoration: BoxDecoration(
-            color: AppColors.bg,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
-            ),
-          ),
-          child: PersistentDirection().showDirections(
-            directionBuilder: (context, directions) {
-              return ListView.separated(
-                itemBuilder: (context, index) {
-                  final direction = directions[index];
-                  return ListTile(
-                    dense: true,
-                    isThreeLine: true,
-                    title: Text(
-                      direction.name,
-                    ).overflowText(TextOverflow.ellipsis),
-                    subtitle: Text(
-                      '${direction.address1}, ${direction.address2}'
-                      '${direction.city['name']}, ${direction.state['name']}. ${direction.country['name']}',
-                    ),
-                  );
-                },
-                separatorBuilder: (context, index) =>
-                    Divider(color: AppColors.white),
-                itemCount: directions.length,
-              ).paddingOnly(top: 12.h);
-            },
-          ),
-        );
-      },
-    );
-  }
+
 
   @override
   Widget build(BuildContext context) {
