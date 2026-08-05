@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:papi_gold/app/common/enums/app_sockets_enum.dart';
 import 'package:papi_gold/app/common/mixins/index.dart';
@@ -106,18 +107,29 @@ class _NavigationPageState extends State<NavigationPage> with MessengerMixin {
           ),
           child: PersistentDirection().showDirections(
             directionBuilder: (context, directions) {
-              return ListView.builder(
-                itemCount: directions.length,
+              return ListView.separated(
                 itemBuilder: (context, index) {
                   final direction = directions[index];
                   return ListTile(
-                    title: Text(direction.address1),
+                    // shape: RoundedRectangleBorder(
+                    //   side: BorderSide(color: AppColors.white),
+                    //   borderRadius: BorderRadius.circular(12.r),
+                    // ),
+                    dense: true,
+                    isThreeLine: true,
+                    title: Text(
+                      direction.name,
+                    ).overflowText(TextOverflow.ellipsis),
                     subtitle: Text(
-                      '${direction.city['name']}, ${direction.state['name']}',
+                      '${direction.address1}, ${direction.address2}'
+                      '${direction.city['name']}, ${direction.state['name']}. ${direction.country['name']}',
                     ),
                   );
                 },
-              ).paddingAll(12.r);
+                separatorBuilder: (context, index) =>
+                    Divider(color: AppColors.white),
+                itemCount: directions.length,
+              ).paddingOnly(top: 12.h);
             },
           ),
         );
@@ -130,26 +142,26 @@ class _NavigationPageState extends State<NavigationPage> with MessengerMixin {
     return Scaffold(
       extendBody: true,
       appBar: AppBar(
-        title: PersistentDirection().showSelectedDirection(
-          directionBuilder: (context, direction) {
-            return InkWell(
-              onTap: _showBottomSheet,
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Text(
-                      direction.address1,
-                      style: context.bodySmall,
-                    ).overflowText(TextOverflow.ellipsis),
-                  ),
-                  Icon(Icons.arrow_drop_down_outlined, size: 20.r),
-                ],
-              ),
-            );
-          },
-        ),
+        // title: PersistentDirection().showSelectedDirection(
+        //   directionBuilder: (context, direction) {
+        //     return InkWell(
+        //       onTap: _showBottomSheet,
+        //       child: Row(
+        //         mainAxisSize: MainAxisSize.max,
+        //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //         children: [
+        //           Expanded(
+        //             child: Text(
+        //               direction.address1,
+        //               style: context.bodySmall,
+        //             ).overflowText(TextOverflow.ellipsis),
+        //           ),
+        //           Icon(Icons.arrow_drop_down_outlined, size: 20.r),
+        //         ],
+        //       ),
+        //     );
+        //   },
+        // ),
         actions: [
           PersistentShoppingCart().showCartItemCountWidget(
             cartItemCountWidgetBuilder: (int itemCount) {

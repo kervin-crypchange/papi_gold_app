@@ -12,12 +12,16 @@ class DirectionController {
   ValueListenable<Box<PersistenDirectionModel>> get directionsListenable =>
       _directionBox.listenable();
 
-  ValueListenable<Box<PersistenDirectionModel>>
-  get selectedDirectionsListenable => _selectedDirectionBox.listenable();
+  ValueListenable<Box<PersistenDirectionModel>> get directionListeable =>
+      _selectedDirectionBox.listenable();
 
   void addSelectedDirection(PersistenDirectionModel direction) async {
     await _selectedDirectionBox.clear();
-    await _selectedDirectionBox.put(direction.id, direction);
+    Future.delayed(
+      Duration(milliseconds: 300),
+      () => _selectedDirectionBox.put(1, direction),
+    );
+    
   }
 
   void addDirection(PersistenDirectionModel direction) {
@@ -82,7 +86,7 @@ class DirectionController {
   }
 
   PersistenDirectionModel getSelectedDirection() {
-    return _selectedDirectionBox.values.first;
+    return _selectedDirectionBox.get(1)!;
   }
 
   void clear() {

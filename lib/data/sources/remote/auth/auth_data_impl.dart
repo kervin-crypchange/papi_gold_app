@@ -23,9 +23,10 @@ class AuthDataImpl extends AuthData with LoggerMixin {
         Apis.session,
         data: model.toJson(),
       );
-      Future.delayed(const Duration(seconds: 2), () async {
-        await getDirections();
-        await getClientData();
+
+      await Future.delayed(const Duration(seconds: 2), () {
+        getDirections();
+        getClientData();
       });
       return Right(ResponseLoginModel.fromJson(res.data));
     } on DioException catch (e) {
@@ -101,7 +102,7 @@ class AuthDataImpl extends AuthData with LoggerMixin {
         res.data['primary_address'],
       );
 
-      await PersistentDirection().selectedDirection(primaryDirection);
+      await PersistentDirection().addSelected(primaryDirection);
       directions.insert(0, primaryDirection);
       await PersistentDirection().addDirections(directions);
       return Right(null);

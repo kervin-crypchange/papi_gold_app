@@ -27,7 +27,7 @@ class PersistentDirection {
     await Hive.openBox<PersistenDirectionModel>('selectedDirectionBox');
   }
 
-  Future<void> selectedDirection(PersistenDirectionModel direction) async {
+  Future<void> addSelected(PersistenDirectionModel direction) async {
     DirectionController().addSelectedDirection(direction);
     log('Selected direction added to Hive box: ${direction.toJson()}');
   }
@@ -66,10 +66,10 @@ class PersistentDirection {
     ) directionBuilder
   }){
     return ValueListenableBuilder<Box<PersistenDirectionModel>>(
-      valueListenable: DirectionController().selectedDirectionsListenable,
+      valueListenable: DirectionController().directionListeable,
       builder: (context, box, child) {
-        final directions = DirectionController().getSelectedDirection();
-        return directionBuilder(context, directions);
+        final direction = DirectionController().getSelectedDirection();
+        return directionBuilder(context, direction);
       },
     );
   }
@@ -85,7 +85,6 @@ class PersistentDirection {
       valueListenable: DirectionController().directionsListenable,
       builder: (context, box, child) {
         final directions = DirectionController().getAllDirections();
-
         return directionBuilder(context, directions);
       },
     );
