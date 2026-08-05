@@ -111,10 +111,6 @@ class _NavigationPageState extends State<NavigationPage> with MessengerMixin {
                 itemBuilder: (context, index) {
                   final direction = directions[index];
                   return ListTile(
-                    // shape: RoundedRectangleBorder(
-                    //   side: BorderSide(color: AppColors.white),
-                    //   borderRadius: BorderRadius.circular(12.r),
-                    // ),
                     dense: true,
                     isThreeLine: true,
                     title: Text(
@@ -142,26 +138,26 @@ class _NavigationPageState extends State<NavigationPage> with MessengerMixin {
     return Scaffold(
       extendBody: true,
       appBar: AppBar(
-        // title: PersistentDirection().showSelectedDirection(
-        //   directionBuilder: (context, direction) {
-        //     return InkWell(
-        //       onTap: _showBottomSheet,
-        //       child: Row(
-        //         mainAxisSize: MainAxisSize.max,
-        //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //         children: [
-        //           Expanded(
-        //             child: Text(
-        //               direction.address1,
-        //               style: context.bodySmall,
-        //             ).overflowText(TextOverflow.ellipsis),
-        //           ),
-        //           Icon(Icons.arrow_drop_down_outlined, size: 20.r),
-        //         ],
-        //       ),
-        //     );
-        //   },
-        // ),
+        title: PersistentDirection().showSelectedDirection(
+          directionBuilder: (context, direction) {
+            return InkWell(
+              onTap: _showBottomSheet,
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      direction.address1,
+                      style: context.bodySmall,
+                    ).overflowText(TextOverflow.ellipsis),
+                  ),
+                  Icon(Icons.arrow_drop_down_outlined, size: 20.r),
+                ],
+              ),
+            );
+          },
+        ),
         actions: [
           PersistentShoppingCart().showCartItemCountWidget(
             cartItemCountWidgetBuilder: (int itemCount) {

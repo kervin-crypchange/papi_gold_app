@@ -32,6 +32,7 @@ class _LoginPageState extends State<LoginPage> with MessengerMixin {
               messenger.showSnackBar(
                 message: state.response.message,
                 color: AppColors.success,
+                seconds: 1
               );
               context.goNamed(Routes.home);
             }

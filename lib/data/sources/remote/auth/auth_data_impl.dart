@@ -24,7 +24,7 @@ class AuthDataImpl extends AuthData with LoggerMixin {
         data: model.toJson(),
       );
 
-      await Future.delayed(const Duration(seconds: 2), () {
+      await Future.delayed(Durations.medium1, () {
         getDirections();
         getClientData();
       });
