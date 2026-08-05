@@ -59,6 +59,10 @@ class PersistentDirection {
     log('All directions cleared from Hive box');
   }
 
+  PersistenDirectionModel selectedDirection(){
+    return DirectionController().getSelectedDirection();
+  }
+
   Widget showSelectedDirection({
     required Widget Function(
       BuildContext context,
