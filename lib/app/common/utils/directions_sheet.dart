@@ -1,4 +1,6 @@
-  import 'package:flutter_screenutil/flutter_screenutil.dart';
+  import 'dart:developer';
+
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
 import 'package:papi_gold/app/core/store/direction/persistent_direction.dart';
@@ -35,6 +37,7 @@ void showDirectionsSheet(BuildContext context) {
                       '${direction.address1}, ${direction.address2}'
                       '${direction.city['name']}, ${direction.state['name']}. ${direction.country['name']}',
                     ),
+                    onTap: () => log('--- onTap ${direction.name}'),
                   );
                 },
                 separatorBuilder: (context, index) =>
