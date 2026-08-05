@@ -89,7 +89,7 @@ class _NavigationPageState extends State<NavigationPage> with MessengerMixin {
   }
 
   void _showBottomSheet() {
-   showModalBottomSheet<void>(
+    showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
@@ -105,19 +105,21 @@ class _NavigationPageState extends State<NavigationPage> with MessengerMixin {
             ),
           ),
           child: PersistentDirection().showDirections(
-          directionBuilder: (context, directions) {
-            return ListView.builder(
-              itemCount: directions.length,
-              itemBuilder: (context, index) {
-              final direction = directions[index];
-              return ListTile(
-                  title: Text(direction.address1),
-                  subtitle: Text('${direction.city['name']}, ${direction.state['name']}'),
-                );
-            },).paddingAll(12.r);
-          }
-              
-        ),
+            directionBuilder: (context, directions) {
+              return ListView.builder(
+                itemCount: directions.length,
+                itemBuilder: (context, index) {
+                  final direction = directions[index];
+                  return ListTile(
+                    title: Text(direction.address1),
+                    subtitle: Text(
+                      '${direction.city['name']}, ${direction.state['name']}',
+                    ),
+                  );
+                },
+              ).paddingAll(12.r);
+            },
+          ),
         );
       },
     );
@@ -128,9 +130,25 @@ class _NavigationPageState extends State<NavigationPage> with MessengerMixin {
     return Scaffold(
       extendBody: true,
       appBar: AppBar(
-        title: TextButton(
-          onPressed: () => _showBottomSheet(),
-          child: Text('Papi Gold', style: context.bodySmall),
+        title: PersistentDirection().showSelectedDirection(
+          directionBuilder: (context, direction) {
+            return InkWell(
+              onTap: _showBottomSheet,
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      direction.address1,
+                      style: context.bodySmall,
+                    ).overflowText(TextOverflow.ellipsis),
+                  ),
+                  Icon(Icons.arrow_drop_down_outlined, size: 20.r),
+                ],
+              ),
+            );
+          },
         ),
         actions: [
           PersistentShoppingCart().showCartItemCountWidget(

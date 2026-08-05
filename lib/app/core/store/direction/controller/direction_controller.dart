@@ -6,28 +6,41 @@ class DirectionController {
   final Box<PersistenDirectionModel> _directionBox =
       Hive.box<PersistenDirectionModel>('directionBox');
 
-  ValueListenable<Box<PersistenDirectionModel>> get directionListenable =>
+  final Box<PersistenDirectionModel> _selectedDirectionBox =
+      Hive.box<PersistenDirectionModel>('selectedDirectionBox');
+
+  ValueListenable<Box<PersistenDirectionModel>> get directionsListenable =>
       _directionBox.listenable();
 
+  ValueListenable<Box<PersistenDirectionModel>>
+  get selectedDirectionsListenable => _selectedDirectionBox.listenable();
+
+  void addSelectedDirection(PersistenDirectionModel direction) async {
+    await _selectedDirectionBox.clear();
+    await _selectedDirectionBox.put(direction.id, direction);
+  }
+
   void addDirection(PersistenDirectionModel direction) {
-   PersistenDirectionModel? existingDirection = _directionBox.get(direction.id);
+    PersistenDirectionModel? existingDirection = _directionBox.get(
+      direction.id,
+    );
     if (existingDirection != null) {
       _directionBox.put(
-        direction.id,
+        existingDirection.key,
         PersistenDirectionModel(
           id: existingDirection.id,
-          name: direction.name,
-          lastName: direction.lastName,
-          email: direction.email,
-          phone: direction.phone,
-          country: direction.country,
-          state: direction.state,
-          city: direction.city,
-          address1: direction.address1,
-          address2: direction.address2,
-          codeZip: direction.codeZip,
-          type: direction.type,
-          isMain: direction.isMain,
+          name: existingDirection.name,
+          lastName: existingDirection.lastName,
+          email: existingDirection.email,
+          phone: existingDirection.phone,
+          country: existingDirection.country,
+          state: existingDirection.state,
+          city: existingDirection.city,
+          address1: existingDirection.address1,
+          address2: existingDirection.address2,
+          codeZip: existingDirection.codeZip,
+          type: existingDirection.type,
+          isMain: existingDirection.isMain,
         ),
       );
     } else {
@@ -53,7 +66,7 @@ class DirectionController {
   }
 
   bool removeDirection(int id) {
-    if( _directionBox.containsKey(id)) {
+    if (_directionBox.containsKey(id)) {
       _directionBox.delete(id);
       return true;
     }
@@ -68,8 +81,12 @@ class DirectionController {
     return directions;
   }
 
-  void clear() {
-    _directionBox.clear();
+  PersistenDirectionModel getSelectedDirection() {
+    return _selectedDirectionBox.values.first;
   }
 
+  void clear() {
+    _directionBox.clear();
+    _selectedDirectionBox.clear();
+  }
 }

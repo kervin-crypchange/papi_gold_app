@@ -96,7 +96,13 @@ class AuthDataImpl extends AuthData with LoggerMixin {
       List<PersistenDirectionModel> directions = (res.data['data'] as List)
           .map((d) => PersistenDirectionModel.fromJson(d))
           .toList();
-      directions.insert(0, PersistenDirectionModel.fromJson(res.data['primary_address']));
+
+      final primaryDirection = PersistenDirectionModel.fromJson(
+        res.data['primary_address'],
+      );
+
+      await PersistentDirection().selectedDirection(primaryDirection);
+      directions.insert(0, primaryDirection);
       await PersistentDirection().addDirections(directions);
       return Right(null);
     } catch (e) {
