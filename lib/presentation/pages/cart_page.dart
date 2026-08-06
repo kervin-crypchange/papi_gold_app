@@ -10,11 +10,10 @@ import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/constants/routes.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
 import 'package:papi_gold/app/core/store/client/client_data_model.dart';
-import 'package:papi_gold/app/core/store/client/persistentclientEntity_data.dart';
+import 'package:papi_gold/app/core/store/client/persistent_client_data.dart';
 import 'package:papi_gold/app/core/store/direction/model/persisten_direction_model.dart';
 import 'package:papi_gold/app/core/store/direction/persistent_direction.dart';
 import 'package:papi_gold/app/core/theme/colors.dart';
-import 'package:papi_gold/data/models/client_model.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 import 'package:papi_gold/presentation/cubits/checkout/checkout_cubit.dart';
 import 'package:papi_gold/presentation/cubits/index.dart';
@@ -45,7 +44,7 @@ class _CartPageState extends State<CartPage> with MessengerMixin {
       return;
     }
 
-    final clientEntity = ClientEntity(
+    final clientData = ClientEntity(
       name: client.name,
       lastName: client.lastName,
       email: client.email,
@@ -60,7 +59,7 @@ class _CartPageState extends State<CartPage> with MessengerMixin {
     );
 
     checkout = CheckOutEntity(
-      client: clientEntity,
+      client: clientData,
       cart: _cartItems
           .map(
             (item) => CartItemEntity(
