@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -8,9 +10,11 @@ import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/constants/routes.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
 import 'package:papi_gold/app/core/store/client/client_data_model.dart';
-import 'package:papi_gold/app/core/store/client/persistent_client_data.dart';
+import 'package:papi_gold/app/core/store/client/persistentclientEntity_data.dart';
+import 'package:papi_gold/app/core/store/direction/model/persisten_direction_model.dart';
 import 'package:papi_gold/app/core/store/direction/persistent_direction.dart';
 import 'package:papi_gold/app/core/theme/colors.dart';
+import 'package:papi_gold/data/models/client_model.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 import 'package:papi_gold/presentation/cubits/checkout/checkout_cubit.dart';
 import 'package:papi_gold/presentation/cubits/index.dart';
@@ -30,6 +34,7 @@ class _CartPageState extends State<CartPage> with MessengerMixin {
   late PersistentClientDataModel client;
   CheckOutEntity? checkout;
   bool isLoading = false;
+  PersistenDirectionModel? selectedDirection;
 
   void _checkout() {
     if (_cartItems.isEmpty) {
@@ -40,20 +45,22 @@ class _CartPageState extends State<CartPage> with MessengerMixin {
       return;
     }
 
+    final clientEntity = ClientEntity(
+      name: client.name,
+      lastName: client.lastName,
+      email: client.email,
+      phone: client.phone,
+      receiveAdvertise: client.receiveAdvertise,
+      country: selectedDirection!.country['id'],
+      state: selectedDirection!.state['id'],
+      city: selectedDirection!.city['id'],
+      address1: selectedDirection!.address1,
+      address2: selectedDirection!.address2,
+      codeZip: selectedDirection!.codeZip,
+    );
+
     checkout = CheckOutEntity(
-      client: ClientEntity(
-        name: client.name,
-        lastName: client.lastName,
-        email: client.email,
-        phone: client.phone,
-        country: client.countryId,
-        state: client.stateId,
-        city: client.cityId,
-        address1: client.address1,
-        address2: client.address2,
-        codeZip: client.codeZip,
-        receiveAdvertise: client.receiveAdvertise,
-      ),
+      client: clientEntity,
       cart: _cartItems
           .map(
             (item) => CartItemEntity(
@@ -111,6 +118,7 @@ class _CartPageState extends State<CartPage> with MessengerMixin {
                 onPressed: () => showDirectionsSheet(context),
                 child: PersistentDirection().showSelectedDirection(
                   directionBuilder: (context, direction) {
+                    selectedDirection = direction;
                     return Row(
                       children: [
                         Expanded(
