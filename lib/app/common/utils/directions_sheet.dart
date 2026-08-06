@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
 import 'package:papi_gold/app/core/store/direction/persistent_direction.dart';
-import 'package:papi_gold/app/core/theme/colors.dart';
 
 Widget showSelectedDirection(BuildContext context) {
   return Expanded(
@@ -34,15 +33,11 @@ void showDirectionsSheet(BuildContext context) {
     isScrollControlled: true,
     backgroundColor: Colors.transparent,
     builder: (context) {
-      return Container(
-        width: double.infinity,
-        height: 0.5.sh,
-        decoration: BoxDecoration(
-          color: AppColors.bg,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
-          ),
+      return ConstrainedBox(
+        constraints: BoxConstraints(
+          minWidth: double.infinity,
+          minHeight: 200.0, // Your desired minimum height
+          maxHeight: MediaQuery.of(context).size.height * 0.9,
         ),
         child: PersistentDirection().showDirections(
           directionBuilder: (context, directions) {
@@ -52,9 +47,8 @@ void showDirectionsSheet(BuildContext context) {
                 return ListTile(
                   dense: false,
                   isThreeLine: true,
-                  trailing: (selectedDirection.id == direction.id)
-                      ? Icon(Icons.check_rounded)
-                      : null,
+                  selected: selectedDirection.id == direction.id,
+                  trailing: Icon(Icons.arrow_forward_ios_rounded),
                   title: Text(
                     '${direction.name} - ${direction.address1}',
                   ).overflowText(TextOverflow.ellipsis),
@@ -76,3 +70,4 @@ void showDirectionsSheet(BuildContext context) {
     },
   );
 }
+

@@ -110,26 +110,27 @@ class _CartPageState extends State<CartPage> with MessengerMixin {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const Text('Mi carrito'),
-            Expanded(
-              child: TextButton(
-                onPressed: () => showDirectionsSheet(context),
-                child: PersistentDirection().showSelectedDirection(
-                  directionBuilder: (context, direction) {
-                    selectedDirection = direction;
-                    return Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            '${direction.address1} ${direction.address2}',
-                          ).overflowText(TextOverflow.ellipsis),
-                        ),
-                        Icon(Icons.arrow_drop_down),
-                      ],
-                    );
-                  },
-                ),
-              ),
-            ),
+            showSelectedDirection(context)
+            // Expanded(
+            //   child: TextButton(
+            //     onPressed: () => showDirectionsSheet(context),
+            //     child: PersistentDirection().showSelectedDirection(
+            //       directionBuilder: (context, direction) {
+            //         selectedDirection = direction;
+            //         return Row(
+            //           children: [
+            //             Expanded(
+            //               child: Text(
+            //                 '${direction.address1} ${direction.address2}',
+            //               ).overflowText(TextOverflow.ellipsis),
+            //             ),
+            //             Icon(Icons.arrow_drop_down),
+            //           ],
+            //         );
+            //       },
+            //     ),
+            //   ),
+            // ),
           ],
         ),
         actions: [
