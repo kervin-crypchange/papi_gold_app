@@ -35,6 +35,21 @@ class AuthDataImpl extends AuthData with LoggerMixin {
   }
 
   @override
+  Future<Either<Failure, LogoutModel>> logout() async {
+    try {
+      final res = await sl<DioClient>().delete(Apis.session);
+      sl<AuthLocalData>().clear();
+      await Future.delayed(Durations.medium1, () {
+        PersistentClientData().clearClientData();
+        PersistentDirection().clear();
+      });
+      return Right(LogoutModel.fromJson(res.data));
+    } on DioException catch (e) {
+      return Left(ServerException(e));
+    }
+  }
+
+  @override
   Future<Either<Failure, String>> recovery(RecoveryModel model) async {
     try {
       final res = await sl<DioClient>().post(
@@ -57,19 +72,6 @@ class AuthDataImpl extends AuthData with LoggerMixin {
         data: model.toJson(),
       );
       return Right(ResponseRegisterModel.fromJson(res.data));
-    } on DioException catch (e) {
-      return Left(ServerException(e));
-    }
-  }
-
-  @override
-  Future<Either<Failure, LogoutModel>> logout() async {
-    try {
-      final res = await sl<DioClient>().delete(Apis.session);
-      sl<AuthLocalData>().clear();
-      await PersistentClientData().clearClientData();
-      PersistentDirection().clear();
-      return Right(LogoutModel.fromJson(res.data));
     } on DioException catch (e) {
       return Left(ServerException(e));
     }
