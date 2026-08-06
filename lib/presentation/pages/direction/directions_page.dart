@@ -125,8 +125,9 @@ class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
       appBar: AppBar(title: Text('Direcciones')),
       body: SafeArea(
         child: PersistentDirection().showDirections(
-          directionBuilder: (context, directions) =>
-              _listViewUI(directions.reversed.toList()),
+          directionBuilder: (context, directions) => _listViewUI(
+            directions.reversed.toList(),
+          ).paddingSymmetric(horizontal: 12.w),
         ),
       ),
       persistentFooterButtons: [
@@ -138,13 +139,14 @@ class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
               if (_directions.length < 3) {
                 context.read<DirectionsCubit>().direction = null;
                 context.goNamed(Routes.newAddress);
+              } else {
+                showOkAlertDialog(
+                  context: context,
+                  title: 'Ha ocurrido un error',
+                  message:
+                      'Solo puedes agregar un maximo de 3 dirección, si deseas agregar otra, elimina la que ya tienes.',
+                );
               }
-              showOkAlertDialog(
-                context: context,
-                title: 'Ha ocurrido un error',
-                message:
-                    'Solo puedes agregar un maximo de 3 dirección, si deseas agregar otra, elimina la que ya tienes.',
-              );
             },
           ),
         ),

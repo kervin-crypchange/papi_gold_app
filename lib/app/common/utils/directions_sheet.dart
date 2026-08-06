@@ -1,8 +1,13 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
+import 'package:papi_gold/app/core/constants/routes.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
 import 'package:papi_gold/app/core/store/direction/persistent_direction.dart';
+import 'package:papi_gold/app/core/theme/index.dart';
+import 'package:papi_gold/presentation/cubits/directions/directions_cubit.dart';
 
 Widget showSelectedDirection(BuildContext context) {
   return Expanded(
@@ -28,46 +33,68 @@ Widget showSelectedDirection(BuildContext context) {
 
 void showDirectionsSheet(BuildContext context) {
   final selectedDirection = PersistentDirection().selectedDirection();
-  showModalBottomSheet<void>(
+  showModalBottomSheet(
     context: context,
     isScrollControlled: true,
-    backgroundColor: Colors.transparent,
-    builder: (context) {
+    builder: (BuildContext context) {
       return ConstrainedBox(
         constraints: BoxConstraints(
           minWidth: double.infinity,
-          minHeight: 200.0, // Your desired minimum height
-          maxHeight: MediaQuery.of(context).size.height * 0.9,
+          minHeight: 0.3.sh,
+          maxHeight: 0.9.sh,
         ),
-        child: PersistentDirection().showDirections(
-          directionBuilder: (context, directions) {
-            return ListView.separated(
-              itemBuilder: (context, index) {
-                final direction = directions[index];
-                return ListTile(
-                  dense: false,
-                  isThreeLine: true,
-                  selected: selectedDirection.id == direction.id,
-                  trailing: Icon(Icons.arrow_forward_ios_rounded),
-                  title: Text(
-                    '${direction.name} - ${direction.address1}',
-                  ).overflowText(TextOverflow.ellipsis),
-                  subtitle: Text(
-                    '${direction.city['name']}, ${direction.state['name']}. ${direction.country['name']}',
+        child: IntrinsicHeight(
+          child: PersistentDirection().showDirections(
+            directionBuilder: (context, directions) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                spacing: 8.h,
+                children: [
+                  Text(
+                    'Elije tu dirección',
+                    style: context.titleSmall.copyWith(color: AppColors.white),
+                  ).paddingOnly(bottom: 6.h).medium,
+                  ...directions.map((direction) {
+                    return ListTile(
+                      minTileHeight: 40,
+                      isThreeLine: true,
+                      selected: selectedDirection.id == direction.id,
+                      title: Text(
+                        '${direction.name} - ${direction.address1}',
+                      ).overflowText(TextOverflow.ellipsis),
+                      subtitle: Text(
+                        '${direction.city['name']}, ${direction.state['name']}. ${direction.country['name']}',
+                      ),
+                      onTap: () {
+                        PersistentDirection().addSelected(direction);
+                        context.pop();
+                      },
+                    );
+                  }),
+                  ListTile(
+                    minTileHeight: 40,
+                    leading: Icon(Icons.add),
+                    title: Text('Agregar dirección'),
+                    subtitle: Text('Ingresa una nueva dirección de entrega'),
+                    onTap: () {
+                      if (directions.length < 3) {
+                        context.read<DirectionsCubit>().direction = null;
+                        context.goNamed(Routes.newAddress);
+                      }
+                      showOkAlertDialog(
+                        context: context,
+                        title: 'Ha ocurrido un error',
+                        message:
+                            'Solo puedes agregar un maximo de 3 dirección, si deseas agregar otra, elimina la que ya tienes.',
+                      );
+                    },
                   ),
-                  onTap: () {
-                    PersistentDirection().addSelected(direction);
-                    context.pop();
-                  },
-                );
-              },
-              separatorBuilder: (context, index) => SizedBox(),
-              itemCount: directions.length,
-            ).paddingOnly(top: 12.h);
-          },
+                ],
+              ).paddingOnly(bottom: 70.h);
+            },
+          ),
         ),
       );
     },
   );
 }
-
