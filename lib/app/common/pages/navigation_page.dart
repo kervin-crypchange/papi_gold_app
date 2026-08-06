@@ -3,9 +3,12 @@ import 'package:go_router/go_router.dart';
 import 'package:papi_gold/app/common/enums/app_sockets_enum.dart';
 import 'package:papi_gold/app/common/mixins/index.dart';
 import 'package:papi_gold/app/common/pages/index.dart';
+import 'package:papi_gold/app/common/utils/directions_sheet.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/constants/index.dart';
+import 'package:papi_gold/app/core/extensions/text_style.dart';
 import 'package:papi_gold/app/core/services/socket_service.dart';
+import 'package:papi_gold/app/core/store/direction/persistent_direction.dart';
 import 'package:papi_gold/app/core/theme/index.dart';
 import 'package:persistent_shopping_cart/persistent_shopping_cart.dart';
 import 'package:pusher_reverb_flutter/pusher_reverb_flutter.dart' as connstate;
@@ -90,25 +93,25 @@ class _NavigationPageState extends State<NavigationPage> with MessengerMixin {
     return Scaffold(
       extendBody: true,
       appBar: AppBar(
-        // title: Expanded(
-        //   child: TextButton(
-        //     onPressed: () => showDirectionsSheet(context),
-        //     child: PersistentDirection().showSelectedDirection(
-        //       directionBuilder: (context, direction) {
-        //         return Row(
-        //           children: [
-        //             Expanded(
-        //               child: Text(
-        //                 '${direction.address1} ${direction.address2}',
-        //               ).overflowText(TextOverflow.ellipsis),
-        //             ),
-        //             Icon(Icons.arrow_drop_down),
-        //           ],
-        //         );
-        //       },
-        //     ),
-        //   ),
-        // ),
+        title: Expanded(
+          child: TextButton(
+            onPressed: () => showDirectionsSheet(context),
+            child: PersistentDirection().showSelectedDirection(
+              directionBuilder: (context, direction) {
+                return Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        '${direction.address1} ${direction.address2}',
+                      ).overflowText(TextOverflow.ellipsis),
+                    ),
+                    Icon(Icons.arrow_drop_down),
+                  ],
+                );
+              },
+            ),
+          ),
+        ),
         actions: [
           PersistentShoppingCart().showCartItemCountWidget(
             cartItemCountWidgetBuilder: (int itemCount) {

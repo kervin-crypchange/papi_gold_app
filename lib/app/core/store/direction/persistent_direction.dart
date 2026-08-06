@@ -29,34 +29,24 @@ class PersistentDirection {
 
   Future<void> addSelected(PersistenDirectionModel direction) async {
     DirectionController().addSelectedDirection(direction);
-    log('Selected direction added to Hive box: ${direction.toJson()}');
   }
 
   Future<void> addDirections(List<PersistenDirectionModel> directions) async {
     for (final direction in directions) {
       DirectionController().addDirection(direction);
-      log('Direction added to Hive box: ${direction.toJson()}');
     }
   }
 
   Future<void> addDirection(PersistenDirectionModel direction) async {
     DirectionController().addDirection(direction);
-    log('Direction added to Hive box: ${direction.toJson()}');
   }
 
   Future<bool> removeDirection(int id) async {
-    bool removed = DirectionController().removeDirection(id);
-    if (removed) {
-      log('Direction removed from Hive box: $id');
-    } else {
-      log('Direction not found in the box: $id');
-    }
-    return removed;
+    return DirectionController().removeDirection(id);
   }
 
   void clear() {
     DirectionController().clear();
-    log('All directions cleared from Hive box');
   }
 
   PersistenDirectionModel selectedDirection(){

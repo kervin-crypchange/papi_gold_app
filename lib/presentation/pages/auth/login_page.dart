@@ -27,14 +27,21 @@ class _LoginPageState extends State<LoginPage> with MessengerMixin {
     return Scaffold(
       body: SafeArea(
         child: BlocListener<AuthCubit, AuthState>(
-          listener: (context, state) {
+          listener: (context, state) async {
             if (state is AuthSuccess) {
               messenger.showSnackBar(
                 message: state.response.message,
                 color: AppColors.success,
-                seconds: 1
+                seconds: 1,
               );
-              context.goNamed(Routes.navigation);
+              Future.delayed(
+                Durations.medium1,
+                () {
+                  if(context.mounted){
+                    context.goNamed(Routes.navigation);
+                  }
+                },
+              );
             }
           },
           child: LayoutBuilder(
