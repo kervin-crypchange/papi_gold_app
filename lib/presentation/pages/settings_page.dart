@@ -60,6 +60,7 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
         (res) {
           setState(() {
             _isLoading = false;
+            messenger.showSnackBar(message: res.message, color: AppColors.success);
             context.goNamed(Routes.login);
           });
         },

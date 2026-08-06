@@ -10,7 +10,6 @@ import 'package:papi_gold/app/core/extensions/index.dart';
 import 'package:papi_gold/app/core/store/client/client_data_model.dart';
 import 'package:papi_gold/app/core/store/client/persistent_client_data.dart';
 import 'package:papi_gold/app/core/store/direction/model/persisten_direction_model.dart';
-import 'package:papi_gold/app/core/store/direction/persistent_direction.dart';
 import 'package:papi_gold/app/core/theme/colors.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 import 'package:papi_gold/presentation/cubits/checkout/checkout_cubit.dart';

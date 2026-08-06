@@ -69,7 +69,7 @@ class AuthDataImpl extends AuthData with LoggerMixin {
       sl<AuthLocalData>().clear();
       await PersistentClientData().clearClientData();
       PersistentDirection().clear();
-      return Right(LogoutModel.fromJson(res));
+      return Right(LogoutModel.fromJson(res.data));
     } on DioException catch (e) {
       return Left(ServerException(e));
     }
