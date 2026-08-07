@@ -53,6 +53,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text('Actualizar contraseña'),
         leading: BackButton(
           onPressed: () => context.goNamed(Routes.navigation),
         ),
@@ -63,9 +64,6 @@ class _ChangePasswordPageState extends State<ChangePasswordPage>
             child: Column(
               children: [
                 SizedBox(height: 16.h),
-                Image.asset('assets/icons/papi-gold-512x512.png', height: 92.h),
-                SizedBox(height: 16.h),
-                Text('Actualizar contraseña', style: context.headlineSmall),
                 SizedBox(height: constraints.maxHeight * 0.05),
                 Form(
                   key: _formKey,

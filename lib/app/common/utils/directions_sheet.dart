@@ -20,9 +20,10 @@ Widget showSelectedDirection(BuildContext context) {
               Expanded(
                 child: Text(
                   '${direction.address1} ${direction.address2}',
+                  style: context.bodySmall.copyWith(color: AppColors.white),
                 ).overflowText(TextOverflow.ellipsis),
               ),
-              Icon(Icons.arrow_drop_down),
+              Icon(Icons.arrow_drop_down, color: AppColors.white,),
             ],
           );
         },

@@ -1,11 +1,9 @@
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:papi_gold/app/common/mixins/messenger_mixin.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
-import 'package:papi_gold/app/core/constants/routes.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
 import 'package:papi_gold/app/core/theme/index.dart';
 import 'package:papi_gold/data/models/index.dart';
@@ -25,6 +23,7 @@ class _ProductsPageState extends State<ProductsPage> with MessengerMixin {
   List<ProductInfoModel> products = [];
   MetaEntity? meta;
   bool isLoading = true;
+  bool isGridView = true;
 
   @override
   void initState() {
@@ -63,46 +62,40 @@ class _ProductsPageState extends State<ProductsPage> with MessengerMixin {
 
   @override
   Widget build(BuildContext context) {
-    return  isLoading
+    return isLoading
         ? LoadingWidget()
         : ListView.builder(
-      padding: EdgeInsets.only(bottom: navBarHeight(context)),
-      scrollCacheExtent: ScrollCacheExtent.viewport(1.0),
-      itemCount: products.length,
-      itemBuilder: (context, index) {
-        final data = products[index];
-        return Column(
-          spacing: 12.h,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              data.name,
-              style: context.bodyLarge.copyWith(color: AppColors.secondary),
-            ).paddingOnly(top: 6.h),
-            GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                maxCrossAxisExtent: 200,
-                childAspectRatio: 0.7,
-                mainAxisSpacing: 20,
-                crossAxisSpacing: 16,
-              ),
-              itemCount: data.products.length,
-              itemBuilder: (context, index) {
-                final p = data.products[index];
-                return ProductCard(
-                  product: p,
-                  onPress: () => context.goNamed(
-                    Routes.product,
-                    pathParameters: {'id': safeString(p.id)},
+            padding: EdgeInsets.only(bottom: navBarHeight(context)),
+            scrollCacheExtent: ScrollCacheExtent.viewport(1.0),
+            itemCount: products.length,
+            itemBuilder: (context, index) {
+              final data = products[index];
+              return Column(
+                spacing: 12.h,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        isGridView = !isGridView;
+                      });
+                    },
+                    icon: Icon(
+                      isGridView ? Icons.list_rounded : Icons.grid_view,
+                    ),
                   ),
-                );
-              },
-            ),
-          ],
-        );
-      },
-    ).paddingSymmetric(horizontal: 8.w);
+                  Text(
+                    data.name,
+                    style: context.bodyLarge.copyWith(
+                      color: AppColors.secondary,
+                    ),
+                  ).paddingOnly(top: 6.h, left: 12.w),
+                  isGridView
+                      ? ProductGridView(data: data)
+                      : ProductsListView(data: data),
+                ],
+              );
+            },
+          );
   }
 }

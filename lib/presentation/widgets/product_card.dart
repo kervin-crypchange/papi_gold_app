@@ -44,7 +44,7 @@ class ProductCard extends StatelessWidget with MessengerMixin {
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
                   color: boxBgColor,
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(0),
                 ),
                 child: CachedNetworkImage(
                   imageUrl: product.imagen,
@@ -55,52 +55,58 @@ class ProductCard extends StatelessWidget with MessengerMixin {
               ),
             ),
             const SizedBox(height: 8),
-            Text(product.name, style: context.bodyMedium, maxLines: 2),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Wrap(
               children: [
-                Text(
-                  getFormatMoney(product.price),
-                  style: context.bodyMedium.copyWith(
-                    color: AppColors.secondary,
-                  ),
-                ),
-                InkWell(
-                  borderRadius: BorderRadius.circular(50),
-                  onTap: () async {
-                    await PersistentShoppingCart().addToCart(
-                      PersistentShoppingCartItem(
-                        productId: safeString(product.id),
-                        productName: product.name,
-                        productDescription: product.description,
-                        unitPrice: product.price,
-                        quantity: 1,
-                        productImages: [product.imagen],
+                Text(product.name, style: context.bodyMedium, maxLines: 2),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      getFormatMoney(product.price),
+                      style: context.bodyMedium.copyWith(
+                        color: AppColors.secondary,
                       ),
-                    );
-                    messenger.showSnackBar(
-                      message: 'Item agregado al carrito',
-                      color: AppColors.success,
-                      seconds: 1,
-                    );
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      color: boxBgColor,
-                      shape: BoxShape.circle,
                     ),
-                    child: Icon(
-                      Icons.shopping_cart_outlined,
-                      color: AppThemes.themeModeNotifier.value == ThemeMode.dark
-                          ? AppColors.white
-                          : AppColors.secondary,
-                      size: 16,
-                    ).paddingAll(2.r),
-                  ),
+                    InkWell(
+                      borderRadius: BorderRadius.circular(50),
+                      onTap: () async {
+                        await PersistentShoppingCart().addToCart(
+                          PersistentShoppingCartItem(
+                            productId: safeString(product.id),
+                            productName: product.name,
+                            productDescription: product.description,
+                            unitPrice: product.price,
+                            quantity: 1,
+                            productImages: [product.imagen],
+                          ),
+                        );
+                        messenger.showSnackBar(
+                          message: 'Item agregado al carrito',
+                          color: AppColors.success,
+                          seconds: 1,
+                        );
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          color: boxBgColor,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.shopping_cart_outlined,
+                          color:
+                              AppThemes.themeModeNotifier.value ==
+                                  ThemeMode.dark
+                              ? AppColors.white
+                              : AppColors.secondary,
+                          size: 16,
+                        ).paddingAll(2.r),
+                      ),
+                    ),
+                  ],
                 ),
               ],
-            ),
+            ).paddingOnly(left: 8.w),
           ],
         ),
       ),
