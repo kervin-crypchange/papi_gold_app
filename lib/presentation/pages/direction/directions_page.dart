@@ -1,3 +1,6 @@
+
+import 'dart:developer';
+
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -136,6 +139,7 @@ class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
           child: FilledButtonWidget(
             title: 'Agregar dirección',
             onPressed: () {
+              log('--- Directions length ${safeString(_directions.length)}');
               if (_directions.length < 3) {
                 context.read<DirectionsCubit>().direction = null;
                 context.goNamed(Routes.newAddress);

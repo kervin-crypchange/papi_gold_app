@@ -39,6 +39,7 @@ class AuthDataImpl extends AuthData with LoggerMixin {
       final Response<dynamic> res = await sl<DioClient>().delete(Apis.session);
       sl<AuthLocalData>().clear();
       PersistentClientData().clearClientData();
+      PersistentDirection().clear();
       await Future.delayed(Durations.medium1);
       return Right(LogoutModel.fromJson(res.data));
     } on DioException catch (e) {

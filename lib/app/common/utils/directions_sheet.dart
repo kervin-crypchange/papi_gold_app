@@ -80,13 +80,14 @@ void showDirectionsSheet(BuildContext context) {
                       if (directions.length < 3) {
                         context.read<DirectionsCubit>().direction = null;
                         context.goNamed(Routes.newAddress);
+                      } else {
+                        showOkAlertDialog(
+                          context: context,
+                          title: 'Ha ocurrido un error',
+                          message:
+                              'Solo puedes agregar un maximo de 3 dirección, si deseas agregar otra, elimina la que ya tienes.',
+                        );
                       }
-                      showOkAlertDialog(
-                        context: context,
-                        title: 'Ha ocurrido un error',
-                        message:
-                            'Solo puedes agregar un maximo de 3 dirección, si deseas agregar otra, elimina la que ya tienes.',
-                      );
                     },
                   ),
                 ],

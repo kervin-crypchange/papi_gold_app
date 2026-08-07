@@ -87,6 +87,6 @@ class DirectionController {
 
   void clear() {
     _directionBox.clear();
-    _selectedDirectionBox.clear();
+    // _selectedDirectionBox.clear();
   }
 }
