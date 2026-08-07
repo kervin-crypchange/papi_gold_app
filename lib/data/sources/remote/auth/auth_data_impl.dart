@@ -24,10 +24,9 @@ class AuthDataImpl extends AuthData with LoggerMixin {
         data: model.toJson(),
       );
 
-      await Future.delayed(Durations.medium1, () {
-        getDirections();
-        getClientData();
-      });
+      getDirections();
+      getClientData();
+
       return Right(ResponseLoginModel.fromJson(res.data));
     } on DioException catch (e) {
       return Left(ServerException(e));
@@ -37,12 +36,10 @@ class AuthDataImpl extends AuthData with LoggerMixin {
   @override
   Future<Either<Failure, LogoutModel>> logout() async {
     try {
-      final res = await sl<DioClient>().delete(Apis.session);
+      final Response<dynamic> res = await sl<DioClient>().delete(Apis.session);
       sl<AuthLocalData>().clear();
-      await Future.delayed(Durations.medium1, () {
-        PersistentClientData().clearClientData();
-        PersistentDirection().clear();
-      });
+      PersistentClientData().clearClientData();
+      await Future.delayed(Durations.medium1);
       return Right(LogoutModel.fromJson(res.data));
     } on DioException catch (e) {
       return Left(ServerException(e));

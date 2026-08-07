@@ -6,6 +6,8 @@ import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/constants/index.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
+import 'package:papi_gold/app/core/store/client/persistent_client_data.dart';
+import 'package:papi_gold/app/core/store/direction/persistent_direction.dart';
 import 'package:papi_gold/app/core/theme/colors.dart';
 import 'package:papi_gold/domain/entities/auth/login_entity.dart';
 import 'package:papi_gold/presentation/cubits/auth/auth_cubit.dart';
@@ -21,6 +23,16 @@ class _LoginPageState extends State<LoginPage> with MessengerMixin {
   String? email, password;
   bool obscureText = true;
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
