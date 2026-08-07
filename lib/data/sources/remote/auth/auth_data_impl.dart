@@ -36,12 +36,12 @@ class AuthDataImpl extends AuthData with LoggerMixin {
   @override
   Future<Either<Failure, LogoutModel>> logout() async {
     try {
-      final Response<dynamic> res = await sl<DioClient>().delete(Apis.session);
+      await sl<DioClient>().delete(Apis.session);
       sl<AuthLocalData>().clear();
       PersistentClientData().clearClientData();
       PersistentDirection().clear();
       await Future.delayed(Durations.medium1);
-      return Right(LogoutModel.fromJson(res.data));
+      return Right(LogoutModel.fromJson({'message':'Hasta luego'}));
     } on DioException catch (e) {
       return Left(ServerException(e));
     }

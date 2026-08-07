@@ -41,11 +41,7 @@ class _LoginPageState extends State<LoginPage> with MessengerMixin {
         child: BlocListener<AuthCubit, AuthState>(
           listener: (context, state) async {
             if (state is AuthSuccess) {
-              messenger.showSnackBar(
-                message: state.response.message,
-                color: AppColors.success,
-                seconds: 1,
-              );
+              showLoading(context, false);
               await Future.delayed(Durations.medium4, () {
                 if (context.mounted) {
                   context.goNamed(Routes.navigation);
