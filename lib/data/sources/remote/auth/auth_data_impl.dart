@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:papi_gold/app/common/mixins/index.dart';
 import 'package:papi_gold/app/core/constants/index.dart';
 import 'package:papi_gold/app/core/error/index.dart';
-import 'package:papi_gold/app/core/store/client_data_model.dart';
-import 'package:papi_gold/app/core/store/persistent_client_data.dart';
+import 'package:papi_gold/app/core/store/client/client_data_model.dart';
+import 'package:papi_gold/app/core/store/client/persistent_client_data.dart';
 import 'package:papi_gold/app/core/network/dio_client.dart';
+import 'package:papi_gold/app/core/store/direction/model/persisten_direction_model.dart';
+import 'package:papi_gold/app/core/store/direction/persistent_direction.dart';
 import 'package:papi_gold/data/models/index.dart';
 import 'package:papi_gold/data/models/responses/response_register_model.dart';
 import 'package:papi_gold/data/sources/local/auth/auth_local_data.dart';
@@ -21,10 +23,25 @@ class AuthDataImpl extends AuthData with LoggerMixin {
         Apis.session,
         data: model.toJson(),
       );
-      Future.delayed(const Duration(seconds: 2), () async {
-        await getClientData();
-      });
+
+      getDirections();
+      getClientData();
+
       return Right(ResponseLoginModel.fromJson(res.data));
+    } on DioException catch (e) {
+      return Left(ServerException(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, LogoutModel>> logout() async {
+    try {
+      await sl<DioClient>().delete(Apis.session);
+      sl<AuthLocalData>().clear();
+      PersistentClientData().clearClientData();
+      PersistentDirection().clear();
+      await Future.delayed(Durations.medium1);
+      return Right(LogoutModel.fromJson({'message':'Hasta luego'}));
     } on DioException catch (e) {
       return Left(ServerException(e));
     }
@@ -44,7 +61,9 @@ class AuthDataImpl extends AuthData with LoggerMixin {
   }
 
   @override
-  Future<Either<Failure, ResponseRegisterModel>> register(RegisterModel model) async {
+  Future<Either<Failure, ResponseRegisterModel>> register(
+    RegisterModel model,
+  ) async {
     try {
       final res = await sl<DioClient>().post(
         Apis.register,
@@ -57,26 +76,37 @@ class AuthDataImpl extends AuthData with LoggerMixin {
   }
 
   @override
-  Future<Either<Failure, LogoutModel>> logout() async {
-    try {
-      final res = await sl<DioClient>().delete(Apis.session);
-      sl<AuthLocalData>().clear();
-      PersistentClientData().clearClientData();
-      return Right(LogoutModel.fromJson(res));
-    } on DioException catch (e) {
-      return Left(ServerException(e));
-    }
-  }
-
-  @override
   Future<Either<Failure, String>> updatePassword(
     UpdatePasswordModel model,
   ) async {
     try {
       debugPrint('UpdatePassword model ${model.toJson()}');
-      final res = await sl<DioClient>().put(Apis.updatePassword, data: model.toJson());
+      final res = await sl<DioClient>().put(
+        Apis.updatePassword,
+        data: model.toJson(),
+      );
       return Right(res.data['message']);
     } on DioException catch (e) {
+      return Left(ServerException(e));
+    }
+  }
+
+  Future<Either<Failure, void>> getDirections() async {
+    try {
+      final res = await sl<DioClient>().get(Apis.directions);
+      List<PersistenDirectionModel> directions = (res.data['data'] as List)
+          .map((d) => PersistenDirectionModel.fromJson(d))
+          .toList();
+
+      final primaryDirection = PersistenDirectionModel.fromJson(
+        res.data['primary_address'],
+      );
+
+      await PersistentDirection().addSelected(primaryDirection);
+      directions.insert(0, primaryDirection);
+      await PersistentDirection().addDirections(directions);
+      return Right(null);
+    } catch (e) {
       return Left(ServerException(e));
     }
   }

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:papi_gold/app/common/widgets/filled_button_widget.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
-import 'package:papi_gold/app/core/store/client_data_model.dart';
-import 'package:papi_gold/app/core/store/persistent_client_data.dart';
+import 'package:papi_gold/app/core/store/client/client_data_model.dart';
+import 'package:papi_gold/app/core/store/client/persistent_client_data.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});

@@ -2,12 +2,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:papi_gold/app/common/mixins/index.dart';
+import 'package:papi_gold/app/common/utils/directions_sheet.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/constants/routes.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
-import 'package:papi_gold/app/core/store/client_data_model.dart';
-import 'package:papi_gold/app/core/store/persistent_client_data.dart';
+import 'package:papi_gold/app/core/store/client/client_data_model.dart';
+import 'package:papi_gold/app/core/store/client/persistent_client_data.dart';
+import 'package:papi_gold/app/core/store/direction/model/persisten_direction_model.dart';
 import 'package:papi_gold/app/core/theme/colors.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 import 'package:papi_gold/presentation/cubits/checkout/checkout_cubit.dart';
@@ -28,6 +30,7 @@ class _CartPageState extends State<CartPage> with MessengerMixin {
   late PersistentClientDataModel client;
   CheckOutEntity? checkout;
   bool isLoading = false;
+  PersistenDirectionModel? selectedDirection;
 
   void _checkout() {
     if (_cartItems.isEmpty) {
@@ -38,20 +41,22 @@ class _CartPageState extends State<CartPage> with MessengerMixin {
       return;
     }
 
+    final clientData = ClientEntity(
+      name: client.name,
+      lastName: client.lastName,
+      email: client.email,
+      phone: client.phone,
+      receiveAdvertise: client.receiveAdvertise,
+      country: selectedDirection!.country['id'],
+      state: selectedDirection!.state['id'],
+      city: selectedDirection!.city['id'],
+      address1: selectedDirection!.address1,
+      address2: selectedDirection!.address2,
+      codeZip: selectedDirection!.codeZip,
+    );
+
     checkout = CheckOutEntity(
-      client: ClientEntity(
-        name: client.name,
-        lastName: client.lastName,
-        email: client.email,
-        phone: client.phone,
-        country: client.countryId,
-        state: client.stateId,
-        city: client.cityId,
-        address1: client.address1,
-        address2: client.address2,
-        codeZip: client.codeZip,
-        receiveAdvertise: client.receiveAdvertise,
-      ),
+      client: clientData,
       cart: _cartItems
           .map(
             (item) => CartItemEntity(
@@ -76,7 +81,7 @@ class _CartPageState extends State<CartPage> with MessengerMixin {
         (res) => setState(() {
           isLoading = false;
           _makePayment(res.clientSecret);
-        })
+        }),
       );
     });
   }
@@ -100,7 +105,13 @@ class _CartPageState extends State<CartPage> with MessengerMixin {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.goNamed(Routes.navigation),
         ),
-        title: const Text('Mi carrito'),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text('Mi carrito'),
+            showSelectedDirection(context)
+          ],
+        ),
         actions: [
           IconButton(
             onPressed: () => PersistentShoppingCart().clearCart(),
@@ -138,41 +149,39 @@ class _CartPageState extends State<CartPage> with MessengerMixin {
                           ),
                         );
                       }
-                      return ListView.builder(
-                        itemCount: cartItems.length,
-                        itemBuilder: (context, index) {
-                          final item = cartItems[index];
-                          return Dismissible(
-                            key: ValueKey(item.productId),
-                            background: Container(),
-                            secondaryBackground: Container(
-                              color: Colors.red.shade200,
-                              alignment: Alignment.centerRight,
-                              child: const Icon(
-                                Icons.delete_outline_outlined,
-                                color: Colors.red,
-                              ).paddingOnly(right: 20.w),
-                            ),
-                            child: CartItemCardWidget(item: item),
-                            onDismissed: (DismissDirection direction) async {
-                              if (direction == DismissDirection.endToStart) {
-                                await PersistentShoppingCart().removeFromCart(
-                                  item.productId,
-                                );
-                              }
-                            },
-                          );
-                        },
-                      ).paddingOnly(top: 6.h);
+                      return Expanded(
+                        child: ListView.builder(
+                          itemCount: cartItems.length,
+                          itemBuilder: (context, index) {
+                            final item = cartItems[index];
+                            return Dismissible(
+                              key: ValueKey(item.productId),
+                              background: Container(),
+                              secondaryBackground: Container(
+                                color: Colors.red.shade200,
+                                alignment: Alignment.centerRight,
+                                child: const Icon(
+                                  Icons.delete_outline_outlined,
+                                  color: Colors.red,
+                                ).paddingOnly(right: 20.w),
+                              ),
+                              child: CartItemCardWidget(item: item),
+                              onDismissed: (DismissDirection direction) async {
+                                if (direction == DismissDirection.endToStart) {
+                                  await PersistentShoppingCart().removeFromCart(
+                                    item.productId,
+                                  );
+                                }
+                              },
+                            );
+                          },
+                        ).paddingOnly(top: 6.h),
+                      );
                     },
               ),
       ).paddingSymmetric(horizontal: 12.w),
-      persistentFooterDecoration:BoxDecoration(
-        border: Border(
-          top: BorderSide(
-            color: AppColors.secondary
-          )
-        )
+      persistentFooterDecoration: BoxDecoration(
+        border: Border(top: BorderSide(color: AppColors.secondary)),
       ),
       persistentFooterButtons: [
         Column(

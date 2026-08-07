@@ -1,3 +1,6 @@
+
+import 'dart:developer';
+
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,7 +11,10 @@ import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/constants/routes.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
+import 'package:papi_gold/app/core/store/direction/model/persisten_direction_model.dart';
+import 'package:papi_gold/app/core/store/direction/persistent_direction.dart';
 import 'package:papi_gold/app/core/theme/index.dart';
+import 'package:papi_gold/data/models/index.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 import 'package:papi_gold/presentation/cubits/directions/directions_cubit.dart';
 
@@ -21,14 +27,16 @@ class DirectionsPage extends StatefulWidget {
 
 class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
   bool isLoading = true;
-  List<DirectionEntity> _directions = [];
+  List<PersistenDirectionModel> _directions = [];
   @override
   void initState() {
     super.initState();
-    context.read<DirectionsCubit>().list();
   }
 
-  void _showModalSheet(BuildContext context, DirectionEntity direction) async {
+  void _showModalSheet(
+    BuildContext context,
+    PersistenDirectionModel direction,
+  ) async {
     final res = await showModalActionSheet(
       context: context,
       title: direction.name,
@@ -49,7 +57,9 @@ class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
     if (!context.mounted) return;
 
     if (res == 'edit') {
-      context.read<DirectionsCubit>().direction = direction;
+      context.read<DirectionsCubit>().direction = DirectionModel.fromJson(
+        direction.toJson(),
+      );
       context.goNamed(Routes.newAddress);
     }
 
@@ -59,7 +69,7 @@ class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
         title: direction.name,
         message: '¿Esta seguro que desea eliminar esta dirección?',
       );
-      if (r == OkCancelResult.ok) _delete(direction.id!);
+      if (r == OkCancelResult.ok) _delete(direction.id);
     }
   }
 
@@ -77,7 +87,7 @@ class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
     });
   }
 
-  void _setAsDefault(DirectionEntity direction) async {
+  void _setAsDefault(PersistenDirectionModel direction) async {
     final r = await showOkCancelAlertDialog(
       context: context,
       title: direction.name,
@@ -87,9 +97,9 @@ class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
       final e = CreateUpdateDirectionEntity(
         id: direction.id,
         name: direction.name,
-        country: direction.country.id,
-        state: direction.state.id,
-        city: direction.city.id,
+        country: direction.country['id'],
+        state: direction.state['id'],
+        city: direction.city['id'],
         address1: direction.address1,
         address2: direction.address2,
         codeZip: direction.codeZip,
@@ -117,26 +127,10 @@ class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
     return Scaffold(
       appBar: AppBar(title: Text('Direcciones')),
       body: SafeArea(
-        child: BlocBuilder<DirectionsCubit, DirectionsState>(
-          builder: (context, state) {
-            if (state is DirectionsLoading) {
-              return LoadingWidget();
-            }
-            if (state is DirectionsSuccess) {
-              _directions = state.response.data;
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
-                spacing: 12.h,
-                children: [
-                  directionCard(state.response.primaryDirection),
-                  Expanded(child: _listViewUI(_directions)),
-                  Text('El máximo de direcciones permitidas es 3.'),
-                ],
-              ).paddingAll(8.r);
-            }
-            return Center(child: Text('Ha ocurrido un error'));
-          },
+        child: PersistentDirection().showDirections(
+          directionBuilder: (context, directions) => _listViewUI(
+            directions.reversed.toList(),
+          ).paddingSymmetric(horizontal: 12.w),
         ),
       ),
       persistentFooterButtons: [
@@ -145,16 +139,18 @@ class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
           child: FilledButtonWidget(
             title: 'Agregar dirección',
             onPressed: () {
+              log('--- Directions length ${safeString(_directions.length)}');
               if (_directions.length < 3) {
                 context.read<DirectionsCubit>().direction = null;
                 context.goNamed(Routes.newAddress);
+              } else {
+                showOkAlertDialog(
+                  context: context,
+                  title: 'Ha ocurrido un error',
+                  message:
+                      'Solo puedes agregar un maximo de 3 dirección, si deseas agregar otra, elimina la que ya tienes.',
+                );
               }
-              showOkAlertDialog(
-                context: context,
-                title: 'Ha ocurrido un error',
-                message:
-                    'Solo puedes agregar un maximo de 3 dirección, si deseas agregar otra, elimina la que ya tienes.',
-              );
             },
           ),
         ),
@@ -165,7 +161,7 @@ class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
     );
   }
 
-  ListView _listViewUI(List<DirectionEntity> directions) {
+  ListView _listViewUI(List<PersistenDirectionModel> directions) {
     return ListView.separated(
       separatorBuilder: (context, index) => Gap(12.h),
       itemCount: directions.length,
@@ -176,7 +172,7 @@ class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
     );
   }
 
-  Widget directionCard(DirectionEntity d) {
+  Widget directionCard(PersistenDirectionModel d) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: 6.h,
@@ -198,7 +194,9 @@ class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
               '${d.address1}, ${d.address2}. ${d.codeZip}.',
               overflow: TextOverflow.ellipsis,
             ),
-            subtitle: Text('${d.city.name} ${d.state.name}. ${d.country.name}'),
+            subtitle: Text(
+              '${d.city['name']} ${d.state['name']}. ${d.country['name']}',
+            ),
             dense: true,
             trailing: (d.type != 'primary')
                 ? InkWell(

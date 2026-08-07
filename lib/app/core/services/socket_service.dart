@@ -2,8 +2,8 @@ import 'package:papi_gold/app/common/enums/box_enum.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:papi_gold/app/common/enums/index.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
-import 'package:papi_gold/app/core/store/client_data_model.dart';
-import 'package:papi_gold/app/core/store/persistent_client_data.dart';
+import 'package:papi_gold/app/core/store/client/client_data_model.dart';
+import 'package:papi_gold/app/core/store/client/persistent_client_data.dart';
 
 import 'package:pusher_reverb_flutter/pusher_reverb_flutter.dart';
 

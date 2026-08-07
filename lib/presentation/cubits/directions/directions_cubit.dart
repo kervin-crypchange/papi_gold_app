@@ -11,6 +11,8 @@ part 'directions_state.dart';
 
 class DirectionsCubit extends Cubit<DirectionsState> {
   DirectionEntity? direction;
+  DirectionEntity? selected;
+  List<DirectionEntity> directions = [];
   ResponseMapNamesEntity?  mapName;
 
   DirectionsCubit() : super(DirectionsInitial());

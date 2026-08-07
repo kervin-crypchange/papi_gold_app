@@ -33,7 +33,7 @@ class CustomNavBar extends StatelessWidget {
       builder: (context, _, _) {
         return Container(
           height: 50.h,
-          width: .85.sw,
+          width: .9.sw,
           decoration: BoxDecoration(
             color: bgColor,
             borderRadius: BorderRadius.circular(100.r),

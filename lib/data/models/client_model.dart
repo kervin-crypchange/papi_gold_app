@@ -77,4 +77,21 @@ class ClientModel extends ClientEntity {
       receiveAdvertise: entity.receiveAdvertise,
     );
   }
+
+  Map<String, dynamic> toJSon(){
+    return {
+      'id': id,
+      'name': name,
+      'lastName': lastName,
+      'email': email,
+      'phone': phone,
+      'country': country,
+      'state': state,
+      'city': city,
+      'address1': address1,
+      'address2': address2,
+      'codeZip': codeZip,
+      'receiveAdvertise': receiveAdvertise,
+    };
+  }
 }
