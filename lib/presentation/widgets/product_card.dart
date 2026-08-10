@@ -41,7 +41,6 @@ class ProductCard extends StatelessWidget with MessengerMixin {
             AspectRatio(
               aspectRatio: 1.02,
               child: Container(
-                padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
                   color: boxBgColor,
                   borderRadius: BorderRadius.circular(0),
