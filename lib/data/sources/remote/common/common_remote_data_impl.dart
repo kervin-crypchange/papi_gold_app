@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:logger/web.dart';
@@ -102,6 +104,7 @@ class CommonRemoteDataImpl extends CommonRemoteData {
       );
       return Right(ResponseOrdersModel.fromJson(res.data));
     } on DioException catch (e) {
+      log('--- Error $e');
       return Left(ServerException(e));
     }
   }

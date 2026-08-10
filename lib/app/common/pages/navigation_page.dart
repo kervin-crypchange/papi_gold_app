@@ -91,7 +91,7 @@ class _NavigationPageState extends State<NavigationPage> with MessengerMixin {
     return Scaffold(
       extendBody: true,
       appBar: AppBar(
-        title: showSelectedDirection(context),
+        // title: showSelectedDirection(context),
         actions: [
           PersistentShoppingCart().showCartItemCountWidget(
             cartItemCountWidgetBuilder: (int itemCount) {

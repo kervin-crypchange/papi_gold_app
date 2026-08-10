@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -38,8 +40,9 @@ class _LoginPageState extends State<LoginPage> with MessengerMixin {
         child: BlocListener<AuthCubit, AuthState>(
           listener: (context, state) async {
             if (state is AuthSuccess) {
+              log('--- Login');
               showLoading(context, false);
-              await Future.delayed(Durations.medium4, () {
+              await Future.delayed(Durations.long1, () {
                 if (context.mounted) {
                   context.goNamed(Routes.navigation);
                 }

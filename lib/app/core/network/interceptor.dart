@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:papi_gold/app/common/enums/index.dart';
@@ -29,11 +31,13 @@ class InterceptorWrapper extends Interceptor with MessengerMixin {
     if (context != null && context.mounted) showLoading(context, false);
 
     final String message = errorMessageFormat(err.response?.data);
+  
+    log('--- Error interceptor: ${err.response}');
 
     switch (err.response?.statusCode) {
       case 401:
-        sl<AuthLocalData>().clear();
-        await PersistentClientData().clearClientData();
+        // sl<AuthLocalData>().clear();
+        // await PersistentClientData().clearClientData();
         handler.next(err);
         break;
       case 403:
