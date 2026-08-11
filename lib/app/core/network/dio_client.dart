@@ -9,16 +9,15 @@ class DioClient {
         BaseOptions(
           baseUrl: Apis.baseUrl,
           headers: {
-            'Content-Type': 'application/json; charset=UTF-8',
+            'Content-Type': 'application/json',
             'User-Agent': 'PapiGold/1.0.0 (Mobile; Flutter-Dio)',
-            'Accept':'*/*'
           },
           responseType: ResponseType.json,
           sendTimeout: const Duration(seconds: 10 * 6000),
           connectTimeout: const Duration(seconds: 10 * 6000),
           receiveTimeout: const Duration(seconds: 10 * 6000),
         ),
-      )..interceptors.addAll([InterceptorWrapper()]);
+      )..interceptors.add(InterceptorWrapper());
 
   // GET METHOD
   Future<Response> get(

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:papi_gold/app/common/enums/index.dart';
@@ -32,7 +30,7 @@ class InterceptorWrapper extends Interceptor with MessengerMixin {
 
     final String message = errorMessageFormat(err.response?.data);
   
-    log('--- Error interceptor: ${err.response}');
+    logger.i('Interceptor ${err.response}');
 
     switch (err.response?.statusCode) {
       case 401:
@@ -81,6 +79,7 @@ class InterceptorWrapper extends Interceptor with MessengerMixin {
         );
         handler.next(err);
     }
+    handler.next(err);
   }
 
   @override
@@ -101,12 +100,13 @@ class InterceptorWrapper extends Interceptor with MessengerMixin {
     logger.i('Bearer Token ==> $token');
     logger.i('${options.method} request ==> $requestPath');
 
-    handler.next(options);
+    return handler.next(options);
   }
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    handler.next(response); // continue with the Response
+    logger.i('onResponse $response');
+    return handler.next(response); // continue with the Response
   }
 
   String errorMessageFormat(Map<String, dynamic> data) {

@@ -72,8 +72,8 @@ class ServerException extends Equatable with LoggerMixin implements Failure {
           case DioExceptionType.unknown:
             serverException = ServerException._(
               exceptionType: ServerExceptionType.unknown,
+              statusCode: 500,
               message: 'Connection error',
-              statusCode: 500
             );
             break;
 
@@ -162,6 +162,7 @@ class ServerException extends Equatable with LoggerMixin implements Failure {
                 );
             }
             break;
+         
           case DioExceptionType.transformTimeout:
             throw UnimplementedError();
         }

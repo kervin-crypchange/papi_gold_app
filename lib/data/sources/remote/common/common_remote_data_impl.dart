@@ -104,9 +104,8 @@ class CommonRemoteDataImpl extends CommonRemoteData {
       );
       return Right(ResponseOrdersModel.fromJson(res.data));
     } on DioException catch (e) {
-      log('--- Error $e');
       return Left(ServerException(e));
-    }
+    } 
   }
 
   @override
