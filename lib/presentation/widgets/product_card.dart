@@ -35,77 +35,85 @@ class ProductCard extends StatelessWidget with MessengerMixin {
       width: width,
       child: GestureDetector(
         onTap: onPress,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Stack(
           children: [
-            AspectRatio(
-              aspectRatio: 1.02,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: boxBgColor,
-                  borderRadius: BorderRadius.circular(0),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AspectRatio(
+                  aspectRatio: 1.02,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: boxBgColor,
+                      borderRadius: BorderRadius.circular(0),
+                    ),
+                    child: CachedNetworkImage(
+                      imageUrl: product.imagen,
+                      progressIndicatorBuilder:
+                          (context, url, downloadProgress) =>
+                              SizedBox(height: 250.h, child: LoadingWidget()),
+                      errorWidget: (context, url, error) => Icon(Icons.error),
+                    ),
+                  ),
                 ),
-                child: CachedNetworkImage(
-                  imageUrl: product.imagen,
-                  progressIndicatorBuilder: (context, url, downloadProgress) =>
-                      SizedBox(height: 250.h, child: LoadingWidget()),
-                  errorWidget: (context, url, error) => Icon(Icons.error),
+                const SizedBox(height: 8),
+                Wrap(
+                  children: [
+                    Text(product.name, style: context.bodyMedium, maxLines: 2),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          getFormatMoney(product.price),
+                          style: context.bodyMedium.copyWith(
+                            color: AppColors.secondary,
+                          ),
+                        ),
+                        Text('Stock: ${product.stock}'),
+                      ],
+                    ),
+                  ],
+                ).paddingSymmetric(horizontal: 8.w),
+              ],
+            ),
+            Positioned(
+              right: 5.w,
+              top: 5.h,
+              child: InkWell(
+                borderRadius: BorderRadius.circular(50),
+                onTap: () async {
+                  await PersistentShoppingCart().addToCart(
+                    PersistentShoppingCartItem(
+                      productId: safeString(product.id),
+                      productName: product.name,
+                      productDescription: product.description,
+                      unitPrice: product.price,
+                      quantity: 1,
+                      productImages: [product.imagen],
+                    ),
+                  );
+                  messenger.showSnackBar(
+                    message: 'Item agregado al carrito',
+                    color: AppColors.success,
+                    seconds: 1,
+                  );
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    color: boxBgColor,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.shopping_cart_outlined,
+                    color: AppThemes.themeModeNotifier.value == ThemeMode.dark
+                        ? AppColors.white
+                        : AppColors.secondary,
+                    size: 16,
+                  ).paddingAll(2.r),
                 ),
               ),
             ),
-            const SizedBox(height: 8),
-            Wrap(
-              children: [
-                Text(product.name, style: context.bodyMedium, maxLines: 2),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      getFormatMoney(product.price),
-                      style: context.bodyMedium.copyWith(
-                        color: AppColors.secondary,
-                      ),
-                    ),
-                    InkWell(
-                      borderRadius: BorderRadius.circular(50),
-                      onTap: () async {
-                        await PersistentShoppingCart().addToCart(
-                          PersistentShoppingCartItem(
-                            productId: safeString(product.id),
-                            productName: product.name,
-                            productDescription: product.description,
-                            unitPrice: product.price,
-                            quantity: 1,
-                            productImages: [product.imagen],
-                          ),
-                        );
-                        messenger.showSnackBar(
-                          message: 'Item agregado al carrito',
-                          color: AppColors.success,
-                          seconds: 1,
-                        );
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                          color: boxBgColor,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(
-                          Icons.shopping_cart_outlined,
-                          color:
-                              AppThemes.themeModeNotifier.value ==
-                                  ThemeMode.dark
-                              ? AppColors.white
-                              : AppColors.secondary,
-                          size: 16,
-                        ).paddingAll(2.r),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ).paddingOnly(left: 8.w),
           ],
         ),
       ),

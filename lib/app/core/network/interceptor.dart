@@ -28,6 +28,7 @@ class InterceptorWrapper extends Interceptor with MessengerMixin {
     final String message = errorMessageFormat(err.response?.data);
   
     logger.i('Interceptor ${err.response}');
+    logger.i('Interceptor ${err.response?.statusCode}');
 
     switch (err.response?.statusCode) {
       case 401:
@@ -76,7 +77,6 @@ class InterceptorWrapper extends Interceptor with MessengerMixin {
         );
         handler.next(err);
     }
-    handler.next(err);
   }
 
   @override

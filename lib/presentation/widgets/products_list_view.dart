@@ -25,10 +25,11 @@ class ProductsListView extends StatelessWidget with MessengerMixin {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return ListView.separated(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: data.products.length,
+      separatorBuilder: (context, index) => Divider(color: AppColors.white,thickness: 0.5,),
       itemBuilder: (context, index) {
         final product = data.products[index];
         return ListTile(
