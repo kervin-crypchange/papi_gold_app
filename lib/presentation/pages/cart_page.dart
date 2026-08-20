@@ -122,7 +122,7 @@ class _CartPageState extends State<CartPage> with MessengerMixin {
       ),
       body: SafeArea(
         child: isLoading
-            ? LoadingWidget()
+            ? LoadingAnimatedWidget()
             : PersistentShoppingCart().showCartItems(
                 cartItemsBuilder:
                     (

@@ -64,7 +64,7 @@ class _OrdersPageState extends State<OrdersPage> with MessengerMixin {
   @override
   Widget build(BuildContext context) {
     return isLoading
-        ? LoadingWidget()
+        ? LoadingAnimatedWidget()
         : Column(
             spacing: 20.h,
             mainAxisSize: MainAxisSize.max,

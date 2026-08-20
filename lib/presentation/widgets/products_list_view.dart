@@ -1,10 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:papi_gold/app/common/mixins/messenger_mixin.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
-import 'package:papi_gold/app/common/widgets/loading_widget.dart';
+import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/constants/index.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
 import 'package:papi_gold/app/core/theme/index.dart';
@@ -42,7 +41,7 @@ class ProductsListView extends StatelessWidget with MessengerMixin {
             width: 70.w,
             imageUrl: product.imagen,
             progressIndicatorBuilder: (context, url, downloadProgress) =>
-                SizedBox(height: 100.h, child: LoadingWidget()),
+                SizedBox(height: 100.h, child: LoadingAnimatedWidget()),
             errorWidget: (context, url, error) => Icon(Icons.error),
           ),
           trailing: InkWell(

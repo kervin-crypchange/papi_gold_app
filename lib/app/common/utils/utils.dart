@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:intl/intl.dart';
+import 'package:loading_animations/loading_animations.dart';
 import 'package:papi_gold/app/core/theme/app_theme.dart';
+import 'package:papi_gold/app/core/theme/colors.dart';
 
 String getConnectedStatus(String connectStatus) {
   final Map<String, String> statusColors = {
@@ -168,14 +170,17 @@ void showLoading(BuildContext context, [bool isLoading = true]) {
       ? showDialog(
           context: context,
           barrierDismissible: false,
-          builder: (context) =>
-              const Center(child: CircularProgressIndicator()),
+          builder: (context) => Center(
+            child: LoadingBouncingGrid.square(
+              backgroundColor: AppColors.secondary,
+            ),
+          ),
         )
       : Navigator.of(context).pop();
 }
 
 bool get isDarkTheme => AppThemes.themeModeNotifier.value == ThemeMode.dark;
 
-double navBarHeight(BuildContext context){
+double navBarHeight(BuildContext context) {
   return MediaQuery.of(context).padding.bottom + 70;
 }

@@ -8,6 +8,7 @@ environment:
 
 dependencies:
   cached_network_image: ^3.4.1
+  loading_animations: ^2.2.0
   dartz: ^0.10.1
   dio: ^5.9.2
   adaptive_dialog: ^2.8.0
