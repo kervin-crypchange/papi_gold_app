@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -9,8 +11,9 @@ import 'package:papi_gold/app/core/constants/routes.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
 import 'package:papi_gold/app/core/store/client/client_data_model.dart';
 import 'package:papi_gold/app/core/store/client/persistent_client_data.dart';
-import 'package:papi_gold/app/core/store/direction/model/persisten_direction_model.dart';
+import 'package:papi_gold/app/core/store/direction/controller/direction_controller.dart';
 import 'package:papi_gold/app/core/theme/colors.dart';
+import 'package:papi_gold/data/models/client_model.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 import 'package:papi_gold/presentation/cubits/checkout/checkout_cubit.dart';
 import 'package:papi_gold/presentation/cubits/index.dart';
@@ -30,7 +33,7 @@ class _CartPageState extends State<CartPage> with MessengerMixin {
   late PersistentClientDataModel client;
   CheckOutEntity? checkout;
   bool isLoading = false;
-  PersistenDirectionModel? selectedDirection;
+  // PersistenDirectionModel? selectedDirection;
 
   void _checkout() {
     if (_cartItems.isEmpty) {
@@ -41,18 +44,20 @@ class _CartPageState extends State<CartPage> with MessengerMixin {
       return;
     }
 
+  final selectedDirection = DirectionController().getSelectedDirection();
+
     final clientData = ClientEntity(
       name: client.name,
       lastName: client.lastName,
       email: client.email,
       phone: client.phone,
       receiveAdvertise: client.receiveAdvertise,
-      country: selectedDirection!.country['id'],
-      state: selectedDirection!.state['id'],
-      city: selectedDirection!.city['id'],
-      address1: selectedDirection!.address1,
-      address2: selectedDirection!.address2,
-      codeZip: selectedDirection!.codeZip,
+      country: selectedDirection.country['id'],
+      state: selectedDirection.state['id'],
+      city: selectedDirection.city['id'],
+      address1: selectedDirection.address1,
+      address2: selectedDirection.address2,
+      codeZip: selectedDirection.codeZip,
     );
 
     checkout = CheckOutEntity(
