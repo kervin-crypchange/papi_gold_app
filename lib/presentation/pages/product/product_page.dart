@@ -52,7 +52,7 @@ class ProductPage extends StatelessWidget with MessengerMixin {
           },
           builder: (context, state) {
             if (state is ProductLoadding) {
-              return LoadingWidget();
+              return LoadingAnimatedWidget();
             }
             if (state is ProductSuccess) {
               final p = state.product;
