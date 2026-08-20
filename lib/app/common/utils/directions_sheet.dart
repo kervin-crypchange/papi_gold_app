@@ -80,6 +80,7 @@ void showDirectionsSheet(BuildContext context) {
                     onTap: () {
                       if (directions.length < 3) {
                         context.read<DirectionsCubit>().direction = null;
+                        context.pop();
                         context.goNamed(Routes.newAddress);
                       } else {
                         showOkAlertDialog(
