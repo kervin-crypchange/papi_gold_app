@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:papi_gold/app/common/mixins/messenger_mixin.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
+import 'package:papi_gold/app/common/widgets/loading_animated_widget.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
 import 'package:papi_gold/app/core/theme/app_theme.dart';
 import 'package:papi_gold/app/core/theme/colors.dart';
@@ -64,7 +65,7 @@ class _OrdersPageState extends State<OrdersPage> with MessengerMixin {
   @override
   Widget build(BuildContext context) {
     return isLoading
-        ? LoadingWidget()
+        ? LoadingAnimatedWidget()
         : Column(
             spacing: 20.h,
             mainAxisSize: MainAxisSize.max,

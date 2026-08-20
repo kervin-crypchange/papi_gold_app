@@ -94,7 +94,7 @@ class _MapPageState extends State<MapPage> {
                       ],
                     ),
                     (_result == null)
-                        ? LoadingWidget()
+                        ? LoadingAnimatedWidget()
                         : Expanded(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,

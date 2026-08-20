@@ -202,7 +202,7 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
             ),
           ],
         ),
-        if (_isLoading) LoadingWidget(),
+        if (_isLoading) LoadingAnimatedWidget(),
       ],
     );
   }

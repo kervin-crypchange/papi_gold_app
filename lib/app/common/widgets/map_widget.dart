@@ -78,7 +78,7 @@ class _MapWidgetState extends State<MapWidget> {
         alignment: AlignmentGeometry.center,
         children: [
           OSMFlutter(
-            mapIsLoading: LoadingWidget(),
+            mapIsLoading: LoadingAnimatedWidget(),
             controller: controller,
             osmOption: osmOptions,
             onMapIsReady: (p0) => setState(() => isMapReady = p0),

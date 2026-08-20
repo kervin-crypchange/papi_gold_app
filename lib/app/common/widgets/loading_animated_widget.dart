@@ -1,5 +1,6 @@
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:loading_animations/loading_animations.dart';
+import 'package:papi_gold/app/core/theme/colors.dart';
 
 class LoadingAnimatedWidget extends StatelessWidget {
   const LoadingAnimatedWidget({super.key});
@@ -7,7 +8,13 @@ class LoadingAnimatedWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(child: Center(child: LoadingBouncingGrid.square() )),
+      body: SafeArea(
+        child: Center(
+          child: LoadingBouncingGrid.square(
+            backgroundColor: AppColors.secondary,
+          ),
+        ),
+      ),
     );
   }
 }
