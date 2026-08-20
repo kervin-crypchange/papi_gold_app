@@ -24,9 +24,7 @@ class _MapWidgetState extends State<MapWidget> {
   late OSMOption osmOptions = OSMOption(
     showZoomController: true,
     isPicker: true,
-    zoomOption:  ZoomOption(
-      initZoom: 16
-    ),
+    zoomOption: ZoomOption(initZoom: 16),
   );
 
   @override
@@ -40,12 +38,13 @@ class _MapWidgetState extends State<MapWidget> {
       initPosition: currentPosition,
       customTile: CustomTile(
         urlsServers: [
-          TileURLs(url: "https://api.maptiler.com/maps/openstreetmap")
-        ], 
-        tileExtension: 'png', 
+          TileURLs(url: "https://api.maptiler.com/maps/openstreetmap"),
+        ],
+        tileExtension: 'png',
         sourceName: 'osm',
-        styleURL: "https://api.maptiler.com/maps/openstreetmap/style.json?key=kctGi403t1Oerd90Atq6"        
-      )
+        styleURL:
+            "https://api.maptiler.com/maps/openstreetmap/style.json?key=kctGi403t1Oerd90Atq6",
+      ),
     );
 
     controller.listenerMapSingleTapping.addListener(() async {
@@ -86,19 +85,20 @@ class _MapWidgetState extends State<MapWidget> {
           ),
           if (isMapReady)
             Icon(Icons.location_on, color: AppColors.error, size: 48),
-          Align(
-            alignment: AlignmentGeometry.bottomRight,
-            child: IconButton.filled(
-              style: IconButton.styleFrom(
-                backgroundColor: Colors.white,
-                foregroundColor: Colors.grey,
-                side: BorderSide(color: Colors.grey),
+          if (isMapReady)
+            Align(
+              alignment: AlignmentGeometry.bottomRight,
+              child: IconButton.filled(
+                style: IconButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.grey,
+                  side: BorderSide(color: Colors.grey),
+                ),
+                onPressed: () async =>
+                    await controller.moveTo(currentPosition, animate: true),
+                icon: Icon(Icons.my_location),
               ),
-              onPressed: () async =>
-                  await controller.moveTo(currentPosition, animate: true),
-              icon: Icon(Icons.my_location),
-            ),
-          ).paddingOnly(right: 10.w, bottom: 10.h),
+            ).paddingOnly(right: 10.w, bottom: 10.h),
         ],
       ),
     );

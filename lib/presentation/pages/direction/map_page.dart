@@ -127,13 +127,9 @@ class _MapPageState extends State<MapPage> {
                               .then((either) {
                                 either.fold((failure) => null, (response) {
                                   showLoading(context, false);
-                                  debugPrint('--- $response');
                                   if(response.errors.isNotEmpty){
                                     _displayError(response.errors);
                                   }
-                                  // context.read<DirectionsCubit>().mapName =
-                                  //     response;
-                                  // context.goNamed(Routes.newAddress);
                                 });
                               });
                         },
