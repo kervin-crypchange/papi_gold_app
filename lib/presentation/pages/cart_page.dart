@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,7 +12,6 @@ import 'package:papi_gold/app/core/store/client/client_data_model.dart';
 import 'package:papi_gold/app/core/store/client/persistent_client_data.dart';
 import 'package:papi_gold/app/core/store/direction/controller/direction_controller.dart';
 import 'package:papi_gold/app/core/theme/colors.dart';
-import 'package:papi_gold/data/models/client_model.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 import 'package:papi_gold/presentation/cubits/checkout/checkout_cubit.dart';
 import 'package:papi_gold/presentation/cubits/index.dart';
