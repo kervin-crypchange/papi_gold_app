@@ -4,7 +4,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:papi_gold/app/common/enums/index.dart';
 import 'package:logger/logger.dart';
 import 'package:papi_gold/app/common/mixins/index.dart';
-import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/core/class/app_navigation.dart';
 import 'package:papi_gold/app/core/constants/routes.dart';
 import 'package:papi_gold/app/core/store/client/persistent_client_data.dart';
@@ -44,12 +43,10 @@ class InterceptorWrapper extends Interceptor with MessengerMixin {
       case 403:
         final bool requiresVerification =
             err.response?.data['requires_verification'] ?? false;
-
-        if (context != null && context.mounted) {
-          if (requiresVerification == true) {
-            messenger.showSnackBar(message: message, color: AppColors.error);
-          }
+        if (requiresVerification == true) {
+          messenger.showSnackBar(message: message, color: AppColors.error);
         }
+
         break;
       case 404:
         logger.e('Error 404');

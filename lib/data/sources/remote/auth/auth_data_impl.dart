@@ -41,7 +41,7 @@ class AuthDataImpl extends AuthData with LoggerMixin {
       PersistentClientData().clearClientData();
       PersistentDirection().clear();
       await Future.delayed(Durations.medium1);
-      return Right(LogoutModel.fromJson({'message':'Hasta luego'}));
+      return Right(LogoutModel.fromJson({'message': 'Hasta luego'}));
     } on DioException catch (e) {
       return Left(ServerException(e));
     }
@@ -117,6 +117,16 @@ class AuthDataImpl extends AuthData with LoggerMixin {
       final clientData = PersistentClientDataModel.fromJson(res.data['data']);
       await PersistentClientData().saveClientData(clientData);
       return Right(null);
+    } on DioException catch (e) {
+      return Left(ServerException(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> refreshToken() async {
+    try {
+      final res = await sl<DioClient>().put(Apis.session);
+      return Right(res.data['token']);
     } on DioException catch (e) {
       return Left(ServerException(e));
     }
