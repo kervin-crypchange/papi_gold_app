@@ -80,9 +80,7 @@ class _ProductsPageState extends State<ProductsPage> with MessengerMixin {
                         isGridView = !isGridView;
                       });
                     },
-                    icon: Icon(
-                      isGridView ? Icons.list_rounded : Icons.grid_view,
-                    ),
+                    icon: Icon(isGridView ? Icons.view_list : Icons.grid_view),
                   ),
                   Text(
                     data.name,
@@ -90,9 +88,18 @@ class _ProductsPageState extends State<ProductsPage> with MessengerMixin {
                       color: AppColors.secondary,
                     ),
                   ).paddingOnly(top: 6.h, left: 12.w),
-                  isGridView
-                      ? ProductGridView(data: data)
-                      : ProductsListView(data: data),
+                  AnimatedSwitcher(
+                    duration: Durations.medium2,
+                    transitionBuilder: (child, animation) {
+                      return ScaleTransition(
+                        scale: animation,
+                        child: FadeTransition(opacity: animation, child: child),
+                      );
+                    },
+                    child: isGridView
+                        ? ProductGridView(data: data)
+                        : ProductsListView(data: data),
+                  ),
                 ],
               );
             },

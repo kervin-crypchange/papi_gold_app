@@ -4,9 +4,11 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:papi_gold/app/common/enums/index.dart';
 import 'package:logger/logger.dart';
 import 'package:papi_gold/app/common/mixins/index.dart';
+import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/core/class/app_navigation.dart';
 import 'package:papi_gold/app/core/constants/routes.dart';
 import 'package:papi_gold/app/core/store/client/persistent_client_data.dart';
+import 'package:papi_gold/app/core/store/direction/persistent_direction.dart';
 import 'package:papi_gold/app/core/theme/colors.dart';
 import 'package:papi_gold/data/sources/local/auth/auth_local_data.dart';
 import 'package:papi_gold/injection_container.dart';
@@ -27,7 +29,7 @@ class InterceptorWrapper extends Interceptor with MessengerMixin {
     ErrorInterceptorHandler handler,
   ) async {
     final context = AppNavigation.navigatorKey.currentContext;
-
+    showLoading(context!, false);
     final String message = errorMessageFormat(err.response?.data);
 
     logger.i('Interceptor ${err.response}');
@@ -35,9 +37,11 @@ class InterceptorWrapper extends Interceptor with MessengerMixin {
 
     switch (err.response?.statusCode) {
       case 401:
+        // sl<AuthData>().refreshToken();
         sl<AuthLocalData>().clear();
         PersistentClientData().clearClientData();
-        context!.goNamed(Routes.login);
+        PersistentDirection().clear();
+        context.goNamed(Routes.login);
         handler.next(err);
         break;
       case 403:

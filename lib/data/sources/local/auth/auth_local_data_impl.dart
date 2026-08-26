@@ -23,6 +23,7 @@ class AuthLocalDataImpl extends AuthLocalData with LoggerMixin {
   @override
   void saveToken(String token) {
     try {
+      if (getSavedToken().isNotEmpty) clear();
       box.put(BoxEnum.config.token, token);
     } catch (e) {
       throw LocalFailure();
@@ -38,7 +39,7 @@ class AuthLocalDataImpl extends AuthLocalData with LoggerMixin {
   void setIsLogged(bool isLogged) {
     box.put(BoxEnum.config.isLogged, isLogged);
   }
-  
+
   @override
   void clear() {
     box.clear();

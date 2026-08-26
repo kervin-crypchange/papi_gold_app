@@ -4,7 +4,7 @@ import 'package:papi_gold/data/models/index.dart';
 import 'package:papi_gold/data/models/responses/response_register_model.dart';
 
 abstract class AuthData {
-  Future<Either<Failure, String>> refreshToken();
+  Future<Either<Failure, void>> refreshToken();
   Future<Either<Failure, ResponseLoginModel>> login(LoginModel model);
   Future<Either<Failure, LogoutModel>> logout();
   Future<Either<Failure, ResponseRegisterModel>> register(RegisterModel model);

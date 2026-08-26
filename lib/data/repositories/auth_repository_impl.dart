@@ -51,4 +51,6 @@ class AuthRepositoryImpl with LoggerMixin implements AuthRepository {
   Future<Either<Failure, void>> paymentIntent() {
     throw UnimplementedError();
   }
+
+
 }

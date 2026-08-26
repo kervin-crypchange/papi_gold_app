@@ -123,10 +123,12 @@ class AuthDataImpl extends AuthData with LoggerMixin {
   }
 
   @override
-  Future<Either<Failure, String>> refreshToken() async {
+  Future<Either<Failure, void>> refreshToken() async {
     try {
       final res = await sl<DioClient>().put(Apis.session);
-      return Right(res.data['token']);
+      final String token = res.data['token'];
+      sl<AuthLocalData>().saveToken(token);
+      return Right(null);
     } on DioException catch (e) {
       return Left(ServerException(e));
     }
