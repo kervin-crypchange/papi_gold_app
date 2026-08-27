@@ -1,5 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
+import 'package:papi_gold/app/common/utils/index.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
+import 'package:papi_gold/app/core/extensions/text_style.dart';
+import 'package:papi_gold/app/core/extensions/text_theme.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 import 'package:papi_gold/presentation/cubits/prices/prices_cubit.dart';
 
@@ -35,13 +40,32 @@ class _MetalsPriceWidgetState extends State<MetalsPriceWidget> {
               itemCount: state.metals.length,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                crossAxisSpacing: 10.0,
-                mainAxisSpacing: 10.0,
-                childAspectRatio: 1.0,
+                crossAxisSpacing: 5.0,
+                mainAxisSpacing: 5.0,
+                childAspectRatio: 16 / 9,
               ),
               itemBuilder: (context, index) {
                 final MetalEntity metal = state.metals[index];
-                return Card(child: Text(metal.name));
+                return Card(
+                  elevation: 4,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          '${metal.name} Spot Price',
+                          style: context.bodySmall,
+                        ),
+                        Gap(8.h),
+                        Text(
+                          getFormatMoney(metal.price),
+                          style: context.titleSmall,
+                        ).medium,
+                      ],
+                    ),
+                  ),
+                );
               },
             ),
           );

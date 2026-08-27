@@ -1,3 +1,4 @@
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
 
@@ -8,12 +9,15 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Center(child: Column(
-          children: [
-            MetalsPriceWidget(),
-            Text('Home Page', style: context.bodyLarge),
-          ],
-        )),
+        child: Center(
+          child: Column(
+            spacing: 12.h,
+            children: [
+              MetalsPriceWidget(),
+              Text('Home Page', style: context.bodyLarge),
+            ],
+          ).paddingOnly(top: 12.h),
+        ),
       ),
     );
   }
