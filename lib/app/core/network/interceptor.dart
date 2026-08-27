@@ -29,11 +29,9 @@ class InterceptorWrapper extends Interceptor with MessengerMixin {
     ErrorInterceptorHandler handler,
   ) async {
     final context = AppNavigation.navigatorKey.currentContext;
-    showLoading(context!, false);
     final String message = errorMessageFormat(err.response?.data);
 
-    logger.i('Interceptor ${err.response}');
-    logger.i('Interceptor ${err.response?.statusCode}');
+    logger.e('Error response ==> ${err.response}');
 
     switch (err.response?.statusCode) {
       case 401:
@@ -41,7 +39,7 @@ class InterceptorWrapper extends Interceptor with MessengerMixin {
         sl<AuthLocalData>().clear();
         PersistentClientData().clearClientData();
         PersistentDirection().clear();
-        context.goNamed(Routes.login);
+        context!.goNamed(Routes.login);
         handler.next(err);
         break;
       case 403:
@@ -74,6 +72,8 @@ class InterceptorWrapper extends Interceptor with MessengerMixin {
         messenger.showSnackBar(message: message, color: AppColors.error);
         handler.next(err);
     }
+    showLoading(context!, false);
+
   }
 
   @override

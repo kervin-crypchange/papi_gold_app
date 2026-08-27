@@ -24,6 +24,7 @@ class _ProductsPageState extends State<ProductsPage> with MessengerMixin {
   MetaEntity? meta;
   bool isLoading = true;
   bool isGridView = true;
+  final Duration duration =  Duration(seconds: 1);
 
   @override
   void initState() {
@@ -80,7 +81,12 @@ class _ProductsPageState extends State<ProductsPage> with MessengerMixin {
                         isGridView = !isGridView;
                       });
                     },
-                    icon: Icon(isGridView ? Icons.view_list : Icons.grid_view),
+                    icon: AnimatedSwitcher(
+                      duration: duration,
+                      child: isGridView
+                          ? Icon(Icons.view_list)
+                          : Icon(Icons.grid_view),
+                    ),
                   ),
                   Text(
                     data.name,
@@ -89,13 +95,7 @@ class _ProductsPageState extends State<ProductsPage> with MessengerMixin {
                     ),
                   ).paddingOnly(top: 6.h, left: 12.w),
                   AnimatedSwitcher(
-                    duration: Durations.medium2,
-                    transitionBuilder: (child, animation) {
-                      return ScaleTransition(
-                        scale: animation,
-                        child: FadeTransition(opacity: animation, child: child),
-                      );
-                    },
+                    duration: duration,
                     child: isGridView
                         ? ProductGridView(data: data)
                         : ProductsListView(data: data),
