@@ -1,4 +1,3 @@
-
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:logger/web.dart';
@@ -50,9 +49,9 @@ class CommonRemoteDataImpl extends CommonRemoteData {
   Future<Either<Failure, List<MetalModel>>> metalList(String? symbol) async {
     try {
       final res = await sl<DioClient>().get(Apis.price);
-      final List<MetalModel> metals = res.data.map(
-        (x) => MetalModel.fromJson(x),
-      );
+      List<MetalModel> metals = (res.data['data'] as List)
+          .map<MetalModel>((x) => MetalModel.fromJson(x))
+          .toList();
       return Right(metals);
     } on DioException catch (e) {
       return Left(ServerException(e));
@@ -104,7 +103,7 @@ class CommonRemoteDataImpl extends CommonRemoteData {
       return Right(ResponseOrdersModel.fromJson(res.data));
     } on DioException catch (e) {
       return Left(ServerException(e));
-    } 
+    }
   }
 
   @override
@@ -182,5 +181,4 @@ class CommonRemoteDataImpl extends CommonRemoteData {
       return Left(ServerException(e));
     }
   }
-  
 }

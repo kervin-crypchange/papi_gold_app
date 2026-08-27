@@ -1,4 +1,3 @@
-import 'package:papi_gold/data/models/index.dart';
 import 'package:papi_gold/domain/entities/metal_entity.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
 
@@ -13,7 +12,6 @@ class MetalModel extends MetalEntity {
     required super.priceHistory,
     required super.isStable,
     required super.lastUpdated,
-    required super.translations,
   });
 
   /// Converts a JSON map to a [MetalModel].
@@ -34,9 +32,7 @@ class MetalModel extends MetalEntity {
       priceHistory: safeDouble(json['priceHistory']),
       isStable: safeBool(json['isStable']),
       lastUpdated: safeDateTime(json['lastUpdated']),
-      translations: TranslationModel.fromJson(
-        json['translations'] as Map<String, dynamic>,
-      ),
+
     );
   }
 
@@ -52,7 +48,6 @@ class MetalModel extends MetalEntity {
       priceHistory: e.priceHistory,
       isStable: e.isStable,
       lastUpdated: e.lastUpdated,
-      translations: e.translations,
     );
   }
 
@@ -64,25 +59,21 @@ class CaratModel extends CaratEntity {
     required super.name,
     required super.purity,
     required super.law,
-    required super.translations,
   });
 
   /// Converts a JSON map to a [CaratModel].
   factory CaratModel.fromJson(Map<String, dynamic> json) {
     return CaratModel(
-      id: json['id'],
-      name: json['name'],
-      purity: json['purity'],
-      law: json['law'],
-      translations: TranslationModel.fromJson(
-        json['translations'] as Map<String, dynamic>,
-      ),
+      id: safeInt(json['id']),
+      name: safeString(json['name']),
+      purity: safeString(json['purity']),
+      law: safeString(json['law']),
     );
   }
 
   /// Converts a [CaratEntity] to a [CaratModel].
   factory CaratModel.fromEntity(CaratEntity e) {
-    return CaratModel(id: e.id, name: e.name, purity: e.purity, law: e.law, translations: e.translations);
+    return CaratModel(id: e.id, name: e.name, purity: e.purity, law: e.law);
   }
 }
 
@@ -92,7 +83,6 @@ class MetalCategoryModel extends MetalCategoryEntity {
     required super.name,
     required super.stock,
     required super.price,
-    required super.translations,
   });
 
   /// Converts a JSON map to a [Model].
@@ -102,9 +92,6 @@ class MetalCategoryModel extends MetalCategoryEntity {
       name: json['name'],
       stock: json['stock'],
       price: json['price'],
-      translations: TranslationModel.fromJson(
-        json['translations'] as Map<String, dynamic>,
-      ),
     );
   }
 
@@ -115,7 +102,6 @@ class MetalCategoryModel extends MetalCategoryEntity {
       name: e.name,
       stock: e.stock,
       price: e.price,
-      translations: e.translations,
     );
   }
 }

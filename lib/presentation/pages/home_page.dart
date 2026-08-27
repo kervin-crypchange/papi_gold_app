@@ -8,7 +8,12 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Center(child: Text('Home Page', style: context.bodyLarge)),
+        child: Center(child: Column(
+          children: [
+            MetalsPriceWidget(),
+            Text('Home Page', style: context.bodyLarge),
+          ],
+        )),
       ),
     );
   }
