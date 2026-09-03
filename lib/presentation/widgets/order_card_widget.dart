@@ -34,7 +34,7 @@ class OrderCardWidget extends StatelessWidget {
         ),
         title: Text(order.invoice, style: context.bodySmall).medium,
         subtitle: Text(
-          getFormatDate(order.createdAt, true),
+          formatDate(order.createdAt, true),
           style: context.bodyXSmall.copyWith(color: AppColors.secondary),
         ),
         trailing: Column(
@@ -43,7 +43,7 @@ class OrderCardWidget extends StatelessWidget {
           children: [
             BadgeWidget(label: order.status.name, color: isDarkTheme ? AppColors.secondaryLigth: AppColors.secondary,),
             Text(
-              getFormatMoney(order.totalVenta),
+              formatMoney(order.totalVenta),
               style: context.bodyMedium.copyWith(color: AppColors.secondary),
             ),
           ],

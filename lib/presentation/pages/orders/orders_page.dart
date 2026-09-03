@@ -123,7 +123,7 @@ class _OrdersPageState extends State<OrdersPage> with MessengerMixin {
               style: context.bodyLarge.copyWith(color: AppColors.secondary),
             ),
             Text(
-              getFormatMoney(stat.amount),
+              formatMoney(stat.amount),
               style: context.headlineSmall,
             ).overflowText(TextOverflow.ellipsis).medium,
             Text('${stat.count} orders', style: context.bodyMedium),

@@ -195,7 +195,7 @@ class _CartPageState extends State<CartPage> with MessengerMixin {
                 PersistentShoppingCart().showTotalAmountWidget(
                   cartTotalAmountWidgetBuilder: (double totalAmount) {
                     return Text(
-                      'Total: ${getFormatMoney(totalAmount)}',
+                      'Total: ${formatMoney(totalAmount)}',
                       style: context.bodyMedium,
                     ).paddingOnly(right: 12.w);
                   },

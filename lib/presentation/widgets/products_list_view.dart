@@ -37,10 +37,10 @@ class ProductsListView extends StatelessWidget with MessengerMixin {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                getFormatMoney(product.price),
+                formatMoney(product.price),
                 style: context.bodyMedium.copyWith(color: AppColors.secondary),
               ),
-              Text('Stock: ${product.stock}', style: context.bodySmall),
+              Text('Stock: ${formatStock(product.stock)}', style: context.bodySmall),
             ],
           ),
           leading: CachedNetworkImage(

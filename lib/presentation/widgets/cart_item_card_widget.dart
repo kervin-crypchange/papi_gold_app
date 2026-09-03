@@ -54,7 +54,7 @@ class _CartItemCardWidgetState extends State<CartItemCardWidget> {
                 Text(item.productName),
                 Text(item.productDescription!),
                 Text(
-                  getFormatMoney(item.unitPrice),
+                  formatMoney(item.unitPrice),
                   style: context.labelLarge,
                 ).medium,
                 Counter(item: item),

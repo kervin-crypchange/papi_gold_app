@@ -64,12 +64,15 @@ class ProductCard extends StatelessWidget with MessengerMixin {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          getFormatMoney(product.price),
+                          formatMoney(product.price),
                           style: context.bodyMedium.copyWith(
                             color: AppColors.secondary,
                           ),
                         ),
-                        Text('Stock: ${product.stock}'),
+                        Text(
+                          'Stock: ${formatStock(product.stock)}',
+                          style: context.bodySmall,
+                        ),
                       ],
                     ),
                   ],

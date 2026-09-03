@@ -119,7 +119,7 @@ class InfoProduct extends StatelessWidget with MessengerMixin {
                             : AppColors.error,
                       ),
                     ).medium,
-                    Text(getFormatMoney(p.price), style: context.titleMedium).medium,
+                    Text(formatMoney(p.price), style: context.titleMedium).medium,
                   ],
                 ),
               ],

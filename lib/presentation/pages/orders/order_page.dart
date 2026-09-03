@@ -158,7 +158,7 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
       _dataFormat(
         'Fecha',
         Text(
-          getFormatDate(e.createdAt),
+          formatDate(e.createdAt),
           style: context.bodyMedium.copyWith(color: AppColors.white),
         ),
       ),
@@ -219,8 +219,8 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
               i.product,
               style: TextStyle(color: AppColors.white),
             ).medium,
-            subtitle: Text(getFormatMoney(i.price)),
-            trailing: Text(getFormatMoney(i.total), style: context.bodyMedium),
+            subtitle: Text(formatMoney(i.price)),
+            trailing: Text(formatMoney(i.total), style: context.bodyMedium),
           ),
         )
         .toList();
@@ -298,7 +298,7 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
                         children: [
                           Text('Total Value').color(AppColors.white),
                           Text(
-                            getFormatMoney(e.totalVenta),
+                            formatMoney(e.totalVenta),
                           ).medium.color(AppColors.white),
                         ],
                       ).paddingAll(8.r),
@@ -318,7 +318,7 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
                         children: [
                           Text('Total Paid').color(AppColors.success),
                           Text(
-                            getFormatMoney(e.totalCompra),
+                            formatMoney(e.totalCompra),
                           ).medium.color(AppColors.success),
                         ],
                       ).paddingAll(8.r),
@@ -336,7 +336,7 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
                   children: [
                     Text('Balance Due').medium.color(AppColors.secondary),
                     Text(
-                      getFormatMoney(e.totalVenta),
+                      formatMoney(e.totalVenta),
                     ).medium.color(AppColors.secondary),
                   ],
                 ).paddingAll(8.r),
@@ -434,11 +434,11 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              getFormatMoney(p.amount),
+                              formatMoney(p.amount),
                               style: context.bodyLarge,
                             ).medium,
                             Text(
-                              getFormatDate(p.createdAt, true),
+                              formatDate(p.createdAt, true),
                               style: context.bodyXSmall,
                             ),
                           ],

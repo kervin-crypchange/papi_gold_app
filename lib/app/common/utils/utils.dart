@@ -64,7 +64,7 @@ DateTime safeDateTime(dynamic v, [DateTime? fallback]) {
   return fallback ?? DateTime.fromMillisecondsSinceEpoch(0);
 }
 
-String getFormatMoney(double amount) {
+String formatMoney(double amount) {
   return NumberFormat.currency(
     locale: 'en_US',
     symbol: '\$',
@@ -72,7 +72,18 @@ String getFormatMoney(double amount) {
   ).format(amount);
 }
 
-String getFormatDate(DateTime date, [bool isTimer = false]) {
+String formatStock(int stock) {
+  switch (stock) {
+    case 0:
+      return safeString(stock);
+    case > 0 && < 10:
+      return '0$stock';
+    default:
+      return safeString(stock);
+  }
+}
+
+String formatDate(DateTime date, [bool isTimer = false]) {
   String format = isTimer ? 'MMMM dd, yyyy hh:mm a' : 'MMMM dd, yyyy';
   return DateFormat(format).format(date);
 }

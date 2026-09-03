@@ -94,7 +94,7 @@ class _MetalsPriceWidgetState extends State<MetalsPriceWidget> {
                         ),
                         Gap(6.h),
                         Text(
-                          getFormatMoney(metal.price),
+                          formatMoney(metal.price),
                           style: context.titleMedium,
                         ).medium,
                         Row(
