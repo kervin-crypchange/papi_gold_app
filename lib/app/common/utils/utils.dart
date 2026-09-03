@@ -88,51 +88,6 @@ String formatDate(DateTime date, [bool isTimer = false]) {
   return DateFormat(format).format(date);
 }
 
-String getMonthByNumber(int m) {
-  String month;
-  switch (m) {
-    case 1:
-      month = 'Enero';
-      break;
-    case 2:
-      month = 'Febrero';
-      break;
-    case 3:
-      month = 'Marzo';
-      break;
-    case 4:
-      month = 'Abril';
-      break;
-    case 5:
-      month = 'Mayo';
-      break;
-    case 6:
-      month = 'Junio';
-      break;
-    case 7:
-      month = 'Julio';
-      break;
-    case 8:
-      month = 'Agosto';
-      break;
-    case 9:
-      month = 'Septiembre';
-      break;
-    case 10:
-      month = 'Octubre';
-      break;
-    case 11:
-      month = 'Noviembre';
-      break;
-    case 12:
-      month = 'Diciembre';
-      break;
-    default:
-      month = 'Invalid month number';
-  }
-  return month;
-}
-
 String getMonthName(int monthNumber, BuildContext context) {
   String locale = Localizations.localeOf(context).toString();
   String language = locale == 'es' ? 'es_MX' : 'en_US';
