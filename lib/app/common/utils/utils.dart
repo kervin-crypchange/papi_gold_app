@@ -76,8 +76,10 @@ String formatStock(int stock) {
   switch (stock) {
     case 0:
       return safeString(stock);
-    case > 0 && < 10:
+    case >= 1 && <= 9:
       return '0$stock';
+    case > 99:
+      return '99+';
     default:
       return safeString(stock);
   }

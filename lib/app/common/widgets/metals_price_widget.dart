@@ -96,7 +96,7 @@ class _MetalsPriceWidgetState extends State<MetalsPriceWidget> {
                         Text(
                           formatMoney(metal.price),
                           style: context.titleMedium,
-                        ).medium,
+                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
