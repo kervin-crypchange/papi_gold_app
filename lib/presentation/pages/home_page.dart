@@ -16,7 +16,7 @@ class HomePage extends StatelessWidget {
               MetalsPriceWidget(),
               Text('Home Page', style: context.bodyLarge),
             ],
-          ).paddingOnly(top: 12.h),
+          ).paddingSymmetric(horizontal: 3.w, vertical: 8.h)
         ),
       ),
     );

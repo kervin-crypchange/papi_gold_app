@@ -72,7 +72,7 @@ class _ProductsPageState extends State<ProductsPage> with MessengerMixin {
             itemBuilder: (context, index) {
               final data = products[index];
               return Column(
-                spacing: 12.h,
+                spacing: 6.h,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   IconButton(

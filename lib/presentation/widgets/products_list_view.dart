@@ -33,9 +33,15 @@ class ProductsListView extends StatelessWidget with MessengerMixin {
         final product = data.products[index];
         return ListTile(
           title: Text(product.name, maxLines: 2),
-          subtitle: Text(
-            getFormatMoney(product.price),
-            style: context.bodyMedium.copyWith(color: AppColors.secondary),
+          subtitle: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                getFormatMoney(product.price),
+                style: context.bodyMedium.copyWith(color: AppColors.secondary),
+              ),
+              Text('Stock: ${product.stock}', style: context.bodySmall),
+            ],
           ),
           leading: CachedNetworkImage(
             width: 70.w,

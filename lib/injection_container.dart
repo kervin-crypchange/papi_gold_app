@@ -8,7 +8,6 @@ import 'package:papi_gold/data/repositories/index.dart';
 import 'package:papi_gold/domain/repositories/index.dart';
 import 'package:papi_gold/domain/uses_cases/index.dart';
 import 'package:papi_gold/presentation/cubits/index.dart';
-import 'package:papi_gold/presentation/cubits/prices/prices_cubit.dart';
 
 final sl = GetIt.instance;
 

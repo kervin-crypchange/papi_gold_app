@@ -10,24 +10,22 @@ import 'package:papi_gold/app/core/theme/index.dart';
 import 'package:papi_gold/presentation/cubits/directions/directions_cubit.dart';
 
 Widget showSelectedDirection(BuildContext context) {
-  return Expanded(
-    child: TextButton(
-      onPressed: () => showDirectionsSheet(context),
-      child: PersistentDirection().showSelectedDirection(
-        directionBuilder: (context, direction) {
-          return Row(
-            children: [
-              Expanded(
-                child: Text(
-                  '${direction.address1} ${direction.address2}',
-                  style: context.bodySmall.copyWith(color: AppColors.white),
-                ).overflowText(TextOverflow.ellipsis),
-              ),
-              Icon(Icons.arrow_drop_down, color: AppColors.white,),
-            ],
-          );
-        },
-      ),
+  return TextButton(
+    onPressed: () => showDirectionsSheet(context),
+    child: PersistentDirection().showSelectedDirection(
+      directionBuilder: (context, direction) {
+        return Row(
+          children: [
+            Expanded(
+              child: Text(
+                '${direction.address1} ${direction.address2}',
+                style: context.bodySmall.copyWith(color: AppColors.white),
+              ).overflowText(TextOverflow.ellipsis),
+            ),
+            Icon(Icons.arrow_drop_down, color: AppColors.white,),
+          ],
+        );
+      },
     ),
   );
 }

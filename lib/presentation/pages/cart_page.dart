@@ -112,7 +112,7 @@ class _CartPageState extends State<CartPage> with MessengerMixin {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const Text('Mi carrito'),
-            showSelectedDirection(context)
+            Expanded(child: showSelectedDirection(context)),
           ],
         ),
         actions: [
