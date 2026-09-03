@@ -112,7 +112,7 @@ class InfoProduct extends StatelessWidget with MessengerMixin {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Stock disponible: ${p.stock}',
+                      'Stock disponible: ${formatStock(p.stock)}',
                       style: context.bodyLarge.copyWith(
                         color: p.stock > 0
                             ? AppColors.success
