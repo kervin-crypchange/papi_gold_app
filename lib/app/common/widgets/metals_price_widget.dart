@@ -36,51 +36,15 @@ class _MetalsPriceWidgetState extends State<MetalsPriceWidget> {
     return BlocBuilder<PricesCubit, PricesState>(
       builder: (context, state) {
         if (state is PricesLoading) {
-          return Expanded(
-            child: Skeletonizer(
-              child: GridView.builder(
-                itemCount: 4,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 1.65,
-                ),
-                itemBuilder: (context, index) {
-                  return Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text('Metal Spot Price', style: context.bodySmall),
-                          Gap(6.h),
-                          Text('100.00', style: context.titleSmall).medium,
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [Text('XAU', style: context.bodyXSmall)],
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-          );
-        }
-        if (state is PricesFailure) {
-          return Text('Ha ocurrido un error');
-        }
-        if (state is PricesSuccess) {
-          return Expanded(
+          return Skeletonizer(
             child: GridView.builder(
-              itemCount: state.metals.length,
+              itemCount: 4,
+              shrinkWrap: true,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 childAspectRatio: 1.65,
               ),
               itemBuilder: (context, index) {
-                final MetalEntity metal = state.metals[index];
                 return Card(
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
@@ -88,25 +52,12 @@ class _MetalsPriceWidgetState extends State<MetalsPriceWidget> {
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          '${metal.name} Spot Price',
-                          style: context.bodySmall,
-                        ),
+                        Text('Metal Spot Price', style: context.bodySmall),
                         Gap(6.h),
-                        Text(
-                          formatMoney(metal.price),
-                          style: context.titleMedium,
-                        ),
+                        Text('100.00', style: context.titleSmall).medium,
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text(
-                              '${symbol[metal.name]![0]}',
-                              style: context.bodyXSmall.copyWith(
-                                color: symbol[metal.name]![1],
-                              ),
-                            ),
-                          ],
+                          children: [Text('XAU', style: context.bodyXSmall)],
                         ),
                       ],
                     ),
@@ -114,6 +65,53 @@ class _MetalsPriceWidgetState extends State<MetalsPriceWidget> {
                 );
               },
             ),
+          );
+        }
+        if (state is PricesFailure) {
+          return Text('Ha ocurrido un error');
+        }
+        if (state is PricesSuccess) {
+          return GridView.builder(
+            itemCount: state.metals.length,
+            shrinkWrap: true,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 1.65,
+            ),
+            itemBuilder: (context, index) {
+              final MetalEntity metal = state.metals[index];
+              return Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '${metal.name} Spot Price',
+                        style: context.bodySmall,
+                      ),
+                      Gap(6.h),
+                      Text(
+                        formatMoney(metal.price),
+                        style: context.titleMedium,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            '${symbol[metal.name]![0]}',
+                            style: context.bodyXSmall.copyWith(
+                              color: symbol[metal.name]![1],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
           );
         }
         return Text('No se pudo cargar los datos');

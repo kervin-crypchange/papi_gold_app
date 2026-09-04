@@ -1,4 +1,5 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:papi_gold/app/common/pages/index.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
 
@@ -9,14 +10,14 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Center(
+        child: SingleChildScrollView(
           child: Column(
             spacing: 12.h,
             children: [
               MetalsPriceWidget(),
-              Text('Home Page', style: context.bodyLarge),
+              TradeMetalSegments(),
             ],
-          ).paddingSymmetric(horizontal: 3.w, vertical: 8.h)
+          ).paddingSymmetric(horizontal: 4.w, vertical: 8.h),
         ),
       ),
     );
