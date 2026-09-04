@@ -22,29 +22,34 @@ class _TradeMetalSegmentsState extends State<TradeMetalSegments> {
   MetalType metalView = .gold;
   @override
   Widget build(BuildContext context) {
+    return _segmented().paddingSymmetric(horizontal: 4.w);
+  }
+
+  Column _segmented() {
     return Column(
-      children: [
-        SegmentedButton(
-          expandedInsets: EdgeInsets.zero,
-          segments: [
-            ButtonSegment(value: MetalType.gold, label: Text('Oro')),
-            ButtonSegment(value: MetalType.silver, label: Text('Plata')),
-            ButtonSegment(value: MetalType.platinum, label: Text('Platino')),
-            ButtonSegment(value: MetalType.palladium, label: Text('Paladio')),
-          ],
-          selected: {metalView},
-          onSelectionChanged: (newSelection) {
-            setState(() {
-              metalView = newSelection.first;
-            });
-          },
-        ),
-        SizedBox(height: 12.h),
-        TradeViewMiniChartWidget(
-          key: UniqueKey(),
-          symbol: symbols[metalView] ?? 'XAUUSD',
-        ),
-      ],
-    ).paddingSymmetric(horizontal: 4.w);
+    children: [
+      SegmentedButton(
+        showSelectedIcon: false,
+        expandedInsets: EdgeInsets.zero,
+        segments: [
+          ButtonSegment(value: MetalType.gold, label: Text('Oro')),
+          ButtonSegment(value: MetalType.silver, label: Text('Plata')),
+          ButtonSegment(value: MetalType.platinum, label: Text('Platino')),
+          ButtonSegment(value: MetalType.palladium, label: Text('Paladio')),
+        ],
+        selected: {metalView},
+        onSelectionChanged: (newSelection) {
+          setState(() {
+            metalView = newSelection.first;
+          });
+        },
+      ),
+      SizedBox(height: 12.h),
+      TradeViewMiniChartWidget(
+        key: UniqueKey(),
+        symbol: symbols[metalView] ?? 'XAUUSD',
+      ),
+    ],
+  );
   }
 }
