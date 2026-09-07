@@ -1,17 +1,19 @@
-
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class TradeViewMiniChartWidget extends StatefulWidget {
   final String symbol;
+  final String timeFrame;
 
   const TradeViewMiniChartWidget({
     super.key,
     this.symbol = 'XAUUSD',
+    required this.timeFrame,
   });
 
   @override
-  State<TradeViewMiniChartWidget> createState() => _TradeViewMiniChartWidgetState();
+  State<TradeViewMiniChartWidget> createState() =>
+      _TradeViewMiniChartWidgetState();
 }
 
 class _TradeViewMiniChartWidgetState extends State<TradeViewMiniChartWidget> {
@@ -22,7 +24,8 @@ class _TradeViewMiniChartWidgetState extends State<TradeViewMiniChartWidget> {
     super.initState();
 
     // Contenido HTML con el script y la etiqueta de TradingView
-    final htmlContent = '''
+    final htmlContent =
+        '''
       <!DOCTYPE html>
       <html>
         <head>
@@ -44,7 +47,7 @@ class _TradeViewMiniChartWidgetState extends State<TradeViewMiniChartWidget> {
           <script type="module" src="https://widgets.tradingview-widget.com/w/en/tv-mini-chart.js"></script>
         </head>
         <body>
-          <tv-mini-chart symbol="OANDA:${widget.symbol}" time-frame="1D" show-time-scale></tv-mini-chart>
+          <tv-mini-chart symbol="OANDA:${widget.symbol}" time-frame="${widget.timeFrame}" show-time-scale></tv-mini-chart>
         </body>
       </html>
     ''';
@@ -57,9 +60,6 @@ class _TradeViewMiniChartWidgetState extends State<TradeViewMiniChartWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 220,
-      child: WebViewWidget(controller: _controller),
-    );
+    return SizedBox(height: 220, child: WebViewWidget(controller: _controller));
   }
 }
