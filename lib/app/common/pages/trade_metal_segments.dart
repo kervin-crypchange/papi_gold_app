@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,7 +15,7 @@ Map<MetalType, String> symbols = {
 };
 
 List<String> miniChartFilter = ['1D', '1W', '1M', '3M', '6M', '12M'];
-String minichartTimeFrame = '1D';
+String selectedMiniChartTimeFrame = '1D';
 
 class TradeMetalSegments extends StatefulWidget {
   const TradeMetalSegments({super.key});
@@ -32,45 +31,47 @@ class _TradeMetalSegmentsState extends State<TradeMetalSegments> {
     return _segmented().paddingSymmetric(horizontal: 4.w);
   }
 
-  Column _segmented() {
-    return Column(
-      children: [
-        SegmentedButton(
-          showSelectedIcon: false,
-          expandedInsets: EdgeInsets.zero,
-          segments: [
-            ButtonSegment(value: MetalType.gold, label: Text('Oro')),
-            ButtonSegment(value: MetalType.silver, label: Text('Plata')),
-            ButtonSegment(value: MetalType.platinum, label: Text('Platino')),
-            ButtonSegment(value: MetalType.palladium, label: Text('Paladio')),
-          ],
-          selected: {metalView},
-          onSelectionChanged: (newSelection) {
-            setState(() {
-              metalView = newSelection.first;
-            });
-          },
-        ),
-        SizedBox(height: 12.h),
-        InkWell(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Text(
-                minichartTimeFrame,
-                style: context.bodySmall.copyWith(color: AppColors.white),
-              ).overflowText(TextOverflow.ellipsis),
-              Icon(Icons.arrow_drop_down, color: AppColors.white),
+  SingleChildScrollView _segmented() {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          SegmentedButton(
+            showSelectedIcon: false,
+            expandedInsets: EdgeInsets.zero,
+            segments: [
+              ButtonSegment(value: MetalType.gold, label: Text('Oro')),
+              ButtonSegment(value: MetalType.silver, label: Text('Plata')),
+              ButtonSegment(value: MetalType.platinum, label: Text('Platino')),
+              ButtonSegment(value: MetalType.palladium, label: Text('Paladio')),
             ],
+            selected: {metalView},
+            onSelectionChanged: (newSelection) {
+              setState(() {
+                metalView = newSelection.first;
+              });
+            },
           ),
-          onTap: () => showMiniChartFilter(),
-        ),
-        TradeViewMiniChartWidget(
-          key: UniqueKey(),
-          timeFrame: minichartTimeFrame,
-          symbol: symbols[metalView] ?? 'XAUUSD',
-        ),
-      ],
+          SizedBox(height: 12.h),
+          InkWell(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  selectedMiniChartTimeFrame,
+                  style: context.bodySmall.copyWith(color: AppColors.white),
+                ).overflowText(TextOverflow.ellipsis),
+                Icon(Icons.arrow_drop_down, color: AppColors.white),
+              ],
+            ),
+            onTap: () => showMiniChartFilter(),
+          ),
+          TradeViewMiniChartWidget(
+            key: UniqueKey(),
+            timeFrame: selectedMiniChartTimeFrame,
+            symbol: symbols[metalView] ?? 'XAUUSD',
+          ),
+        ],
+      ),
     );
   }
 
@@ -83,8 +84,10 @@ class _TradeMetalSegmentsState extends State<TradeMetalSegments> {
         (index) => AlertDialogAction(key: index, label: miniChartFilter[index]),
       ),
     );
-    setState(() {
-      minichartTimeFrame = miniChartFilter[res!];
-    });
+    if (res != null) {
+      setState(() {
+        selectedMiniChartTimeFrame = miniChartFilter[res];
+      });
+    }
   }
 }

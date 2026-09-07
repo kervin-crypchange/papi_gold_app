@@ -8,7 +8,7 @@ class TradeViewMiniChartWidget extends StatefulWidget {
   const TradeViewMiniChartWidget({
     super.key,
     this.symbol = 'XAUUSD',
-    required this.timeFrame,
+    this.timeFrame = '1D',
   });
 
   @override
