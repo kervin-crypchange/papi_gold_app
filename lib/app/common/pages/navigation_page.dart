@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:papi_gold/app/common/enums/app_sockets_enum.dart';
 import 'package:papi_gold/app/common/mixins/index.dart';
@@ -99,16 +100,16 @@ class _NavigationPageState extends State<NavigationPage> with MessengerMixin {
                 icon: (itemCount > 0)
                     ? Badge.count(
                         count: itemCount,
-                        child: Icon(Icons.shopping_cart_outlined),
+                        child: Icon(Icons.shopping_cart_outlined, size: 18.w),
                       )
-                    : Icon(Icons.shopping_cart_outlined),
+                    : Icon(Icons.shopping_cart_outlined, size: 18.w),
                 onPressed: () => context.goNamed(Routes.cart),
               );
             },
           ),
           IconButton(
             onPressed: () => context.goNamed(Routes.notifications),
-            icon: Icon(Icons.notifications_none_outlined),
+            icon: Icon(Icons.notifications_none_outlined, size: 18.w),
           ),
         ],
       ),

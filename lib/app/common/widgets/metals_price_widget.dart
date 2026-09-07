@@ -35,6 +35,9 @@ class _MetalsPriceWidgetState extends State<MetalsPriceWidget> {
   Widget build(BuildContext context) {
     return BlocBuilder<PricesCubit, PricesState>(
       builder: (context, state) {
+        if (state is PricesFailure) {
+          return Text('Ha ocurrido un error');
+        }
         if (state is PricesLoading) {
           return Skeletonizer(
             child: GridView.builder(
@@ -67,9 +70,6 @@ class _MetalsPriceWidgetState extends State<MetalsPriceWidget> {
             ),
           );
         }
-        if (state is PricesFailure) {
-          return Text('Ha ocurrido un error');
-        }
         if (state is PricesSuccess) {
           return GridView.builder(
             itemCount: state.metals.length,
@@ -81,6 +81,10 @@ class _MetalsPriceWidgetState extends State<MetalsPriceWidget> {
             itemBuilder: (context, index) {
               final MetalEntity metal = state.metals[index];
               return Card(
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(color: symbol[metal.name]![1], width: 1),
+                    borderRadius: BorderRadius.circular(12.0), 
+                ),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
@@ -90,7 +94,7 @@ class _MetalsPriceWidgetState extends State<MetalsPriceWidget> {
                       Text(
                         '${metal.name} Spot Price',
                         style: context.bodySmall,
-                      ),
+                      ).medium,
                       Gap(6.h),
                       Text(
                         formatMoney(metal.price),

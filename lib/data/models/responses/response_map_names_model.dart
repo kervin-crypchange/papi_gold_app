@@ -32,7 +32,7 @@ class ResponseMapNamesModel extends ResponseMapNamesEntity {
       address1: safeString(json['address1']),
       address2: safeString(json['address2']),
       codeZip: safeString(json['code_zip']),
-      errors: json['errors'] ?? {},
+      errors: (json['errors'] is List) ? {} : json['errors'],
     );
   }
 }

@@ -139,7 +139,6 @@ class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
           child: FilledButtonWidget(
             title: 'Agregar dirección',
             onPressed: () {
-              log('--- Directions length ${safeString(_directions.length)}');
               if (_directions.length < 3) {
                 context.read<DirectionsCubit>().direction = null;
                 context.goNamed(Routes.newAddress);
