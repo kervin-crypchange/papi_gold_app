@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -11,6 +13,7 @@ import 'package:papi_gold/app/core/services/socket_service.dart';
 import 'package:papi_gold/app/core/theme/index.dart';
 import 'package:persistent_shopping_cart/persistent_shopping_cart.dart';
 import 'package:pusher_reverb_flutter/pusher_reverb_flutter.dart' as connstate;
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 class NavigationPage extends StatefulWidget {
   const NavigationPage({super.key});
@@ -20,6 +23,9 @@ class NavigationPage extends StatefulWidget {
 }
 
 class _NavigationPageState extends State<NavigationPage> with MessengerMixin {
+  List<ConnectivityResult> _connectionStatus = [ConnectivityResult.none];
+  final Connectivity _connectivity = Connectivity();
+  late StreamSubscription<List<ConnectivityResult>> _connectivitySubscription;
   int _currentIndex = 0;
   late String token;
   SocketService socketService = SocketService();
@@ -35,7 +41,57 @@ class _NavigationPageState extends State<NavigationPage> with MessengerMixin {
   @override
   void initState() {
     super.initState();
+    initConnectivity();
+
+    _connectivitySubscription = _connectivity.onConnectivityChanged.listen(
+      _updateConnectionStatus,
+    );
     // Future.delayed(Duration(milliseconds: 300), () async => initSocket());
+  }
+
+  Future<void> initConnectivity() async {
+    late List<ConnectivityResult> result;
+    try {
+      result = await _connectivity.checkConnectivity();
+    } on PlatformException catch (e) {
+      messenger.showSnackBar(
+        message: 'Couldn\'t check connectivity status',
+        color: AppColors.error,
+        icon: Icons.error_outline_outlined
+      );
+      return;
+    }
+    if (!mounted) {
+      return Future.value(null);
+    }
+
+    return _updateConnectionStatus(result);
+  }
+
+  Future<void> _updateConnectionStatus(List<ConnectivityResult> result) async {
+    setState(() {
+      _connectionStatus = result;
+    });
+    if (_connectionStatus.contains(ConnectivityResult.none)) {
+      messenger.showSnackBar(
+        message: 'No tienes conexión',
+        icon: Icons.wifi_off,
+        color: AppColors.error,
+        seconds: 3,
+      );
+    }
+    final bool _isConnected =
+        _connectionStatus.contains(ConnectivityResult.wifi) ||
+        _connectionStatus.contains(ConnectivityResult.mobile);
+
+    if (_isConnected) {
+      messenger.showSnackBar(
+        message: 'La conexión ha vuelto',
+        icon: Icons.wifi,
+        color: AppColors.success,
+        seconds: 3,
+      );
+    }
   }
 
   Future<void> initSocket() async {
