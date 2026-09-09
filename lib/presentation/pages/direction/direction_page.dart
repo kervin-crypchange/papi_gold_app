@@ -61,7 +61,7 @@ class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
     context.read<LocationCubit>().countries().then((either) {
       either.fold(
         (failure) => messenger.showSnackBar(
-          message: failure.toString(),
+          failure.toString(),
           color: AppColors.error,
         ),
         (c) {
@@ -79,7 +79,7 @@ class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
     context.read<LocationCubit>().location(params).then((either) {
       either.fold(
         (failure) => messenger.showSnackBar(
-          message: failure.toString(),
+          failure.toString(),
           color: AppColors.error,
         ),
         (s) => setState(() {
@@ -95,7 +95,7 @@ class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
     context.read<LocationCubit>().location(params).then((either) {
       either.fold(
         (failure) => messenger.showSnackBar(
-          message: failure.toString(),
+          failure.toString(),
           color: AppColors.error,
         ),
         (c) => setState(() {
@@ -155,7 +155,7 @@ class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
       either.fold((l) => null, (r) {
         showLoading(context, false);
         messenger.showSnackBar(
-          message: 'Nueva dirección creada',
+          'Nueva dirección creada',
           color: AppColors.success,
         );
       });
@@ -190,7 +190,7 @@ class _DirectionPageState extends State<DirectionPage> with MessengerMixin {
       either.fold((l) => null, (r) {
         showLoading(context, false);
         messenger.showSnackBar(
-          message: 'Dirección actualizada',
+          'Dirección actualizada',
           color: AppColors.success,
         );
       });

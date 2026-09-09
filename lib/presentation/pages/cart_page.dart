@@ -1,4 +1,3 @@
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -36,13 +35,13 @@ class _CartPageState extends State<CartPage> with MessengerMixin {
   void _checkout() {
     if (_cartItems.isEmpty) {
       messenger.showSnackBar(
-        message: 'No hay items en el carrito',
+        'No hay items en el carrito',
         color: AppColors.error,
       );
       return;
     }
 
-  final selectedDirection = DirectionController().getSelectedDirection();
+    final selectedDirection = DirectionController().getSelectedDirection();
 
     final clientData = ClientEntity(
       name: client.name,
@@ -77,10 +76,8 @@ class _CartPageState extends State<CartPage> with MessengerMixin {
     });
     context.read<CheckOutCubit>().checkout(checkout!).then((either) {
       either.fold(
-        (failure) => messenger.showSnackBar(
-          message: failure.toString(),
-          color: AppColors.error,
-        ),
+        (failure) =>
+            messenger.showSnackBar(failure.toString(), color: AppColors.error),
         (res) => setState(() {
           isLoading = false;
           _makePayment(res.clientSecret);

@@ -1,6 +1,4 @@
 
-import 'dart:developer';
-
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -78,7 +76,7 @@ class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
     context.read<DirectionsCubit>().delete(id).then((either) {
       either.fold((l) => null, (r) {
         showLoading(context, false);
-        messenger.showSnackBar(message: r, color: AppColors.success);
+        messenger.showSnackBar(r, color: AppColors.success);
         _directions.removeWhere((d) => d.id == id);
         setState(() {
           _directions = _directions;
@@ -115,7 +113,7 @@ class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
       either.fold((l) => null, (r) {
         context.read<DirectionsCubit>().list();
         messenger.showSnackBar(
-          message: 'Dirección actualizada',
+          'Dirección actualizada',
           color: AppColors.success,
         );
       });

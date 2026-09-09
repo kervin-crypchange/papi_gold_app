@@ -44,10 +44,7 @@ class ProductPage extends StatelessWidget with MessengerMixin {
         child: BlocConsumer<ProductCubit, ProductState>(
           listener: (context, state) {
             if (state is ProductFailure) {
-              messenger.showSnackBar(
-                message: state.message,
-                color: AppColors.error,
-              );
+              messenger.showSnackBar(state.message, color: AppColors.error);
             }
           },
           builder: (context, state) {
@@ -119,7 +116,10 @@ class InfoProduct extends StatelessWidget with MessengerMixin {
                             : AppColors.error,
                       ),
                     ).medium,
-                    Text(formatMoney(p.price), style: context.titleMedium).medium,
+                    Text(
+                      formatMoney(p.price),
+                      style: context.titleMedium,
+                    ).medium,
                   ],
                 ),
               ],
@@ -143,7 +143,7 @@ class InfoProduct extends StatelessWidget with MessengerMixin {
                   ),
                 );
                 messenger.showSnackBar(
-                  message: 'Item agregado al carrito',
+                  'Item agregado al carrito',
                   color: AppColors.success,
                   seconds: 1,
                 );

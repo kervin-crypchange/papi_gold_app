@@ -100,7 +100,7 @@ class _OtpFormState extends State<OtpForm> with MessengerMixin {
     context.read<AuthCubit>().updatePassword(entity).then((either) {
       either.fold((failure) => null, (res) {
         showLoading(context, false);
-        messenger.showSnackBar(message: res, color: AppColors.success);
+        messenger.showSnackBar(res, color: AppColors.success);
         context.goNamed(Routes.navigation);
       });
     });

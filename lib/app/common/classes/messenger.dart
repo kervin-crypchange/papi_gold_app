@@ -6,9 +6,10 @@ import 'package:papi_gold/app/core/theme/index.dart';
 import '../../core/extensions/global.dart' as globals;
 
 abstract class Messenger {
-  void showSnackBar({
+  void showSnackBar(
+    String message,
+    {
     IconData? icon,
-    required String message,
     int seconds = 2,
     Color color = AppColors.black,
   });
@@ -16,9 +17,10 @@ abstract class Messenger {
 
 class MessengerImpl implements Messenger {
   @override
-  void showSnackBar({
+  void showSnackBar(
+    String message,
+    {
     IconData? icon,
-    required String message,
     int seconds = 2,
     Color color = AppColors.black,
   }) {

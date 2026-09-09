@@ -37,7 +37,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage>
     context.read<AuthCubit>().updatePassword(entity).then((either) {
       either.fold((failure) => null, (res) {
         showLoading(context, false);
-        messenger.showSnackBar(message: res, color: AppColors.success);
+        messenger.showSnackBar(res, color: AppColors.success);
         final Map<String, dynamic> data = {
           "currentPassword": currentPassword!,
           "newPassword": password!,
@@ -125,7 +125,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage>
                               }
                               if (password != confirmPassword) {
                                 messenger.showSnackBar(
-                                  message: 'Contraseñas no coinciden',
+                                  'Contraseñas no coinciden',
                                   color: AppColors.warning,
                                 );
                                 return;

@@ -68,11 +68,11 @@ class _RegisterPageState extends State<RegisterPage>
       either.fold(
         (failure) {
           showLoading(context, false);
-          messenger.showSnackBar(message: failure.toString(), color: AppColors.error);
+          messenger.showSnackBar(failure.toString(), color: AppColors.error);
         },
         (response) {
           showLoading(context, false);
-          messenger.showSnackBar(message: response.message, color: AppColors.success);
+          messenger.showSnackBar(response.message, color: AppColors.success);
         },
       );
     });
@@ -82,7 +82,7 @@ class _RegisterPageState extends State<RegisterPage>
     context.read<LocationCubit>().countries().then((either) {
       either.fold(
         (failure) => messenger.showSnackBar(
-          message: failure.toString(),
+          failure.toString(),
           color: AppColors.error,
         ),
         (c) => setState(() {
@@ -97,7 +97,7 @@ class _RegisterPageState extends State<RegisterPage>
     context.read<LocationCubit>().location(params).then((either) {
       either.fold(
         (failure) => messenger.showSnackBar(
-          message: failure.toString(),
+          failure.toString(),
           color: AppColors.error,
         ),
         (s) => setState(() {
@@ -112,7 +112,7 @@ class _RegisterPageState extends State<RegisterPage>
     context.read<LocationCubit>().location(params).then((either) {
       either.fold(
         (failure) => messenger.showSnackBar(
-          message: failure.toString(),
+          failure.toString(),
           color: AppColors.error,
         ),
         (c) => setState(() {
@@ -159,10 +159,7 @@ class _RegisterPageState extends State<RegisterPage>
             child: Column(
               children: [
                 SizedBox(height: 16.h),
-                Image.asset(
-                  'assets/icons/papi-gold-512x512.png',
-                  height: 92.h,
-                ),
+                Image.asset('assets/icons/papi-gold-512x512.png', height: 92.h),
                 SizedBox(height: 16.h),
                 Text('Registro', style: context.headlineSmall),
                 Form(
@@ -310,7 +307,7 @@ class _RegisterPageState extends State<RegisterPage>
 
                               if (password! != passwordConfirmation!) {
                                 messenger.showSnackBar(
-                                  message: 'Contraseñas no coinciden',
+                                  'Contraseñas no coinciden',
                                   color: AppColors.warning,
                                 );
                                 return;

@@ -64,7 +64,7 @@ class ProductsListView extends StatelessWidget with MessengerMixin {
                 ),
               );
               messenger.showSnackBar(
-                message: 'Item agregado al carrito',
+                'Item agregado al carrito',
                 color: AppColors.success,
                 seconds: 1,
               );

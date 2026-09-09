@@ -27,7 +27,7 @@ class _NavigationPageState extends State<NavigationPage> with MessengerMixin {
     ConnectivityResult.mobile,
   ];
   final Connectivity _connectivity = Connectivity();
-  
+
   bool get _isConnected =>
       _connectionStatus.contains(ConnectivityResult.wifi) ||
       _connectionStatus.contains(ConnectivityResult.mobile);
@@ -61,7 +61,7 @@ class _NavigationPageState extends State<NavigationPage> with MessengerMixin {
       result = await _connectivity.checkConnectivity();
     } on PlatformException catch (_) {
       messenger.showSnackBar(
-        message: 'Couldn\'t check connectivity status',
+        'Couldn\'t check connectivity status',
         color: AppColors.error,
         icon: Icons.error_outline_outlined,
       );
@@ -83,7 +83,7 @@ class _NavigationPageState extends State<NavigationPage> with MessengerMixin {
 
     if (_connectionStatus.contains(ConnectivityResult.none)) {
       messenger.showSnackBar(
-        message: 'No tienes conexión',
+        'No tienes conexión',
         icon: Icons.wifi_off,
         color: AppColors.error,
         seconds: 3,
@@ -92,7 +92,7 @@ class _NavigationPageState extends State<NavigationPage> with MessengerMixin {
 
     if (_isConnected) {
       messenger.showSnackBar(
-        message: 'La conexión ha vuelto',
+        'La conexión ha vuelto',
         icon: Icons.wifi,
         color: AppColors.success,
         seconds: 3,
@@ -187,7 +187,7 @@ class _NavigationPageState extends State<NavigationPage> with MessengerMixin {
               now.difference(_lastPressedTime!) > maxDuration) {
             _lastPressedTime = now;
             messenger.showSnackBar(
-              message: 'Presione de nuevo para salir',
+              'Presione de nuevo para salir',
               color: AppColors.greyLigth,
             );
           } else {

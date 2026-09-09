@@ -54,7 +54,7 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
     context.read<AuthCubit>().logout().then((either) {
       either.fold(
         (failure) => messenger.showSnackBar(
-          message: failure.toString(),
+          failure.toString(),
           color: AppColors.error,
         ),
         (res) {

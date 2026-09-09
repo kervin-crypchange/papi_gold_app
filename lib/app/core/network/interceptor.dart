@@ -46,7 +46,7 @@ class InterceptorWrapper extends Interceptor with MessengerMixin {
         final bool requiresVerification =
             err.response?.data['requires_verification'] ?? false;
         if (requiresVerification == true) {
-          messenger.showSnackBar(message: message, color: AppColors.error);
+          messenger.showSnackBar(message, color: AppColors.error);
         }
 
         break;
@@ -55,21 +55,21 @@ class InterceptorWrapper extends Interceptor with MessengerMixin {
         break;
       case 409:
         messenger.showSnackBar(
-          message: err.response?.data['message'],
+          err.response?.data['message'],
           color: AppColors.error,
         );
         handler.next(err);
         break;
       case 422:
-        messenger.showSnackBar(message: message, color: AppColors.error);
+        messenger.showSnackBar(message, color: AppColors.error);
         handler.next(err);
         break;
       case 500:
-        messenger.showSnackBar(message: message, color: AppColors.error);
+        messenger.showSnackBar(message, color: AppColors.error);
         handler.next(err);
         break;
       default:
-        messenger.showSnackBar(message: message, color: AppColors.error);
+        messenger.showSnackBar(message, color: AppColors.error);
         handler.next(err);
     }
     showLoading(context!, false);
