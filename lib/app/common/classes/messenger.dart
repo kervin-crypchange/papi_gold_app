@@ -27,8 +27,8 @@ class MessengerImpl implements Messenger {
         content: icon != null
             ? Row(
                 children: [
-                  Icon(icon, color: AppColors.bg),
-                  Gap(4.w),
+                  Icon(icon, color: AppColors.white),
+                  Gap(6.w),
                   Text(message).color(AppColors.white),
                 ],
               )
