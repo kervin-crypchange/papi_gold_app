@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -23,8 +22,16 @@ class NavigationPage extends StatefulWidget {
 }
 
 class _NavigationPageState extends State<NavigationPage> with MessengerMixin {
-  List<ConnectivityResult> _connectionStatus = [ConnectivityResult.none];
+  List<ConnectivityResult> _connectionStatus = [
+    ConnectivityResult.wifi,
+    ConnectivityResult.mobile,
+  ];
   final Connectivity _connectivity = Connectivity();
+  
+  bool get _isConnected =>
+      _connectionStatus.contains(ConnectivityResult.wifi) ||
+      _connectionStatus.contains(ConnectivityResult.mobile);
+
   late StreamSubscription<List<ConnectivityResult>> _connectivitySubscription;
   int _currentIndex = 0;
   late String token;
@@ -46,18 +53,17 @@ class _NavigationPageState extends State<NavigationPage> with MessengerMixin {
     _connectivitySubscription = _connectivity.onConnectivityChanged.listen(
       _updateConnectionStatus,
     );
-    // Future.delayed(Duration(milliseconds: 300), () async => initSocket());
   }
 
   Future<void> initConnectivity() async {
     late List<ConnectivityResult> result;
     try {
       result = await _connectivity.checkConnectivity();
-    } on PlatformException catch (e) {
+    } on PlatformException catch (_) {
       messenger.showSnackBar(
         message: 'Couldn\'t check connectivity status',
         color: AppColors.error,
-        icon: Icons.error_outline_outlined
+        icon: Icons.error_outline_outlined,
       );
       return;
     }
@@ -69,9 +75,12 @@ class _NavigationPageState extends State<NavigationPage> with MessengerMixin {
   }
 
   Future<void> _updateConnectionStatus(List<ConnectivityResult> result) async {
+    if (_connectionStatus.contains(result.first)) return;
+
     setState(() {
       _connectionStatus = result;
     });
+
     if (_connectionStatus.contains(ConnectivityResult.none)) {
       messenger.showSnackBar(
         message: 'No tienes conexión',
@@ -80,9 +89,6 @@ class _NavigationPageState extends State<NavigationPage> with MessengerMixin {
         seconds: 3,
       );
     }
-    final bool _isConnected =
-        _connectionStatus.contains(ConnectivityResult.wifi) ||
-        _connectionStatus.contains(ConnectivityResult.mobile);
 
     if (_isConnected) {
       messenger.showSnackBar(
