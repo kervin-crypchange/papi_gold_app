@@ -32,7 +32,7 @@ class _NavigationPageState extends State<NavigationPage> with MessengerMixin {
       _connectionStatus.contains(ConnectivityResult.wifi) ||
       _connectionStatus.contains(ConnectivityResult.mobile);
 
-  late StreamSubscription<List<ConnectivityResult>> _connectivitySubscription;
+  late StreamSubscription<List<ConnectivityResult>> connectivitySubscription;
   int _currentIndex = 0;
   late String token;
   SocketService socketService = SocketService();
@@ -50,7 +50,7 @@ class _NavigationPageState extends State<NavigationPage> with MessengerMixin {
     super.initState();
     initConnectivity();
 
-    _connectivitySubscription = _connectivity.onConnectivityChanged.listen(
+    connectivitySubscription = _connectivity.onConnectivityChanged.listen(
       _updateConnectionStatus,
     );
   }

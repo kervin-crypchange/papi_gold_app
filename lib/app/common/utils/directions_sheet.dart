@@ -22,7 +22,7 @@ Widget showSelectedDirection(BuildContext context) {
                 style: context.bodySmall.copyWith(color: AppColors.white),
               ).overflowText(TextOverflow.ellipsis),
             ),
-            Icon(Icons.arrow_drop_down, color: AppColors.white,),
+            Icon(Icons.arrow_drop_down, color: AppColors.white),
           ],
         );
       },
@@ -59,7 +59,7 @@ void showDirectionsSheet(BuildContext context) {
                       isThreeLine: true,
                       selected: selectedDirection.id == direction.id,
                       title: Text(
-                        '${direction.name} - ${direction.address1}',
+                        direction.address1,
                       ).overflowText(TextOverflow.ellipsis),
                       subtitle: Text(
                         '${direction.city['name']}, ${direction.state['name']}. ${direction.country['name']}',
