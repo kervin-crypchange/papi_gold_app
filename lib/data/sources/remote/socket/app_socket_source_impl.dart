@@ -35,8 +35,8 @@ class AppSocketSourceImpl extends AppSocketSource {
       e = socket.event;
 
       _socket = client.io(
-        // 'wss://www.papigold.com',
-        'http://192.168.100.162',
+        // 'http://192.168.100.162',
+        'wss://www.papigold.com',
         client.OptionBuilder()
             .setTimeout(10000)
             .setTransports(['websocket'])

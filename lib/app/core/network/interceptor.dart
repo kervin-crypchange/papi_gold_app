@@ -86,6 +86,7 @@ class InterceptorWrapper extends Interceptor with MessengerMixin {
 
     if (token != null && token.isNotEmpty) {
       options.headers['Authorization'] = 'Bearer $token';
+       options.headers['Accept'] = 'application/json';
     }
     options.headers['X-API-KEY'] = 'cYaS7nA1IHUzuZQ42AbjPYzsiygFmegUiARPPv6t';
 

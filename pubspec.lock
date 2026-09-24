@@ -1089,10 +1089,10 @@ packages:
     dependency: "direct main"
     description:
       name: pusher_reverb_flutter
-      sha256: b0fa9be3f0e526bdc3dee3c1d0aff879fbc16039ef7c79ad9f8582c200030f77
+      sha256: "569dfcee4589a2b7277b8eb9aba5c70c1e3b2aefeaab90472e5ef6e1807e4b28"
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.9"
+    version: "0.0.10"
   record_use:
     dependency: transitive
     description:

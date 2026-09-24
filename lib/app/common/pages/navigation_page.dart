@@ -11,7 +11,6 @@ import 'package:papi_gold/app/core/constants/index.dart';
 import 'package:papi_gold/app/core/services/socket_service.dart';
 import 'package:papi_gold/app/core/theme/index.dart';
 import 'package:persistent_shopping_cart/persistent_shopping_cart.dart';
-import 'package:pusher_reverb_flutter/pusher_reverb_flutter.dart' as connstate;
 import 'package:connectivity_plus/connectivity_plus.dart';
 
 class NavigationPage extends StatefulWidget {
@@ -21,7 +20,8 @@ class NavigationPage extends StatefulWidget {
   State<NavigationPage> createState() => _NavigationPageState();
 }
 
-class _NavigationPageState extends State<NavigationPage> with MessengerMixin {
+class _NavigationPageState extends State<NavigationPage>
+    with MessengerMixin, LoggerMixin {
   List<ConnectivityResult> _connectionStatus = [
     ConnectivityResult.wifi,
     ConnectivityResult.mobile,
@@ -49,7 +49,7 @@ class _NavigationPageState extends State<NavigationPage> with MessengerMixin {
   void initState() {
     super.initState();
     initConnectivity();
-
+    initSocket();
     connectivitySubscription = _connectivity.onConnectivityChanged.listen(
       _updateConnectionStatus,
     );
@@ -102,17 +102,24 @@ class _NavigationPageState extends State<NavigationPage> with MessengerMixin {
 
   Future<void> initSocket() async {
     await socketService.init();
+    
+    await socketService.listenToPrivateChannel(
+      AppSocketsEnum.notification.channel,
+      AppSocketsEnum.notification.event,
+      (data) {
+        log('--- $data');
+        messenger.showSnackBar(data, color: AppColors.secondary);
+      },
+    );
 
-    final String channelName = AppSocketsEnum.notification.channel;
-    final String eventName = AppSocketsEnum.notification.event;
-
-    socketService.client.onConnectionStateChange.listen((state) {
-      if (state == connstate.ConnectionState.connected) {
-        socketService.listenToPrivateChannel(channelName, eventName, (data) {
-          debugPrint('--- $data');
-        });
-      }
-    });
+    await socketService.listenToPublicChannel(
+      AppSocketsEnum.product.channel,
+      AppSocketsEnum.product.event,
+      (data) {
+        log('--- $data');
+        messenger.showSnackBar(data, color: AppColors.secondary);
+      },
+    );
   }
 
   @override
