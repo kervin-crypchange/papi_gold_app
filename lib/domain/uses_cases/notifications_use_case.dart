@@ -6,9 +6,9 @@ import 'package:papi_gold/domain/repositories/common_repository.dart';
 import 'package:papi_gold/injection_container.dart';
 
 class NotificationsUseCase
-    implements UseCase<Either<Failure, ResponseNotificationsEntity>, void> {
+    implements UseCase<Either<Failure, ResponseNotificationsEntity>, int> {
   @override
-  Future<Either<Failure, ResponseNotificationsEntity>> call({void param}) {
-    return sl<CommonRepository>().notifications();
+  Future<Either<Failure, ResponseNotificationsEntity>> call({int? param}) {
+    return sl<CommonRepository>().notifications(param!);
   }
 }

@@ -5,7 +5,6 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:papi_gold/app/common/enums/index.dart';
 import 'package:papi_gold/app/common/mixins/index.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
-import 'package:papi_gold/app/core/constants/apis.dart';
 import 'package:papi_gold/app/core/store/client/client_data_model.dart';
 import 'package:papi_gold/app/core/store/client/persistent_client_data.dart';
 

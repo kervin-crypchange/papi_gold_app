@@ -1,3 +1,4 @@
+export 'package:papi_gold/presentation/cubits/notifications/notifications_cubit.dart';
 export 'package:papi_gold/presentation/cubits/prices/prices_cubit.dart';
 export 'package:papi_gold/presentation/cubits/directions/directions_cubit.dart';
 export 'package:papi_gold/presentation/cubits/app_socket/app_socket_cubit.dart';

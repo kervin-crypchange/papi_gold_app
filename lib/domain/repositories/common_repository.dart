@@ -28,5 +28,5 @@ abstract class CommonRepository {
   );
 
   Future<Either<Failure, TrackingEntity>> tracking(String tracking);
-  Future<Either<Failure, ResponseNotificationsEntity>> notifications();
+  Future<Either<Failure, ResponseNotificationsEntity>> notifications(int page);
 }

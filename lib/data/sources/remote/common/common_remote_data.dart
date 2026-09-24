@@ -28,5 +28,5 @@ abstract class CommonRemoteData {
     String order,
   );
   Future<Either<Failure, TrackingModel>> tracking(String tracking);
-  Future<Either<Failure, ResponseNotificationsModel>> notifications();
+  Future<Either<Failure, ResponseNotificationsModel>> notifications(int page);
 }

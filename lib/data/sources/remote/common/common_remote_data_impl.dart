@@ -183,9 +183,14 @@ class CommonRemoteDataImpl extends CommonRemoteData {
   }
 
   @override
-  Future<Either<Failure, ResponseNotificationsModel>> notifications() async {
+  Future<Either<Failure, ResponseNotificationsModel>> notifications(
+    int page,
+  ) async {
     try {
-      final res = await sl<DioClient>().get(Apis.notifications);
+      final res = await sl<DioClient>().get(
+        Apis.notifications,
+        queryParameters: {'page': page, 'per_page': 10},
+      );
       return Right(ResponseNotificationsModel.fromJson(res.data));
     } on DioException catch (e) {
       return Left(ServerException(e));

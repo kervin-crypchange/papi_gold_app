@@ -1,3 +1,4 @@
+export 'package:papi_gold/domain/uses_cases/notifications_use_case.dart';
 export 'package:papi_gold/domain/uses_cases/prices_use_case.dart';
 export 'package:papi_gold/domain/uses_cases/directions_use_case.dart';
 export 'package:papi_gold/domain/uses_cases/app_socket_use_case.dart';
