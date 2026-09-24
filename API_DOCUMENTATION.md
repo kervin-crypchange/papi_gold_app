@@ -99,7 +99,7 @@ La API utiliza **Laravel Reverb** para notificar cambios en los datos de forma i
 | `prices` | `prices.updated` | Se dispara cuando cambian los precios internacionales de los metales. |
 | `products` | `product.updated` | Se dispara cuando se modifica un producto, su stock o su precio. |
 | `settings` | `settings.updated` | Se dispara cuando cambian los ajustes globales del sitio. |
-| `chat.{identifier}` | `message.sent` | Canal privado/presencia para el chat de soporte (requiere identificador de sesión). |
+| `chat.{identifier}` | `message.sent` | **Canal privado/presencia** para el chat de soporte (requiere identificador de sesión). |
 | `client.{id}` | `notification.received` | **Canal Privado**: Se dispara cuando el cliente recibe una nueva notificación de sistema. |
 | `client.{id}` | `sale.updated` | **Canal Privado**: Se dispara cuando un pedido del cliente cambia de estado o datos. |
 

@@ -126,4 +126,10 @@ class CommonRepositoryImpl extends CommonRepository {
     return res.fold((l) => Left(l), (r) => Right(r));
   }
 
+  @override
+  Future<Either<Failure, ResponseNotificationsEntity>> notifications() async {
+    Either<Failure, ResponseNotificationsEntity> res =
+        await sl<CommonRemoteData>().notifications();
+    return res.fold((l) => Left(l), (r) => Right(r));
+  }
 }

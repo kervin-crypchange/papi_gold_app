@@ -72,7 +72,6 @@ class DirectionRemoteDataImpl extends DirectionRemoteData {
         '${Apis.location}/map-names',
         data: location.toMap(),
       );
-      debugPrint('--- MapDirectio ${res.data}');
       return Right(ResponseMapNamesModel.fromJson(res.data));
     } on DioException catch (e) {
       return Left(ServerException(e));

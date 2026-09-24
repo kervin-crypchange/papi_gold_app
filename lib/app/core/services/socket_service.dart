@@ -136,7 +136,6 @@ class SocketService with LoggerMixin {
       _unbind(key);
 
       void listener(String _, dynamic data) {
-        logError('--- listen $data');
         onEvent(data);
       }
       channel.bind(eventName, listener);
