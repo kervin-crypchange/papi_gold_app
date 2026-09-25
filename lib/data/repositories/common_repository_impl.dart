@@ -127,9 +127,23 @@ class CommonRepositoryImpl extends CommonRepository {
   }
 
   @override
-  Future<Either<Failure, ResponseNotificationsEntity>> notifications(page) async {
+  Future<Either<Failure, ResponseNotificationsEntity>> notifications(
+    page,
+  ) async {
     Either<Failure, ResponseNotificationsEntity> res =
         await sl<CommonRemoteData>().notifications(page);
+    return res.fold((l) => Left(l), (r) => Right(r));
+  }
+
+  @override
+  Future<Either<Failure, void>> markAsRead(String id) async {
+    Either<Failure, void> res = await sl<CommonRemoteData>().markAsRead(id);
+    return res.fold((l) => Left(l), (r) => Right(r));
+  }
+
+  @override
+  Future<Either<Failure, int>> unreadCount() async {
+    Either<Failure, int> res = await sl<CommonRemoteData>().unreadCount();
     return res.fold((l) => Left(l), (r) => Right(r));
   }
 }

@@ -8,3 +8,15 @@ sealed class NotificationsState extends Equatable {
 }
 
 final class NotificationsInitial extends NotificationsState {}
+
+final class NotificationsLoading extends NotificationsState {}
+
+final class NotificationsUnreadSuccess extends NotificationsState {
+  final int count;
+  const NotificationsUnreadSuccess({required this.count});
+}
+
+final class NotificationsUnreadFailure extends NotificationsState {
+  final String message;
+  const NotificationsUnreadFailure({required this.message});
+}

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:logger/web.dart';
@@ -7,12 +9,14 @@ import 'package:papi_gold/app/core/error/failure.dart';
 import 'package:papi_gold/app/core/error/server_exception.dart';
 import 'package:papi_gold/app/core/network/dio_client.dart';
 import 'package:papi_gold/data/models/index.dart';
+import 'package:papi_gold/data/models/unread_notifications_model.dart';
 import 'package:papi_gold/data/sources/remote/index.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 import 'package:papi_gold/injection_container.dart';
 
 class CommonRemoteDataImpl extends CommonRemoteData {
   final Logger logger = Logger();
+  final UnreadNotificationsModel _counter = UnreadNotificationsModel();
 
   @override
   Future<Either<Failure, List<CountryModel>>> getCountries() async {
@@ -192,6 +196,30 @@ class CommonRemoteDataImpl extends CommonRemoteData {
         queryParameters: {'page': page, 'per_page': 10},
       );
       return Right(ResponseNotificationsModel.fromJson(res.data));
+    } on DioException catch (e) {
+      return Left(ServerException(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> markAsRead(String id) async {
+    try {
+      await sl<DioClient>().get('${Apis.notifications}/$id');
+      return Right(null);
+    } on DioException catch (e) {
+      return Left(ServerException(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, int>> unreadCount() async {
+    try {
+      final res = await sl<DioClient>().get(
+        '${Apis.notifications}/unread-count',
+      );
+      log('--- unreadCount ${res.data['count']}');
+      _counter.unread(res.data['count']);
+      return Right(res.data['count']);
     } on DioException catch (e) {
       return Left(ServerException(e));
     }

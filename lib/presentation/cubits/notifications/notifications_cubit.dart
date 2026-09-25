@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -13,5 +15,16 @@ class NotificationsCubit extends Cubit<NotificationsState> {
 
   Future<Either<Failure, ResponseNotificationsEntity>> list(int page) async {
     return await sl<NotificationsUseCase>().call(param: page);
+  }
+  
+  void count() async {
+    emit(NotificationsLoading());
+    
+    Either response = await sl<NotificationCountUseCase>().call();
+   
+    response.fold(
+      (l) => emit(NotificationsUnreadFailure(message: l.toString())),
+      (r) => emit(NotificationsUnreadSuccess(count: 1)),
+    );
   }
 }

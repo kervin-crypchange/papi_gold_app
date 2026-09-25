@@ -12,3 +12,10 @@ class NotificationsUseCase
     return sl<CommonRepository>().notifications(param!);
   }
 }
+
+class NotificationCountUseCase implements UseCase<Either<Failure, int>, void> {
+  @override
+  Future<Either<Failure, int>> call({void param}) {
+    return sl<CommonRepository>().unreadCount();
+  }
+}

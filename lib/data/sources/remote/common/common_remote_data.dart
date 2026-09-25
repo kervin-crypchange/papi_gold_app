@@ -29,4 +29,6 @@ abstract class CommonRemoteData {
   );
   Future<Either<Failure, TrackingModel>> tracking(String tracking);
   Future<Either<Failure, ResponseNotificationsModel>> notifications(int page);
+  Future<Either<Failure, void>> markAsRead(String id);
+  Future<Either<Failure, int>> unreadCount();
 }

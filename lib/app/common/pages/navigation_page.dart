@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:papi_gold/app/common/enums/app_sockets_enum.dart';
@@ -10,6 +11,8 @@ import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/constants/index.dart';
 import 'package:papi_gold/app/core/services/socket_service.dart';
 import 'package:papi_gold/app/core/theme/index.dart';
+import 'package:papi_gold/presentation/cubits/index.dart';
+import 'package:papi_gold/presentation/widgets/index.dart';
 import 'package:persistent_shopping_cart/persistent_shopping_cart.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
@@ -27,7 +30,7 @@ class _NavigationPageState extends State<NavigationPage>
     ConnectivityResult.mobile,
   ];
   final Connectivity _connectivity = Connectivity();
-
+  
   bool get _isConnected =>
       _connectionStatus.contains(ConnectivityResult.wifi) ||
       _connectionStatus.contains(ConnectivityResult.mobile);
@@ -48,6 +51,7 @@ class _NavigationPageState extends State<NavigationPage>
   @override
   void initState() {
     super.initState();
+    context.read<NotificationsCubit>().count();
     initConnectivity();
     initSocket();
     connectivitySubscription = _connectivity.onConnectivityChanged.listen(
@@ -102,7 +106,7 @@ class _NavigationPageState extends State<NavigationPage>
 
   Future<void> initSocket() async {
     await socketService.init();
-    
+
     await socketService.listenToPrivateChannel(
       AppSocketsEnum.notification.channel,
       AppSocketsEnum.notification.event,
@@ -175,11 +179,8 @@ class _NavigationPageState extends State<NavigationPage>
                 onPressed: () => context.goNamed(Routes.cart),
               );
             },
-          ),
-          IconButton(
-            onPressed: () => context.goNamed(Routes.notifications),
-            icon: Icon(Icons.notifications_none_outlined, size: 18.w),
-          ),
+          ), 
+          UnreadCountWidget()
         ],
       ),
       body: PopScope(
