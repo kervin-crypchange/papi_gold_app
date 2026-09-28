@@ -7,6 +7,8 @@ import 'package:papi_gold/app/common/mixins/index.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/store/client/client_data_model.dart';
 import 'package:papi_gold/app/core/store/client/persistent_client_data.dart';
+import 'package:papi_gold/data/sources/remote/common/common_remote_data.dart';
+import 'package:papi_gold/injection_container.dart';
 
 import 'package:pusher_reverb_flutter/pusher_reverb_flutter.dart' as reverb;
 
@@ -15,8 +17,7 @@ class SocketService with LoggerMixin {
   late final reverb.ReverbClient client;
   final Map<String, reverb.Channel> _channels = {};
   final Map<String, reverb.ChannelEventListener> _listeners = {};
-  PersistentClientDataModel get user => PersistentClientData()
-      .getClientData();
+  late PersistentClientDataModel user;
   bool _isInitialized = false;
   Future<void>? _initialization;
   SocketService._internal();
@@ -24,6 +25,7 @@ class SocketService with LoggerMixin {
   factory SocketService() => _instance;
 
   Future<void> init() async {
+    user = PersistentClientData().getClientData();
     if (_isInitialized) return;
     if (_initialization != null) return _initialization!;
 
@@ -33,8 +35,7 @@ class SocketService with LoggerMixin {
     } finally {
       _initialization = null;
     }
-  }
-
+  } 
   Future<void> _connect() async {
     client = reverb.ReverbClient.instance(
       host: 'papigold.com',
@@ -42,8 +43,7 @@ class SocketService with LoggerMixin {
       authorizer: _myAuthorizer,
       useTLS: true,
       appKey: 'numgwtsytqyccouvi54w',
-      // authEndpoint: '${Apis.baseUrl}broadcasting/auth',
-       authEndpoint: 'https://www.papigold.com/broadcasting/auth',
+      authEndpoint: 'https://www.papigold.com/broadcasting/auth',
       pingInterval: const Duration(seconds: 30),
       onError: (error) => logError('--- Socket error: $error'),
     );
@@ -70,9 +70,10 @@ class SocketService with LoggerMixin {
     final connected = Completer<void>();
 
     subscription = client.onConnectionStateChange.listen((state) {
-      if (state == reverb.ConnectionState.connected && client.socketId != null) {
+      if (state == reverb.ConnectionState.connected &&
+          client.socketId != null) {
         if (!connected.isCompleted) connected.complete();
-        } else if (state == reverb.ConnectionState.error ||
+      } else if (state == reverb.ConnectionState.error ||
           state == reverb.ConnectionState.disconnected) {
         if (!connected.isCompleted) {
           connected.completeError(
@@ -113,6 +114,7 @@ class SocketService with LoggerMixin {
       void listener(String _, dynamic data) {
         onEvent(data);
       }
+
       channel.bind(eventName, listener);
       _channels[channelName] = channel;
       _listeners[key] = listener;
@@ -135,8 +137,10 @@ class SocketService with LoggerMixin {
       _unbind(key);
 
       void listener(String _, dynamic data) {
+        sl<CommonRemoteData>().unreadCount();
         onEvent(data);
       }
+
       channel.bind(eventName, listener);
       _channels[fullChannelName] = channel;
       _listeners[key] = listener;

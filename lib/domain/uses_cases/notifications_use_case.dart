@@ -13,6 +13,14 @@ class NotificationsUseCase
   }
 }
 
+class NotificationMarkAsReadUseCase
+    implements UseCase<Either<Failure, void>, String> {
+  @override
+  Future<Either<Failure, void>> call({String? param}) {
+    return sl<CommonRepository>().markAsRead(param!);
+  }
+}
+
 class NotificationCountUseCase implements UseCase<Either<Failure, int>, void> {
   @override
   Future<Either<Failure, int>> call({void param}) {

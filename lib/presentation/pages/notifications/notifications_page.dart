@@ -74,6 +74,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                 itemBuilder: (context, index) {
                   final not = nots[index];
                   return Card(
+                    color: not.readAt == null ? Colors.white12 : null,
                     elevation: 2,
                     child: ListTile(
                       leading: Image.asset(
@@ -81,6 +82,16 @@ class _NotificationsPageState extends State<NotificationsPage> {
                         height: 28.h,
                       ),
                       title: Text(not.data.title),
+                      onTap: () => context.goNamed(
+                        Routes.notification,
+                        pathParameters: {'id': not.id},
+                        extra: {
+                          'title': not.data.title,
+                          'body': not.data.body,
+                          'createdAt': not.createdAt,
+                          'readAt': not.readAt,
+                        },
+                      ),
                     ),
                   );
                 },

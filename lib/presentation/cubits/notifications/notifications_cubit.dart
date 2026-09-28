@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,6 +16,10 @@ class NotificationsCubit extends Cubit<NotificationsState> {
     return await sl<NotificationsUseCase>().call(param: page);
   }
   
+  Future<Either<Failure, void>> maskAsRead(String id) async {
+    return await sl<NotificationMarkAsReadUseCase>().call(param: id);
+  }
+  
   void count() async {
     emit(NotificationsLoading());
     
@@ -24,7 +27,7 @@ class NotificationsCubit extends Cubit<NotificationsState> {
    
     response.fold(
       (l) => emit(NotificationsUnreadFailure(message: l.toString())),
-      (r) => emit(NotificationsUnreadSuccess(count: 1)),
+      (r) => emit(NotificationsUnreadSuccess(count: r)),
     );
   }
 }

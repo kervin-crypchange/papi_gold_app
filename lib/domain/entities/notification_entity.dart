@@ -4,15 +4,17 @@ class NotificationEntity extends Equatable {
   final String id;
   final NotificationDataEntity data;
   final DateTime createdAt;
+  final DateTime? readAt;
 
   const NotificationEntity({
     required this.id,
     required this.data,
     required this.createdAt,
+    this.readAt,
   });
 
   @override
-  List<Object?> get props => [id, data, createdAt];
+  List<Object?> get props => [id, data, createdAt, readAt];
 }
 
 class NotificationDataEntity extends Equatable {
