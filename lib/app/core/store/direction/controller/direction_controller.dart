@@ -3,66 +3,45 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:papi_gold/app/core/store/direction/model/persisten_direction_model.dart';
 
 class DirectionController {
-  final Box<PersistenDirectionModel> _directionBox =
-      Hive.box<PersistenDirectionModel>('directionBox');
+  final Box<PersistentDirectionModel> _directionBox =
+      Hive.box<PersistentDirectionModel>('directionBox');
 
-  final Box<PersistenDirectionModel> _selectedDirectionBox =
-      Hive.box<PersistenDirectionModel>('selectedDirectionBox');
+  final Box<PersistentDirectionModel> _selectedDirectionBox =
+      Hive.box<PersistentDirectionModel>('selectedDirectionBox');
 
-  ValueListenable<Box<PersistenDirectionModel>> get directionsListenable =>
+  ValueListenable<Box<PersistentDirectionModel>> get directionsListenable =>
       _directionBox.listenable();
 
-  ValueListenable<Box<PersistenDirectionModel>> get directionListeable =>
+  ValueListenable<Box<PersistentDirectionModel>> get selectedDirectionsListenable =>
       _selectedDirectionBox.listenable();
 
-  void addSelectedDirection(PersistenDirectionModel direction) async {
+  @Deprecated('Use selectedDirectionsListenable')
+  ValueListenable<Box<PersistentDirectionModel>> get directionListeable =>
+      selectedDirectionsListenable;
+
+  Future<void> addSelectedDirection(PersistentDirectionModel direction) async {
     await _selectedDirectionBox.clear();
-    _selectedDirectionBox.put(1, direction);
+    await _selectedDirectionBox.put(1, direction);
   }
 
-  void addDirection(PersistenDirectionModel direction) {
-    PersistenDirectionModel? existingDirection = _directionBox.get(
-      direction.id,
+  void addDirection(PersistentDirectionModel direction) {
+    final nextDirection = PersistentDirectionModel(
+      id: direction.id,
+      name: direction.name,
+      lastName: direction.lastName,
+      email: direction.email,
+      phone: direction.phone,
+      country: direction.country,
+      state: direction.state,
+      city: direction.city,
+      address1: direction.address1,
+      address2: direction.address2,
+      codeZip: direction.codeZip,
+      type: direction.type,
+      isMain: direction.isMain,
     );
-    if (existingDirection != null) {
-      _directionBox.put(
-        existingDirection.key,
-        PersistenDirectionModel(
-          id: existingDirection.id,
-          name: existingDirection.name,
-          lastName: existingDirection.lastName,
-          email: existingDirection.email,
-          phone: existingDirection.phone,
-          country: existingDirection.country,
-          state: existingDirection.state,
-          city: existingDirection.city,
-          address1: existingDirection.address1,
-          address2: existingDirection.address2,
-          codeZip: existingDirection.codeZip,
-          type: existingDirection.type,
-          isMain: existingDirection.isMain,
-        ),
-      );
-    } else {
-      _directionBox.put(
-        direction.id,
-        PersistenDirectionModel(
-          id: direction.id,
-          name: direction.name,
-          lastName: direction.lastName,
-          email: direction.email,
-          phone: direction.phone,
-          country: direction.country,
-          state: direction.state,
-          city: direction.city,
-          address1: direction.address1,
-          address2: direction.address2,
-          codeZip: direction.codeZip,
-          type: direction.type,
-          isMain: direction.isMain,
-        ),
-      );
-    }
+
+    _directionBox.put(direction.id, nextDirection);
   }
 
   bool removeDirection(int id) {
@@ -73,20 +52,26 @@ class DirectionController {
     return false;
   }
 
-  List<PersistenDirectionModel> getAllDirections() {
-    List<PersistenDirectionModel> directions = [];
-    for (var direction in _directionBox.values) {
-      directions.add(direction);
-    }
-    return directions;
+  List<PersistentDirectionModel> getAllDirections() {
+    return _directionBox.values.toList(growable: false);
   }
 
-  PersistenDirectionModel getSelectedDirection() {
-    return _selectedDirectionBox.values.first;
+  PersistentDirectionModel? getSelectedDirectionOrNull() {
+    return _selectedDirectionBox.values.isEmpty
+        ? null
+        : _selectedDirectionBox.values.first;
+  }
+
+  PersistentDirectionModel getSelectedDirection() {
+    final selectedDirection = getSelectedDirectionOrNull();
+    if (selectedDirection == null) {
+      throw StateError('No selected direction found in the local storage.');
+    }
+    return selectedDirection;
   }
 
   void clear() {
     _directionBox.clear();
-    // _selectedDirectionBox.clear();
+    _selectedDirectionBox.clear();
   }
 }

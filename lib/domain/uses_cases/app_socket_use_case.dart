@@ -10,20 +10,20 @@ class StreamMessagesUseCase
     implements UseCase<Stream<Either<Failure, String>>, void> {
   @override
   Future<Stream<Either<Failure, String>>> call({void param}) async {
-    return sl<AppSocketRespository>().getMessages();
+    return sl<AppSocketRepository>().getMessages();
   }
 }
 
 class ConnectSocketUseCase implements UseCase<Either<Failure, void>, AppSocketsEnum> {
   @override
   Future<Either<Failure, void>> call({AppSocketsEnum? param}) async {
-    return await sl<AppSocketRespository>().connect(param!);
+    return await sl<AppSocketRepository>().connect(param!);
   }
 }
 
 class DisconnectSocketUseCase implements UseCase<Either<Failure, void>, AppSocketsEnum> {
   @override
   Future<Either<Failure, void>> call({AppSocketsEnum? param}) async {
-    return await sl<AppSocketRespository>().disconnect(param!);
+    return await sl<AppSocketRepository>().disconnect(param!);
   }
 }

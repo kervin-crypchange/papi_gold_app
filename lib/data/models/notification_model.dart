@@ -12,7 +12,7 @@ class NotificationModel extends NotificationEntity {
   factory NotificationModel.fromJson(Map<String, dynamic> json) {
     return NotificationModel(
       id: safeString(json['id']),
-      data: NofiticationDataModel.fromJson(json['data']),
+      data: NotificationDataModel.fromJson(json['data']),
       createdAt: safeDateTime(json['created_at']),
       readAt: json['read_at'] != null ? safeDateTime(json['read_at']) : null,
     );
@@ -21,23 +21,23 @@ class NotificationModel extends NotificationEntity {
   factory NotificationModel.fromEntity(NotificationEntity e) {
     return NotificationModel(
       id: e.id,
-      data: NofiticationDataModel.fromEntity(e.data),
+      data: NotificationDataModel.fromEntity(e.data),
       createdAt: e.createdAt,
-      readAt: e.readAt != null ? e.createdAt: null,
+      readAt: e.readAt != null ? e.createdAt : null,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'data': NofiticationDataModel.fromEntity(data).toJson(),
+      'data': NotificationDataModel.fromEntity(data).toJson(),
       'created_at': createdAt,
     };
   }
 }
 
-class NofiticationDataModel extends NotificationDataEntity {
-  const NofiticationDataModel({
+class NotificationDataModel extends NotificationDataEntity {
+  const NotificationDataModel({
     required super.title,
     required super.body,
     required super.icon,
@@ -45,8 +45,8 @@ class NofiticationDataModel extends NotificationDataEntity {
     required super.status,
   });
 
-  factory NofiticationDataModel.fromJson(Map<String, dynamic> json) {
-    return NofiticationDataModel(
+  factory NotificationDataModel.fromJson(Map<String, dynamic> json) {
+    return NotificationDataModel(
       title: safeString(json['title']),
       body: safeString(json['body']),
       icon: safeString(json['icon']),
@@ -55,8 +55,8 @@ class NofiticationDataModel extends NotificationDataEntity {
     );
   }
 
-  factory NofiticationDataModel.fromEntity(NotificationDataEntity e) {
-    return NofiticationDataModel(
+  factory NotificationDataModel.fromEntity(NotificationDataEntity e) {
+    return NotificationDataModel(
       title: e.title,
       body: e.body,
       icon: e.icon,

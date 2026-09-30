@@ -8,12 +8,12 @@ import 'package:papi_gold/injection_container.dart';
 
 part 'checkout_state.dart';
 
-class CheckOutCubit extends Cubit<CheckoutState> {
-  CheckOutCubit() : super(CheckoutInitial());
+class CheckoutCubit extends Cubit<CheckoutState> {
+  CheckoutCubit() : super(CheckoutInitial());
 
   Future<Either<Failure, ResponseCheckOutEntity>> checkout(
     CheckOutEntity e,
   ) async {
-    return await sl<CheckOutUseCase>().call(param: e);
+    return await sl<CheckoutUseCase>().call(param: e);
   }
 }

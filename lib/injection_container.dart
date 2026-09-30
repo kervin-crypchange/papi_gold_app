@@ -25,7 +25,7 @@ Future<void> initializeDependencies() async {
   // Repositories
   sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl());
   sl.registerLazySingleton<CommonRepository>(() => CommonRepositoryImpl());
-  sl.registerLazySingleton<AppSocketRespository>(() => AppSocketRepositoryImpl());
+  sl.registerLazySingleton<AppSocketRepository>(() => AppSocketRepositoryImpl());
   sl.registerLazySingleton<DirectionRepository>(() => DirectionRepositoryImpl());
 
   // Use cases
@@ -37,7 +37,7 @@ Future<void> initializeDependencies() async {
   sl.registerLazySingleton(() => OrderUseCase());
   sl.registerLazySingleton(() => ProductsUseCase());
   sl.registerLazySingleton(() => ProductUseCase());
-  sl.registerLazySingleton(() => CheckOutUseCase());
+  sl.registerLazySingleton(() => CheckoutUseCase());
   sl.registerLazySingleton(() => PaymentUseCase());
   sl.registerLazySingleton(() => CountriesUseCase());
   sl.registerLazySingleton(() => LocationUseCase());
@@ -59,7 +59,7 @@ Future<void> initializeDependencies() async {
   sl.registerFactory(() => AuthCubit());
   sl.registerFactory(() => OrdersCubit());
   sl.registerFactory(() => ProductCubit());
-  sl.registerFactory(() => CheckOutCubit());
+  sl.registerFactory(() => CheckoutCubit());
   sl.registerFactory(() => PaymentCubit());
   sl.registerFactory(() => LocationCubit());
   sl.registerFactory(() => TrackingCubit());

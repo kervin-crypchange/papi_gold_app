@@ -26,12 +26,25 @@ Widget showSelectedDirection(BuildContext context) {
           ],
         );
       },
+      emptyBuilder: (context) {
+        return Row(
+          children: [
+            Expanded(
+              child: Text(
+                'Selecciona una dirección',
+                style: context.bodySmall.copyWith(color: AppColors.white),
+              ).overflowText(TextOverflow.ellipsis),
+            ),
+            Icon(Icons.arrow_drop_down, color: AppColors.white),
+          ],
+        );
+      },
     ),
   );
 }
 
 void showDirectionsSheet(BuildContext context) {
-  final selectedDirection = PersistentDirection().selectedDirection();
+  final selectedDirection = PersistentDirection().selectedDirectionOrNull();
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
@@ -57,7 +70,8 @@ void showDirectionsSheet(BuildContext context) {
                     return ListTile(
                       minTileHeight: 40,
                       isThreeLine: true,
-                      selected: selectedDirection.id == direction.id,
+                      selected: selectedDirection != null &&
+                          selectedDirection.id == direction.id,
                       title: Text(
                         direction.address1,
                       ).overflowText(TextOverflow.ellipsis),

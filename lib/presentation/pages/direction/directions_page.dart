@@ -25,7 +25,7 @@ class DirectionsPage extends StatefulWidget {
 
 class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
   bool isLoading = true;
-  List<PersistenDirectionModel> _directions = [];
+  List<PersistentDirectionModel> _directions = [];
   @override
   void initState() {
     super.initState();
@@ -33,7 +33,7 @@ class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
 
   void _showModalSheet(
     BuildContext context,
-    PersistenDirectionModel direction,
+    PersistentDirectionModel direction,
   ) async {
     final res = await showModalActionSheet(
       context: context,
@@ -85,7 +85,7 @@ class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
     });
   }
 
-  void _setAsDefault(PersistenDirectionModel direction) async {
+  void _setAsDefault(PersistentDirectionModel direction) async {
     final r = await showOkCancelAlertDialog(
       context: context,
       title: direction.name,
@@ -158,7 +158,7 @@ class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
     );
   }
 
-  ListView _listViewUI(List<PersistenDirectionModel> directions) {
+  ListView _listViewUI(List<PersistentDirectionModel> directions) {
     return ListView.separated(
       separatorBuilder: (context, index) => Gap(12.h),
       itemCount: directions.length,
@@ -169,7 +169,7 @@ class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
     );
   }
 
-  Widget directionCard(PersistenDirectionModel d) {
+  Widget directionCard(PersistentDirectionModel d) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: 6.h,

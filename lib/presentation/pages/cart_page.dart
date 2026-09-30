@@ -28,9 +28,8 @@ class CartPage extends StatefulWidget {
 class _CartPageState extends State<CartPage> with MessengerMixin {
   List<PersistentShoppingCartItem> _cartItems = [];
   late PersistentClientDataModel client;
-  CheckOutEntity? checkout;
   bool isLoading = false;
-  // PersistenDirectionModel? selectedDirection;
+  // PersistentDirectionModel? selectedDirection;
 
   void _checkout() {
     if (_cartItems.isEmpty) {
@@ -41,7 +40,14 @@ class _CartPageState extends State<CartPage> with MessengerMixin {
       return;
     }
 
-    final selectedDirection = DirectionController().getSelectedDirection();
+      final selectedDirection = DirectionController().getSelectedDirectionOrNull();
+      if (selectedDirection == null) {
+        messenger.showSnackBar(
+          'Debes seleccionar una dirección antes de continuar.',
+          color: AppColors.error,
+        );
+        return;
+      }
 
     final clientData = ClientEntity(
       name: client.name,
@@ -57,7 +63,7 @@ class _CartPageState extends State<CartPage> with MessengerMixin {
       codeZip: selectedDirection.codeZip,
     );
 
-    checkout = CheckOutEntity(
+    final checkout = CheckOutEntity(
       client: clientData,
       cart: _cartItems
           .map(
@@ -74,7 +80,7 @@ class _CartPageState extends State<CartPage> with MessengerMixin {
     setState(() {
       isLoading = true;
     });
-    context.read<CheckOutCubit>().checkout(checkout!).then((either) {
+    context.read<CheckoutCubit>().checkout(checkout).then((either) {
       either.fold(
         (failure) =>
             messenger.showSnackBar(failure.toString(), color: AppColors.error),
