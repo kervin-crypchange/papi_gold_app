@@ -33,7 +33,7 @@ class AppConfig {
       case AppEnvironment.staging:
         return const AppConfig(
           environment: AppEnvironment.staging,
-          apiBaseUrl: 'https://staging.papigold.com/api/',
+          apiBaseUrl: 'https://papigold.com/api/'
         );
       case AppEnvironment.prod:
         return const AppConfig(
