@@ -183,7 +183,7 @@ class SocketService with LoggerMixin {
     _isInitialized = false;
     _listeners.clear();
     _channels.clear();
-    await client.disconnect();
+    client.disconnect();
   }
 
   Future<Map<String, String>> _myAuthorizer(

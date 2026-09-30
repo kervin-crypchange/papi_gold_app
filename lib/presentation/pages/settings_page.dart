@@ -189,7 +189,6 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
                     );
 
                     if (res == OkCancelResult.ok) {
-                      await socketService.disconnect();
                       _logout();
                     }
                   },

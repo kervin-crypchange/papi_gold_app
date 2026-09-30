@@ -128,6 +128,7 @@ class _NavigationPageState extends State<NavigationPage>
 
   @override
   void dispose() {
+    socketService.disconnect();
     super.dispose();
   }
 
