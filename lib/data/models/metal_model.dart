@@ -88,10 +88,10 @@ class MetalCategoryModel extends MetalCategoryEntity {
   /// Converts a JSON map to a [Model].
   factory MetalCategoryModel.fromJson(Map<String, dynamic> json) {
     return MetalCategoryModel(
-      id: json['id'],
-      name: json['name'],
-      stock: json['stock'],
-      price: json['price'],
+      id: safeInt(json['id']),
+      name: safeString(json['name']),
+      stock: safeInt(json['stock']),
+      price: safeDouble(json['price']),
     );
   }
 

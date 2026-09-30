@@ -23,8 +23,25 @@ class AuthLocalDataImpl extends AuthLocalData with LoggerMixin {
   @override
   void saveToken(String token) {
     try {
-      if (getSavedToken().isNotEmpty) clear();
       box.put(BoxEnum.config.token, token);
+    } catch (e) {
+      throw LocalFailure();
+    }
+  }
+
+  @override
+  String getSavedRefreshToken() {
+    try {
+      return box.get(BoxEnum.config.refreshToken, defaultValue: '');
+    } catch (e) {
+      throw LocalFailure();
+    }
+  }
+
+  @override
+  void saveRefreshToken(String token) {
+    try {
+      box.put(BoxEnum.config.refreshToken, token);
     } catch (e) {
       throw LocalFailure();
     }

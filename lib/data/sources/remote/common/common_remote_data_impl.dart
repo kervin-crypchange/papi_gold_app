@@ -1,3 +1,4 @@
+
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:logger/web.dart';
@@ -177,6 +178,44 @@ class CommonRemoteDataImpl extends CommonRemoteData {
         queryParameters: {"trackingNumber": tracking},
       );
       return Right(TrackingModel.fromJson(res.data['data']));
+    } on DioException catch (e) {
+      return Left(ServerException(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, ResponseNotificationsModel>> notifications(
+    int page,
+  ) async {
+    try {
+      final res = await sl<DioClient>().get(
+        Apis.notifications,
+        queryParameters: {'page': page, 'per_page': 10},
+      );
+      return Right(ResponseNotificationsModel.fromJson(res.data));
+    } on DioException catch (e) {
+      return Left(ServerException(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> markAsRead(String id) async {
+    try {
+      await sl<DioClient>().put('${Apis.notifications}/$id');
+      await unreadCount();
+      return Right(null);
+    } on DioException catch (e) {
+      return Left(ServerException(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, int>> unreadCount() async {
+    try {
+      final res = await sl<DioClient>().get(
+        '${Apis.notifications}/unread-count',
+      );
+      return Right(res.data['count']);
     } on DioException catch (e) {
       return Left(ServerException(e));
     }

@@ -51,6 +51,9 @@ Future<void> initializeDependencies() async {
   sl.registerLazySingleton(() => CreateDirectionUseCase());
   sl.registerLazySingleton(() => MapNamesUseCase());
   sl.registerLazySingleton(() => PricesUseCase());
+  sl.registerLazySingleton(() => NotificationsUseCase());
+  sl.registerLazySingleton(() => NotificationCountUseCase());
+  sl.registerLazySingleton(() => NotificationMarkAsReadUseCase());
 
   // Cubits
   sl.registerFactory(() => AuthCubit());
@@ -63,4 +66,5 @@ Future<void> initializeDependencies() async {
   sl.registerFactory(() => AppSocketCubit());
   sl.registerFactory(() => DirectionsCubit());
   sl.registerFactory(() => PricesCubit());
+  sl.registerFactory(() => NotificationsCubit());
 }

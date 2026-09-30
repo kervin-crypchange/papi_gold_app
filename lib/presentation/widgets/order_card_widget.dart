@@ -39,12 +39,12 @@ class OrderCardWidget extends StatelessWidget {
         ),
         trailing: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             BadgeWidget(label: order.status.name, color: isDarkTheme ? AppColors.secondaryLigth: AppColors.secondary,),
             Text(
               formatMoney(order.totalVenta),
-              style: context.bodyMedium.copyWith(color: AppColors.secondary),
+              style: context.bodySmall.copyWith(color: AppColors.secondary),
             ),
           ],
         ),

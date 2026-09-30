@@ -81,6 +81,19 @@ final GoRouter router = GoRouter(
           name: Routes.notifications,
           path: Routes.notifications,
           builder: (context, state) => NotificationsPage(),
+          routes: [
+            GoRoute(
+              name: Routes.notification,
+              path: '${Routes.notifications}/:id',
+              builder: (context, state) {
+                final id = state.pathParameters['id']!;
+                return NotificationPage(
+                  id: id,
+                  not: state.extra as Map<String, dynamic>,
+                );
+              },
+            ),
+          ],
         ),
         GoRoute(
           name: Routes.about,

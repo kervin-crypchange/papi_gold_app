@@ -20,6 +20,7 @@ class AuthCubit extends Cubit<AuthState> with LoggerMixin {
     res.fold((l) => emit(AuthError(message: l.message)), (r) {
       try {
         sl<AuthLocalData>().saveToken(r.token);
+        sl<AuthLocalData>().saveRefreshToken(r.refreshToken);
         sl<AuthLocalData>().setIsLogged(true);
       } catch (_) {}
       emit(AuthSuccess(response: r));

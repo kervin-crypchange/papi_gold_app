@@ -14,6 +14,7 @@ abstract class Routes {
   static const product = 'product';
   static const cart = 'cart';
   static const notifications = 'notifications';
+  static const notification = 'notification';
   static const about = 'about';
   static const address = 'address';
   static const newAddress = 'newAddres';

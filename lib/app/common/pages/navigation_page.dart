@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:papi_gold/app/common/enums/app_sockets_enum.dart';
@@ -10,8 +11,9 @@ import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/constants/index.dart';
 import 'package:papi_gold/app/core/services/socket_service.dart';
 import 'package:papi_gold/app/core/theme/index.dart';
+import 'package:papi_gold/presentation/cubits/index.dart';
+import 'package:papi_gold/presentation/widgets/index.dart';
 import 'package:persistent_shopping_cart/persistent_shopping_cart.dart';
-import 'package:pusher_reverb_flutter/pusher_reverb_flutter.dart' as connstate;
 import 'package:connectivity_plus/connectivity_plus.dart';
 
 class NavigationPage extends StatefulWidget {
@@ -21,7 +23,8 @@ class NavigationPage extends StatefulWidget {
   State<NavigationPage> createState() => _NavigationPageState();
 }
 
-class _NavigationPageState extends State<NavigationPage> with MessengerMixin {
+class _NavigationPageState extends State<NavigationPage>
+    with MessengerMixin, LoggerMixin {
   List<ConnectivityResult> _connectionStatus = [
     ConnectivityResult.wifi,
     ConnectivityResult.mobile,
@@ -48,8 +51,9 @@ class _NavigationPageState extends State<NavigationPage> with MessengerMixin {
   @override
   void initState() {
     super.initState();
+    context.read<NotificationsCubit>().count();
     initConnectivity();
-
+    initSocket();
     connectivitySubscription = _connectivity.onConnectivityChanged.listen(
       _updateConnectionStatus,
     );
@@ -103,20 +107,28 @@ class _NavigationPageState extends State<NavigationPage> with MessengerMixin {
   Future<void> initSocket() async {
     await socketService.init();
 
-    final String channelName = AppSocketsEnum.notification.channel;
-    final String eventName = AppSocketsEnum.notification.event;
+    await socketService.listenToPrivateChannel(
+      AppSocketsEnum.notification.channel,
+      AppSocketsEnum.notification.event,
+      (data) {
+        log('--- $data');
+        messenger.showSnackBar(data, color: AppColors.secondary);
+      },
+    );
 
-    socketService.client.onConnectionStateChange.listen((state) {
-      if (state == connstate.ConnectionState.connected) {
-        socketService.listenToPrivateChannel(channelName, eventName, (data) {
-          debugPrint('--- $data');
-        });
-      }
-    });
+    await socketService.listenToPublicChannel(
+      AppSocketsEnum.product.channel,
+      AppSocketsEnum.product.event,
+      (data) {
+        log('--- $data');
+        messenger.showSnackBar(data, color: AppColors.secondary);
+      },
+    );
   }
 
   @override
   void dispose() {
+    // socketService.disconnect();
     super.dispose();
   }
 
@@ -169,10 +181,7 @@ class _NavigationPageState extends State<NavigationPage> with MessengerMixin {
               );
             },
           ),
-          IconButton(
-            onPressed: () => context.goNamed(Routes.notifications),
-            icon: Icon(Icons.notifications_none_outlined, size: 18.w),
-          ),
+          UnreadCountWidget(),
         ],
       ),
       body: PopScope(
