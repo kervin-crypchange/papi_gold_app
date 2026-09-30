@@ -23,13 +23,16 @@ String publishableKey =
     "pk_test_51T3zYL8jtYx1E1JT3qN550tkyWo3JYLrHcGGLGVAadTtGUA62FTusAQHoceMJZI8iJm0Mi0mvmpJXEk9auleG8ax008dKcvIoV";
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge); 
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    systemNavigationBarColor: Colors.transparent,
-    systemNavigationBarDividerColor: Colors.transparent,
-    statusBarColor: Colors.transparent,
-    statusBarIconBrightness: Brightness.dark,
-  ));
+  debugPrintRebuildDirtyWidgets = true;
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      systemNavigationBarColor: Colors.transparent,
+      systemNavigationBarDividerColor: Colors.transparent,
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
+    ),
+  );
   try {
     await Hive.initFlutter();
     Stripe.publishableKey = publishableKey;
@@ -95,7 +98,7 @@ class BlocProviders extends StatelessWidget {
       child: const MainApp(),
     );
   }
-} 
+}
 
 class MainApp extends StatefulWidget {
   const MainApp({super.key});
@@ -134,7 +137,7 @@ class _MainAppState extends State<MainApp> {
       builder: (context, child) {
         return ValueListenableBuilder<ThemeMode>(
           valueListenable: AppThemes.themeModeNotifier,
-          builder: (context, currentMode,_) {
+          builder: (context, currentMode, _) {
             return MaterialApp.router(
               debugShowCheckedModeBanner: true,
               theme: AppThemes.lightTheme,

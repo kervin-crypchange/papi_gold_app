@@ -27,10 +27,28 @@ Punto de entrada para que Stripe notifique cambios de estado en los pagos de for
 - **Parámetros (Headers):**
   - `Stripe-Signature` (requerido): Firma para validación de autenticidad.
 - **Eventos Procesados:**
-  - `payment_intent.succeeded`: El pago se completó exitosamente. Actualiza la venta a **Aprobado**, reduce el stock aloof e incrementa el stock de venta real.
-  - `payment_intent.payment_failed`: El pago falló. Actualiza el estado a **Fallido**.
-  - `payment_intent.processing`, `payment_intent.canceled`, `payment_intent.requires_action`.
-  - `charge.refunded`: El cargo fue reembolsado. Actualiza el estado a **Reintegrado**.
+  - `payment_intent.created`: El pago se creó. Actualiza a **Pendiente**.
+  - `payment_intent.succeeded`: El pago se completó exitosamente. Actualiza a **Aprobado**, reduce el stock aloof e incrementa el stock de venta real.
+  - `payment_intent.processing`: El pago está en proceso. Actualiza a **Procesando**.
+  - `payment_intent.requires_action`: Se requiere autenticación (3DS). Actualiza a **Requiere Acción**.
+  - `payment_intent.amount_capturable_updated`, `payment_intent.requires_capture`: Cargo autorizado sin capturar. Actualiza a **Autorizado**.
+  - `payment_intent.payment_failed`: El pago falló. Actualiza a **Fallido**.
+  - `payment_intent.canceled`: El pago fue cancelado. Actualiza a **Cancelado**.
+  - `charge.succeeded`, `charge.captured`: Cargo completado. Actualiza a **Aprobado**.
+  - `charge.pending`: Cargo en espera. Actualiza a **Procesando**.
+  - `charge.failed`: Cargo fallido. Actualiza a **Fallido**.
+  - `charge.expired`: Cargo expirado. Actualiza a **Expirado**.
+  - `charge.refunded`: Reembolso total (o parcial si aún queda monto sin reembolsar). Actualiza a **Reintegrado** o **Reintegrado parcial**.
+  - `refund.pending`: Reembolso en proceso. Actualiza a **Reintegro pendiente**.
+  - `refund.requires_action`: El reembolso requiere acción. Actualiza a **Reintegro requiere acción**.
+  - `refund.succeeded`: Reembolso completado. Actualiza a **Reintegrado**.
+  - `refund.failed`: Reembolso fallido. Actualiza a **Reintegro fallido**.
+  - `refund.canceled`: Reembolso cancelado. Actualiza a **Cancelado**.
+  - `charge.dispute.created`, `charge.dispute.updated`: El pago fue disputado. Actualiza a **En disputa**.
+  - `charge.dispute.closed` (resultado `won`): Disputa ganada. Actualiza a **Disputa ganada**.
+  - `charge.dispute.closed` (resultado `lost`): Disputa perdida. Actualiza a **Reintegrado por disputa**.
+  - `charge.dispute.funds_reinstated`: Fondos de la disputa devueltos. Actualiza a **Disputa ganada**.
+  - `charge.dispute.funds_withdrawn`: Fondos de la disputa retirados. Actualiza a **Reintegrado por disputa**.
 - **Ejemplo de Petición (Payload de Stripe):**
 ```json
 {
@@ -69,8 +87,10 @@ Requerido para **todas** las peticiones públicas (bajo el middleware `app_key`)
 - **Valor:** Definido en el entorno del servidor (ej. `base64:vI6...`)
 
 ### 2.2 Autenticación Sanctum (Bearer Token)
-Requerido para endpoints del área privada del cliente. Los tokens emitidos pueden tener alcances (scopes):
-- `full-access`: Permite realizar acciones críticas como cambiar la contraseña.
+Requerido para endpoints del área privada del cliente. El login emite un **par de tokens**:
+- **Access Token** (`full-access`): Vida corta. Configurable con la setting `password_session_token_expirationlt 60 min). Se usa en el header para las operaciones del área privada.
+- **Refresh Token** (`refresh-only`): Vida larga. Configurable con la setting `refresh_token_expiration_days` (default 30 días). Solo sirve para renovar la sesión vía `POST /api/session/refresh`. Si se presenta en cualquier otra ruta protegida es rechazado con `401 Unauthorized`.
+- **Nota:** Las sesiones iniciadas vía Magic Link emiten un token `limited-access` cuya duración se gestiona aparte con la setting `magic_session_token_expiration` (default 30 min); no incluyen refresh token.
 - **Header:** `Authorization: Bearer {token}`
 
 ### 2.3 Sistema de Traducciones
@@ -99,7 +119,7 @@ La API utiliza **Laravel Reverb** para notificar cambios en los datos de forma i
 | `prices` | `prices.updated` | Se dispara cuando cambian los precios internacionales de los metales. |
 | `products` | `product.updated` | Se dispara cuando se modifica un producto, su stock o su precio. |
 | `settings` | `settings.updated` | Se dispara cuando cambian los ajustes globales del sitio. |
-| `chat.{identifier}` | `message.sent` | **Canal privado/presencia** para el chat de soporte (requiere identificador de sesión). |
+| `chat.{identifier}` | `message.sent` | Canal privado/presencia para el chat de soporte (requiere identificador de sesión). |
 | `client.{id}` | `notification.received` | **Canal Privado**: Se dispara cuando el cliente recibe una nueva notificación de sistema. |
 | `client.{id}` | `sale.updated` | **Canal Privado**: Se dispara cuando un pedido del cliente cambia de estado o datos. |
 
@@ -410,8 +430,9 @@ Filtra ubicaciones geográficas de forma jerárquica.
   - `401 Unauthorized`: Si falta el `X-API-Key`.
 
 ### 5.3 Mapeo de Ubicación GPS a IDs internos
-Permite convertir coordenadas geográficas (`lat`/`lon`) en IDs internos del sistema (`country_id`, `state_id`, `city_id`) y obtener datos de dirección formateados para autocompletar formularios. El servidor consulta internamente servicios de geocodificación inversa.
-- **URL:** `POST /api/location/map-names`
+Permite convertir coordenadas geográficas (`lat`/`lon`) en IDs internos del sistema (`country_id`, `state_id`, `city_id`) y obtener datos de dirección formateados para autocompletar formularios. El servidor consulta internamente servicios de geocodificación inversa. (**API usada** `https://nominatim.openstreetmap.org/reverse?lat=10.480710&lon=-66.962740&format=json&accept-language=es` )
+
+- **URL:** `POST /api/location/map-names` 
 - **Uso Recomendado:** 
   1. Obtener coordenadas `lat` y `lon` del navegador o dispositivo del cliente.
   2. Enviar directamente las coordenadas a este endpoint.
@@ -432,6 +453,7 @@ Permite convertir coordenadas geográficas (`lat`/`lon`) en IDs internos del sis
   "state_id": 3939,
   "city_id": 47265,
   "address1": "Avenida Universidad",
+  "address2": "Urbanización Colinas de Vista Alegre",
   "code_zip": "1010"
 }
 ```
@@ -462,6 +484,7 @@ Permite convertir coordenadas geográficas (`lat`/`lon`) en IDs internos del sis
         "city_id": null,
         "code_zip": "28001",
         "address1": "Calle Mayor 1",
+        "address2": "Urbanización Colinas de Vista Alegre",
         "errors": {
           "country": "No se encontró la ubicación solicitada. (España)"
         }
@@ -476,6 +499,7 @@ Permite convertir coordenadas geográficas (`lat`/`lon`) en IDs internos del sis
       "city_id": null,
       "code_zip": "1010",
       "address1": "Av. Principal",
+      "address1": "Urbanización Colinas de Vista Alegre",
       "errors": {
         "state": "No se encontró la ubicación solicitada. (Estado Desconocido)"
       }
@@ -516,7 +540,7 @@ Endpoint interno que verifica la firma y redirige al frontend.
   - `401 Unauthorized`: Token expirado o inválido.
 
 ### 6.3 Login (Sesión por Contraseña)
-Autenticación tradicional para clientes con contraseña establecida.
+Autenticación tradicional para clientes con contraseña establecida. Emite un par de tokens: access token (vida corta) y refresh token (vida larga, ver §2.2).
 - **URL:** `POST /api/session`
 - **Parámetros (Request Body):**
   - `email` (requerido): Correo del usuario.
@@ -525,6 +549,7 @@ Autenticación tradicional para clientes con contraseña establecida.
 ```json
 {
   "token": "1|ABC...",
+  "refresh_token": "2|DEF...",
   "client": {
     "id": 5,
     "name": "Juan",
@@ -534,26 +559,37 @@ Autenticación tradicional para clientes con contraseña establecida.
   "message": "Inicio de sesión exitoso."
 }
 ```
+- **Nota:** Ambos tokens deben almacenarse. El `refresh_token` es de un solo uso: cada vez que se use se entrega uno nuevo en la respuesta.
 - **Errores:**
   - `403 Forbidden`: Correo electrónico no verificado.
   - `422 Unprocessable Content`: Credenciales incorrectas o error de validación.
 
-### 6.4 Refrescar Token
-Permite renovar el token de sesión actual.
-- **URL:** `PUT /api/session`
-- **Parámetros:** Ninguno (Requiere Bearer Token en Header).
+### 6.4 Refrescar Sesión Expirada (Refresh Token)
+Permite renovar la sesión cuando el access token ya expiró, presentando el refresh token recibido en el login. El refresh token es de un solo uso (rotación): cada llamada revoca el par anterior y entrega un par nuevo.
+- **URL:** `POST /api/session/refresh`
+- **Seguridad:** Requiere header `X-API-Key`. El Bearer Token debe ser el refresh token (`refresh-only`), no el access token.
+- **Parámetros:** Ninguno (Requiere Bearer Token con el refresh token).
 - **Respuesta (200 OK):**
 ```json
 {
-  "token": "2|XYZ...",
+  "token": "4|JKL...",
+  "refresh_token": "5|MNO...",
   "message": "Token refrescado exitosamente."
 }
 ```
+- **Nota:** Descartar ambos tokens anteriores y almacenar el par nuevo. Un refresh token ya utilizado responde siempre `401`.
 - **Errores:**
-  - `401 Unauthorized`: Token inválido, expirado o falta App Key.
+  - `401 Unauthorized`: Refresh token inválido, expirado o ya utilizado (rotado).
+    ```json
+    {
+      "message": "Tu sesión ha expirado. Por favor inicia sesión de nuevo."
+    }
+    ```
+  - `403 Forbidden`: Correo electrónico no verificado.
+  - `429 Too Many Requests`: Límite de 10 peticiones por minuto por IP.
 
 ### 6.5 Logout
-Cierra la sesión actual revocando el token Bearer.
+Cierra la sesión actual revocando todos los tokens emitidos para el cliente (access token y refresh token).
 - **URL:** `DELETE /api/session`
 - **Parámetros:** Ninguno (Requiere Bearer Token en Header).
 - **Respuesta (200 OK):**
@@ -610,9 +646,16 @@ Permite registrar un nuevo cliente en el sistema.
 {
   "message": "Orden creada exitosamente",
   "sale": { "order": "ORD-123", "invoice_number": "PG-5521", "total_v": 1250.50 },
-  "clientSecret": "pi_...", "paymentId": "pay_..."
+  "clientSecret": "pi_...", "paymentId": "pay_...",
+  "originalAmount": 1250.50,
+  "payFee": 39.27,
+  "totalWithFee": 1289.77
 }
 ```
+- **Campos de comisión Stripe:**
+  - `originalAmount` (float): Monto neto de la orden (sin comisión).
+  - `payFee` (float): Comisión de Stripe calculada sobre la transacción. Fórmula: `fee = adjustedAmount - originalAmount`, donde `adjustedAmount = (originalAmount + fixedFee) / (1 - percentageFee)`.
+  - `totalWithFee` (float): Monto total cobrado al cliente (monto original + comisión de Stripe).
 - **Errores:**
   - `409 Conflict`: `price_changed` (el precio subió) o `client_exists_confirmation_required`.
   - `422 Unprocessable Content`: `insufficient_stock` o errores de validación.
@@ -626,12 +669,38 @@ Genera una nueva intención de pago para una orden existente.
 ```json
 {
   "clientSecret": "pi_...",
-  "paymentId": "pay_..."
+  "paymentId": "pay_...",
+  "originalAmount": 1250.50,
+  "payFee": 39.27,
+  "totalWithFee": 1289.77
 }
 ```
 - **Errores:**
   - `404 Not Found`: Si la orden no existe.
   - `422 Unprocessable Content`: Si la orden ya está pagada o el monto es inválido.
+
+### 7.3 Crear Pago de Envío
+Genera un intento de pago de Stripe para cubrir el costo de envío de una orden.
+- **URL:** `POST /api/shipping-payment`
+- **Seguridad:** Requiere Bearer Token y Middleware de verificación.
+- **Parámetros (Request Body):**
+  - `shipping_id` (requerido): ID numérico del registro de envío.
+- **Respuesta (200 OK):**
+```json
+{
+  "clientSecret": "pi_1P...",
+  "paymentId": 125,
+  "amount": 25.50,
+  "totalWithFees": 26.85,
+  "payFee": 1.35
+}
+```
+- **Errores:**
+  - `409 Conflict`: 
+    - `already_paid`: Si el envío ya ha sido pagado en su totalidad.
+    - `pending_payment`: Si ya existe un pago con estatus "Pendiente" para este envío.
+  - `400 Bad Request`: Si el envío no tiene un monto asignado o es inválido.
+  - `404 Not Found`: Si el envío no existe o no pertenece al cliente autenticado.
 
 ---
 
@@ -851,16 +920,28 @@ Obtiene un resumen financiero de las compras del cliente.
     },
     "payments": [
       {
-        "id": 50, "amount": 1250.50, "reference": "pi_...", "type": "Compra",
+        "id": 50, "amount": 1250.50, "amount_gross": 1289.77, "pay_fee": 39.27,
+        "reference": "pi_...", "type": "Compra",
         "status": { "id": 1, "name": "Aprobado", "translations": { ... } },
-        "method": { "id": 10, "name": "Stripe", "description": "card" }
+        "method": { "id": 10, "name": "Stripe", "description": "card" },
+        "created_at": "2026-08-17 10:30"
       }
     ],
     "shipping": [
       {
         "id": 10, "tracking_number": "1Z999...", "address": "Venezuela - Miranda - Guarenas - gua - n2", 
         "courier": { "id": 5, "name": "UPS" },
-        "status": { "id": 3, "name": "Entregado" }
+        "status": { "id": 3, "name": "Entregado" },
+        "amount": 25.50,
+        "payments": [
+          {
+            "id": 1, "amount": 25.50, "amount_gross": 26.85, "pay_fee": 1.35,
+            "reference": "pi_1P...",
+            "status": { "id": 1, "name": "Aprobado" },
+            "method": { "id": 10, "name": "Stripe" },
+            "created_at": "2026-08-17 11:00"
+          }
+        ]
       }
     ]
   }

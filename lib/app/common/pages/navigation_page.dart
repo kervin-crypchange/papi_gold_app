@@ -30,7 +30,7 @@ class _NavigationPageState extends State<NavigationPage>
     ConnectivityResult.mobile,
   ];
   final Connectivity _connectivity = Connectivity();
-  
+
   bool get _isConnected =>
       _connectionStatus.contains(ConnectivityResult.wifi) ||
       _connectionStatus.contains(ConnectivityResult.mobile);
@@ -128,7 +128,7 @@ class _NavigationPageState extends State<NavigationPage>
 
   @override
   void dispose() {
-    socketService.disconnect();
+    // socketService.disconnect();
     super.dispose();
   }
 
@@ -180,10 +180,8 @@ class _NavigationPageState extends State<NavigationPage>
                 onPressed: () => context.goNamed(Routes.cart),
               );
             },
-          ), 
-          UnreadCountWidget(
-            key: UniqueKey(),
-          )
+          ),
+          UnreadCountWidget(),
         ],
       ),
       body: PopScope(

@@ -95,7 +95,6 @@ final GoRouter router = GoRouter(
             ),
           ],
         ),
-
         GoRoute(
           name: Routes.about,
           path: Routes.about,

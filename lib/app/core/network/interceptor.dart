@@ -54,9 +54,9 @@ class InterceptorWrapper extends Interceptor with MessengerMixin {
 
           try {
             final response = await _dio.fetch<dynamic>(requestOptions);
-            if (context != null && context.mounted) {
-              showLoading(context, false);
-            }
+            // if (context != null && context.mounted) {
+            //   showLoading(context, false);
+            // }
             handler.resolve(response);
             return;
           } on DioException catch (retryError) {
@@ -79,7 +79,7 @@ class InterceptorWrapper extends Interceptor with MessengerMixin {
         if (requiresVerification == true) {
           messenger.showSnackBar(message, color: AppColors.error);
         }
-
+        handler.next(err);
         break;
       case 404:
         logger.e('Error 404');
@@ -135,7 +135,9 @@ class InterceptorWrapper extends Interceptor with MessengerMixin {
     RequestInterceptorHandler handler,
   ) async {
     final requestPath = '${options.baseUrl}${options.path}';
-    final dynamic token = await box.get(BoxEnum.config.token);
+    final dynamic token = options.extra['useRefreshToken'] == true
+        ? sl<AuthLocalData>().getSavedRefreshToken()
+        : await box.get(BoxEnum.config.token);
 
     if (token != null && token.isNotEmpty) {
       options.headers['Authorization'] = 'Bearer $token';
