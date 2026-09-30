@@ -180,7 +180,9 @@ class _NavigationPageState extends State<NavigationPage>
               );
             },
           ), 
-          UnreadCountWidget()
+          UnreadCountWidget(
+            key: UniqueKey(),
+          )
         ],
       ),
       body: PopScope(

@@ -178,12 +178,12 @@ class SocketService with LoggerMixin {
     }
   }
 
-  void disconnect() {
+  Future<void> disconnect() async {
     if (!_isInitialized) return;
     _isInitialized = false;
     _listeners.clear();
     _channels.clear();
-    client.disconnect();
+    await client.disconnect();
   }
 
   Future<Map<String, String>> _myAuthorizer(

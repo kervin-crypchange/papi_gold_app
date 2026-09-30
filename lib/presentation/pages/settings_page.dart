@@ -25,6 +25,7 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
   bool _isLoading = false;
   bool _isLocationGranted = false;
   bool _isNotificationGranted = false;
+  SocketService socketService = SocketService();
 
   @override
   void initState() {
@@ -53,10 +54,8 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
     });
     context.read<AuthCubit>().logout().then((either) {
       either.fold(
-        (failure) => messenger.showSnackBar(
-          failure.toString(),
-          color: AppColors.error,
-        ),
+        (failure) =>
+            messenger.showSnackBar(failure.toString(), color: AppColors.error),
         (res) {
           setState(() {
             _isLoading = false;
@@ -190,6 +189,7 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
                     );
 
                     if (res == OkCancelResult.ok) {
+                      await socketService.disconnect();
                       _logout();
                     }
                   },
