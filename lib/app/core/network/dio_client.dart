@@ -4,20 +4,22 @@ import 'package:papi_gold/app/core/network/interceptor.dart';
 
 class DioClient {
   late final Dio _dio;
-  DioClient()
-    : _dio = Dio(
-        BaseOptions(
-          baseUrl: Apis.baseUrl,
-          headers: {
-            'Content-Type': 'application/json',
-            'User-Agent': 'PapiGold/1.0.0 (Mobile; Flutter-Dio)',
-          },
-          responseType: ResponseType.json,
-          sendTimeout: const Duration(seconds: 10 * 6000),
-          connectTimeout: const Duration(seconds: 10 * 6000),
-          receiveTimeout: const Duration(seconds: 10 * 6000),
-        ),
-      )..interceptors.add(InterceptorWrapper());
+  DioClient() {
+    _dio = Dio(
+      BaseOptions(
+        baseUrl: Apis.baseUrl,
+        headers: {
+          'Content-Type': 'application/json',
+          'User-Agent': 'PapiGold/1.0.0 (Mobile; Flutter-Dio)',
+        },
+        responseType: ResponseType.json,
+        sendTimeout: const Duration(seconds: 10 * 6000),
+        connectTimeout: const Duration(seconds: 10 * 6000),
+        receiveTimeout: const Duration(seconds: 10 * 6000),
+      ),
+    );
+    _dio.interceptors.add(InterceptorWrapper(_dio));
+  }
 
   // GET METHOD
   Future<Response> get(

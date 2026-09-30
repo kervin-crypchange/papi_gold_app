@@ -125,7 +125,10 @@ class AuthDataImpl extends AuthData with LoggerMixin {
   @override
   Future<Either<Failure, void>> refreshToken() async {
     try {
-      final res = await sl<DioClient>().put(Apis.session);
+      final res = await sl<DioClient>().put(
+        Apis.session,
+        options: Options(extra: {'skipAuthRefresh': true}),
+      );
       final String token = res.data['token'];
       sl<AuthLocalData>().saveToken(token);
       return Right(null);

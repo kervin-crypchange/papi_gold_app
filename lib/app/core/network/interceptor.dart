@@ -11,15 +11,19 @@ import 'package:papi_gold/app/core/store/client/persistent_client_data.dart';
 import 'package:papi_gold/app/core/store/direction/persistent_direction.dart';
 import 'package:papi_gold/app/core/theme/colors.dart';
 import 'package:papi_gold/data/sources/local/auth/auth_local_data.dart';
+import 'package:papi_gold/data/sources/remote/auth/auth_data.dart';
 import 'package:papi_gold/injection_container.dart';
 
 class InterceptorWrapper extends Interceptor with MessengerMixin {
+  final Dio _dio;
+  Future<bool>? _refreshFuture;
+
   Logger logger = Logger(
     printer: PrettyPrinter(methodCount: 0, colors: true, printEmojis: true),
   );
   late final Box box;
 
-  InterceptorWrapper() {
+  InterceptorWrapper(this._dio) {
     box = Hive.box(BoxEnum.config.name);
   }
 
@@ -35,11 +39,38 @@ class InterceptorWrapper extends Interceptor with MessengerMixin {
 
     switch (err.response?.statusCode) {
       case 401:
-        // sl<AuthData>().refreshToken();
+        if (err.requestOptions.extra['skipAuthRefresh'] == true) {
+          handler.next(err);
+          break;
+        }
+
+        final token = sl<AuthLocalData>().getSavedToken();
+        final alreadyRetried = err.requestOptions.extra['authRetry'] == true;
+        if (token.isNotEmpty && !alreadyRetried && await _refreshToken()) {
+          final requestOptions = err.requestOptions;
+          requestOptions.headers['Authorization'] =
+              'Bearer ${sl<AuthLocalData>().getSavedToken()}';
+          requestOptions.extra['authRetry'] = true;
+
+          try {
+            final response = await _dio.fetch<dynamic>(requestOptions);
+            if (context != null && context.mounted) {
+              showLoading(context, false);
+            }
+            handler.resolve(response);
+            return;
+          } on DioException catch (retryError) {
+            handler.next(retryError);
+            return;
+          }
+        }
+
         sl<AuthLocalData>().clear();
         PersistentClientData().clearClientData();
         PersistentDirection().clear();
-        context!.goNamed(Routes.login);
+        if (context != null && context.mounted) {
+          context.goNamed(Routes.login);
+        }
         handler.next(err);
         break;
       case 403:
@@ -72,8 +103,30 @@ class InterceptorWrapper extends Interceptor with MessengerMixin {
         messenger.showSnackBar(message, color: AppColors.error);
         handler.next(err);
     }
-    showLoading(context!, false);
+    if (context != null && context.mounted) {
+      showLoading(context, false);
+    }
+  }
 
+  Future<bool> _refreshToken() async {
+    final activeRefresh = _refreshFuture;
+    if (activeRefresh != null) return activeRefresh;
+
+    final refresh = () async {
+      try {
+        final result = await sl<AuthData>().refreshToken();
+        return result.fold((_) => false, (_) => true);
+      } catch (_) {
+        return false;
+      }
+    }();
+    _refreshFuture = refresh;
+
+    try {
+      return await refresh;
+    } finally {
+      _refreshFuture = null;
+    }
   }
 
   @override
@@ -86,7 +139,7 @@ class InterceptorWrapper extends Interceptor with MessengerMixin {
 
     if (token != null && token.isNotEmpty) {
       options.headers['Authorization'] = 'Bearer $token';
-       options.headers['Accept'] = 'application/json';
+      options.headers['Accept'] = 'application/json';
     }
     options.headers['X-API-KEY'] = 'cYaS7nA1IHUzuZQ42AbjPYzsiygFmegUiARPPv6t';
 
