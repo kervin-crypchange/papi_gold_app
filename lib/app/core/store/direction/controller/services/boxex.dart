@@ -6,6 +6,6 @@ class Boxes {
   /// Gets the Hive box for storing [PersistentShoppingCartItem] data.
   ///
   /// Returns a [Box] instance for interacting with the cart data stored in Hive.
-  static Box<PersistenDirectionModel> getData() =>
-      Hive.box<PersistenDirectionModel>('directionBox');
+  static Box<PersistentDirectionModel> getData() =>
+      Hive.box<PersistentDirectionModel>('directionBox');
 }

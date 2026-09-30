@@ -8,6 +8,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:papi_gold/app/common/enums/box_enum.dart';
 import 'package:papi_gold/app/common/services/location_service.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
+import 'package:papi_gold/app/core/config/app_config.dart';
 import 'package:papi_gold/app/core/services/index.dart';
 import 'package:papi_gold/app/core/store/client/persistent_client_data.dart';
 import 'package:papi_gold/app/core/router/router.dart';
@@ -19,10 +20,18 @@ import 'package:papi_gold/presentation/cubits/index.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:persistent_shopping_cart/persistent_shopping_cart.dart';
 
-String publishableKey =
-    "pk_test_51T3zYL8jtYx1E1JT3qN550tkyWo3JYLrHcGGLGVAadTtGUA62FTusAQHoceMJZI8iJm0Mi0mvmpJXEk9auleG8ax008dKcvIoV";
+String publishableKey = const String.fromEnvironment(
+  'STRIPE_PUBLISHABLE_KEY',
+  defaultValue: 'pk_test_51T3zYL8jtYx1E1JT3qN550tkyWo3JYLrHcGGLGVAadTtGUA62FTusAQHoceMJZI8iJm0Mi0mvmpJXEk9auleG8ax008dKcvIoV',
+);
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  AppConfig.initialize(
+    environment: const String.fromEnvironment(
+      'APP_ENV',
+      defaultValue: AppEnvironment.dev,
+    ),
+  );
   debugPrintRebuildDirtyWidgets = true;
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   SystemChrome.setSystemUIOverlayStyle(
@@ -86,7 +95,7 @@ class BlocProviders extends StatelessWidget {
         BlocProvider(create: (_) => sl<AuthCubit>()),
         BlocProvider(create: (_) => sl<OrdersCubit>()),
         BlocProvider(create: (_) => sl<ProductCubit>()),
-        BlocProvider(create: (_) => sl<CheckOutCubit>()),
+        BlocProvider(create: (_) => sl<CheckoutCubit>()),
         BlocProvider(create: (_) => sl<PaymentCubit>()),
         BlocProvider(create: (_) => sl<LocationCubit>()),
         BlocProvider(create: (_) => sl<TrackingCubit>()),

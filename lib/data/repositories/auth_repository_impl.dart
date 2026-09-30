@@ -46,11 +46,4 @@ class AuthRepositoryImpl with LoggerMixin implements AuthRepository {
     );
     return res.fold((l) => Left(l), (r) => Right(r));
   }
-
-  @override
-  Future<Either<Failure, void>> paymentIntent() {
-    throw UnimplementedError();
-  }
-
-
 }

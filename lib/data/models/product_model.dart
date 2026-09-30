@@ -22,7 +22,7 @@ class ProductModel extends ProductEntity {
       stock: safeInt(json['stock']),
       imagen: safeString(json['imagen']),
       price: safeDouble(json['price']),
-      category: ProducCategoryModel.fromJson(json['category']),
+      category: ProductCategoryModel.fromJson(json['category']),
       // translations: TranslationModel.fromJson(
       //   json['translations'] as Map<String, dynamic>,
       // ),
@@ -30,8 +30,8 @@ class ProductModel extends ProductEntity {
   }
 }
 
-class ProducCategoryModel extends ProductCategoryEntity {
-  const ProducCategoryModel({
+class ProductCategoryModel extends ProductCategoryEntity {
+  const ProductCategoryModel({
     required super.id,
     required super.name,
     required super.description,
@@ -39,9 +39,9 @@ class ProducCategoryModel extends ProductCategoryEntity {
     // required super.translations,
   });
 
-  /// Converts a JSON map to a [ProducCategoryModel].
-  factory ProducCategoryModel.fromJson(Map<String, dynamic> json) {
-    return ProducCategoryModel(
+  /// Converts a JSON map to a [ProductCategoryModel].
+  factory ProductCategoryModel.fromJson(Map<String, dynamic> json) {
+    return ProductCategoryModel(
       id: safeInt(json['id']),
       name: safeString(json['name']),
       description: safeString(json['description']),

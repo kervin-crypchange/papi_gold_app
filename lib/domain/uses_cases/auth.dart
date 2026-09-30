@@ -32,7 +32,7 @@ class LogoutUseCase implements UseCase<Either<Failure, LogoutEntity>, void> {
 }
 
 class UpdatePasswordUseCase
-    implements UseCase<Either<Failure, void>, UpdatePasswordEntity> {
+    implements UseCase<Either<Failure, String>, UpdatePasswordEntity> {
   @override
   Future<Either<Failure, String>> call({UpdatePasswordEntity? param}) {
     return sl<AuthRepository>().updatePassword(param!);

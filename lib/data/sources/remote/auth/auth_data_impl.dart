@@ -94,11 +94,11 @@ class AuthDataImpl extends AuthData with LoggerMixin {
   Future<Either<Failure, void>> getDirections() async {
     try {
       final res = await sl<DioClient>().get(Apis.directions);
-      List<PersistenDirectionModel> directions = (res.data['data'] as List)
-          .map((d) => PersistenDirectionModel.fromJson(d))
+      List<PersistentDirectionModel> directions = (res.data['data'] as List)
+          .map((d) => PersistentDirectionModel.fromJson(d))
           .toList();
 
-      final primaryDirection = PersistenDirectionModel.fromJson(
+      final primaryDirection = PersistentDirectionModel.fromJson(
         res.data['primary_address'],
       );
 

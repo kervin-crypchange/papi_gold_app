@@ -6,7 +6,7 @@ import 'package:papi_gold/domain/repositories/index.dart';
 import 'package:papi_gold/injection_container.dart';
 
 
-class AppSocketRepositoryImpl extends AppSocketRespository {
+class AppSocketRepositoryImpl extends AppSocketRepository {
   
   @override
   Future<Either<Failure, void>> connect(AppSocketsEnum event) async {

@@ -4,7 +4,7 @@ import 'package:papi_gold/app/common/utils/utils.dart';
 part 'persisten_direction_model.g.dart';
 
 @HiveType(typeId: 2)
-class PersistenDirectionModel {
+class PersistentDirectionModel {
   @HiveField(0)
   final int id;
 
@@ -47,7 +47,7 @@ class PersistenDirectionModel {
   @HiveField(13)
   int get key => id;
 
-  PersistenDirectionModel({
+  PersistentDirectionModel({
     required this.id,
     required this.name,
     required this.lastName,
@@ -63,8 +63,8 @@ class PersistenDirectionModel {
     required this.isMain,
   });
 
-  factory PersistenDirectionModel.fromJson(Map<String, dynamic> map) {
-    return PersistenDirectionModel(
+  factory PersistentDirectionModel.fromJson(Map<String, dynamic> map) {
+    return PersistentDirectionModel(
       id: safeInt(map['id']),
       name: safeString(map['name']),
       lastName: safeString(map['last_name']),

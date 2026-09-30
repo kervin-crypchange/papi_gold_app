@@ -6,18 +6,18 @@ part of 'persisten_direction_model.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class PersistenDirectionModelAdapter
-    extends TypeAdapter<PersistenDirectionModel> {
+class PersistentDirectionModelAdapter
+    extends TypeAdapter<PersistentDirectionModel> {
   @override
   final typeId = 2;
 
   @override
-  PersistenDirectionModel read(BinaryReader reader) {
+  PersistentDirectionModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return PersistenDirectionModel(
+    return PersistentDirectionModel(
       id: fields[0] as int,
       name: fields[1] as String,
       lastName: fields[2] as String,
@@ -35,7 +35,7 @@ class PersistenDirectionModelAdapter
   }
 
   @override
-  void write(BinaryWriter writer, PersistenDirectionModel obj) {
+  void write(BinaryWriter writer, PersistentDirectionModel obj) {
     writer
       ..writeByte(13)
       ..writeByte(0)
@@ -72,7 +72,7 @@ class PersistenDirectionModelAdapter
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PersistenDirectionModelAdapter &&
+      other is PersistentDirectionModelAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

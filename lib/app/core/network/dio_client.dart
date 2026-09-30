@@ -1,21 +1,23 @@
 import 'package:dio/dio.dart';
-import 'package:papi_gold/app/core/constants/index.dart';
+import 'package:papi_gold/app/core/config/app_config.dart';
 import 'package:papi_gold/app/core/network/interceptor.dart';
 
 class DioClient {
+  final AppConfig _config;
   late final Dio _dio;
-  DioClient() {
+
+  DioClient({AppConfig? config}) : _config = config ?? AppConfig.instance {
     _dio = Dio(
       BaseOptions(
-        baseUrl: Apis.baseUrl,
+        baseUrl: _config.apiBaseUrl,
         headers: {
           'Content-Type': 'application/json',
           'User-Agent': 'PapiGold/1.0.0 (Mobile; Flutter-Dio)',
         },
         responseType: ResponseType.json,
-        sendTimeout: const Duration(seconds: 10 * 6000),
-        connectTimeout: const Duration(seconds: 10 * 6000),
-        receiveTimeout: const Duration(seconds: 10 * 6000),
+        sendTimeout: _config.sendTimeout,
+        connectTimeout: _config.connectTimeout,
+        receiveTimeout: _config.receiveTimeout,
       ),
     );
     _dio.interceptors.add(InterceptorWrapper(_dio));
