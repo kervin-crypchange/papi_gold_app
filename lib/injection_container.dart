@@ -54,6 +54,8 @@ Future<void> initializeDependencies() async {
   sl.registerLazySingleton(() => NotificationsUseCase());
   sl.registerLazySingleton(() => NotificationCountUseCase());
   sl.registerLazySingleton(() => NotificationMarkAsReadUseCase());
+  sl.registerLazySingleton(() => NotificationDeleteUseCase());
+
 
   // Cubits
   sl.registerFactory(() => AuthCubit());

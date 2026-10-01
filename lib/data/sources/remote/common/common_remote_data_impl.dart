@@ -1,4 +1,3 @@
-
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:logger/web.dart';
@@ -216,6 +215,16 @@ class CommonRemoteDataImpl extends CommonRemoteData {
         '${Apis.notifications}/unread-count',
       );
       return Right(res.data['count']);
+    } on DioException catch (e) {
+      return Left(ServerException(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> deleteNotification(String id) async {
+    try {
+      await sl<DioClient>().delete('${Apis.notifications}/$id');
+      return Right(null);
     } on DioException catch (e) {
       return Left(ServerException(e));
     }

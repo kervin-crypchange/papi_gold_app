@@ -28,7 +28,7 @@ abstract class CommonRepository {
   );
 
   Future<Either<Failure, TrackingEntity>> tracking(String tracking);
-
+  Future<Either<Failure, void>> deleteNotification(String id);
   Future<Either<Failure, ResponseNotificationsEntity>> notifications(int page);
   Future<Either<Failure, void>> markAsRead(String id);
   Future<Either<Failure, int>> unreadCount();

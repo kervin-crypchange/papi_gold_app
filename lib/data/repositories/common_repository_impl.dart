@@ -146,4 +146,10 @@ class CommonRepositoryImpl extends CommonRepository {
     Either<Failure, int> res = await sl<CommonRemoteData>().unreadCount();
     return res.fold((l) => Left(l), (r) => Right(r));
   }
+
+  @override
+  Future<Either<Failure, void>> deleteNotification(String id) async {
+    Either<Failure, void> res = await sl<CommonRemoteData>().deleteNotification(id);
+    return res.fold((l) => Left(l), (r) => Right(r));
+  }
 }

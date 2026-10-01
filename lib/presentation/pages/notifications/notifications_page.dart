@@ -73,29 +73,40 @@ class _NotificationsPageState extends State<NotificationsPage> {
                 itemCount: nots.length,
                 itemBuilder: (context, index) {
                   final not = nots[index];
-                  return Card(
-                    color: not.readAt == null ? Colors.white12 : null,
-                    elevation: 2,
-                    child: ListTile(
-                      leading: Image.asset(
-                        'assets/icons/papi-gold-512x512.png',
-                        height: 28.h,
-                      ),
-                      title: Text(not.data.title),
-                      onTap: () => context.goNamed(
-                        Routes.notification,
-                        pathParameters: {'id': not.id},
-                        extra: {
-                          'title': not.data.title,
-                          'body': not.data.body,
-                          'createdAt': not.createdAt,
-                          'readAt': not.readAt,
-                        },
-                      ),
-                    ),
-                  );
+                  return NotificationWidget(not: not);
                 },
               ),
+      ),
+    );
+  }
+}
+
+class NotificationWidget extends StatelessWidget {
+  const NotificationWidget({super.key, required this.not});
+
+  final NotificationEntity not;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: not.readAt == null ? Colors.white12 : null,
+      elevation: 2,
+      child: ListTile(
+        leading: Image.asset(
+          'assets/icons/papi-gold-512x512.png',
+          height: 28.h,
+        ),
+        title: Text(not.data.title),
+        onTap: () => context.goNamed(
+          Routes.notification,
+          pathParameters: {'id': not.id},
+          extra: {
+            'title': not.data.title,
+            'body': not.data.body,
+            'createdAt': not.createdAt,
+            'readAt': not.readAt,
+          },
+        ),
       ),
     );
   }

@@ -20,6 +20,10 @@ class NotificationsCubit extends Cubit<NotificationsState> {
     return await sl<NotificationMarkAsReadUseCase>().call(param: id);
   }
   
+  Future<Either<Failure, void>> delete(String id) async {
+    return await sl<NotificationDeleteUseCase>().call(param: id);
+  }
+
   void count() async {
     emit(NotificationsLoading());
     

@@ -27,3 +27,11 @@ class NotificationCountUseCase implements UseCase<Either<Failure, int>, void> {
     return sl<CommonRepository>().unreadCount();
   }
 }
+
+class NotificationDeleteUseCase
+    implements UseCase<Either<Failure, void>, String> {
+  @override
+  Future<Either<Failure, void>> call({String? param}) {
+    return sl<CommonRepository>().deleteNotification(param!);
+  }
+}

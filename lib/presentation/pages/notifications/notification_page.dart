@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/core/extensions/text_style.dart';
 import 'package:papi_gold/app/core/extensions/widget.dart';
@@ -27,6 +28,18 @@ class _NotificationPageState extends State<NotificationPage> {
     }
   }
 
+  void delete() {
+    context.read<NotificationsCubit>().delete(widget.id).then((either) {
+      either.fold(
+        (failure) => log('Error al eliminar la notificación: $failure'),
+        (success) {
+          log('Notificación eliminada correctamente');
+          context.pop();
+        },
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +47,7 @@ class _NotificationPageState extends State<NotificationPage> {
         title: Text('Detalle de la notificación'),
         actions: [
           IconButton(
-            onPressed: () => log('Press me'),
+            onPressed: delete,
             icon: Icon(Icons.delete_outline),
           ),
         ],
