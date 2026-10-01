@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_animations/loading_animations.dart';
+import 'package:papi_gold/app/core/class/app_navigation.dart';
 import 'package:papi_gold/app/core/theme/app_theme.dart';
 import 'package:papi_gold/app/core/theme/colors.dart';
 
@@ -133,18 +134,55 @@ Future<void> stripePayment(BuildContext context, clientSecret) async {
   }
 }
 
+final Map<OverlayState, _LoadingOverlay> _loadingOverlays = {};
+
 void showLoading(BuildContext context, [bool isLoading = true]) {
-  isLoading
-      ? showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (context) => Center(
+  final overlay =
+      Overlay.maybeOf(context, rootOverlay: true) ??
+      AppNavigation.navigatorKey.currentState?.overlay;
+  if (overlay == null) return;
+
+  if (isLoading) {
+    final activeLoading = _loadingOverlays[overlay];
+    if (activeLoading != null) {
+      activeLoading.requestCount++;
+      return;
+    }
+
+    final entry = OverlayEntry(
+      builder: (_) => Stack(
+        fit: StackFit.expand,
+        children: [
+          const ModalBarrier(dismissible: false, color: Colors.black54),
+          Center(
             child: LoadingBouncingGrid.square(
               backgroundColor: AppColors.secondary,
             ),
           ),
-        )
-      : Navigator.of(context).pop();
+        ],
+      ),
+    );
+    _loadingOverlays[overlay] = _LoadingOverlay(entry);
+    overlay.insert(entry);
+    return;
+  }
+
+  final activeLoading = _loadingOverlays[overlay];
+  if (activeLoading == null) return;
+
+  activeLoading.requestCount--;
+  if (activeLoading.requestCount == 0) {
+    _loadingOverlays.remove(overlay);
+    activeLoading.entry.remove();
+    activeLoading.entry.dispose();
+  }
+}
+
+class _LoadingOverlay {
+  _LoadingOverlay(this.entry);
+
+  final OverlayEntry entry;
+  int requestCount = 1;
 }
 
 bool get isDarkTheme => AppThemes.themeModeNotifier.value == ThemeMode.dark;

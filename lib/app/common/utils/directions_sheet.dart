@@ -43,12 +43,12 @@ Widget showSelectedDirection(BuildContext context) {
   );
 }
 
-void showDirectionsSheet(BuildContext context) {
+Future<void> showDirectionsSheet(BuildContext context) async {
   final selectedDirection = PersistentDirection().selectedDirectionOrNull();
-  showModalBottomSheet(
+  final shouldAddAddress = await showModalBottomSheet<bool>(
     context: context,
     isScrollControlled: true,
-    builder: (BuildContext context) {
+    builder: (BuildContext sheetContext) {
       return ConstrainedBox(
         constraints: BoxConstraints(
           minWidth: double.infinity,
@@ -70,7 +70,8 @@ void showDirectionsSheet(BuildContext context) {
                     return ListTile(
                       minTileHeight: 40,
                       isThreeLine: true,
-                      selected: selectedDirection != null &&
+                      selected:
+                          selectedDirection != null &&
                           selectedDirection.id == direction.id,
                       title: Text(
                         direction.address1,
@@ -92,8 +93,7 @@ void showDirectionsSheet(BuildContext context) {
                     onTap: () {
                       if (directions.length < 3) {
                         context.read<DirectionsCubit>().direction = null;
-                        context.pop();
-                        context.goNamed(Routes.newAddress);
+                        Navigator.of(sheetContext).pop(true);
                       } else {
                         showOkAlertDialog(
                           context: context,
@@ -112,4 +112,8 @@ void showDirectionsSheet(BuildContext context) {
       );
     },
   );
+
+  if (shouldAddAddress == true && context.mounted) {
+    context.goNamed(Routes.newAddress);
+  }
 }

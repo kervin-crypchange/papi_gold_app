@@ -54,9 +54,9 @@ class InterceptorWrapper extends Interceptor with MessengerMixin {
 
           try {
             final response = await _dio.fetch<dynamic>(requestOptions);
-            // if (context != null && context.mounted) {
-            //   showLoading(context, false);
-            // }
+            if (context != null && context.mounted) {
+              showLoading(context, false);
+            }
             handler.resolve(response);
             return;
           } on DioException catch (retryError) {
