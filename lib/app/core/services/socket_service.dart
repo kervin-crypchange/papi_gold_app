@@ -38,7 +38,7 @@ class SocketService with LoggerMixin {
   } 
   Future<void> _connect() async {
     client = reverb.ReverbClient.instance(
-      host: 'papigold.com',
+      host: 'www.papigold.com',
       port: 443,
       authorizer: _myAuthorizer,
       useTLS: true,
