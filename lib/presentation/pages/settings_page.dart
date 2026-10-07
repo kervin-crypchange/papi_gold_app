@@ -20,32 +20,101 @@ class SettingsPage extends StatefulWidget {
   State<SettingsPage> createState() => _SettingsPageState();
 }
 
-class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
+class _SettingsPageState extends State<SettingsPage>
+    with MessengerMixin, WidgetsBindingObserver {
   bool _isDark = true;
   bool _isLoading = false;
-  bool _isLocationGranted = false;
-  bool _isNotificationGranted = false;
+  PermissionStatus? _locationPermissionStatus;
   SocketService socketService = SocketService();
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _isDark = AppThemes.themeModeNotifier.value == ThemeMode.dark;
     _checkPermission();
   }
 
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _checkPermission();
+    }
+  }
+
   Future<void> _checkPermission() async {
-    final isLocationGranted = await PermissionService().checkPermission(
-      Permission.location,
-    );
-    final isNotificationGranted = await PermissionService().checkPermission(
-      Permission.notification,
+    final status = await PermissionService().checkPermission(
+      Permission.locationWhenInUse,
     );
     if (!mounted) return;
     setState(() {
-      _isLocationGranted = isLocationGranted;
-      _isNotificationGranted = isNotificationGranted;
+      _locationPermissionStatus = status;
     });
+  }
+
+  Future<void> _manageLocationPermission() async {
+    var status = await PermissionService().checkPermission(
+      Permission.locationWhenInUse,
+    );
+    if (status.isDenied) {
+      status = await PermissionService().requestPermission(
+        Permission.locationWhenInUse,
+      );
+    }
+
+    if (status.isPermanentlyDenied || status.isRestricted) {
+      if (!mounted) return;
+      final result = await showOkCancelAlertDialog(
+        context: context,
+        title: 'Permiso de ubicación',
+        message:
+            'El permiso está bloqueado. Puedes habilitarlo desde los ajustes '
+            'de la aplicación o continuar sin usar tu ubicación.',
+        okLabel: 'Abrir ajustes',
+        cancelLabel: 'Ahora no',
+      );
+      if (result == OkCancelResult.ok) {
+        final opened = await PermissionService().openAppSettingsScreen();
+        if (!opened && mounted) {
+          messenger.showSnackBar(
+            'No se pudieron abrir los ajustes de la aplicación.',
+            color: AppColors.error,
+          );
+        }
+      }
+    } else if (status.isGranted || status.isLimited) {
+      final opened = await PermissionService().openAppSettingsScreen();
+      if (!opened && mounted) {
+        messenger.showSnackBar(
+          'No se pudieron abrir los ajustes de la aplicación.',
+          color: AppColors.error,
+        );
+      }
+    } else if (!status.isGranted && mounted) {
+      messenger.showSnackBar(
+        'No se concedió el permiso. Puedes continuar sin usar tu ubicación.',
+        color: AppColors.error,
+      );
+    }
+
+    await _checkPermission();
+  }
+
+  String get _locationPermissionLabel {
+    final status = _locationPermissionStatus;
+    if (status == null) return 'Comprobando ubicación';
+    if (status.isGranted) return 'Ubicación activada';
+    if (status.isPermanentlyDenied || status.isRestricted) {
+      return 'Ubicación bloqueada';
+    }
+    if (status.isLimited) return 'Ubicación limitada';
+    return 'Ubicación desactivada';
   }
 
   void _logout() {
@@ -150,26 +219,11 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
               title: "Permisos",
               children: [
                 _CustomListTile(
-                  title: "Camara",
-                  icon: Icons.camera_outlined,
-                  onTap: () async =>
-                      await PermissionService().openAppSettingsScreen(),
-                ),
-                _CustomListTile(
-                  title: "Activar Ubicación",
-                  icon: _isLocationGranted
+                  title: _locationPermissionLabel,
+                  icon: _locationPermissionStatus?.isGranted == true
                       ? Icons.location_on_outlined
                       : Icons.location_off_outlined,
-                  onTap: () async =>
-                      await PermissionService().openAppSettingsScreen(),
-                ),
-                _CustomListTile(
-                  title: "Activar Notificaciones",
-                  icon: _isNotificationGranted
-                      ? Icons.notifications_active_outlined
-                      : Icons.notifications_off_outlined,
-                  onTap: () async =>
-                      await PermissionService().openAppSettingsScreen(),
+                  onTap: _manageLocationPermission,
                 ),
               ],
             ),

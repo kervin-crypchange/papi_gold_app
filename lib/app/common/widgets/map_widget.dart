@@ -5,6 +5,7 @@ import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
 import 'package:papi_gold/app/core/theme/colors.dart';
 import 'package:flutter_debouncer/flutter_debouncer.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class MapWidget extends StatefulWidget {
   final ValueChanged<GeoPoint> onLocationUpdate;
@@ -17,14 +18,15 @@ class MapWidget extends StatefulWidget {
 
 class _MapWidgetState extends State<MapWidget> {
   bool isMapReady = false;
-  ValueNotifier<GeoPoint?> lastGeoPoint = ValueNotifier(null);
   final Debouncer _debouncer = Debouncer();
-  late GeoPoint currentPosition = LocationService().geoPoint;
+  late GeoPoint currentPosition = LocationService().initialMapPosition;
+  late final bool _hasSavedPosition =
+      LocationService().lastSelectedMapPosition != null;
   late MapController controller;
   late OSMOption osmOptions = OSMOption(
     showZoomController: true,
     isPicker: true,
-    zoomOption: ZoomOption(initZoom: 16),
+    zoomOption: ZoomOption(initZoom: _hasSavedPosition ? 16 : 3),
   );
 
   @override
@@ -33,7 +35,7 @@ class _MapWidgetState extends State<MapWidget> {
     initMap();
   }
 
-  Future<void> initMap() async {
+  void initMap() {
     controller = MapController.customLayer(
       initPosition: currentPosition,
       customTile: CustomTile(
@@ -60,8 +62,68 @@ class _MapWidgetState extends State<MapWidget> {
     if (!isMapReady) return;
     _debouncer.debounce(
       duration: Duration(milliseconds: 300),
-      onDebounce: () => widget.onLocationUpdate(region.center),
+      onDebounce: () async {
+        currentPosition = region.center;
+        await LocationService().saveLastSelectedMapPosition(currentPosition);
+        widget.onLocationUpdate(currentPosition);
+      },
     );
+  }
+
+  Future<void> _moveToCurrentLocation() async {
+    final result = await LocationService().requestCurrentPosition();
+    if (!mounted) return;
+
+    final position = result.position;
+    if (position == null) {
+      if (result.permissionStatus.isPermanentlyDenied ||
+          result.permissionStatus.isRestricted) {
+        final openSettings = await showDialog<bool>(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Permiso de ubicación'),
+            content: const Text(
+              'El permiso está bloqueado. Puedes habilitarlo desde los ajustes '
+              'de la aplicación o continuar seleccionando el punto en el mapa.',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: const Text('Ahora no'),
+              ),
+              FilledButton(
+                onPressed: () => Navigator.pop(context, true),
+                child: const Text('Abrir ajustes'),
+              ),
+            ],
+          ),
+        );
+        if (openSettings == true) {
+          final opened = await LocationService().openSettings();
+          if (!opened && mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('No se pudieron abrir los ajustes de la aplicación.'),
+              ),
+            );
+          }
+        }
+      } else {
+        final message = !result.permissionStatus.isGranted
+            ? 'No se concedió el permiso. Puedes elegir una ubicación en el mapa.'
+            : !result.serviceEnabled
+            ? 'Activa el servicio de ubicación o elige un punto en el mapa.'
+            : 'No se pudo obtener tu ubicación. Puedes elegir un punto en el mapa.';
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(message)),
+        );
+      }
+      return;
+    }
+
+    currentPosition = position;
+    await LocationService().saveLastSelectedMapPosition(position);
+    await controller.moveTo(position, animate: true);
   }
 
   @override
@@ -96,8 +158,7 @@ class _MapWidgetState extends State<MapWidget> {
                     color: Theme.of(context).colorScheme.outline,
                   ),
                 ),
-                onPressed: () async =>
-                    await controller.moveTo(currentPosition, animate: true),
+                onPressed: _moveToCurrentLocation,
                 icon: Icon(Icons.my_location),
               ),
             ).paddingOnly(right: 10.w, bottom: 10.h),

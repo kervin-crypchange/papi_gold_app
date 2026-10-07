@@ -21,15 +21,25 @@ class MapPage extends StatefulWidget {
 class _MapPageState extends State<MapPage> {
   GeoPoint? location;
   NominatimResult? _result;
+  bool _locationLookupFailed = false;
 
   Future<void> _fetchLocation() async {
-    final r = await ReverseMapService.getReverseGeocoding(
-      lat: location!.latitude,
-      lon: location!.longitude,
-    );
+    final selectedLocation = location;
+    if (selectedLocation == null) return;
 
     setState(() {
+      _result = null;
+      _locationLookupFailed = false;
+    });
+    final r = await ReverseMapService.getReverseGeocoding(
+      lat: selectedLocation.latitude,
+      lon: selectedLocation.longitude,
+    );
+
+    if (!mounted) return;
+    setState(() {
       _result = r;
+      _locationLookupFailed = r == null;
     });
   }
 
@@ -93,9 +103,21 @@ class _MapPageState extends State<MapPage> {
                         ),
                       ],
                     ),
-                    (_result == null)
-                        ? LoadingWidget()
-                        : Expanded(
+                    if (location == null)
+                      Text(
+                        'Mueve el mapa para seleccionar una ubicación.',
+                        textAlign: TextAlign.center,
+                      ).paddingOnly(top: 12.h)
+                    else if (_result == null && _locationLookupFailed)
+                      Text(
+                        'No se pudo encontrar la dirección de este punto. '
+                        'Mueve el mapa para probar otra ubicación.',
+                        textAlign: TextAlign.center,
+                      ).paddingOnly(top: 12.h)
+                    else if (_result == null)
+                      LoadingWidget()
+                    else
+                      Expanded(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -119,11 +141,15 @@ class _MapPageState extends State<MapPage> {
                       width: double.infinity,
                       child: FilledButtonWidget(
                         title: 'Confirmar',
-                        onPressed: () {
+                        onPressed: location == null || _result == null
+                            ? null
+                            : () {
+                          final selectedLocation = location;
+                          if (selectedLocation == null) return;
                           showLoading(context);
                           context
                               .read<DirectionsCubit>()
-                              .mapNames(location!)
+                              .mapNames(selectedLocation)
                               .then((either) {
                                 either.fold((failure) => null, (response) {
                                   showLoading(context, false);

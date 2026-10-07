@@ -6,10 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:papi_gold/app/common/enums/box_enum.dart';
-import 'package:papi_gold/app/common/services/location_service.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/config/app_config.dart';
-import 'package:papi_gold/app/core/services/index.dart';
 import 'package:papi_gold/app/core/store/client/persistent_client_data.dart';
 import 'package:papi_gold/app/core/router/router.dart';
 import 'package:papi_gold/app/core/store/direction/persistent_direction.dart';
@@ -17,7 +15,6 @@ import 'package:papi_gold/app/core/theme/app_theme.dart';
 import 'package:papi_gold/injection_container.dart';
 import 'package:papi_gold/app/core/extensions/index.dart' as globals;
 import 'package:papi_gold/presentation/cubits/index.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:persistent_shopping_cart/persistent_shopping_cart.dart';
 
 String publishableKey = const String.fromEnvironment(
@@ -43,7 +40,6 @@ Future<void> main() async {
     SystemChrome.setSystemUIOverlayStyle(
       AppThemes.systemUiOverlayStyle(AppThemes.themeModeNotifier.value),
     );
-    await LocationService().init();
     await PersistentShoppingCart().init();
     await PersistentClientData().init();
     await PersistentDirection().init();
@@ -121,12 +117,6 @@ class _MainAppState extends State<MainApp> {
     super.initState();
     AppThemes.themeModeNotifier.addListener(_updateSystemUiStyle);
     _updateSystemUiStyle();
-    PermissionService().requestMultiplePermissions([
-      Permission.camera,
-      Permission.photos,
-      Permission.location,
-      Permission.notification,
-    ]);
     // fullScreenConfig();
   }
 

@@ -6,6 +6,7 @@ enum BoxEnum {
     userLogged: 'PAPI_GOLD_LOGGED',
     isLogged: 'PAPI_GOLD_IS_LOGGED',
     themeMode: 'PAPI_GOLD_THEME_MODE',
+    lastMapPosition: 'PAPI_GOLD_LAST_MAP_POSITION',
   );
 
   final String name;
@@ -14,6 +15,7 @@ enum BoxEnum {
   final String userLogged;
   final String isLogged;
   final String themeMode;
+  final String lastMapPosition;
 
   const BoxEnum({
     required this.name,
@@ -22,5 +24,6 @@ enum BoxEnum {
     required this.userLogged,
     required this.isLogged,
     required this.themeMode,
+    required this.lastMapPosition,
   });
 }
