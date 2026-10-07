@@ -14,9 +14,15 @@ final class NotificationsLoading extends NotificationsState {}
 final class NotificationsUnreadSuccess extends NotificationsState {
   final int count;
   const NotificationsUnreadSuccess({required this.count});
+
+  @override
+  List<Object> get props => [count];
 }
 
 final class NotificationsUnreadFailure extends NotificationsState {
   final String message;
   const NotificationsUnreadFailure({required this.message});
+
+  @override
+  List<Object> get props => [message];
 }

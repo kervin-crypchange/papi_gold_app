@@ -24,11 +24,11 @@ class NotificationsCubit extends Cubit<NotificationsState> {
     return await sl<NotificationDeleteUseCase>().call(param: id);
   }
 
-  void count() async {
+  Future<void> count() async {
     emit(NotificationsLoading());
-    
-    Either response = await sl<NotificationCountUseCase>().call();
-   
+
+    final response = await sl<NotificationCountUseCase>().call();
+
     response.fold(
       (l) => emit(NotificationsUnreadFailure(message: l.toString())),
       (r) => emit(NotificationsUnreadSuccess(count: r)),

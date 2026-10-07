@@ -111,7 +111,10 @@ class _NavigationPageState extends State<NavigationPage>
       AppSocketsEnum.notification.channel,
       AppSocketsEnum.notification.event,
       (data) {
+        if (!mounted) return;
+
         log('--- $data');
+        context.read<NotificationsCubit>().count();
         messenger.showSnackBar(data, color: AppColors.secondary);
       },
     );

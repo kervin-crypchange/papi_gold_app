@@ -7,8 +7,6 @@ import 'package:papi_gold/app/common/mixins/index.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/store/client/client_data_model.dart';
 import 'package:papi_gold/app/core/store/client/persistent_client_data.dart';
-import 'package:papi_gold/data/sources/remote/common/common_remote_data.dart';
-import 'package:papi_gold/injection_container.dart';
 
 import 'package:pusher_reverb_flutter/pusher_reverb_flutter.dart' as reverb;
 
@@ -137,7 +135,6 @@ class SocketService with LoggerMixin {
       _unbind(key);
 
       void listener(String _, dynamic data) {
-        sl<CommonRemoteData>().unreadCount();
         onEvent(data);
       }
 
