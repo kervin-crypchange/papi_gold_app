@@ -31,10 +31,15 @@ class ProductPage extends StatelessWidget with MessengerMixin {
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(100)),
               ),
-              backgroundColor: Colors.black.withValues(alpha: 0.5),
+              backgroundColor: Theme.of(context).colorScheme.scrim.withValues(
+                alpha: 0.5,
+              ),
               padding: EdgeInsets.zero,
             ),
-            child: const Icon(Icons.close, color: Colors.white),
+            child: Icon(
+              Icons.close,
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
             onPressed: () => Navigator.pop(context),
           ),
         ),
@@ -98,7 +103,7 @@ class InfoProduct extends StatelessWidget with MessengerMixin {
                     Text(p.name, style: context.titleMedium),
                     BadgeWidget(
                       label: p.category.name.capitalizeFirst,
-                      color: AppColors.secondary,
+                      color: context.accentColor,
                     ).paddingSymmetric(horizontal: 12.w, vertical: 1.h),
                   ],
                 ),

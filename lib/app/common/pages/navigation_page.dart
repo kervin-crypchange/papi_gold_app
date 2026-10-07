@@ -9,6 +9,7 @@ import 'package:papi_gold/app/common/pages/index.dart';
 import 'package:papi_gold/app/common/utils/directions_sheet.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/constants/index.dart';
+import 'package:papi_gold/app/core/extensions/index.dart';
 import 'package:papi_gold/app/core/services/socket_service.dart';
 import 'package:papi_gold/app/core/theme/index.dart';
 import 'package:papi_gold/presentation/cubits/index.dart';
@@ -115,7 +116,7 @@ class _NavigationPageState extends State<NavigationPage>
 
         log('--- $data');
         context.read<NotificationsCubit>().count();
-        messenger.showSnackBar(data, color: AppColors.secondary);
+        messenger.showSnackBar(data, color: context.accentColor);
       },
     );
 
@@ -124,7 +125,7 @@ class _NavigationPageState extends State<NavigationPage>
       AppSocketsEnum.product.event,
       (data) {
         log('--- $data');
-        messenger.showSnackBar(data, color: AppColors.secondary);
+        messenger.showSnackBar(data, color: context.accentColor);
       },
     );
   }

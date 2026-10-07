@@ -16,4 +16,11 @@ abstract class AppColors {
   static final grey = Colors.grey.shade900;
   static final greyLigth = Colors.grey.shade800;
   static const bg = Colors.black87;
+
+  static Color contrastingForeground(Color background, {Color? surface}) {
+    final effectiveBackground = surface == null
+        ? background
+        : Color.alphaBlend(background, surface);
+    return effectiveBackground.computeLuminance() > 0.179 ? black : white;
+  }
 }

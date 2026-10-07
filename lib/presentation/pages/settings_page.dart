@@ -66,10 +66,17 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
     });
   }
 
-  void _changeTheme() {
-    AppThemes.themeModeNotifier.value = _isDark
-        ? ThemeMode.dark
-        : ThemeMode.light;
+  Future<void> _changeTheme(bool isDark) async {
+    try {
+      await AppThemes.setThemeMode(isDark ? ThemeMode.dark : ThemeMode.light);
+    } catch (error) {
+      if (!mounted) return;
+      setState(() => _isDark = !isDark);
+      messenger.showSnackBar(
+        'No se pudo guardar la preferencia del tema: $error',
+        color: AppColors.error,
+      );
+    }
   }
 
   @override
@@ -91,18 +98,18 @@ class _SettingsPageState extends State<SettingsPage> with MessengerMixin {
                   trailing: Switch(
                     thumbIcon: WidgetStateProperty.resolveWith<Icon>((states) {
                       return _isDark
-                          ? const Icon(
+                          ? Icon(
                               Icons.light_mode_outlined,
-                              color: AppColors.secondary,
+                              color: context.accentColor,
                             )
                           : const Icon(Icons.dark_mode_outlined);
                     }),
                     value: _isDark,
-                    onChanged: (value) {
+                    onChanged: (value) async {
                       setState(() {
                         _isDark = value;
-                        _changeTheme();
                       });
+                      await _changeTheme(value);
                     },
                   ),
                 ),

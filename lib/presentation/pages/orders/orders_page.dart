@@ -4,8 +4,6 @@ import 'package:papi_gold/app/common/mixins/messenger_mixin.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
-import 'package:papi_gold/app/core/theme/app_theme.dart';
-import 'package:papi_gold/app/core/theme/colors.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 import 'package:papi_gold/domain/entities/order_detail_entity.dart';
 import 'package:papi_gold/presentation/cubits/order/orders_cubit.dart';
@@ -77,7 +75,10 @@ class _OrdersPageState extends State<OrdersPage> with MessengerMixin {
                   Container(
                     height: 60,
                     decoration: BoxDecoration(
-                      border: Border.all(color: Colors.white60, width: 0.5),
+                      border: Border.all(
+                        color: Theme.of(context).colorScheme.outline,
+                        width: 0.5,
+                      ),
                     ),
                   ),
                   statCard('Sold', stats!.sold),
@@ -86,20 +87,22 @@ class _OrdersPageState extends State<OrdersPage> with MessengerMixin {
               Row(
                 spacing: 10.w,
                 children: [
-                  Icon(Icons.history, color: AppColors.secondary),
+                  Icon(Icons.history, color: context.accentColor),
                   Text('Ordenes recientes', style: context.titleSmall),
                 ],
               ).paddingSymmetric(horizontal: 12.w),
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: AppThemes.themeModeNotifier.value == ThemeMode.dark
-                        ? AppColors.black
-                        : Colors.grey.shade100,
+                    color: Theme.of(context).colorScheme.surfaceContainer,
                     borderRadius: BorderRadius.vertical(
                       top: Radius.circular(24.0),
                     ),
-                    border: Border(top: BorderSide(color: Colors.white38)),
+                    border: Border(
+                      top: BorderSide(
+                        color: Theme.of(context).colorScheme.outline,
+                      ),
+                    ),
                   ),
                   child: OrderListWidget(
                     controller: _scrollController,
@@ -120,7 +123,7 @@ class _OrdersPageState extends State<OrdersPage> with MessengerMixin {
           children: [
             Text(
               label,
-              style: context.bodyLarge.copyWith(color: AppColors.secondary),
+              style: context.bodyLarge.copyWith(color: context.accentColor),
             ),
             Text(
               formatMoney(stat.amount),

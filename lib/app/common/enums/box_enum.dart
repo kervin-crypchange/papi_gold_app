@@ -5,6 +5,7 @@ enum BoxEnum {
     refreshToken: 'PAPI_GOLD_REFRESH_TOKEN',
     userLogged: 'PAPI_GOLD_LOGGED',
     isLogged: 'PAPI_GOLD_IS_LOGGED',
+    themeMode: 'PAPI_GOLD_THEME_MODE',
   );
 
   final String name;
@@ -12,6 +13,7 @@ enum BoxEnum {
   final String refreshToken;
   final String userLogged;
   final String isLogged;
+  final String themeMode;
 
   const BoxEnum({
     required this.name,
@@ -19,5 +21,6 @@ enum BoxEnum {
     required this.refreshToken,
     required this.userLogged,
     required this.isLogged,
+    required this.themeMode,
   });
 }

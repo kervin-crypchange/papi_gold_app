@@ -29,12 +29,12 @@ class MessengerImpl implements Messenger {
         content: icon != null
             ? Row(
                 children: [
-                  Icon(icon, color: AppColors.white),
+                  Icon(icon, color: AppColors.contrastingForeground(color)),
                   Gap(6.w),
-                  Text(message).color(AppColors.white),
+                  Text(message).color(AppColors.contrastingForeground(color)),
                 ],
               )
-            : Text(message).color(AppColors.white),
+            : Text(message).color(AppColors.contrastingForeground(color)),
         duration: Duration(seconds: seconds),
         backgroundColor: color,
         behavior: SnackBarBehavior.fixed,

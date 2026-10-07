@@ -5,7 +5,6 @@ import 'package:papi_gold/app/common/mixins/messenger_mixin.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
-import 'package:papi_gold/app/core/theme/index.dart';
 import 'package:papi_gold/data/models/index.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 import 'package:papi_gold/presentation/cubits/index.dart';
@@ -91,7 +90,7 @@ class _ProductsPageState extends State<ProductsPage> with MessengerMixin {
                   Text(
                     data.name,
                     style: context.bodyLarge.copyWith(
-                      color: AppColors.secondary,
+                      color: context.accentColor,
                     ),
                   ).paddingOnly(top: 6.h, left: 12.w),
                   AnimatedSwitcher(

@@ -210,7 +210,9 @@ class _RegisterPageState extends State<RegisterPage>
                         initialValue: country,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
-                            borderSide: BorderSide(color: AppColors.grey),
+                            borderSide: BorderSide(
+                              color: Theme.of(context).colorScheme.outline,
+                            ),
                           ),
                         ),
                         isExpanded: true,
@@ -228,7 +230,9 @@ class _RegisterPageState extends State<RegisterPage>
                         hint: Text('Seleccione estado'),
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
-                            borderSide: BorderSide(color: AppColors.grey),
+                            borderSide: BorderSide(
+                              color: Theme.of(context).colorScheme.outline,
+                            ),
                           ),
                         ),
                         isExpanded: true,
@@ -247,7 +251,9 @@ class _RegisterPageState extends State<RegisterPage>
                         hint: Text('Seleccione ciudad'),
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
-                            borderSide: BorderSide(color: AppColors.grey),
+                            borderSide: BorderSide(
+                              color: Theme.of(context).colorScheme.outline,
+                            ),
                           ),
                         ),
                         isExpanded: true,

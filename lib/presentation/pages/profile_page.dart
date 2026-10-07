@@ -80,8 +80,12 @@ class ProfilePic extends StatelessWidget {
             onTap: imageUploadBtnPress,
             child: CircleAvatar(
               radius: 13,
-              backgroundColor: Theme.of(context).primaryColor,
-              child: const Icon(Icons.add, color: Colors.white, size: 20),
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              child: Icon(
+                Icons.add,
+                color: Theme.of(context).colorScheme.onPrimary,
+                size: 20,
+              ),
             ),
           ),
         ],

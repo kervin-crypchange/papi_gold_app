@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
-import 'package:papi_gold/app/core/theme/colors.dart';
 import 'package:persistent_shopping_cart/model/cart_model.dart';
 import 'package:persistent_shopping_cart/persistent_shopping_cart.dart';
 
@@ -31,7 +30,7 @@ class _CartItemCardWidgetState extends State<CartItemCardWidget> {
       height: 150,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12.r),
-        color:isDarkTheme ? AppColors.blackLigth : AppColors.secondaryLigth,
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
       ),
       child: Row(
         spacing: 8.w,
@@ -83,7 +82,7 @@ class Counter extends StatelessWidget {
         width: 0.25.sw,
         decoration: BoxDecoration(
           border: BoxBorder.all(
-            color: AppColors.secondary,
+            color: context.accentColor,
             width: 0.5.w,
           ),
           borderRadius: BorderRadius.circular(100.r),

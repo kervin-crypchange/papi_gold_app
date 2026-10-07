@@ -63,10 +63,7 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
         leading: BackButton(
           onPressed: () => context.goNamed(Routes.navigation),
         ),
-        title: Text(
-          'Resumen de Orden',
-          style: context.titleMedium.copyWith(color: AppColors.white),
-        ).medium,
+        title: Text('Resumen de Orden', style: context.titleMedium).medium,
         // actions: [
         //   IconButton(
         //     icon: const Icon(Icons.location_on_outlined, color: AppColors.white),
@@ -106,7 +103,7 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
               Wrap(
                 spacing: 8.w,
                 children: [
-                  Icon(Icons.credit_card_outlined, color: AppColors.secondary),
+                  Icon(Icons.credit_card_outlined, color: context.accentColor),
                   Text('Histórico de pagos', style: context.bodyMedium).medium,
                 ],
               ),
@@ -124,7 +121,7 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
               Wrap(
                 spacing: 8.w,
                 children: [
-                  Icon(Icons.location_on_outlined, color: AppColors.secondary),
+                  Icon(Icons.location_on_outlined, color: context.accentColor),
                   Text('Rastreo de orden', style: context.bodyLarge).medium,
                 ],
               ),
@@ -157,45 +154,21 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
     final List<dynamic> data = [
       _dataFormat(
         'Fecha',
-        Text(
-          formatDate(e.createdAt),
-          style: context.bodyMedium.copyWith(color: AppColors.white),
-        ),
+        Text(formatDate(e.createdAt), style: context.bodyMedium),
       ),
       _dataFormat(
         'Descripción',
-        Text(
-          e.description,
-          style: context.bodyMedium.copyWith(color: AppColors.white),
-        ),
+        Text(e.description, style: context.bodyMedium),
       ),
-      _dataFormat(
-        'Invoice',
-        Text(
-          e.invoice,
-          style: context.bodyMedium.copyWith(color: AppColors.white),
-        ),
-      ),
-      _dataFormat(
-        'Status',
-        Text(
-          e.status.name,
-          style: context.bodyMedium.copyWith(color: AppColors.white),
-        ),
-      ),
+      _dataFormat('Invoice', Text(e.invoice, style: context.bodyMedium)),
+      _dataFormat('Status', Text(e.status.name, style: context.bodyMedium)),
       _dataFormat(
         'Status del pago',
         (e.totalVenta > e.totalPagoVenta)
             ? BadgeWidget(label: 'Pendiente', color: AppColors.error)
             : BadgeWidget(label: 'Aprobado', color: AppColors.success),
       ),
-      _dataFormat(
-        'Número de orden',
-        Text(
-          e.order,
-          style: context.bodyMedium.copyWith(color: AppColors.white),
-        ),
-      ),
+      _dataFormat('Número de orden', Text(e.order, style: context.bodyMedium)),
     ];
     return _section('Detalle de la orden', Icons.inventory_outlined, data);
   }
@@ -207,7 +180,10 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
           (i) => ListTile(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
-              side: BorderSide(color: Colors.white38, width: width),
+              side: BorderSide(
+                color: Theme.of(context).colorScheme.outline,
+                width: width,
+              ),
             ),
             leading: Image.network(
               i.image,
@@ -215,10 +191,7 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
               width: size,
               height: size,
             ),
-            title: Text(
-              i.product,
-              style: TextStyle(color: AppColors.white),
-            ).medium,
+            title: Text(i.product, style: context.bodyMedium).medium,
             subtitle: Text(formatMoney(i.price)),
             trailing: Text(formatMoney(i.total), style: context.bodyMedium),
           ),
@@ -234,28 +207,28 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
         'Shipping status',
         Text(
           (s != null) ? s.status.name : 'Pending',
-          style: context.bodyMedium.copyWith(color: AppColors.secondary),
+          style: context.bodyMedium.copyWith(color: context.accentColor),
         ),
       ),
       _dataFormat(
         'Shipping courrier',
         Text(
           (s != null) ? s.courier.name : '-',
-          style: context.bodyMedium.copyWith(color: AppColors.secondary),
+          style: context.bodyMedium.copyWith(color: context.accentColor),
         ),
       ),
       _dataFormat(
         'Tracking number',
         Text(
           (s != null) ? s.tracking : 'No asignado',
-          style: context.bodyMedium.copyWith(color: AppColors.secondary),
+          style: context.bodyMedium.copyWith(color: context.accentColor),
         ),
       ),
       _dataFormat(
         'Shipping address',
         Text(
           (s != null) ? s.address : 'Sin dirección registrada',
-          style: context.bodyMedium.copyWith(color: AppColors.secondary),
+          style: context.bodyMedium.copyWith(color: context.accentColor),
         ),
       ),
     ];
@@ -270,14 +243,14 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
         Row(
           spacing: 8.w,
           children: [
-            Icon(Icons.description_outlined, color: AppColors.secondary),
+            Icon(Icons.description_outlined, color: context.accentColor),
             Text('Facturación', style: context.bodyMedium).medium,
           ],
         ),
         Container(
           width: 1.sw,
           decoration: BoxDecoration(
-            border: Border.all(color: AppColors.secondary, width: width),
+            border: Border.all(color: context.accentColor, width: width),
             borderRadius: BorderRadius.circular(6.r),
           ),
           child: Column(
@@ -290,16 +263,19 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
-                        border: Border.all(color: Colors.white, width: width),
+                        border: Border.all(
+                          color: Theme.of(context).colorScheme.outline,
+                          width: width,
+                        ),
                         borderRadius: BorderRadius.circular(6.r),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Total Value').color(AppColors.white),
+                          Text('Total Value').color(context.themeColor),
                           Text(
                             formatMoney(e.totalVenta),
-                          ).medium.color(AppColors.white),
+                          ).medium.color(context.themeColor),
                         ],
                       ).paddingAll(8.r),
                     ),
@@ -308,7 +284,9 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
                     child: Container(
                       decoration: BoxDecoration(
                         border: Border.all(
-                          color: AppColors.success,
+                          color: context.isDarkTheme
+                              ? Colors.green.shade300
+                              : Colors.green.shade800,
                           width: width,
                         ),
                         borderRadius: BorderRadius.circular(6.r),
@@ -316,10 +294,16 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Total Paid').color(AppColors.success),
-                          Text(
-                            formatMoney(e.totalCompra),
-                          ).medium.color(AppColors.success),
+                          Text('Total Paid').color(
+                            context.isDarkTheme
+                                ? Colors.green.shade300
+                                : Colors.green.shade800,
+                          ),
+                          Text(formatMoney(e.totalCompra)).medium.color(
+                            context.isDarkTheme
+                                ? Colors.green.shade300
+                                : Colors.green.shade800,
+                          ),
                         ],
                       ).paddingAll(8.r),
                     ),
@@ -328,16 +312,16 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
               ),
               Container(
                 decoration: BoxDecoration(
-                  border: Border.all(color: AppColors.secondary, width: width),
+                  border: Border.all(color: context.accentColor, width: width),
                   borderRadius: BorderRadius.circular(6.r),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Balance Due').medium.color(AppColors.secondary),
+                    Text('Balance Due').medium.color(context.accentColor),
                     Text(
                       formatMoney(e.totalVenta),
-                    ).medium.color(AppColors.secondary),
+                    ).medium.color(context.accentColor),
                   ],
                 ).paddingAll(8.r),
               ),
@@ -354,9 +338,7 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
       children: [
         Text(
           label,
-          style: context.bodyMedium.copyWith(
-            color: isDarkTheme ? AppColors.white : AppColors.grey,
-          ),
+          style: context.bodyMedium.copyWith(color: context.themeColor),
         ),
         content,
       ],
@@ -371,14 +353,14 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
         Row(
           spacing: 8.w,
           children: [
-            Icon(icon, color: AppColors.secondary),
+            Icon(icon, color: context.accentColor),
             Text(label, style: context.bodyLarge).medium,
           ],
         ),
         Container(
           width: 1.sw,
           decoration: BoxDecoration(
-            border: Border.all(color: AppColors.secondary, width: width),
+            border: Border.all(color: context.accentColor, width: width),
             borderRadius: BorderRadius.circular(6.r),
           ),
           child: Column(
@@ -415,7 +397,7 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
                       width: 1.sw,
                       decoration: BoxDecoration(
                         border: BoxBorder.all(
-                          color: Colors.white38,
+                          color: Theme.of(context).colorScheme.outline,
                           width: 0.5,
                         ),
                       ),
@@ -425,10 +407,7 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
                       final p = payments[index];
                       return ListTile(
                         dense: true,
-                        titleTextStyle: TextStyle(
-                          color: AppColors.grey,
-                          fontSize: 12.sp,
-                        ),
+                        titleTextStyle: Theme.of(context).textTheme.titleSmall,
                         title: Text(p.type),
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -446,7 +425,10 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
                         trailing: Text(
                           p.status.name,
                           style: context.bodySmall.copyWith(
-                            color: StatusColor.color[p.status.color],
+                            color: StatusColor.color(
+                              p.status.color ?? '',
+                              Theme.of(context).brightness,
+                            ),
                           ),
                         ),
                       );

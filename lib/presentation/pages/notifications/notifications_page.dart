@@ -89,7 +89,9 @@ class NotificationWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: not.readAt == null ? Colors.white12 : null,
+      color: not.readAt == null
+          ? Theme.of(context).colorScheme.surfaceContainerHighest
+          : null,
       elevation: 2,
       child: ListTile(
         leading: Image.asset(

@@ -16,19 +16,17 @@ class ProductsListView extends StatelessWidget with MessengerMixin {
 
   final ProductInfoModel data;
 
-  Color get boxBgColor {
-    return AppThemes.themeModeNotifier.value == ThemeMode.dark
-        ? AppColors.blackLigth
-        : AppColors.secondaryLigth;
-  }
-
   @override
   Widget build(BuildContext context) {
+    final boxBgColor = Theme.of(context).colorScheme.surfaceContainerHighest;
     return ListView.separated(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: data.products.length,
-      separatorBuilder: (context, index) => Divider(color: AppColors.white,thickness: 0.5,),
+      separatorBuilder: (context, index) => Divider(
+        color: Theme.of(context).colorScheme.outline,
+        thickness: 0.5,
+      ),
       itemBuilder: (context, index) {
         final product = data.products[index];
         return ListTile(
@@ -38,7 +36,7 @@ class ProductsListView extends StatelessWidget with MessengerMixin {
             children: [
               Text(
                 formatMoney(product.price),
-                style: context.bodyMedium.copyWith(color: AppColors.secondary),
+                style: context.bodyMedium.copyWith(color: context.accentColor),
               ),
               Text('Stock: ${formatStock(product.stock)}', style: context.bodySmall),
             ],
@@ -77,9 +75,9 @@ class ProductsListView extends StatelessWidget with MessengerMixin {
               ),
               child: Icon(
                 Icons.shopping_cart_outlined,
-                color: AppThemes.themeModeNotifier.value == ThemeMode.dark
+                color: context.isDarkTheme
                     ? AppColors.white
-                    : AppColors.secondary,
+                    : context.accentColor,
                 size: 16,
               ).paddingAll(2.r),
             ),

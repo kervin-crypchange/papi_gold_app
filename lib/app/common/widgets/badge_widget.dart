@@ -10,6 +10,11 @@ class BadgeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final surface = Theme.of(context).colorScheme.surface;
+    final foreground = AppColors.contrastingForeground(
+      color,
+      surface: surface,
+    );
     return Container(
       decoration: BoxDecoration(
         color: color,
@@ -17,7 +22,7 @@ class BadgeWidget extends StatelessWidget {
       ),
       child: Text(
         label,
-        style: context.bodySmall.copyWith(color: AppColors.white),
+        style: context.bodySmall.copyWith(color: foreground),
       ).paddingSymmetric(horizontal: 8.w, vertical: 1.5.h),
     );
   }

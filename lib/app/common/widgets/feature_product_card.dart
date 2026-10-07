@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:papi_gold/app/common/mixins/index.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
-import 'package:papi_gold/app/core/theme/colors.dart';
 
 class FeatureProductCard extends StatelessWidget with LoggerMixin {
   FeatureProductCard({super.key});
@@ -17,7 +16,7 @@ class FeatureProductCard extends StatelessWidget with LoggerMixin {
           width: 250.w,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(6.r),
-            color: AppColors.white,
+            color: Theme.of(context).colorScheme.surfaceContainerHighest,
           ),
           child: Column(
             children: [
@@ -45,11 +44,15 @@ class FeatureProductCard extends StatelessWidget with LoggerMixin {
                 children: [
                   Text(
                     'Lingote de Oro',
-                    style: context.titleSmall.copyWith(color: AppColors.black),
+                    style: context.titleSmall.copyWith(
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
                   ).medium,
                   Text(
                     'Barras de oro de 1oz, 999.9 Oro Puro',
-                    style: context.labelSmall.copyWith(color: AppColors.black),
+                    style: context.labelSmall.copyWith(
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -60,13 +63,13 @@ class FeatureProductCard extends StatelessWidget with LoggerMixin {
                           Text(
                             'Precio',
                             style: context.labelSmall.copyWith(
-                              color: AppColors.black,
+                              color: Theme.of(context).colorScheme.onSurface,
                             ),
                           ).medium,
                           Text(
                             '\$4,319.10',
                             style: context.labelMedium.copyWith(
-                              color: AppColors.secondary,
+                              color: context.accentColor,
                             ),
                           ).medium,
                         ],
@@ -74,9 +77,9 @@ class FeatureProductCard extends StatelessWidget with LoggerMixin {
                       Wrap(
                         children: [
                           IconButton(
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.info_outline,
-                              color: AppColors.bg,
+                              color: Theme.of(context).colorScheme.onSurface,
                             ),
                             onPressed: () {
                               log('Volume increased');
@@ -100,11 +103,13 @@ class FeatureProductCard extends StatelessWidget with LoggerMixin {
         Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(6.r),
-            color: Colors.black87,
+            color: Theme.of(context).colorScheme.primary,
           ),
           child: Text(
             'LINGOTE',
-            style: context.bodyXSmall,
+            style: context.bodyXSmall.copyWith(
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
           ).paddingSymmetric(vertical: 2.h, horizontal: 8.w).medium,
         ).paddingAll(8.r),
       ],

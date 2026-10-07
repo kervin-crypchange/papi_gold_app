@@ -4,7 +4,6 @@ import 'package:papi_gold/app/common/mixins/messenger_mixin.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
-import 'package:papi_gold/app/core/theme/app_theme.dart';
 import 'package:papi_gold/app/core/theme/colors.dart';
 import 'package:papi_gold/domain/entities/index.dart';
 import 'package:persistent_shopping_cart/model/cart_model.dart';
@@ -23,14 +22,9 @@ class ProductCard extends StatelessWidget with MessengerMixin {
   final ProductEntity product;
   final VoidCallback onPress;
 
-  Color get boxBgColor {
-    return AppThemes.themeModeNotifier.value == ThemeMode.dark
-        ? AppColors.blackLigth
-        : AppColors.secondaryLigth;
-  }
-
   @override
   Widget build(BuildContext context) {
+    final boxBgColor = Theme.of(context).colorScheme.surfaceContainerHighest;
     return SizedBox(
       width: width,
       child: GestureDetector(
@@ -66,7 +60,7 @@ class ProductCard extends StatelessWidget with MessengerMixin {
                         Text(
                           formatMoney(product.price),
                           style: context.bodyMedium.copyWith(
-                            color: AppColors.secondary,
+                            color: context.accentColor,
                           ),
                         ),
                         Text(
@@ -109,9 +103,9 @@ class ProductCard extends StatelessWidget with MessengerMixin {
                   ),
                   child: Icon(
                     Icons.shopping_cart_outlined,
-                    color: AppThemes.themeModeNotifier.value == ThemeMode.dark
+                    color: context.isDarkTheme
                         ? AppColors.white
-                        : AppColors.secondary,
+                        : context.accentColor,
                     size: 16,
                   ).paddingAll(2.r),
                 ),

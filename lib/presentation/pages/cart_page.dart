@@ -149,7 +149,7 @@ class _CartPageState extends State<CartPage> with MessengerMixin {
                               Icon(
                                 Icons.add_shopping_cart_outlined,
                                 size: 52.r,
-                                color: AppColors.secondary,
+                                color: context.accentColor,
                               ),
                             ],
                           ),
@@ -164,11 +164,15 @@ class _CartPageState extends State<CartPage> with MessengerMixin {
                               key: ValueKey(item.productId),
                               background: Container(),
                               secondaryBackground: Container(
-                                color: Colors.red.shade200,
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.errorContainer,
                                 alignment: Alignment.centerRight,
-                                child: const Icon(
+                                child: Icon(
                                   Icons.delete_outline_outlined,
-                                  color: Colors.red,
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onErrorContainer,
                                 ).paddingOnly(right: 20.w),
                               ),
                               child: CartItemCardWidget(item: item),
@@ -187,7 +191,9 @@ class _CartPageState extends State<CartPage> with MessengerMixin {
               ),
       ).paddingSymmetric(horizontal: 12.w),
       persistentFooterDecoration: BoxDecoration(
-        border: Border(top: BorderSide(color: AppColors.secondary)),
+        border: Border(
+          top: BorderSide(color: Theme.of(context).colorScheme.outline),
+        ),
       ),
       persistentFooterButtons: [
         Column(

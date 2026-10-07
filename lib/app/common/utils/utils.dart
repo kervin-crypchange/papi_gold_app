@@ -3,7 +3,6 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_animations/loading_animations.dart';
 import 'package:papi_gold/app/core/class/app_navigation.dart';
-import 'package:papi_gold/app/core/theme/app_theme.dart';
 import 'package:papi_gold/app/core/theme/colors.dart';
 
 String getConnectedStatus(String connectStatus) {
@@ -184,8 +183,6 @@ class _LoadingOverlay {
   final OverlayEntry entry;
   int requestCount = 1;
 }
-
-bool get isDarkTheme => AppThemes.themeModeNotifier.value == ThemeMode.dark;
 
 double navBarHeight(BuildContext context) {
   return MediaQuery.of(context).padding.bottom + 70;

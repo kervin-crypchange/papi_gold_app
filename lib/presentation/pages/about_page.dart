@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:papi_gold/app/core/theme/colors.dart';
+import 'package:papi_gold/app/core/extensions/index.dart';
 
 class AboutPage extends StatefulWidget {
   const AboutPage({super.key});
@@ -45,13 +45,13 @@ class _AboutPageState extends State<AboutPage> {
                 width: 120,
                 height: 120,
                 decoration: BoxDecoration(
-                  color: AppColors.secondary.withAlpha(40),
+                  color: context.accentColor.withAlpha(40),
                   borderRadius: BorderRadius.circular(24),
                 ),
                 child: Icon(
                   Icons.info_outline,
                   size: 64,
-                  color: AppColors.secondary,
+                  color: context.accentColor,
                 ),
               ),
               const SizedBox(height: 24),

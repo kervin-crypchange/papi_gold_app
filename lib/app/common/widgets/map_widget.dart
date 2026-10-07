@@ -90,9 +90,11 @@ class _MapWidgetState extends State<MapWidget> {
               alignment: AlignmentGeometry.bottomRight,
               child: IconButton.filled(
                 style: IconButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.grey,
-                  side: BorderSide(color: Colors.grey),
+                  backgroundColor: Theme.of(context).colorScheme.surface,
+                  foregroundColor: Theme.of(context).colorScheme.onSurface,
+                  side: BorderSide(
+                    color: Theme.of(context).colorScheme.outline,
+                  ),
                 ),
                 onPressed: () async =>
                     await controller.moveTo(currentPosition, animate: true),

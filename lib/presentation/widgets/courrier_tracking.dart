@@ -79,7 +79,7 @@ class _StepRow extends StatelessWidget {
                   Text(
                     step.date,
                     style: context.labelXSmall.copyWith(
-                      color: AppColors.secondary,
+                      color: context.accentColor,
                     ),
                   ),
                 ],

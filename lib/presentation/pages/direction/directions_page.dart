@@ -178,11 +178,13 @@ class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
           d.type == 'primary'
               ? 'Dirección principal'
               : '${d.name.capitalizeFirst} - ${d.type.capitalizeFirst}',
-          style: context.bodyMedium.copyWith(color: Colors.white54),
+          style: context.bodyMedium.copyWith(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
         ),
         Container(
           decoration: BoxDecoration(
-            border: Border.all(color: AppColors.secondary),
+            border: Border.all(color: Theme.of(context).colorScheme.outline),
             borderRadius: BorderRadius.circular(12.r),
           ),
           child: ListTile(
@@ -201,7 +203,7 @@ class _DirectionsPageState extends State<DirectionsPage> with MessengerMixin {
                     child: Icon(
                       Icons.more_vert,
                       size: 18.r,
-                      color: Colors.white38,
+                      color: Theme.of(context).colorScheme.outline,
                     ).paddingAll(10.r),
                     onTap: () => _showModalSheet(context, d),
                   )

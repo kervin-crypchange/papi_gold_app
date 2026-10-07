@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
-import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/core/extensions/index.dart';
 import 'package:papi_gold/app/core/theme/index.dart';
 
@@ -17,17 +16,12 @@ class CustomNavBar extends StatelessWidget {
     required this.onTap,
   });
 
-  Color get bgColor {
-    return isDarkTheme ? AppColors.black : AppColors.white;
-  }
-
-  Color get unSelectColor {
-    return isDarkTheme ? AppColors.white : AppColors.black;
-  }
-
   @override
   Widget build(BuildContext context) {
     final double navigationBarHeight = MediaQuery.of(context).padding.bottom;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final selectedColor = Theme.of(context).colorScheme.primary;
+    final unselectedColor = Theme.of(context).colorScheme.onSurface;
     return ValueListenableBuilder<ThemeMode>(
       valueListenable: AppThemes.themeModeNotifier,
       builder: (context, _, _) {
@@ -35,7 +29,7 @@ class CustomNavBar extends StatelessWidget {
           height: 50.h,
           width: .9.sw,
           decoration: BoxDecoration(
-            color: bgColor,
+            color: Theme.of(context).colorScheme.surface,
             borderRadius: BorderRadius.circular(100.r),
             boxShadow: [
               BoxShadow(
@@ -58,8 +52,8 @@ class CustomNavBar extends StatelessWidget {
                     height: 40.h,
                     curve: Curves.easeInOut,
                     decoration: BoxDecoration(
-                      border: (isSelected && !isDarkTheme)
-                          ? Border.all(color: AppColors.secondary)
+                      border: (isSelected && !isDark)
+                          ? Border.all(color: selectedColor)
                           : null,
                       color: isSelected
                           ? AppColors.secondary.withValues(alpha: 0.15)
@@ -75,8 +69,8 @@ class CustomNavBar extends StatelessWidget {
                               ? navItems[index]['iconSelected']
                               : navItems[index]['icon'],
                           color: isSelected
-                              ? AppColors.secondary
-                              : unSelectColor,
+                              ? selectedColor
+                              : unselectedColor,
                           size: 16.r,
                         ),
                         Gap(4),
@@ -87,8 +81,8 @@ class CustomNavBar extends StatelessWidget {
                                 ? FontWeight.w500
                                 : FontWeight.normal,
                             color: isSelected
-                                ? AppColors.secondary
-                                : unSelectColor,
+                                ? selectedColor
+                                : unselectedColor,
                           ),
                         ),
                       ],

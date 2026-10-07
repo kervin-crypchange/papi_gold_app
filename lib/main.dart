@@ -34,19 +34,15 @@ Future<void> main() async {
   );
   debugPrintRebuildDirtyWidgets = true;
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-  SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(
-      systemNavigationBarColor: Colors.transparent,
-      systemNavigationBarDividerColor: Colors.transparent,
-      statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.dark,
-    ),
-  );
   try {
     await Hive.initFlutter();
     Stripe.publishableKey = publishableKey;
 
     await Hive.openBox(BoxEnum.config.name);
+    await AppThemes.loadThemeMode();
+    SystemChrome.setSystemUIOverlayStyle(
+      AppThemes.systemUiOverlayStyle(AppThemes.themeModeNotifier.value),
+    );
     await LocationService().init();
     await PersistentShoppingCart().init();
     await PersistentClientData().init();
@@ -123,6 +119,8 @@ class _MainAppState extends State<MainApp> {
   @override
   void initState() {
     super.initState();
+    AppThemes.themeModeNotifier.addListener(_updateSystemUiStyle);
+    _updateSystemUiStyle();
     PermissionService().requestMultiplePermissions([
       Permission.camera,
       Permission.photos,
@@ -132,8 +130,15 @@ class _MainAppState extends State<MainApp> {
     // fullScreenConfig();
   }
 
+  void _updateSystemUiStyle() {
+    SystemChrome.setSystemUIOverlayStyle(
+      AppThemes.systemUiOverlayStyle(AppThemes.themeModeNotifier.value),
+    );
+  }
+
   @override
   void dispose() {
+    AppThemes.themeModeNotifier.removeListener(_updateSystemUiStyle);
     // _localeSubscription.cancel();
     super.dispose();
   }
