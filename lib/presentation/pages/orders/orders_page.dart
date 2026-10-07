@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:papi_gold/app/common/mixins/messenger_mixin.dart';
 import 'package:papi_gold/app/common/utils/utils.dart';
 import 'package:papi_gold/app/common/widgets/index.dart';
@@ -64,7 +65,6 @@ class _OrdersPageState extends State<OrdersPage> with MessengerMixin {
     return isLoading
         ? LoadingAnimatedWidget()
         : Column(
-            spacing: 20.h,
             mainAxisSize: MainAxisSize.max,
             children: [
               Row(
@@ -75,63 +75,46 @@ class _OrdersPageState extends State<OrdersPage> with MessengerMixin {
                   Container(
                     height: 60,
                     decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Theme.of(context).colorScheme.outline,
-                        width: 0.5,
-                      ),
+                      border: Border.all(color: Colors.white54, width: 0.5),
                     ),
                   ),
                   statCard('Sold', stats!.sold),
                 ],
-              ).paddingAll(6.r),
+              ),
+              Gap(24.h),
               Row(
                 spacing: 10.w,
                 children: [
                   Icon(Icons.history, color: context.accentColor),
                   Text('Ordenes recientes', style: context.titleSmall),
                 ],
-              ).paddingSymmetric(horizontal: 12.w),
+              ).paddingOnly(left: 6.w),
               Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surfaceContainer,
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(24.0),
-                    ),
-                    border: Border(
-                      top: BorderSide(
-                        color: Theme.of(context).colorScheme.outline,
-                      ),
-                    ),
-                  ),
-                  child: OrderListWidget(
-                    controller: _scrollController,
-                    meta: meta!,
-                    orders: orders,
-                  ).paddingOnly(top: 16.h),
+                child: OrderListWidget(
+                  controller: _scrollController,
+                  meta: meta!,
+                  orders: orders,
                 ),
               ),
             ],
-          ).paddingSymmetric(vertical: 12.h);
+          );
   }
 
   Widget statCard(String label, StatsDataEntity stat) {
     return Expanded(
-      child: Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              label,
-              style: context.bodyLarge.copyWith(color: context.accentColor),
-            ),
-            Text(
-              formatMoney(stat.amount),
-              style: context.headlineSmall,
-            ).overflowText(TextOverflow.ellipsis).medium,
-            Text('${stat.count} orders', style: context.bodyMedium),
-          ],
-        ).paddingAll(8.r),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            label,
+            style: context.bodyLarge.copyWith(color: context.accentColor),
+          ),
+          Text(
+            formatMoney(stat.amount),
+            style: context.headlineSmall,
+          ).overflowText(TextOverflow.ellipsis).medium,
+          Text('${stat.count} orders', style: context.bodyMedium),
+        ],
       ),
     );
   }

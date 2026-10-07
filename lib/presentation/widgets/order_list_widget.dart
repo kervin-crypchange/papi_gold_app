@@ -34,7 +34,7 @@ class OrderListWidget extends StatelessWidget {
               final OrderDetailEntity order = orders[index];
               return OrderCardWidget(
                 order: order,
-              ).paddingSymmetric(horizontal: 12);
+              );
             },
           );
   }
