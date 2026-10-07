@@ -45,7 +45,7 @@ class _MetalsPriceWidgetState extends State<MetalsPriceWidget> {
               shrinkWrap: true,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                childAspectRatio: 1.65,
+                childAspectRatio: 4 / 3,
               ),
               itemBuilder: (context, index) {
                 return Card(
@@ -83,13 +83,13 @@ class _MetalsPriceWidgetState extends State<MetalsPriceWidget> {
               return Card(
                 shape: RoundedRectangleBorder(
                   side: BorderSide(color: symbol[metal.name]![1], width: 1),
-                  borderRadius: BorderRadius.circular(12.0),
+                  borderRadius: BorderRadius.circular(6.r),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text(
                         '${metal.name} Spot Price',

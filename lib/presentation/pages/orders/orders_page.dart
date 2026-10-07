@@ -88,7 +88,7 @@ class _OrdersPageState extends State<OrdersPage> with MessengerMixin {
                   Icon(Icons.history, color: context.accentColor),
                   Text('Ordenes recientes', style: context.titleSmall),
                 ],
-              ).paddingOnly(left: 6.w),
+              ).paddingOnly(left: 10.w),
               Expanded(
                 child: OrderListWidget(
                   controller: _scrollController,

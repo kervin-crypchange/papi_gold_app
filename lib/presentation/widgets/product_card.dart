@@ -13,12 +13,12 @@ class ProductCard extends StatelessWidget with MessengerMixin {
   ProductCard({
     super.key,
     this.width = 140,
-    this.aspectRetio = 1.02,
+    this.aspectRatio = 1.02,
     required this.product,
     required this.onPress,
   });
 
-  final double width, aspectRetio;
+  final double width, aspectRatio;
   final ProductEntity product;
   final VoidCallback onPress;
 
@@ -35,22 +35,15 @@ class ProductCard extends StatelessWidget with MessengerMixin {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 AspectRatio(
-                  aspectRatio: 1.02,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: boxBgColor,
-                      borderRadius: BorderRadius.circular(0),
-                    ),
-                    child: CachedNetworkImage(
-                      imageUrl: product.imagen,
-                      progressIndicatorBuilder:
-                          (context, url, downloadProgress) =>
-                              SizedBox(height: 250.h, child: LoadingWidget()),
-                      errorWidget: (context, url, error) => Icon(Icons.error),
-                    ),
+                  aspectRatio: aspectRatio,
+                  child: CachedNetworkImage(
+                    imageUrl: product.imagen,
+                    progressIndicatorBuilder:
+                        (context, url, downloadProgress) =>
+                            SizedBox(height: 250.h, child: LoadingWidget()),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
                   ),
                 ),
-                const SizedBox(height: 8),
                 Wrap(
                   children: [
                     Text(product.name, style: context.bodyMedium, maxLines: 2),

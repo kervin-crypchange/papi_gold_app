@@ -71,7 +71,7 @@ class CustomNavBar extends StatelessWidget {
                           color: isSelected
                               ? selectedColor
                               : unselectedColor,
-                          size: 16.r,
+                          size: 20.r,
                         ),
                         Gap(4),
                         Text(
