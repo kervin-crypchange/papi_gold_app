@@ -179,7 +179,7 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
         .map(
           (i) => ListTile(
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(6.r),
               side: BorderSide(
                 color: Theme.of(context).colorScheme.outline,
                 width: borderWidth,
