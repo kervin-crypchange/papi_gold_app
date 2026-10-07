@@ -18,7 +18,9 @@ void main() {
               return statusValue;
             case 'requestPermissions':
               final permissions = (call.arguments as List).cast<int>();
-              return {for (final permission in permissions) permission: statusValue};
+              return {
+                for (final permission in permissions) permission: statusValue,
+              };
             case 'openAppSettings':
               return true;
             default:
