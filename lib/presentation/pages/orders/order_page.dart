@@ -22,7 +22,7 @@ class OrderPage extends StatefulWidget {
 }
 
 class _OrderPageState extends State<OrderPage> with MessengerMixin {
-  final double borderWidth = 1;
+  final double borderWidth = 0.5;
 
   @override
   void initState() {
@@ -174,7 +174,6 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
   }
 
   Widget _itemList(List<OrderItemEntity> items) {
-    final double size = 50;
     final data = items
         .map(
           (i) => ListTile(
@@ -184,12 +183,6 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
                 color: Theme.of(context).colorScheme.outline,
                 width: borderWidth,
               ),
-            ),
-            leading: Image.network(
-              i.image,
-              fit: BoxFit.contain,
-              width: size,
-              height: size,
             ),
             title: Text(i.product, style: context.bodyMedium).medium,
             subtitle: Text(formatMoney(i.price)),
@@ -422,15 +415,7 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
                             ),
                           ],
                         ),
-                        trailing: Text(
-                          p.status.name,
-                          style: context.bodySmall.copyWith(
-                            color: StatusColor.color(
-                              p.status.color ?? '',
-                              Theme.of(context).brightness,
-                            ),
-                          ),
-                        ),
+                        trailing: BadgeWidget(label: p.status.name, color: AppColors.success),
                       );
                     },
                   ),

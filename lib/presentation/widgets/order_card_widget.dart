@@ -59,7 +59,7 @@ class OrderCardWidget extends StatelessWidget {
         ),
         onTap: () => context.goNamed(
           Routes.order,
-          pathParameters: {'id': order.order.toString()},
+          pathParameters: {'id': order.order},
         ),
       ),
     );

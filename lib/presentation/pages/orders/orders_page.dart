@@ -80,7 +80,7 @@ class _OrdersPageState extends State<OrdersPage> with MessengerMixin {
                   ),
                   statCard('Sold', stats!.sold),
                 ],
-              ),
+              ).paddingOnly(top: 12.h),
               Gap(24.h),
               Row(
                 spacing: 10.w,
