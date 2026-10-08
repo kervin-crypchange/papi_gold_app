@@ -64,15 +64,6 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
           onPressed: () => context.goNamed(Routes.navigation),
         ),
         title: Text('Resumen de Orden', style: context.titleMedium).medium,
-        // actions: [
-        //   IconButton(
-        //     icon: const Icon(Icons.location_on_outlined, color: AppColors.white),
-        //     tooltip: 'Tracking',
-        //     onPressed: () {
-        //       context.read<TrackingCubit>().tracking(tracking)
-        //     },
-        //   ),
-        // ],
       ),
       body: SafeArea(
         child: BlocConsumer<OrdersCubit, OrdersState>(
@@ -86,7 +77,7 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
             }
             return Center(child: Text('Error en la  carga de datos'));
           },
-        ).paddingSymmetric(horizontal: 8.w),
+        ),
       ),
     );
   }
@@ -305,7 +296,10 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
               ),
               Container(
                 decoration: BoxDecoration(
-                  border: Border.all(color: context.accentColor, width: borderWidth),
+                  border: Border.all(
+                    color: context.accentColor,
+                    width: borderWidth,
+                  ),
                   borderRadius: BorderRadius.circular(6.r),
                 ),
                 child: Row(
@@ -320,7 +314,7 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
               ),
             ],
           ).paddingAll(6.r),
-        ),
+        ).paddingOnly(bottom: 12.h),
       ],
     );
   }
@@ -415,7 +409,10 @@ class _OrderPageState extends State<OrderPage> with MessengerMixin {
                             ),
                           ],
                         ),
-                        trailing: BadgeWidget(label: p.status.name, color: AppColors.success),
+                        trailing: BadgeWidget(
+                          label: p.status.name,
+                          color: AppColors.success,
+                        ),
                       );
                     },
                   ),
